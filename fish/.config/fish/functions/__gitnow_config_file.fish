@@ -3,29 +3,31 @@
 
 set -g gitnow_xpaste
 
+set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
+
 function __gitnow_read_config -d "Reads the GitNow config file"
-    # sets a clipboard program
+    # Sets a clipboard program
     set gitnow_xpaste (__gitnow_get_clip_program)
 
-    # config file path used by default
+    # Config file path used by default
     set -l config_file "$fish_snippets/.gitnow"
 
-    # download the default .gitnow file
-    # used as workaround for Fisher. see https://github.com/jorgebucaran/fisher/pull/573
+    # Download the default .gitnow file
+    # Used as workaround for Fisher. see https://github.com/jorgebucaran/fisher/pull/573
     if not test -e $config_file
         curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/conf.d/.gitnow
     end
 
-    # prefer custom config file if it exists
+    # Prefer custom config file if it exists
     if test -e $GITNOW_CONFIG_FILE
         set config_file $GITNOW_CONFIG_FILE
     else if not test -e $config_file
-        # otherwise checks if default `.gitnow` file exists
-        # TODO: think about to if we could make this file optional
-        echo "Gitnow: the default .gitnow file is not found or inaccessible!"
+        # Otherwise checks if default `.gitnow` file exists,
+        # if doesn't then skip out file parsing
+        return
     end
 
-    # parse .gitnow file content
+    # Parse `.gitnow` file content
 
     set -l v_section 0
     set -l v_keybindings_str ""
@@ -76,6 +78,7 @@ function __gitnow_read_config -d "Reads the GitNow config file"
                     end
 
                     # A [keybindings] section was already found
+                    # NOTE: only alphabetic chars and hyphens are supported
                     if test $v_section -eq 2
                         switch $c
                             case 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' '-'
@@ -107,17 +110,29 @@ function __gitnow_read_config -d "Reads the GitNow config file"
 
             switch $v_command_key
                 case 'release' 'hotfix' 'feature' 'bugfix'
-                    # skip out if there is no a valid clipboard program
+                    # Skip out if there is no a valid clipboard program
                     if not test -n $gitnow_xpaste; continue; end
 
                     set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key ($gitnow_xpaste); commandline -f repaint; else ; end\"")
                 case '*'
-                    # TODO: validate string commands with a list of available (allowed) commands only
-                    set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key; commandline -f repaint; else; end\"")
+                    # Check command key against a list of valid commands
+                    set -l v_valid 0
+                    for v in $gitnow_commands
+                        if [ "$v" = "$v_command_key" ]
+                            set v_valid 1
+                            break
+                        end
+                    end
+
+                    # If command key is not valid then just skip out
+                    if test $v_valid -eq 0; continue; end
+
+                    set cmd (echo -n "bind \\$v_command_val \"echo; $v_command_key; commandline -f repaint;\"")
             end
 
             eval $cmd
         end
+
     end < $config_file
 end
 
@@ -126,13 +141,12 @@ function __gitnow_get_clip_program -d "Gets the current clip installed program"
 
     if type -q xclip
         set v_paste "xclip -selection clipboard -o"
-    else
-        if type -q xsel
-            set v_paste "xsel --clipboard --output"
-        end
-        if type -q pbpaste
-            set v_paste "pbpaste"
-        end
+    else if type -q wl-clipboard
+        set v_paste "wl-paste"
+    else if type -q xsel
+        set v_paste "xsel --clipboard --output"
+    else if type -q pbpaste
+        set v_paste "pbpaste"
     end
 
     echo -n $v_paste
