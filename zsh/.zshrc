@@ -32,7 +32,7 @@ export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!node_modules" -g "
 
 eval $(thefuck --alias)
 # fnm
-eval "$(fnm env --multi)"
+eval "$(fnm env)"
 
 
 export NNN_PLUG='f:fzcd;o:fzopen;'
