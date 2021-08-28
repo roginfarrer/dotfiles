@@ -61,6 +61,26 @@ function M.search_dotfiles()
 	})
 end
 
+-- function M.search_dotfiles()
+-- 	builtin.find_files({
+-- 		-- cwd = "~/.local/share/chezmoi/",
+-- 		cwd = '~',
+-- 		find_command = {
+-- 			'git',
+-- 			'--git-dir',
+-- 			'/Users/rfarrer/.dotfiles/',
+-- 			'--work-tree',
+-- 			'/Users/rfarrer/',
+-- 			'ls-tree',
+-- 			'--full-tree',
+-- 			'-r',
+-- 			'--name-only',
+-- 			'HEAD',
+-- 		},
+-- 		prompt = '~ dotfiles ~',
+-- 	})
+-- end
+
 function M.search_config()
 	builtin.find_files({
 		shorten_path = true,

@@ -31,21 +31,8 @@ vim.cmd([[
 	]])
 
 local function searchDotfiles()
-	require('telescope.builtin').find_files({
-		-- cwd = "~/.local/share/chezmoi/",
-		cwd = '~',
-		find_command = {
-			'git',
-			'--git-dir',
-			'/Users/rfarrer/.dotfiles/',
-			'--work-tree',
-			'/Users/rfarrer/',
-			'ls-tree',
-			'--full-tree',
-			'-r',
-			'--name-only',
-			'HEAD',
-		},
+	require('telescope.builtin').git_files({
+		cwd = '~/dotfiles',
 		prompt = '~ dotfiles ~',
 	})
 end
@@ -93,7 +80,8 @@ local leader = {
 	},
 	q = {
 		name = 'quit/session',
-		q = { '<cmd>:qa<cr>', 'Quit' },
+		q = { '<cmd>:q<cr>', 'Close Buffer' },
+		a = { '<cmd>:qa<cr>', 'Quit' },
 		x = { '<cmd>:x<cr>', 'Save and Quit' },
 		['!'] = { '<cmd>:qa!<cr>', 'Quit without saving' },
 	},
