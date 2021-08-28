@@ -1,0 +1,44 @@
+# Replace the "❯" symbol in the prompt with "➜"
+# [character]      # The name of the module we are configuring is "character"
+# symbol = "➜"     # The "symbol" segment is being set to "➜"
+
+format = """
+$hostname\
+$shlvl\
+$kubernetes\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$hg_branch\
+$docker_context\
+$nodejs\
+$php\
+$python\
+$ruby\
+$rust\
+$swift\
+$nix_shell\
+$env_var\
+$line_break\
+$lua\
+$jobs\
+$status\
+$character"""
+
+[username]
+disabled = true
+
+[cmd_duration]
+disabled = true
+
+[package]
+disabled = true
+
+[directory]
+truncation_length = 1
+fish_style_pwd_dir_length = 1
+
+[git_branch]
+# truncation_length = 20

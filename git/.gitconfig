@@ -1,0 +1,55 @@
+[user]
+	name = Rogin Farrer
+	SAM = rfarrer
+[color]
+	ui = true
+	status = always
+[push]
+	default = current
+[fetch]
+	prune = true
+[core]
+	autocrlf = false
+	preloadindex = true
+	fscache = true
+	excludesfile = /Users/rfarrer/.gitignore_global
+	editor = nvim
+	symlinks = true
+	pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
+
+[log]
+	decorate = short
+[http]
+	sslVerify = false
+[pack]
+	useSparse = true
+; [merge]
+;        tool = vscode
+[mergetool "meld"]
+    # Choose one of these 2 lines (not both!) explained below.
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+    ; cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+[mergetool "vscode"]
+        cmd = code --wait $MERGED
+[mergetool]
+	keepBackup = false
+ 	prompt = false
+ 	trustExitCode = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[include]
+    path = ~/.gitconfig_local
+[interactive]
+    diffFilter = delta --color-only
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
+[mergetool "diffconflicts"]
+	cmd = nvim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+	trustExitCode = true
+[merge]
+	tool = diffconflicts
