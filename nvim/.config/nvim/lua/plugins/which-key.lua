@@ -8,27 +8,27 @@ wk.setup({
 	key_labels = { ['<leader>'] = 'SPC' },
 })
 
-function _G.gitCopyToClipboard(range)
-	local mode = range > 0 and 'v' or 'n'
-	require('gitlinker').get_buf_range_url(
-		mode,
-		{ action_callback = require('gitlinker.actions').copy_to_clipboard }
-	)
-end
-function _G.gitOpenInBrowser(range)
-	local mode = range > 0 and 'v' or 'n'
-	require('gitlinker').get_buf_range_url(
-		mode,
-		{ action_callback = require('gitlinker.actions').open_in_browser }
-	)
-end
+-- function _G.gitCopyToClipboard(range)
+-- 	local mode = range > 0 and 'v' or 'n'
+-- 	require('gitlinker').get_buf_range_url(
+-- 		mode,
+-- 		{ action_callback = require('gitlinker.actions').copy_to_clipboard }
+-- 	)
+-- end
+-- function _G.gitOpenInBrowser(range)
+-- 	local mode = range > 0 and 'v' or 'n'
+-- 	require('gitlinker').get_buf_range_url(
+-- 		mode,
+-- 		{ action_callback = require('gitlinker.actions').open_in_browser }
+-- 	)
+-- end
 
-vim.cmd([[
-		command! -nargs=0 -range GitCopyToClipboard call v:lua.gitCopyToClipboard(<range>)
-	]])
-vim.cmd([[
-		command! -nargs=0 -range GitOpenInBrowser call v:lua.gitOpenInBrowser(<range>)
-	]])
+-- vim.cmd([[
+-- 		command! -nargs=0 -range GitCopyToClipboard call v:lua.gitCopyToClipboard(<range>)
+-- 	]])
+-- vim.cmd([[
+-- 		command! -nargs=0 -range GitOpenInBrowser call v:lua.gitOpenInBrowser(<range>)
+-- 	]])
 
 local function searchDotfiles()
 	require('telescope.builtin').git_files({
@@ -41,18 +41,18 @@ local leader = {
 	g = {
 		name = '+git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },
-		o = {
-			function()
-				_G.gitOpenInBrowser('n')
-			end,
-			'open in browser',
-		},
-		c = {
-			function()
-				_G.gitCopyToClipboard('n')
-			end,
-			'copy github url to clipboard',
-		},
+		-- o = {
+		-- 	function()
+		-- 		gitOpenInBrowser('n')
+		-- 	end,
+		-- 	'open in browser',
+		-- },
+		-- c = {
+		-- 	function()
+		-- 		gitCopyToClipboard('n')
+		-- 	end,
+		-- 	'copy github url to clipboard',
+		-- },
 		b = { '<Cmd>Telescope git_branches<CR>', 'branches' },
 		s = { '<Cmd>Telescope git_status<CR>', 'status' },
 		d = { '<cmd>DiffviewOpen<cr>', 'DiffView' },
@@ -78,23 +78,23 @@ local leader = {
 			'Live Grep',
 		},
 	},
-	q = {
-		name = 'quit/session',
-		q = { '<cmd>:q<cr>', 'Close Buffer' },
-		a = { '<cmd>:qa<cr>', 'Quit' },
-		x = { '<cmd>:x<cr>', 'Save and Quit' },
-		['!'] = { '<cmd>:qa!<cr>', 'Quit without saving' },
-	},
-	x = {
-		name = 'errors',
-		x = { '<cmd>TroubleToggle<cr>', 'Trouble' },
-		w = { '<cmd>TroubleWorkspaceToggle<cr>', 'Workspace Trouble' },
-		d = { '<cmd>TroubleDocumentToggle<cr>', 'Document Trouble' },
-		t = { '<cmd>TodoTrouble<cr>', 'Todo Trouble' },
-		T = { '<cmd>TodoTelescope<cr>', 'Todo Telescope' },
-		l = { '<cmd>lopen<cr>', 'Open Location List' },
-		q = { '<cmd>copen<cr>', 'Open Quickfix List' },
-	},
+	-- q = {
+	-- 	name = 'quit/session',
+	-- 	q = { '<cmd>:q<cr>', 'Close Buffer' },
+	-- 	a = { '<cmd>:qa<cr>', 'Quit' },
+	-- 	x = { '<cmd>:x<cr>', 'Save and Quit' },
+	-- 	['!'] = { '<cmd>:qa!<cr>', 'Quit without saving' },
+	-- },
+	-- x = {
+	-- 	name = 'errors',
+	-- 	x = { '<cmd>TroubleToggle<cr>', 'Trouble' },
+	-- 	w = { '<cmd>TroubleWorkspaceToggle<cr>', 'Workspace Trouble' },
+	-- 	d = { '<cmd>TroubleDocumentToggle<cr>', 'Document Trouble' },
+	-- 	t = { '<cmd>TodoTrouble<cr>', 'Todo Trouble' },
+	-- 	T = { '<cmd>TodoTelescope<cr>', 'Todo Telescope' },
+	-- 	l = { '<cmd>lopen<cr>', 'Open Location List' },
+	-- 	q = { '<cmd>copen<cr>', 'Open Quickfix List' },
+	-- },
 	['<tab>'] = {
 		name = 'workspace',
 		['<tab>'] = { '<cmd>tabnew<CR>', 'New Tab' },

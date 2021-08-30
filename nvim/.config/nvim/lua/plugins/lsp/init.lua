@@ -3,7 +3,6 @@ local null_ls = require('plugins.lsp.null-ls')
 local tsserver = require('plugins.lsp.tsserver')
 local lua_ls = require('plugins.lsp.lua-ls')
 
-local api = vim.api
 local lsp = vim.lsp
 
 lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
@@ -15,57 +14,43 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 	}
 )
 
-local on_attach = function(client, bufnr)
-	require('lspsaga.diagnostic').show_cursor_diagnostics()
-	-- require("lsp_signature").on_attach(
-	--   {
-	--     use_lspsaga = true
-	--   }
-	-- )
+local on_attach = function(client)
+	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-	-- bindings
-	u.buf_map(
-		'n',
+	require('lspsaga.diagnostic').show_cursor_diagnostics()
+
+	u.nnoremap(
 		'<leader>gd',
 		'<cmd> lua vim.lsp.buf.definition()<CR>',
-		nil,
-		bufnr
+		{ buffer = true }
 	)
-	u.buf_map('n', 'gh', ':Lspsaga lsp_finder<CR>', nil, bufnr)
-	u.buf_map('n', 'gs', ':Lspsaga signature_help<CR>', nil, bufnr)
-	u.buf_map('n', 'gd', ':Lspsaga preview_definition<CR>', nil, bufnr)
-	u.buf_map('n', '[g', ':Lspsaga diagnostic_jump_prev<CR>', nil, bufnr)
-	u.buf_map('n', ']g', ':Lspsaga diagnostic_jump_next<CR>', nil, bufnr)
-	u.buf_map('n', '<leader>lr', ':Lspsaga rename<CR>', nil, bufnr)
-	u.buf_map('n', 'K', ':Lspsaga hover_doc<CR>', nil, bufnr)
-	u.buf_map(
-		'n',
+	u.nnoremap('gh', ':Lspsaga lsp_finder<CR>', { buffer = true })
+	u.nnoremap('gs', ':Lspsaga signature_help<CR>', { buffer = true })
+	u.nnoremap('gd', ':Lspsaga preview_definition<CR>', { buffer = true })
+	u.nnoremap('[g', ':Lspsaga diagnostic_jump_prev<CR>', { buffer = true })
+	u.nnoremap(']g', ':Lspsaga diagnostic_jump_next<CR>', { buffer = true })
+	u.nnoremap('<leader>lr', ':Lspsaga rename<CR>', { buffer = true })
+	u.nnoremap('K', ':Lspsaga hover_doc<CR>', { buffer = true })
+	u.nnoremap(
 		'<C-F>',
 		"<cmd> lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>",
-		nil,
-		bufnr
+		{ buffer = true }
 	)
-	u.buf_map(
-		'n',
+	u.nnoremap(
 		'<C-B>',
 		"<cmd> lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>",
-		nil,
-		bufnr
+		{ buffer = true }
 	)
-	u.buf_map('n', '<leader>do', ':Lspsaga code_action<CR>', nil, bufnr)
-	u.buf_map(
-		'v',
+	u.nnoremap('<leader>do', ':Lspsaga code_action<CR>', { buffer = true })
+	u.vnoremap(
 		'<leader>do',
 		':<C-U>Lspsaga range_code_action<CR>',
-		nil,
-		bufnr
+		{ buffer = true }
 	)
 
 	if client.resolved_capabilities.document_formatting then
 		vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
-		require('vimp').map_command('Format', function()
-			vim.lsp.buf.formatting()
-		end)
+		vim.cmd('command! Format lua vim.lsp.buf.formatting()')
 	end
 end
 
@@ -84,7 +69,7 @@ require('lspconfig').typescript.setup(tsserver(on_attach))
 require('lspconfig').lua.setup(lua_ls(on_attach))
 
 -- Servers without configs
-local servers = { 'vim', 'bash' }
+local servers = { 'vim', 'bash', 'css' }
 for _, server in pairs(servers) do
 	require('lspconfig')[server].setup({
 		on_attach = on_attach,

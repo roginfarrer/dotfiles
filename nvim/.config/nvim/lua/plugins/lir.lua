@@ -42,9 +42,9 @@ require('lir.git_status').setup({
 -- use visual mode
 function _G.LirSettings()
 	u.xnoremap(
-		{ 'buffer', 'silent' },
 		'J',
-		':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>'
+		':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
+		{ buffer = true, silent = true }
 	)
 
 	-- echo cwd

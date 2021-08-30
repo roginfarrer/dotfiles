@@ -13,6 +13,21 @@ local use = packer.use
 
 return packer.startup(function()
 	use({ 'wbthomason/packer.nvim', opt = true })
+	use({
+		'lewis6991/impatient.nvim',
+		rocks = 'mpack',
+		after = 'packer.nvim',
+		config = function()
+			require('impatient')
+		end,
+	})
+
+	-- use({
+	-- 	'svermeulen/vimpeccable',
+	-- 	config = function()
+	-- 		require('vimp').always_override = true
+	-- 	end,
+	-- })
 
 	use({
 		'vuki656/package-info.nvim',
@@ -168,13 +183,14 @@ return packer.startup(function()
 	use({
 		'ruifm/gitlinker.nvim',
 		requires = 'nvim-lua/plenary.nvim',
-		cmd = { 'GBrowse' },
+		-- cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
 		config = function()
 			require('plugins.gitlinker')
-		end,
-		setup = function()
 			require('mappings').gitlinker()
 		end,
+		-- setup = function()
+		-- 	require('mappings').gitlinker()
+		-- end,
 	})
 
 	use({
@@ -228,7 +244,7 @@ return packer.startup(function()
 		event = 'BufEnter',
 		disable = not use_nvim_lsp,
 		config = function()
-			require('lspkind').init()
+			require('lspkind').init({ preset = 'codicons' })
 		end,
 	})
 
@@ -276,8 +292,6 @@ return packer.startup(function()
 		end,
 		-- disable = not use_nvim_lsp
 	})
-
-	use({ 'svermeulen/vimpeccable' })
 
 	use({
 		'ms-jpq/coq_nvim',

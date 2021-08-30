@@ -5,7 +5,6 @@ local builtin = require('telescope.builtin')
 
 local conf = require('telescope.config').values
 
-local vimp = require('vimp')
 
 require('telescope').setup({
 	defaults = {
@@ -105,20 +104,20 @@ function M.arglist(opts)
 	}):find()
 end
 
-vimp.nnoremap({ 'silent' }, '<Leader>fp', [[<cmd>Telescope git_files<CR>]])
-vimp.nnoremap({ 'silent' }, '<Leader>f.', [[<cmd>Telescope find_files<CR>]])
-vimp.nnoremap(
-	{ 'silent' },
-	'<Leader>fg',
-	"<cmd> lua require('telescope').extensions.fzf_writer.staged_grep()<CR>"
-)
-vimp.nnoremap({ 'silent' }, '<leader>fb', [[<cmd>Telescope buffers<CR>]])
-vimp.nnoremap({ 'silent' }, '<leader>fd', M.search_dotfiles)
-vimp.nnoremap({ 'silent' }, '<leader>fa', M.arglist)
-vimp.nnoremap({ 'silent' }, '<Leader>fh', [[<cmd>Telescope oldfiles<CR>]])
+-- vimp.nnoremap({ 'silent' }, '<Leader>fp', [[<cmd>Telescope git_files<CR>]])
+-- vimp.nnoremap({ 'silent' }, '<Leader>f.', [[<cmd>Telescope find_files<CR>]])
+-- vimp.nnoremap(
+-- 	{ 'silent' },
+-- 	'<Leader>fg',
+-- 	"<cmd> lua require('telescope').extensions.fzf_writer.staged_grep()<CR>"
+-- )
+-- vimp.nnoremap({ 'silent' }, '<leader>fb', [[<cmd>Telescope buffers<CR>]])
+-- vimp.nnoremap({ 'silent' }, '<leader>fd', M.search_dotfiles)
+-- vimp.nnoremap({ 'silent' }, '<leader>fa', M.arglist)
+-- vimp.nnoremap({ 'silent' }, '<Leader>fh', [[<cmd>Telescope oldfiles<CR>]])
 
-vimp.nnoremap({ 'silent' }, '<C-p>', [[<cmd>Telescope git_files<CR>]])
-vimp.nnoremap({ 'silent' }, '<leader>;', [[<cmd>Telescope buffers<CR>]])
+-- vimp.nnoremap({ 'silent' }, '<C-p>', [[<cmd>Telescope git_files<CR>]])
+-- vimp.nnoremap({ 'silent' }, '<leader>;', [[<cmd>Telescope buffers<CR>]])
 
 return setmetatable({}, {
 	__index = function(_, k)

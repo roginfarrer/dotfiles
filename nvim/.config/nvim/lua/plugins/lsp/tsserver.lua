@@ -31,8 +31,6 @@ local M = function(on_attach)
 			-- u.buf_map("n", "gt", ":TSLspImportAll<CR>", nil, bufnr)
 			-- u.buf_map("n", "qq", ":TSLspFixCurrent<CR>", nil, bufnr)
 			-- u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
-
-			vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 		end,
 	}
 end

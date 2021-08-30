@@ -1,10 +1,10 @@
-local vimp = require('vimp')
+local u = require('utils')
 
-local nnoremap = vimp.nnoremap
-local nmap = vimp.nmap
-local vnoremap = vimp.vnoremap
-local xnoremap = vimp.xnoremap
-local tnoremap = vimp.tnoremap
+local nnoremap = u.nnoremap
+local nmap = u.nmap
+local vnoremap = u.vnoremap
+local xnoremap = u.xnoremap
+local tnoremap = u.tnoremap
 
 nmap('<C-c>', '"+y')
 nnoremap('<Leader>y', '"+y')
@@ -26,9 +26,9 @@ nmap('<C-k>', '<C-W>k')
 nmap('<C-h>', '<C-W>h')
 nmap('<C-l>', '<C-W>l')
 
--- nmap('<leader>w', [[:w!<CR>]])
--- nmap('<leader>q', [[:q<CR>]])
--- nmap('<leader>x', [[:wq<CR>]])
+nmap('<leader>w', [[:w!<CR>]])
+nmap('<leader>q', [[:q<CR>]])
+nmap('<leader>x', [[:wq<CR>]])
 
 -- newline without insert
 nmap('<CR>', 'o<Esc>"_cc<Esc>')
@@ -47,19 +47,9 @@ vnoremap('<A-k>', [[:m '<-2<CR>gv=gv]])
 -- Toggle folds
 -- nnoremap('<Space><Space>', 'za')
 
--- nnoremap('<leader>ek', [[:vsp $HOME/.config/kitty/kitty.conf<CR>]])
--- nnoremap('<leader>ev', [[:vsp $HOME/.config/nvim/init.lua<CR>]])
-
--- nnoremap({"silent"}, "<leader>go", [[:GBrowse<CR>]])
--- vnoremap({"silent"}, "<leader>go", [[:'<,'>GBrowse<CR>]])
--- nnoremap({"silent"}, "<leader>gc", [[:GBrowse!<CR>]])
--- vnoremap({"silent"}, "<leader>gc", [[:'<,'>GBrowse!<CR>]])
--- vimp complains about duplicate mapping
-vim.api.nvim_set_keymap(
-	'n',
+nnoremap(
 	'<leader>yf',
-	[[:let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>]],
-	{ noremap = true }
+	[[:let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>]]
 )
 
 nmap('gx', '<Plug>(open-url-browser)')
@@ -74,4 +64,4 @@ tnoremap('<leader>j', [[<C-\><C-n>]])
 -- nnoremap('<leader>te', [[:vs<CR>:terminal fish<CR>]])
 
 -- a paste from register chord
-tnoremap({ 'expr' }, '<A-r>', [['<C-/>']])
+tnoremap('<A-r>', [['<C-/>']], { expr = true })

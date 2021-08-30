@@ -34,48 +34,50 @@ vim.g.coc_global_extensions = {
 	'coc-fish',
 }
 
-u.nmap({ 'silent' }, 'gd', '<Plug>(coc-definition)')
-u.nmap({ 'silent' }, 'gt', '<Plug>(coc-type-definition)')
-u.nmap({ 'silent' }, 'gi', '<Plug>(coc-implementation)')
-u.nmap({ 'silent' }, 'gr', '<Plug>(coc-references)')
-u.nmap({ 'silent' }, '<leader>lr', '<Plug>(coc-rename)')
-u.nmap({ 'silent' }, '<leader>do', '<Plug>(coc-codeaction)')
-u.xmap({ 'silent' }, '<leader>do', '<Plug>(coc-codeaction-selected)')
+u.nmap('gd', '<Plug>(coc-definition)')
+u.nmap('gt', '<Plug>(coc-type-definition)')
+u.nmap('gi', '<Plug>(coc-implementation)')
+u.nmap('gr', '<Plug>(coc-references)')
+u.nmap('<leader>lr', '<Plug>(coc-rename)')
+u.nmap('<leader>do', '<Plug>(coc-codeaction)')
+u.xmap('<leader>do', '<Plug>(coc-codeaction-selected)')
 
-u.inoremap({ 'silent', 'expr' }, '<Tab>', 'v:lua.smart_tab()')
-u.inoremap({ 'silent', 'expr' }, '<S-Tab>', function()
+u.inoremap('<Tab>', 'v:lua.smart_tab()', { 'silent', 'expr' })
+u.inoremap('<S-Tab>', function()
 	return vim.fn.pumvisible() == 1 and t('<C-p>') or t('<C-h>')
-end)
-u.inoremap({ 'silent', 'expr' }, '<c-space>', vim.fn['coc#refresh'])
+end, {
+	'expr',
+})
+u.inoremap('<c-space>', vim.fn['coc#refresh'], { 'silent', 'expr' })
 
-u.nmap({ 'silent' }, '[g', '<Plug>(coc-diagnostic-prev)')
-u.nmap({ 'silent' }, ']g', '<Plug>(coc-diagnostic-next)')
+u.nmap('[g', '<Plug>(coc-diagnostic-prev)', { 'silent' })
+u.nmap(']g', '<Plug>(coc-diagnostic-next)')
 
-u.nnoremap({ 'silent' }, 'K', [[:call CocAction('doHover')<CR>]])
+u.nnoremap('K', [[:call CocAction('doHover')<CR>]])
 u.nmap('<leader>es', [[:CocCommand snippets.editSnippets<CR>]])
 
 u.nnoremap(
-	{ 'silent', 'nowait', 'expr' },
 	'<C-f>',
-	'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-F>"'
+	'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-F>"',
+	{ 'silent', 'nowait', 'expr' },
 )
 
 u.nnoremap(
-	{ 'silent', 'nowait', 'expr' },
 	'<C-b>',
-	'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-B>"'
+	'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-B>"',
+	{ 'silent', 'nowait', 'expr' },
 )
 
 u.inoremap(
-	{ 'silent', 'nowait', 'expr' },
 	'<C-f>',
-	'coc#float#has_scroll() ? coc#float#scroll(1) : "<Right>"'
+	'coc#float#has_scroll() ? coc#float#scroll(1) : "<Right>"',
+	{ 'silent', 'nowait', 'expr' },
 )
 
 u.inoremap(
-	{ 'silent', 'nowait', 'expr' },
 	'<C-b>',
-	'coc#float#has_scroll() ? coc#float#scroll(0) : "<Left>"'
+	'coc#float#has_scroll() ? coc#float#scroll(0) : "<Left>"',
+	{ 'silent', 'nowait', 'expr' },
 )
 
 vim.g.coc_filetype_map = {
