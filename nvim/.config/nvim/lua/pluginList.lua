@@ -12,22 +12,21 @@ end
 local use = packer.use
 
 return packer.startup(function()
-	use({ 'wbthomason/packer.nvim', opt = true })
+	use({
+		'wbthomason/packer.nvim',
+		opt = true,
+		setup = function()
+			require('mappings').packer()
+		end,
+	})
 	use({
 		'lewis6991/impatient.nvim',
-		rocks = 'mpack',
+		-- rocks = 'mpack',
 		after = 'packer.nvim',
 		config = function()
 			require('impatient')
 		end,
 	})
-
-	-- use({
-	-- 	'svermeulen/vimpeccable',
-	-- 	config = function()
-	-- 		require('vimp').always_override = true
-	-- 	end,
-	-- })
 
 	use({
 		'vuki656/package-info.nvim',
@@ -61,6 +60,11 @@ return packer.startup(function()
 		config = function()
 			require('plugins.treesitter')
 		end,
+	})
+
+	use({
+		'nvim-treesitter/nvim-treesitter-textobjects',
+		after = 'nvim-treesitter',
 	})
 
 	use({
@@ -114,7 +118,7 @@ return packer.startup(function()
 
 	use({
 		'vim-test/vim-test',
-		cmd = { 'TestFile', 'TestSuite', 'TestNearest' },
+		cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
 		config = function()
 			require('plugins.vim-test')
 		end,
@@ -135,8 +139,12 @@ return packer.startup(function()
 
 	use({
 		'nvim-telescope/telescope.nvim',
+		-- setup = function()
+		-- 	require('mappings').telescope()
+		-- end,
 		config = function()
 			require('plugins.telescope')
+			require('mappings').telescope()
 		end,
 		requires = {
 			'nvim-lua/plenary.nvim',
@@ -160,9 +168,6 @@ return packer.startup(function()
 			require('plugins.snap')
 		end,
 	})
-
-	-- use({"justinmk/vim-dirvish", opt = false})
-	-- use({"roginfarrer/vim-dirvish-dovish", opt = false, branch = "main"})
 
 	use({
 		'tamago324/lir.nvim',
@@ -188,9 +193,6 @@ return packer.startup(function()
 			require('plugins.gitlinker')
 			require('mappings').gitlinker()
 		end,
-		-- setup = function()
-		-- 	require('mappings').gitlinker()
-		-- end,
 	})
 
 	use({
@@ -200,6 +202,9 @@ return packer.startup(function()
 			'nvim-lua/plenary.nvim',
 			'sindrets/diffview.nvim',
 		},
+		setup = function()
+			require('mappings').neogit()
+		end,
 		config = function()
 			require('neogit').setup({
 				integrations = {
@@ -272,16 +277,6 @@ return packer.startup(function()
 		disable = not use_nvim_lsp,
 	})
 
-	-- use(
-	--   {
-	--     "ray-x/lsp_signature.nvim",
-	--     disable = not use_nvim_lsp
-	--     -- cond = function()
-	--     --   return use_nvim_lsp
-	--     -- end,
-	--   }
-	-- )
-
 	use({
 		'jose-elias-alvarez/null-ls.nvim',
 		requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
@@ -290,7 +285,6 @@ return packer.startup(function()
 				require('plugins.null-ls')
 			end
 		end,
-		-- disable = not use_nvim_lsp
 	})
 
 	use({
@@ -430,10 +424,10 @@ return packer.startup(function()
 		end,
 	})
 
-	use({
-		'folke/which-key.nvim',
-		config = function()
-			require('plugins.which-key')
-		end,
-	})
+	-- use({
+	-- 	'folke/which-key.nvim',
+	-- 	config = function()
+	-- 		require('plugins.which-key')
+	-- 	end,
+	-- })
 end)
