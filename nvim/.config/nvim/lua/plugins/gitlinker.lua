@@ -1,3 +1,5 @@
+local work_github_url = _G.work_github_url or 'shim'
+
 require('gitlinker').setup({
 	opts = {
 		mappings = nil,
@@ -5,6 +7,6 @@ require('gitlinker').setup({
 		add_current_line_on_normal_mode = false,
 	},
 	callbacks = {
-		[_G.work_github_url] = require('gitlinker.hosts').get_github_type_url,
+		[work_github_url] = require('gitlinker.hosts').get_github_type_url,
 	},
 })

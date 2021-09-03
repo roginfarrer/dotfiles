@@ -5,6 +5,10 @@ local nmap = u.nmap
 local vnoremap = u.vnoremap
 local xnoremap = u.xnoremap
 local tnoremap = u.tnoremap
+local inoremap = u.inoremap
+
+inoremap('<C-h>', '<Left>')
+inoremap('<C-l>', '<Right>')
 
 nmap('<C-c>', '"+y')
 nnoremap('<Leader>y', '"+y')
