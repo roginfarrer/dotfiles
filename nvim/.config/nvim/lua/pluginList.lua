@@ -413,9 +413,10 @@ return packer.startup(function()
 			require('theme')
 		end,
 	})
+	use('shaunsingh/nord.nvim')
 	-- use({ 'lighthaus-theme/vim-lighthaus' })
 	-- use('shaunsingh/moonlight.nvim')
-	-- use({ 'siduck76/nvim-base16.lua' })
+	use({ 'siduck76/nvim-base16.lua' })
 	-- use({
 	-- 	'EdenEast/nightfox.nvim',
 	-- 	config = function()
