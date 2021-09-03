@@ -5,8 +5,6 @@
 ###
 if ! command -v brew >/dev/null 2>&1; then
 	echo "Installing homebrew"
-	export HOMEBREW_BREW_GIT_REMOTE="..." # put your Git mirror of Homebrew/brew here
-	export HOMEBREW_CORE_GIT_REMOTE="..." # put your Git mirror of Homebrew/homebrew-core here
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
@@ -30,3 +28,5 @@ stow *
 ###
 fish
 fisher update
+
+npm install -g @fsouza/prettierd neovim eslint_d lua-fmt tldr
