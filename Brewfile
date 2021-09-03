@@ -1,0 +1,58 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/core"
+
+brew "antibody"
+brew "bash"
+brew "bat"
+brew "python@3.9"
+brew "glib"
+brew "cask"
+brew "curl"
+brew "dotnet"
+brew "node"
+brew "emscripten"
+brew "exa"
+brew "fd"
+brew "fish"
+brew "fnm"
+brew "fzf"
+brew "gh"
+brew "git"
+brew "git-delta"
+brew "git-lfs"
+brew "git-recent"
+brew "gnu-sed"
+brew "luajit", args: ["HEAD"]
+brew "luarocks"
+brew "mas"
+brew "neovim", args: ["HEAD"]
+brew "ripgrep"
+brew "sd"
+brew "shfmt"
+brew "starship"
+brew "stow"
+brew "thefuck"
+brew "trash"
+brew "yarn"
+brew "zsh"
+
+cask "1password"
+cask "alfred"
+cask "brave"
+cask "discord"
+cask "fantastical"
+cask "finicky"
+cask "firefox"
+cask "firefox-developer-edition"
+cask "kitty"
+cask "slack"
+cask "spotify"
+cask "visual-studio-code"
+
+mas "Cardhop", id: 1290358394
+mas "Deliveries: a package tracker", id: 290986013
+mas "Todoist: To-Do List & Tasks", id: 585829637
+mas "ToothFairy", id: 1191449274
+mas "WhatsApp", id: 1147396723
