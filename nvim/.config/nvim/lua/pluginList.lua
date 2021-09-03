@@ -117,6 +117,15 @@ return packer.startup(function()
 	use({
 		'vim-test/vim-test',
 		cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
+		requires = {
+			{
+				'kassio/neoterm',
+				setup = function()
+					vim.g.neoterm_default_mod = 'vertical'
+					vim.g.neoterm_shell = 'fish'
+				end,
+			},
+		},
 		config = function()
 			require('plugins.vim-test')
 		end,
@@ -125,14 +134,13 @@ return packer.startup(function()
 		end,
 	})
 
-	use({
-		'kassio/neoterm',
-		cmd = { 'T', 'Tnew' },
-		setup = function()
-			vim.g.neoterm_default_mod = 'vertical'
-			vim.g.neoterm_shell = 'fish'
-		end,
-	})
+	-- use({
+	-- 	'kassio/neoterm',
+	-- 	setup = function()
+	-- 		vim.g.neoterm_default_mod = 'vertical'
+	-- 		vim.g.neoterm_shell = 'fish'
+	-- 	end,
+	-- })
 
 	use({ 'wellle/targets.vim', event = 'BufEnter' })
 
@@ -297,6 +305,7 @@ return packer.startup(function()
 			-- { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
 			{ 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
 			{ 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+			{ 'hrsh7th/cmp-path', after = 'nvim-cmp' },
 		},
 		config = function()
 			require('plugins.cmp')

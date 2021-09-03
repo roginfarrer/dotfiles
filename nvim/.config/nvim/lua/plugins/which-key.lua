@@ -28,8 +28,8 @@ local leader = {
 	g = {
 		name = 'Git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },
-		o = { ':GitCopyToClipboard<CR>', 'open in browser' },
-		c = { ':GitOpenInBrowser<CR>', 'copy github url to clipboard' },
+		c = { ':GitCopyToClipboard<CR>', 'Open File in Browser' },
+		o = { ':GitOpenInBrowser<CR>', 'Copy GitHub URL to Clipboard' },
 		b = { '<Cmd>Telescope git_branches<CR>', 'Checkout Branch' },
 		s = { '<Cmd>Telescope git_status<CR>', 'Open changed file' },
 		C = {
@@ -50,9 +50,16 @@ local leader = {
 	d = {
 		name = 'Configuration',
 		d = { searchDotfiles, 'Search Dotfiles' },
-		n = { ':e ~/dotfiles/nvim/.config/nvim/pluginList', 'Open Neovim Config' },
-		k = { ':e ~/dotfiles/kitty/.config/kitty/kitty.conf', 'Open Kitty Config' },
-		f = { ':e ~/dotfiles/fish/.config/fish/config.fish', 'Open Fish Config' },
+		n = { ':e ~/dotfiles/nvim/.config/nvim/pluginList<CR>', 'Open Neovim Config' },
+		l = {
+			':e ~/.config/nvim/lua/local-config.lua<CR>',
+			'Open Local Neovim Config',
+		},
+		k = {
+			':e ~/dotfiles/kitty/.config/kitty/kitty.conf<CR>',
+			'Open Kitty Config',
+		},
+		f = { ':e ~/dotfiles/fish/.config/fish/config.fish<CR>', 'Open Fish Config' },
 		p = {
 			name = 'Plugins',
 			p = { '<cmd>PackerSync<cr>', 'Sync' },
@@ -99,8 +106,8 @@ local leader = {
 	},
 	l = {
 		name = 'LSP',
-		a = { ':LspSaga code_action<CR>', 'Code Action' },
-		r = { ':LspSaga rename<CR>', 'Rename Symbol' },
+		a = { ':Lspsaga code_action<CR>', 'Code Action' },
+		r = { ':Lspsaga rename<CR>', 'Rename Symbol' },
 		f = { ':Format<CR>', 'Format Document' },
 		x = { ':TroubleToggle<CR>', 'Trouble' },
 	},
