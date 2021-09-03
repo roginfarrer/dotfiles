@@ -29,28 +29,43 @@ local function on_attach(client)
 
 	require('lspsaga.diagnostic').show_cursor_diagnostics()
 
+	-- require('which-key').register({
+	-- 	-- gh = { ':LspSaga lsp_finder<CR>' },
+	-- 	-- gs = { ':LspSaga signature_help<CR>' },
+	-- 	-- gd = { ':LspSaga preview_definition<CR>' },
+	-- 	-- gD = { '<cmd> lua vim.lsp.buf.definition()<CR>' },
+	-- 	-- ['[g'] = { ':Lspsaga diagnostic_jump_prev<CR>' },
+	-- 	-- [']g'] = { ':Lspsaga diagnostic_jump_next<CR>' },
+	-- 	l = {
+	-- 		name = 'LSP',
+	-- 		a = { ':LspSaga code_action<CR>', 'Code Action' },
+	-- 		r = { ':LspSaga rename<CR>', 'Rename Symbol' },
+	-- 		f = { ':Format<CR>', 'Format Document' },
+	-- 	},
+	-- })
+
 	buf_nnoremap('<leader>gd', '<cmd> lua vim.lsp.buf.definition()<CR>')
 	buf_nnoremap('gh', ':Lspsaga lsp_finder<CR>')
 	buf_nnoremap('gs', ':Lspsaga signature_help<CR>')
 	buf_nnoremap('gd', ':Lspsaga preview_definition<CR>')
 	buf_nnoremap('[g', ':Lspsaga diagnostic_jump_prev<CR>')
 	buf_nnoremap(']g', ':Lspsaga diagnostic_jump_next<CR>')
-	buf_nnoremap('<leader>lr', ':Lspsaga rename<CR>')
+	-- buf_nnoremap('<leader>lr', ':Lspsaga rename<CR>')
 	buf_nnoremap('K', ':Lspsaga hover_doc<CR>')
 	buf_nnoremap(
-		'<C-F>',
+		'<C-f>',
 		"<cmd> lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>"
 	)
 	buf_nnoremap(
-		'<C-B>',
+		'<C-b>',
 		"<cmd> lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>"
 	)
-	buf_nnoremap('<leader>do', ':Lspsaga code_action<CR>')
-	u.vnoremap(
-		'<leader>do',
-		':<C-U>Lspsaga range_code_action<CR>',
-		{ buffer = true }
-	)
+	-- buf_nnoremap('<leader>do', ':Lspsaga code_action<CR>')
+	-- u.vnoremap(
+	-- 	'<leader>do',
+	-- 	':<C-U>Lspsaga range_code_action<CR>',
+	-- 	{ buffer = true }
+	-- )
 
 	if client.resolved_capabilities.document_formatting then
 		vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')

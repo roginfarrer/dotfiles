@@ -27,9 +27,9 @@ nmap('<C-k>', '<C-W>k')
 nmap('<C-h>', '<C-W>h')
 nmap('<C-l>', '<C-W>l')
 
-nmap('<leader>w', [[:w!<CR>]])
-nmap('<leader>q', [[:q<CR>]])
-nmap('<leader>x', [[:wq<CR>]])
+-- nmap('<leader>w', [[:w!<CR>]])
+-- nmap('<leader>q', [[:q<CR>]])
+-- nmap('<leader>x', [[:wq<CR>]])
 
 -- newline without insert
 nmap('<CR>', 'o<Esc>"_cc<Esc>')
@@ -46,7 +46,7 @@ nnoremap('<A-j>', [[:m .+1<CR>==]])
 vnoremap('<A-j>', [[:m '>+1<CR>gv=gv]])
 vnoremap('<A-k>', [[:m '<-2<CR>gv=gv]])
 
-nnoremap('<Space><Space>', ':e #<CR>')
+-- nnoremap('<Space><Space>', ':e #<CR>')
 
 nnoremap(
 	'<leader>yf',

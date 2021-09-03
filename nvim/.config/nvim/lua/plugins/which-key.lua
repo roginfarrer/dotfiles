@@ -16,27 +16,36 @@ local function searchDotfiles()
 end
 
 local leader = {
+	[' '] = { '<cmd>e #<cr>', 'Switch to Last Buffer' },
+	[';'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
+	q = { ':q<cr>', 'Quit' },
+	w = { ':w<CR>', 'Save' },
+	x = { ':wq<cr>', 'Save and Quit' },
+	p = 'which_key_ignore',
+	P = 'which_key_ignore',
+	y = 'which_key_ignore',
+	Y = 'which_key_ignore',
 	g = {
-		name = '+git',
+		name = 'Git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },
-		-- o = {
-		-- 	function()
-		-- 		gitOpenInBrowser('n')
-		-- 	end,
-		-- 	'open in browser',
-		-- },
-		-- c = {
-		-- 	function()
-		-- 		gitCopyToClipboard('n')
-		-- 	end,
-		-- 	'copy github url to clipboard',
-		-- },
-		b = { '<Cmd>Telescope git_branches<CR>', 'branches' },
-		s = { '<Cmd>Telescope git_status<CR>', 'status' },
+		o = {
+			':GitCopyToClipboard<CR>',
+			'open in browser',
+		},
+		c = {
+			':GitOpenInBrowser<CR>',
+			'copy github url to clipboard',
+		},
+		b = { '<Cmd>Telescope git_branches<CR>', 'Checkout Branch' },
+		s = { '<Cmd>Telescope git_status<CR>', 'Open changed file' },
+		C = {
+			'<cmd>Telescope git_bcommits<cr>',
+			'Checkout commit(for current file)',
+		},
 		d = { '<cmd>DiffviewOpen<cr>', 'DiffView' },
 	},
 	t = {
-		name = 'terminal/test',
+		name = 'Test',
 		n = { '<cmd>TestNearest<CR>', 'Test Nearest' },
 		f = { '<cmd>TestFile<CR>', 'Test File' },
 		s = { '<cmd>TestSuite<CR>', 'Test Suite' },
@@ -44,8 +53,22 @@ local leader = {
 		g = { '<cmd>TestVisit<CR>', 'Test Visit' },
 		e = { '<cmd>vs<CR>:terminal fish<CR>', 'New Terminal' },
 	},
+	d = {
+		name = 'Configuration',
+		d = { searchDotfiles, 'Search Dotfiles' },
+		n = { ':e ~/dotfiles/nvim/.config/nvim/pluginList', 'Open Neovim Config' },
+		k = { ':e ~/dotfiles/kitty/.config/kitty/kitty.conf', 'Open Kitty Config' },
+		f = { ':e ~/dotfiles/fish/.config/fish/config.fish', 'Open Fish Config' },
+		p = {
+			name = 'Plugins',
+			p = { '<cmd>PackerSync<cr>', 'Sync' },
+			s = { '<cmd>PackerStatus<cr>', 'Status' },
+			i = { '<cmd>PackerInstall<cr>', 'Install' },
+			c = { '<cmd>PackerCompile<cr>', 'Compile' },
+		},
+	},
 	f = {
-		name = 'find',
+		name = 'Find',
 		p = { '<cmd>Telescope git_files<CR>', 'Git Files' },
 		b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
 		['.'] = { '<cmd>Telescope find_files<CR>', 'All Files' },
@@ -56,18 +79,8 @@ local leader = {
 			'Live Grep',
 		},
 	},
-	-- x = {
-	-- 	name = 'errors',
-	-- 	x = { '<cmd>TroubleToggle<cr>', 'Trouble' },
-	-- 	w = { '<cmd>TroubleWorkspaceToggle<cr>', 'Workspace Trouble' },
-	-- 	d = { '<cmd>TroubleDocumentToggle<cr>', 'Document Trouble' },
-	-- 	t = { '<cmd>TodoTrouble<cr>', 'Todo Trouble' },
-	-- 	T = { '<cmd>TodoTelescope<cr>', 'Todo Telescope' },
-	-- 	l = { '<cmd>lopen<cr>', 'Open Location List' },
-	-- 	q = { '<cmd>copen<cr>', 'Open Quickfix List' },
-	-- },
 	['<tab>'] = {
-		name = 'workspace',
+		name = 'Workspace',
 		['<tab>'] = { '<cmd>tabnew<CR>', 'New Tab' },
 		n = { '<cmd>tabnext<CR>', 'Next' },
 		d = { '<cmd>tabclose<CR>', 'Close' },
@@ -78,7 +91,7 @@ local leader = {
 		l = { '<cmd>tablast<CR>', 'Last' },
 	},
 	h = {
-		name = 'help',
+		name = 'Help',
 		t = { '<cmd>:Telescope builtin<cr>', 'Telescope' },
 		c = { '<cmd>:Telescope commands<cr>', 'Commands' },
 		h = { '<cmd>:Telescope help_tags<cr>', 'Help Pages' },
@@ -92,21 +105,20 @@ local leader = {
 		f = { '<cmd>:Telescope filetypes<cr>', 'File Types' },
 		o = { '<cmd>:Telescope vim_options<cr>', 'Options' },
 		a = { '<cmd>:Telescope autocommands<cr>', 'Auto Commands' },
-		p = {
-			name = '+packer',
-			p = { '<cmd>PackerSync<cr>', 'Sync' },
-			s = { '<cmd>PackerStatus<cr>', 'Status' },
-			i = { '<cmd>PackerInstall<cr>', 'Install' },
-			c = { '<cmd>PackerCompile<cr>', 'Compile' },
-		},
 	},
-	[' '] = { '<cmd>e #<cr>', 'Switch to Last Buffer' },
-	[';'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
-	w = { '<cmd>w<CR>', 'Save' },
-	p = 'which_key_ignore',
-	P = 'which_key_ignore',
-	y = 'which_key_ignore',
-	Y = 'which_key_ignore',
+	l = {
+		name = 'LSP',
+		a = { ':LspSaga code_action<CR>', 'Code Action' },
+		r = { ':LspSaga rename<CR>', 'Rename Symbol' },
+		f = { ':Format<CR>', 'Format Document' },
+		x = { ':TroubleToggle<CR>', 'Trouble' },
+	},
+	s = {
+		name = 'Projects',
+		s = { ':SessionSave<CR>', 'Save Session' },
+		l = { ':SessionLoad<CR>', 'Load Session' },
+		p = { ':Telescope projects<CR>', 'Change Project' },
+	},
 }
 
 wk.register(leader, { prefix = '<leader>' })

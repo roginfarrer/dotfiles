@@ -24,10 +24,12 @@ require('telescope').setup({
 			buffers = {
 				ignore_current_buffer = true,
 				sort_mru = true,
-				-- selection_strategy = 'closest',
 			},
 		},
 	},
 })
--- require("telescope").load_extension("fzy_native")
+
+require('project_nvim').setup({})
 require('telescope').load_extension('fzf_writer')
+require('telescope').load_extension('fzf')
+require('telescope').load_extension('projects')

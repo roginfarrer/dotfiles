@@ -25,9 +25,9 @@ M.gitlinker = function()
 		command! -nargs=0 -range GitOpenInBrowser call v:lua.gitOpenInBrowser(<range>)
 	]])
 
-	u.nnoremap('<leader>gc', [[:GitCopyToClipboard<CR>]])
+	-- u.nnoremap('<leader>gc', [[:GitCopyToClipboard<CR>]])
 	u.vnoremap('<leader>gc', [[:'<,'>GitCopyToClipboard<CR>]])
-	u.nnoremap('<leader>go', [[:GitOpenInBrowser<CR>]])
+	-- u.nnoremap('<leader>go', [[:GitOpenInBrowser<CR>]])
 	u.vnoremap('<leader>go', [[:'<,'>GitOpenInBrowser<CR>]])
 end
 
@@ -45,7 +45,7 @@ M.test = function()
 end
 
 M.neogit = function()
-	u.nnoremap('<leader>gg', ':Neogit<CR>')
+	-- u.nnoremap('<leader>gg', ':Neogit<CR>')
 end
 
 M.telescope = function()
@@ -77,19 +77,19 @@ M.telescope = function()
 		}):find()
 	end
 
-	u.nnoremap('<Leader>fp', [[<cmd>Telescope git_files<CR>]])
-	u.nnoremap('<Leader>f.', [[<cmd>Telescope find_files<CR>]])
-	u.nnoremap(
-		'<Leader>fg',
-		"<cmd> lua require('telescope').extensions.fzf_writer.staged_grep()<CR>"
-	)
-	u.nnoremap('<leader>fb', [[<cmd>Telescope buffers<CR>]])
-	u.nnoremap('<leader>fd', searchDotfiles)
-	u.nnoremap('<leader>fa', arglist)
-	u.nnoremap('<Leader>fh', [[<cmd>Telescope oldfiles<CR>]])
+	-- u.nnoremap('<Leader>fp', [[<cmd>Telescope git_files<CR>]])
+	-- u.nnoremap('<Leader>f.', [[<cmd>Telescope find_files<CR>]])
+	-- u.nnoremap(
+	-- 	'<Leader>fg',
+	-- 	"<cmd> lua require('telescope').extensions.fzf_writer.staged_grep()<CR>"
+	-- )
+	-- u.nnoremap('<leader>fb', [[<cmd>Telescope buffers<CR>]])
+	-- u.nnoremap('<leader>fd', searchDotfiles)
+	-- u.nnoremap('<leader>fa', arglist)
+	-- u.nnoremap('<Leader>fh', [[<cmd>Telescope oldfiles<CR>]])
 
-	u.nnoremap('<C-p>', [[<cmd>Telescope git_files<CR>]])
-	u.nnoremap('<leader>;', [[<cmd>Telescope buffers<CR>]])
+	-- u.nnoremap('<C-p>', [[<cmd>Telescope git_files<CR>]])
+	-- u.nnoremap('<leader>;', [[<cmd>Telescope buffers<CR>]])
 end
 
 M.packer = function()
