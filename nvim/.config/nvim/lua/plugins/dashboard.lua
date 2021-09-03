@@ -4,6 +4,12 @@ vim.g.dashboard_default_executive = 'telescope'
 vim.g.dashboard_disable_statusline = 0
 
 vim.g.dashboard_custom_header = {
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
 	' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
 	' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
 	' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',

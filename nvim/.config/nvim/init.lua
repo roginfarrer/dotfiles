@@ -10,7 +10,3 @@ require('pluginList')
 require('settings')
 require('autocmds')
 require('keybindings')
-
-if vim.g.use_nvim_lsp then
-	require('plugins.lsp')
-end

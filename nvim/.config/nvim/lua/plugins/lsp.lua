@@ -28,6 +28,7 @@ local function on_attach(client)
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
 	require('lspsaga.diagnostic').show_cursor_diagnostics()
+	require('lspsaga.diagnostic').show_line_diagnostics()
 
 	-- require('which-key').register({
 	-- 	-- gh = { ':LspSaga lsp_finder<CR>' },
@@ -61,11 +62,11 @@ local function on_attach(client)
 		"<cmd> lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>"
 	)
 	-- buf_nnoremap('<leader>do', ':Lspsaga code_action<CR>')
-	-- u.vnoremap(
-	-- 	'<leader>do',
-	-- 	':<C-U>Lspsaga range_code_action<CR>',
-	-- 	{ buffer = true }
-	-- )
+	u.vnoremap(
+		'<leader>do',
+		':<C-U>Lspsaga range_code_action<CR>',
+		{ buffer = true }
+	)
 
 	if client.resolved_capabilities.document_formatting then
 		vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')

@@ -6,7 +6,7 @@ local u = require('utils')
 u.nnoremap('-', ':edit %:h<CR>')
 
 require('lir').setup({
-	show_hidden_files = false,
+	show_hidden_files = true,
 	devicons_enable = true,
 	mappings = {
 		['<CR>'] = actions.edit,

@@ -106,23 +106,19 @@ return packer.startup(function()
 		end,
 	})
 
-	use('machakann/vim-sandwich')
-
-	use('tpope/vim-commentary')
-	use('tpope/vim-sleuth')
-	use({ 'junegunn/goyo.vim', cmd = 'Goyo' })
-
 	use({
 		'windwp/nvim-autopairs',
-		event = 'InsertEnter',
-		config = function()
-			require('nvim-autopairs').setup({})
-		end,
+		after = 'nvim-cmp',
+    config = function() 
+
+      -- you need setup cmp first put this after cmp.setup()
+require("nvim-autopairs.completion.cmp").setup({
+  map_cr = true, --  map <CR> on insert mode
+  map_complete = true, -- it will auto insert `(` after select function or method item
+  auto_select = true -- automatically select the first item
+})
+    end
 	})
-
-	use('tpope/vim-abolish')
-
-	use({ 'dhruvasagar/vim-open-url', cmd = '<Plug>(open-url-browser)' })
 
 	use({
 		'vim-test/vim-test',
@@ -137,6 +133,7 @@ return packer.startup(function()
 
 	use({
 		'kassio/neoterm',
+		cmd = { 'T', 'Tnew' },
 		setup = function()
 			vim.g.neoterm_default_mod = 'vertical'
 			vim.g.neoterm_shell = 'fish'
@@ -152,7 +149,7 @@ return packer.startup(function()
 		-- end,
 		config = function()
 			require('plugins.telescope')
-			require('mappings').telescope()
+			-- require('mappings').telescope()
 		end,
 		requires = {
 			'nvim-lua/plenary.nvim',
@@ -185,14 +182,10 @@ return packer.startup(function()
 		end,
 	})
 
-	use('tpope/vim-eunuch')
-	use('duggiefresh/vim-easydir')
-	use('jesseleite/vim-agriculture')
 
 	use({
 		'ruifm/gitlinker.nvim',
 		requires = 'nvim-lua/plenary.nvim',
-		-- cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
 		config = function()
 			require('plugins.gitlinker')
 			require('mappings').gitlinker()
@@ -218,21 +211,20 @@ return packer.startup(function()
 		end,
 	})
 
-	use('whiteinge/diffconflicts')
-
 	use({
 		'lewis6991/gitsigns.nvim',
+		event = { 'BufRead', 'BufNewFile' },
 		requires = {
 			'nvim-lua/plenary.nvim',
 		},
 		config = function()
-			require('gitsigns').setup()
+			require('plugins.gitsigns')
 		end,
 	})
 
 	use({
 		'neoclide/coc.nvim',
-		event = 'BufRead',
+		event = { 'BufRead', 'BufNewFile' },
 		branch = 'release',
 		disable = use_nvim_lsp,
 		config = function()
@@ -242,6 +234,7 @@ return packer.startup(function()
 
 	use({
 		'kabouzeid/nvim-lspinstall',
+    opt = true,
 		disable = not use_nvim_lsp,
 		config = function()
 			require('lspinstall').setup()
@@ -250,7 +243,7 @@ return packer.startup(function()
 
 	use({
 		'onsails/lspkind-nvim',
-		event = 'BufEnter',
+		event = { 'BufRead', 'BufNewFile' },
 		disable = not use_nvim_lsp,
 		config = function()
 			require('lspkind').init({ preset = 'codicons' })
@@ -269,11 +262,16 @@ return packer.startup(function()
 
 	use({
 		'glepnir/lspsaga.nvim',
+    after = "nvim-lspconfig",
 		disable = not use_nvim_lsp,
 	})
 
 	use({
 		'neovim/nvim-lspconfig',
+		after = 'nvim-lspinstall',
+		config = function()
+			require('plugins.lsp')
+		end,
 	})
 
 	use({
@@ -307,16 +305,22 @@ return packer.startup(function()
 
 	use({
 		'hrsh7th/nvim-cmp',
+		event = 'InsertEnter',
 		requires = {
 			'hrsh7th/cmp-nvim-lsp',
 			'hrsh7th/cmp-nvim-lua',
 			'hrsh7th/cmp-buffer',
-			'hrsh7th/cmp-path',
+			-- 'hrsh7th/cmp-path',
 		},
 		config = function()
 			require('plugins.cmp')
 		end,
 	})
+
+	use({'hrsh7th/cmp-nvim-lsp', after = "nvim-cmp"})
+	use({'hrsh7th/cmp-nvim-lua', after = "nvim-cmp"})
+	use({'hrsh7th/cmp-buffer', after = "nvim-cmp"})
+	-- use('hrsh7th/cmp-path')
 
 	use({
 		'voldikss/vim-floaterm',
@@ -344,11 +348,9 @@ return packer.startup(function()
 		end,
 	})
 
-	use('ryanoasis/vim-devicons')
-
 	use({
 		'norcalli/nvim-colorizer.lua',
-		event = 'BufRead',
+		event = { 'BufRead', 'BufNewFile' },
 		config = function()
 			require('colorizer').setup()
 		end,
@@ -362,17 +364,20 @@ return packer.startup(function()
 		end,
 	})
 
-	use({ 'jxnblk/vim-mdx-js', event = 'BufRead' })
+	use({ 'jxnblk/vim-mdx-js', event = { 'BufRead', 'BufNewFile' } })
 
 	use({
 		'tpope/vim-markdown',
-		event = 'BufRead',
+		event = { 'BufRead', 'BufNewFile' },
 		config = function()
 			require('plugins.polyglot')
 		end,
 	})
 
-	use({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'BufRead' })
+	use({
+		'JoosepAlviste/nvim-ts-context-commentstring',
+		event = { 'BufRead', 'BufNewFile' },
+	})
 
 	-- Colors
 	-- use('Rigellute/rigel')
@@ -398,15 +403,6 @@ return packer.startup(function()
 	-- 		require('theme')
 	-- 	end,
 	-- })
-
-	use({
-		'mhartington/formatter.nvim',
-		-- event = "BufRead",
-		disable = true,
-		config = function()
-			require('plugins.format')
-		end,
-	})
 
 	use({
 		'windwp/nvim-spectre',
@@ -435,4 +431,13 @@ return packer.startup(function()
 			require('plugins.which-key')
 		end,
 	})
+
+	use('tpope/vim-eunuch')
+	use('duggiefresh/vim-easydir')
+	use('jesseleite/vim-agriculture')
+	use('machakann/vim-sandwich')
+	use('tpope/vim-commentary')
+	use('tpope/vim-abolish')
+	use({ 'dhruvasagar/vim-open-url', cmd = '<Plug>(open-url-browser)' })
+	use('whiteinge/diffconflicts')
 end)

@@ -28,14 +28,8 @@ local leader = {
 	g = {
 		name = 'Git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },
-		o = {
-			':GitCopyToClipboard<CR>',
-			'open in browser',
-		},
-		c = {
-			':GitOpenInBrowser<CR>',
-			'copy github url to clipboard',
-		},
+		o = { ':GitCopyToClipboard<CR>', 'open in browser' },
+		c = { ':GitOpenInBrowser<CR>', 'copy github url to clipboard' },
 		b = { '<Cmd>Telescope git_branches<CR>', 'Checkout Branch' },
 		s = { '<Cmd>Telescope git_status<CR>', 'Open changed file' },
 		C = {
@@ -74,10 +68,7 @@ local leader = {
 		['.'] = { '<cmd>Telescope find_files<CR>', 'All Files' },
 		d = { searchDotfiles, 'Dotfiles' },
 		h = { '<cmd>Telescope oldfiles<CR>', 'Old Files' },
-		g = {
-			'<cmd> lua require("telescope").extensions.fzf_writer.staged_grep()<CR>',
-			'Live Grep',
-		},
+		g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
 	},
 	['<tab>'] = {
 		name = 'Workspace',
