@@ -30,21 +30,6 @@ local function on_attach(client)
 	require('lspsaga.diagnostic').show_cursor_diagnostics()
 	require('lspsaga.diagnostic').show_line_diagnostics()
 
-	-- require('which-key').register({
-	-- 	-- gh = { ':LspSaga lsp_finder<CR>' },
-	-- 	-- gs = { ':LspSaga signature_help<CR>' },
-	-- 	-- gd = { ':LspSaga preview_definition<CR>' },
-	-- 	-- gD = { '<cmd> lua vim.lsp.buf.definition()<CR>' },
-	-- 	-- ['[g'] = { ':Lspsaga diagnostic_jump_prev<CR>' },
-	-- 	-- [']g'] = { ':Lspsaga diagnostic_jump_next<CR>' },
-	-- 	l = {
-	-- 		name = 'LSP',
-	-- 		a = { ':LspSaga code_action<CR>', 'Code Action' },
-	-- 		r = { ':LspSaga rename<CR>', 'Rename Symbol' },
-	-- 		f = { ':Format<CR>', 'Format Document' },
-	-- 	},
-	-- })
-
 	buf_nnoremap('<leader>gd', '<cmd> lua vim.lsp.buf.definition()<CR>')
 	buf_nnoremap('gh', ':Lspsaga lsp_finder<CR>')
 	buf_nnoremap('gs', ':Lspsaga signature_help<CR>')
@@ -132,11 +117,17 @@ local function setup_servers()
 						update_imports_on_move = true,
 						-- eslint
 						eslint_bin = 'eslint_d',
-						eslint_enable_diagnostics = true,
-						eslint_show_rule_id = true,
-						eslint_disable_if_no_config = true,
+						eslint_opts = {
+							condition = function(utils)
+								return utils.root_has_file('.eslintrc.js')
+									or utils.root_has_file('.eslintrc')
+									or utils.root_has_file('.eslintrc.json')
+							end,
+							diagnostics_format = '#{m} [#{c}]',
+						},
 						-- formatting
 						formatter = 'prettierd',
+						-- Currently handled by null-ls directly
 						enable_formatting = false,
 					})
 					ts_utils.setup_client(client)

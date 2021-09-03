@@ -109,15 +109,9 @@ return packer.startup(function()
 	use({
 		'windwp/nvim-autopairs',
 		after = 'nvim-cmp',
-    config = function() 
-
-      -- you need setup cmp first put this after cmp.setup()
-require("nvim-autopairs.completion.cmp").setup({
-  map_cr = true, --  map <CR> on insert mode
-  map_complete = true, -- it will auto insert `(` after select function or method item
-  auto_select = true -- automatically select the first item
-})
-    end
+		config = function()
+			require('plugins.autopairs')
+		end,
 	})
 
 	use({
@@ -172,6 +166,7 @@ require("nvim-autopairs.completion.cmp").setup({
 
 	use({
 		'tamago324/lir.nvim',
+		event = { 'BufRead', 'BufNewFile' },
 		requires = {
 			'nvim-lua/plenary.nvim',
 			'kyazdani42/nvim-web-devicons',
@@ -181,7 +176,6 @@ require("nvim-autopairs.completion.cmp").setup({
 			require('plugins.lir')
 		end,
 	})
-
 
 	use({
 		'ruifm/gitlinker.nvim',
@@ -197,7 +191,10 @@ require("nvim-autopairs.completion.cmp").setup({
 		cmd = 'Neogit',
 		requires = {
 			'nvim-lua/plenary.nvim',
-			'sindrets/diffview.nvim',
+			{
+				'sindrets/diffview.nvim',
+				cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+			},
 		},
 		setup = function()
 			require('mappings').neogit()
@@ -233,15 +230,6 @@ require("nvim-autopairs.completion.cmp").setup({
 	})
 
 	use({
-		'kabouzeid/nvim-lspinstall',
-    opt = true,
-		disable = not use_nvim_lsp,
-		config = function()
-			require('lspinstall').setup()
-		end,
-	})
-
-	use({
 		'onsails/lspkind-nvim',
 		event = { 'BufRead', 'BufNewFile' },
 		disable = not use_nvim_lsp,
@@ -262,16 +250,15 @@ require("nvim-autopairs.completion.cmp").setup({
 
 	use({
 		'glepnir/lspsaga.nvim',
-    after = "nvim-lspconfig",
 		disable = not use_nvim_lsp,
 	})
 
 	use({
 		'neovim/nvim-lspconfig',
-		after = 'nvim-lspinstall',
 		config = function()
 			require('plugins.lsp')
 		end,
+		requires = { 'kabouzeid/nvim-lspinstall', 'hrsh7th/cmp-nvim-lsp' },
 	})
 
 	use({
@@ -307,20 +294,14 @@ require("nvim-autopairs.completion.cmp").setup({
 		'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
 		requires = {
-			'hrsh7th/cmp-nvim-lsp',
-			'hrsh7th/cmp-nvim-lua',
-			'hrsh7th/cmp-buffer',
-			-- 'hrsh7th/cmp-path',
+			-- { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+			{ 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
+			{ 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
 		},
 		config = function()
 			require('plugins.cmp')
 		end,
 	})
-
-	use({'hrsh7th/cmp-nvim-lsp', after = "nvim-cmp"})
-	use({'hrsh7th/cmp-nvim-lua', after = "nvim-cmp"})
-	use({'hrsh7th/cmp-buffer', after = "nvim-cmp"})
-	-- use('hrsh7th/cmp-path')
 
 	use({
 		'voldikss/vim-floaterm',
@@ -397,12 +378,12 @@ require("nvim-autopairs.completion.cmp").setup({
 	-- use({ 'lighthaus-theme/vim-lighthaus' })
 	-- use('shaunsingh/moonlight.nvim')
 	use({ 'siduck76/nvim-base16.lua' })
-	-- use({
-	-- 	'EdenEast/nightfox.nvim',
-	-- 	config = function()
-	-- 		require('theme')
-	-- 	end,
-	-- })
+	use({
+		'EdenEast/nightfox.nvim',
+		config = function()
+			require('theme')
+		end,
+	})
 
 	use({
 		'windwp/nvim-spectre',
@@ -432,12 +413,12 @@ require("nvim-autopairs.completion.cmp").setup({
 		end,
 	})
 
-	use('tpope/vim-eunuch')
-	use('duggiefresh/vim-easydir')
-	use('jesseleite/vim-agriculture')
-	use('machakann/vim-sandwich')
-	use('tpope/vim-commentary')
-	use('tpope/vim-abolish')
+	use({ 'tpope/vim-eunuch', event = { 'BufRead', 'BufNewFile' } })
+	use({ 'duggiefresh/vim-easydir', event = { 'BufRead', 'BufNewFile' } })
+	use({ 'jesseleite/vim-agriculture', event = { 'BufRead', 'BufNewFile' } })
+	use({ 'machakann/vim-sandwich', event = { 'BufRead', 'BufNewFile' } })
+	use({ 'tpope/vim-commentary', event = { 'BufRead', 'BufNewFile' } })
+	use({ 'tpope/vim-abolish', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'dhruvasagar/vim-open-url', cmd = '<Plug>(open-url-browser)' })
-	use('whiteinge/diffconflicts')
+	use({ 'whiteinge/diffconflicts', cmd = 'DiffConflicts' })
 end)

@@ -6,4 +6,8 @@ vim.g.tokyonight_italic_functions = true
 
 vim.g.nord_contrast = true
 vim.g.nord_italic = true
-require('nord').set()
+-- require('nord').set()
+
+local nightfox = require('nightfox')
+nightfox.setup({ fox = 'nordfox' })
+nightfox.load()

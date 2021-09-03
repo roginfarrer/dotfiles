@@ -32,6 +32,9 @@ require('nvim-treesitter.configs').setup({
 			node_decremental = 'grm',
 		},
 	},
+	autopairs = {
+		enable = true,
+	},
 	textobjects = {
 		select = {
 			enable = true,
