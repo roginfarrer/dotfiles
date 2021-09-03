@@ -8,28 +8,6 @@ wk.setup({
 	key_labels = { ['<leader>'] = 'SPC' },
 })
 
--- function _G.gitCopyToClipboard(range)
--- 	local mode = range > 0 and 'v' or 'n'
--- 	require('gitlinker').get_buf_range_url(
--- 		mode,
--- 		{ action_callback = require('gitlinker.actions').copy_to_clipboard }
--- 	)
--- end
--- function _G.gitOpenInBrowser(range)
--- 	local mode = range > 0 and 'v' or 'n'
--- 	require('gitlinker').get_buf_range_url(
--- 		mode,
--- 		{ action_callback = require('gitlinker.actions').open_in_browser }
--- 	)
--- end
-
--- vim.cmd([[
--- 		command! -nargs=0 -range GitCopyToClipboard call v:lua.gitCopyToClipboard(<range>)
--- 	]])
--- vim.cmd([[
--- 		command! -nargs=0 -range GitOpenInBrowser call v:lua.gitOpenInBrowser(<range>)
--- 	]])
-
 local function searchDotfiles()
 	require('telescope.builtin').git_files({
 		cwd = '~/dotfiles',
@@ -78,13 +56,6 @@ local leader = {
 			'Live Grep',
 		},
 	},
-	-- q = {
-	-- 	name = 'quit/session',
-	-- 	q = { '<cmd>:q<cr>', 'Close Buffer' },
-	-- 	a = { '<cmd>:qa<cr>', 'Quit' },
-	-- 	x = { '<cmd>:x<cr>', 'Save and Quit' },
-	-- 	['!'] = { '<cmd>:qa!<cr>', 'Quit without saving' },
-	-- },
 	-- x = {
 	-- 	name = 'errors',
 	-- 	x = { '<cmd>TroubleToggle<cr>', 'Trouble' },
@@ -98,7 +69,6 @@ local leader = {
 	['<tab>'] = {
 		name = 'workspace',
 		['<tab>'] = { '<cmd>tabnew<CR>', 'New Tab' },
-
 		n = { '<cmd>tabnext<CR>', 'Next' },
 		d = { '<cmd>tabclose<CR>', 'Close' },
 		p = { '<cmd>tabprevious<CR>', 'Previous' },
