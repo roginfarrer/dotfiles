@@ -36,3 +36,5 @@ eval "$(fnm env)"
 
 
 export NNN_PLUG='f:fzcd;o:fzopen;'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
