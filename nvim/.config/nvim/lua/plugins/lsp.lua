@@ -26,23 +26,6 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 
 local capabilities = lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-	properties = {
-		'documentation',
-		'detail',
-		'additionalTextEdits',
-	},
-}
-
--- _G makes this function available to vimscript lua calls
-_G.lsp_organize_imports = function()
-	local params = {
-		command = '_typescript.organizeImports',
-		arguments = { vim.api.nvim_buf_get_name(0) },
-		title = '',
-	}
-	lsp.buf.execute_command(params)
-end
 
 local function on_attach(client)
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
@@ -51,7 +34,6 @@ local function on_attach(client)
 	require('lspsaga.diagnostic').show_line_diagnostics()
 
 	cmd([[command! LspGoToDefinition lua vim.lsp.buf.definition()]])
-	cmd([[command! LspOrganize lua lsp_organize_imports()]])
 	cmd([[command! Format lua vim.lsp.buf.formatting()]])
 	cmd([[command! FormatSync lua vim.lsp.buf.formatting_sync()]])
 
@@ -62,6 +44,9 @@ local function on_attach(client)
 			r = { ':Lspsaga rename<CR>', 'Rename Symbol' },
 			f = { ':Format<CR>', 'Format Document' },
 			x = { ':TroubleToggle<CR>', 'Trouble' },
+			o = { ':TSLspOrganize', '(TS) Organize Imports' },
+			i = { ':TSLspImportAll', '(TS) Import Missing Imports' },
+			R = { ':TSLspRenameFile', '(TS) Rename File' },
 		},
 	}
 
@@ -89,11 +74,6 @@ local function on_attach(client)
 	-- buf_nnoremap(
 	-- 	'<C-b>',
 	-- 	"<cmd> lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>"
-	-- )
-	-- u.vnoremap(
-	-- 	'<leader>do',
-	-- 	':<C-U>Lspsaga range_code_action<CR>',
-	-- 	{ buffer = true }
 	-- )
 
 	if client.resolved_capabilities.document_formatting then

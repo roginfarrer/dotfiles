@@ -263,6 +263,7 @@ return packer.startup(function()
 
 	use({
 		'jose-elias-alvarez/nvim-lsp-ts-utils',
+		requires = { 'null-ls.nvim' },
 		disable = not use_nvim_lsp,
 	})
 
@@ -418,6 +419,13 @@ return packer.startup(function()
 		'akinsho/toggleterm.nvim',
 		config = function()
 			require('plugins.toggleterm')
+		end,
+	})
+
+	use({
+		'karb94/neoscroll.nvim',
+		config = function()
+			require('neoscroll').setup()
 		end,
 	})
 
