@@ -46,7 +46,7 @@ nnoremap('<A-j>', [[:m .+1<CR>==]])
 vnoremap('<A-j>', [[:m '>+1<CR>gv=gv]])
 vnoremap('<A-k>', [[:m '<-2<CR>gv=gv]])
 
--- nnoremap('<Space><Space>', ':e #<CR>')
+nnoremap('<tab>', 'za')
 
 nnoremap(
 	'<leader>yf',
