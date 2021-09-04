@@ -304,16 +304,16 @@ return packer.startup(function()
 		end,
 	})
 
-	use({
-		'voldikss/vim-floaterm',
-		cmd = { 'FloatermToggle', 'FloatTermNew' },
-		config = function()
-			vim.g.floaterm_shell = 'fish'
-		end,
-		setup = function()
-			require('mappings').floatterm()
-		end,
-	})
+	-- use({
+	-- 	'voldikss/vim-floaterm',
+	-- 	cmd = { 'FloatermToggle', 'FloatTermNew' },
+	-- 	config = function()
+	-- 		vim.g.floaterm_shell = 'fish'
+	-- 	end,
+	-- 	setup = function()
+	-- 		require('mappings').floatterm()
+	-- 	end,
+	-- })
 
 	use({
 		'kyazdani42/nvim-web-devicons',
@@ -411,6 +411,13 @@ return packer.startup(function()
 		'folke/which-key.nvim',
 		config = function()
 			require('plugins.which-key')
+		end,
+	})
+
+	use({
+		'akinsho/toggleterm.nvim',
+		config = function()
+			require('plugins.toggleterm')
 		end,
 	})
 

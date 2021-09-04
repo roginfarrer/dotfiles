@@ -9,3 +9,10 @@ autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="Substitute", t
 autocmd TermOpen * startinsert
 
 autocmd TermOpen * setlocal listchars= nonumber 
+
+augroup test
+  autocmd!
+  autocmd BufWrite * if test#exists() |
+    \   TestFile |
+    \ endif
+augroup END
