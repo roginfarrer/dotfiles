@@ -7,6 +7,4 @@ _G.global = {}
 pcall(require, 'local-config')
 
 require('pluginList')
-require('settings')
-require('autocmds')
 require('keybindings')

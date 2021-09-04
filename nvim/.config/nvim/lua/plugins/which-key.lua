@@ -104,13 +104,13 @@ local leader = {
 		o = { '<cmd>:Telescope vim_options<cr>', 'Options' },
 		a = { '<cmd>:Telescope autocommands<cr>', 'Auto Commands' },
 	},
-	l = {
-		name = 'LSP',
-		a = { ':Lspsaga code_action<CR>', 'Code Action' },
-		r = { ':Lspsaga rename<CR>', 'Rename Symbol' },
-		f = { ':Format<CR>', 'Format Document' },
-		x = { ':TroubleToggle<CR>', 'Trouble' },
-	},
+	-- l = {
+	-- 	name = 'LSP',
+	-- 	a = { ':Lspsaga code_action<CR>', 'Code Action' },
+	-- 	r = { ':Lspsaga rename<CR>', 'Rename Symbol' },
+	-- 	f = { ':Format<CR>', 'Format Document' },
+	-- 	x = { ':TroubleToggle<CR>', 'Trouble' },
+	-- },
 	s = {
 		name = 'Projects',
 		s = { ':SessionSave<CR>', 'Save Session' },
@@ -120,3 +120,13 @@ local leader = {
 }
 
 wk.register(leader, { prefix = '<leader>' })
+
+local visual = {
+	g = {
+		name = 'Git',
+		c = { [[:'<,'>GitCopyToClipboard<CR>]], 'Copy GitHub URL to Clipboard' },
+		o = { [[:'<,'>GitOpenInBrowser<CR>]], 'Open In Browser' },
+	},
+}
+
+wk.register(visual, { prefix = '<leader>', mode = 'v' })

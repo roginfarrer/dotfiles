@@ -33,9 +33,6 @@ end
 vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
 
 return packer.init({
-	git = {
-		clone_timeout = 600, -- Timeout, in seconds, for git clones
-	},
 	auto_clean = true,
 	compile_on_sync = true,
 })

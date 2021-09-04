@@ -6,13 +6,10 @@ tap "homebrew/core"
 brew "antibody"
 brew "bash"
 brew "bat"
+brew "python"
 brew "python@3.9"
-brew "glib"
 brew "cask"
-brew "curl"
-brew "dotnet"
 brew "node"
-brew "emscripten"
 brew "exa"
 brew "fd"
 brew "fish"
@@ -24,6 +21,7 @@ brew "git-delta"
 brew "git-lfs"
 brew "git-recent"
 brew "gnu-sed"
+brew "lazygit"
 brew "luajit", args: ["HEAD"]
 brew "luarocks"
 brew "mas"
@@ -35,8 +33,13 @@ brew "starship"
 brew "stow"
 brew "thefuck"
 brew "trash"
+brew "vim"
 brew "yarn"
 brew "zsh"
+
+# Fonts
+cask "font-fira-code"
+cask "font-jetbrains-mono"
 
 cask "1password"
 cask "alfred"
@@ -58,3 +61,4 @@ mas "Deliveries: a package tracker", id: 290986013
 mas "Todoist: To-Do List & Tasks", id: 585829637
 mas "ToothFairy", id: 1191449274
 mas "WhatsApp", id: 1147396723
+mas "Xcode", id: 497799835

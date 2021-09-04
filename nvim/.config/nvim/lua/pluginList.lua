@@ -1,3 +1,10 @@
+-- If your Neovim install doesn't include mpack, e.g. if installed via
+-- Homebrew, then you need to also install mpack from luarocks.
+-- There is an existing issue with luarocks on macOS where `luarocks install` is using a different version of lua.
+-- @see: https://github.com/wbthomason/packer.nvim/issues/180
+-- Make sure to add this on top of your plugins.lua to resolve this
+vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
+
 local use_nvim_lsp = vim.g.use_nvim_lsp == true
 
 local present, _ = pcall(require, 'packerInit')
@@ -14,14 +21,13 @@ local use = packer.use
 return packer.startup(function()
 	use({
 		'wbthomason/packer.nvim',
-		opt = true,
 		setup = function()
 			require('mappings').packer()
 		end,
 	})
 	use({
 		'lewis6991/impatient.nvim',
-		-- rocks = 'mpack',
+		rocks = 'mpack',
 		after = 'packer.nvim',
 		config = function()
 			require('impatient')
@@ -64,7 +70,6 @@ return packer.startup(function()
 	use({
 		'nvim-treesitter/nvim-treesitter',
 		run = ':TSUpdate',
-		event = 'BufRead',
 		config = function()
 			require('plugins.treesitter')
 		end,
@@ -106,6 +111,8 @@ return packer.startup(function()
 		end,
 	})
 
+	-- use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
+
 	use({
 		'windwp/nvim-autopairs',
 		after = 'nvim-cmp',
@@ -134,24 +141,12 @@ return packer.startup(function()
 		end,
 	})
 
-	-- use({
-	-- 	'kassio/neoterm',
-	-- 	setup = function()
-	-- 		vim.g.neoterm_default_mod = 'vertical'
-	-- 		vim.g.neoterm_shell = 'fish'
-	-- 	end,
-	-- })
-
 	use({ 'wellle/targets.vim', event = 'BufEnter' })
 
 	use({
 		'nvim-telescope/telescope.nvim',
-		-- setup = function()
-		-- 	require('mappings').telescope()
-		-- end,
 		config = function()
 			require('plugins.telescope')
-			-- require('mappings').telescope()
 		end,
 		requires = {
 			'nvim-lua/plenary.nvim',
@@ -204,9 +199,6 @@ return packer.startup(function()
 				cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
 			},
 		},
-		setup = function()
-			require('mappings').neogit()
-		end,
 		config = function()
 			require('neogit').setup({
 				integrations = {
@@ -300,7 +292,7 @@ return packer.startup(function()
 
 	use({
 		'hrsh7th/nvim-cmp',
-		event = 'InsertEnter',
+		-- event = 'InsertEnter',
 		requires = {
 			-- { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
 			{ 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
