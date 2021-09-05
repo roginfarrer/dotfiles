@@ -65,7 +65,7 @@ local function on_attach(client)
 	buf_nnoremap('gh', ':Lspsaga lsp_finder<CR>')
 	buf_nnoremap('gs', ':Lspsaga signature_help<CR>')
 	buf_nnoremap('[g', ':Lspsaga diagnostic_jump_prev<CR>')
-	buf_nnoremap(']g', ':Lspsaga diagnostic_jump_prev<CR>')
+	buf_nnoremap(']g', ':Lspsaga diagnostic_jump_next<CR>')
 	buf_nnoremap('K', ':Lspsaga hover_doc<CR>')
 	-- buf_nnoremap(
 	-- 	'<C-f>',
