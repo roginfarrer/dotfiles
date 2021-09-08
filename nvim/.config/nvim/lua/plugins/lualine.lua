@@ -37,10 +37,11 @@ require('lualine').setup({
 		lualine_b = {
 			'branch',
 			'diff',
-			{ 'diagnostics', sources = { 'nvim_lsp', 'coc' } },
 		},
 		lualine_c = { 'filename' },
-		lualine_x = { lsp_progress },
+		-- lualine_x = { function() return require('lsp-status').status() end },
+
+		lualine_x = { 'diagnostics', sources = { 'nvim_lsp', 'coc' } },
 		lualine_y = { 'filetype' },
 		lualine_z = { 'progress' },
 	},

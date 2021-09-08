@@ -75,10 +75,10 @@ return packer.startup(function()
 		end,
 	})
 
-	use({
-		'nvim-treesitter/nvim-treesitter-textobjects',
-		after = 'nvim-treesitter',
-	})
+	-- use({
+	-- 	'nvim-treesitter/nvim-treesitter-textobjects',
+	-- 	after = 'nvim-treesitter',
+	-- })
 
 	use({
 		'David-Kunz/treesitter-unit',
@@ -111,11 +111,9 @@ return packer.startup(function()
 		end,
 	})
 
-	-- use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
-
 	use({
 		'windwp/nvim-autopairs',
-		after = 'nvim-cmp',
+		-- after = 'nvim-cmp',
 		config = function()
 			require('plugins.autopairs')
 		end,
@@ -248,17 +246,22 @@ return packer.startup(function()
 		end,
 	})
 
-	use({
-		'glepnir/lspsaga.nvim',
-		disable = not use_nvim_lsp,
-	})
+  use({'nvim-lua/lsp-status.nvim', disable = not use_nvim_lsp})
+
+	-- use({
+	-- 	'glepnir/lspsaga.nvim',
+	-- 	disable = not use_nvim_lsp,
+	-- })
 
 	use({
 		'neovim/nvim-lspconfig',
 		config = function()
 			require('plugins.lsp')
 		end,
-		requires = { 'kabouzeid/nvim-lspinstall', 'hrsh7th/cmp-nvim-lsp' },
+		requires = {
+			'kabouzeid/nvim-lspinstall',
+			-- 'hrsh7th/cmp-nvim-lsp'
+		},
 	})
 
 	use({
@@ -280,22 +283,21 @@ return packer.startup(function()
 	use({
 		'ms-jpq/coq_nvim',
 		branch = 'coq',
-		disable = true,
+		-- disable = true,
 		requires = {
 			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
 		},
 		setup = function()
-			vim.g.coq_settings = {
-				auto_start = true,
-			}
+			require('plugins.coq')
 		end,
 	})
 
 	use({
 		'hrsh7th/nvim-cmp',
+		disable = true,
 		-- event = 'InsertEnter',
 		requires = {
-			-- { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
 			{ 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
 			{ 'hrsh7th/cmp-path', after = 'nvim-cmp' },
@@ -304,17 +306,6 @@ return packer.startup(function()
 			require('plugins.cmp')
 		end,
 	})
-
-	-- use({
-	-- 	'voldikss/vim-floaterm',
-	-- 	cmd = { 'FloatermToggle', 'FloatTermNew' },
-	-- 	config = function()
-	-- 		vim.g.floaterm_shell = 'fish'
-	-- 	end,
-	-- 	setup = function()
-	-- 		require('mappings').floatterm()
-	-- 	end,
-	-- })
 
 	use({
 		'kyazdani42/nvim-web-devicons',

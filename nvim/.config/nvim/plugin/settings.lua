@@ -29,6 +29,14 @@ vim.o.timeoutlen = 500
 
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 
+-- https://github.com/mhinz/neovim-remote
+if vim.fn.executable('nvr') then
+	vim.cmd([[ let $GIT_EDITOR = 'nvr -cc split --remote-wait' ]])
+	vim.cmd(
+		[[autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete]]
+	)
+end
+
 vim.g.mapleader = ' '
 
 local disabled_built_ins = {
