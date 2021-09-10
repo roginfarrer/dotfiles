@@ -1,5 +1,5 @@
 -- Some handy toggles for trying to setups
-vim.g.use_nvim_lsp = true
+vim.g.use_nvim_lsp = false
 
 _G.global = {}
 
@@ -7,4 +7,3 @@ _G.global = {}
 pcall(require, 'local-config')
 
 require('pluginList')
-require('keybindings')

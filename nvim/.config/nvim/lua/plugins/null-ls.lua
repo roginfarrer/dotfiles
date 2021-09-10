@@ -1,6 +1,6 @@
 local null_ls = require('null-ls')
 local b = null_ls.builtins
-local vimp = require('vimp')
+local cmd = vim.cmd
 
 null_ls.config({
 	sources = {
@@ -30,10 +30,9 @@ null_ls.config({
 require('lspconfig')['null-ls'].setup({
 	on_attach = function(client)
 		if client.resolved_capabilities.document_formatting then
-			vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
-			vimp.map_command('Format', function()
-				vim.lsp.buf.formatting()
-			end)
+			cmd('command! Format lua vim.lsp.buf.formatting()')
+			cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
+			cmd('autocmd BufWritePre <buffer> FormatSync')
 		end
 	end,
 })

@@ -35,6 +35,101 @@ return packer.startup(function()
 	})
 
 	use({
+		'neovim/nvim-lspconfig',
+		config = function()
+			if use_nvim_lsp then
+				require('plugins.lsp')
+			end
+		end,
+		requires = {
+			'kabouzeid/nvim-lspinstall',
+			-- 'hrsh7th/cmp-nvim-lsp'
+		},
+	})
+
+	use({
+		'neoclide/coc.nvim',
+		-- event = {"BufRead", "BufNewFile"},
+		branch = 'release',
+		disable = use_nvim_lsp,
+		config = function()
+			require('plugins.coc')
+		end,
+	})
+
+	use({
+		'jose-elias-alvarez/null-ls.nvim',
+		requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+		config = function()
+			if not use_nvim_lsp then
+				require('plugins.null-ls')
+			end
+		end,
+	})
+
+	---
+	-- LSP
+	---
+
+	use({
+		'onsails/lspkind-nvim',
+		event = { 'BufRead', 'BufNewFile' },
+		disable = not use_nvim_lsp,
+		config = function()
+			require('lspkind').init({ preset = 'codicons' })
+		end,
+	})
+
+	use({
+		'folke/trouble.nvim',
+		requires = 'kyazdani42/nvim-web-devicons',
+		disable = not use_nvim_lsp,
+		cmd = { 'Trouble', 'TroubleToggle' },
+		config = function()
+			require('trouble').setup({})
+		end,
+	})
+
+	use({
+		'jose-elias-alvarez/nvim-lsp-ts-utils',
+		requires = { 'null-ls.nvim' },
+		disable = not use_nvim_lsp,
+	})
+
+	use({
+		'ms-jpq/coq_nvim',
+		branch = 'coq',
+		disable = not use_nvim_lsp,
+		requires = {
+			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
+		},
+		setup = function()
+			require('plugins.coq')
+		end,
+	})
+
+	use({
+		'hrsh7th/nvim-cmp',
+		disable = true,
+		-- event = 'InsertEnter',
+		requires = {
+			{ 'hrsh7th/cmp-nvim-lsp' },
+			{ 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
+			{ 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+			{ 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+		},
+		config = function()
+			require('plugins.cmp')
+		end,
+	})
+
+	use({ 'nvim-lua/lsp-status.nvim', disable = not use_nvim_lsp })
+
+	---
+	-- End LSP
+	---
+
+	use({
 		'vuki656/package-info.nvim',
 		event = 'BufRead',
 		config = function()
@@ -122,15 +217,15 @@ return packer.startup(function()
 	use({
 		'vim-test/vim-test',
 		cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
-		requires = {
-			{
-				'kassio/neoterm',
-				setup = function()
-					vim.g.neoterm_default_mod = 'vertical'
-					vim.g.neoterm_shell = 'fish'
-				end,
-			},
-		},
+		-- requires = {
+		-- 	{
+		-- 		'kassio/neoterm',
+		-- 		setup = function()
+		-- 			vim.g.neoterm_default_mod = 'vertical'
+		-- 			vim.g.neoterm_shell = 'fish'
+		-- 		end,
+		-- 	},
+		-- },
 		config = function()
 			require('plugins.vim-test')
 		end,
@@ -214,96 +309,6 @@ return packer.startup(function()
 		},
 		config = function()
 			require('plugins.gitsigns')
-		end,
-	})
-
-	use({
-		'neoclide/coc.nvim',
-		event = { 'BufRead', 'BufNewFile' },
-		branch = 'release',
-		disable = use_nvim_lsp,
-		config = function()
-			require('plugins.coc')
-		end,
-	})
-
-	use({
-		'onsails/lspkind-nvim',
-		event = { 'BufRead', 'BufNewFile' },
-		disable = not use_nvim_lsp,
-		config = function()
-			require('lspkind').init({ preset = 'codicons' })
-		end,
-	})
-
-	use({
-		'folke/trouble.nvim',
-		requires = 'kyazdani42/nvim-web-devicons',
-		disable = not use_nvim_lsp,
-		cmd = { 'Trouble', 'TroubleToggle' },
-		config = function()
-			require('trouble').setup({})
-		end,
-	})
-
-  use({'nvim-lua/lsp-status.nvim', disable = not use_nvim_lsp})
-
-	-- use({
-	-- 	'glepnir/lspsaga.nvim',
-	-- 	disable = not use_nvim_lsp,
-	-- })
-
-	use({
-		'neovim/nvim-lspconfig',
-		config = function()
-			require('plugins.lsp')
-		end,
-		requires = {
-			'kabouzeid/nvim-lspinstall',
-			-- 'hrsh7th/cmp-nvim-lsp'
-		},
-	})
-
-	use({
-		'jose-elias-alvarez/nvim-lsp-ts-utils',
-		requires = { 'null-ls.nvim' },
-		disable = not use_nvim_lsp,
-	})
-
-	use({
-		'jose-elias-alvarez/null-ls.nvim',
-		requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-		config = function()
-			if use_nvim_lsp then
-				require('plugins.null-ls')
-			end
-		end,
-	})
-
-	use({
-		'ms-jpq/coq_nvim',
-		branch = 'coq',
-		-- disable = true,
-		requires = {
-			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-		},
-		setup = function()
-			require('plugins.coq')
-		end,
-	})
-
-	use({
-		'hrsh7th/nvim-cmp',
-		disable = true,
-		-- event = 'InsertEnter',
-		requires = {
-			{ 'hrsh7th/cmp-nvim-lsp' },
-			{ 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
-			{ 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
-			{ 'hrsh7th/cmp-path', after = 'nvim-cmp' },
-		},
-		config = function()
-			require('plugins.cmp')
 		end,
 	})
 
@@ -428,4 +433,5 @@ return packer.startup(function()
 	use({ 'tpope/vim-abolish', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'dhruvasagar/vim-open-url', cmd = '<Plug>(open-url-browser)' })
 	use({ 'whiteinge/diffconflicts', cmd = 'DiffConflicts' })
+	use('Pocco81/TrueZen.nvim')
 end)

@@ -54,28 +54,30 @@
     "typeParameter": "\uf278",
     "default": "\uf29c"
   },
-  "diagnostic-languageserver.formatters": {
-    "luafmt-custom": {
-      "command": "luafmt",
-      "args": ["--stdin", "--indent-count", "2"],
-      "isStdout": true
-    }
-  },
-  "diagnostic-languageserver.formatFiletypes": {
-    "lua": "luafmt-custom"
-  },
   "languageserver": {
     "bash": {
       "command": "bash-language-server",
-      "args": ["start"],
-      "filetypes": ["sh", "zsh", "bash"],
-      "ignoredRootPaths": ["~"]
+      "args": [
+        "start"
+      ],
+      "filetypes": [
+        "sh",
+        "zsh",
+        "bash"
+      ],
+      "ignoredRootPaths": [
+        "~"
+      ]
     }
   },
-  "Lua.diagnostics.globals": ["vim"],
-  "Lua.workspace.library": {
-    "/usr/share/nvim/runtime/lua": true,
-    "/usr/share/nvim/runtime/lua/vim": true,
-    "/usr/share/nvim/runtime/lua/vim/lsp": true
-  }
+  "Lua.diagnostics.globals": [
+    "vim"
+  ],
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.workspace.library": [
+    "/usr/share/nvim/runtime/lua",
+    "/usr/share/nvim/runtime/lua/vim",
+    "/usr/share/nvim/runtime/lua/vim/lsp"
+  ],
+  "Lua.telemetry.enable": false
 }

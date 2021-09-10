@@ -26,6 +26,9 @@ vim.o.undofile = true
 vim.o.updatetime = 300
 vim.o.shell = 'bash'
 vim.o.timeoutlen = 500
+vim.o.breakindent = true
+vim.o.breakindentopt = 'shift:2'
+vim.o.showbreak = '↳'
 
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 

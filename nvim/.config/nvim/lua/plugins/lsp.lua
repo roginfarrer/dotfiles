@@ -34,7 +34,7 @@ end
 local function on_attach(client)
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-  lsp_status.on_attach(client)
+	lsp_status.on_attach(client)
 
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
 	cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
@@ -69,9 +69,11 @@ local function on_attach(client)
 	}
 
 	wk.register(leader, { prefix = '<leader>' })
-	wk.register(visual, { prefix = '<leader>', mode = 'v' })
+	wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
 	buf_nnoremap('gd', ':LspGoToDefinition<CR>')
+	buf_nnoremap('gi', ':LspImplementations<CR>')
+	buf_nnoremap('gr', ':LspReferences<CR>')
 	buf_nnoremap('gD', ':LspGoToDeclaration<CR>')
 	-- buf_nnoremap('gh', ':Lspsaga lsp_finder<CR>')
 	buf_nnoremap('gs', ':LspSignatureHelp<CR>')
@@ -83,15 +85,6 @@ local function on_attach(client)
 		vim.cmd('autocmd BufWritePre <buffer> FormatSync')
 	end
 end
-
--- require('lspsaga').init_lsp_saga({
--- 	code_action_keys = {
--- 		quit = '<esc>',
--- 	},
--- 	rename_action_keys = {
--- 		quit = '<esc>',
--- 	},
--- })
 
 local null_ls = require('null-ls')
 local null_ls_builtins = null_ls.builtins

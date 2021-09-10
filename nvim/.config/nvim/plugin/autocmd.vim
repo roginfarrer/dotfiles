@@ -9,3 +9,6 @@ autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="Substitute", t
 autocmd TermOpen * startinsert
 
 autocmd TermOpen * setlocal listchars= nonumber 
+
+" Equalize splits when window resizes
+autocmd VimResized * wincmd =
