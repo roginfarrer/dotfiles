@@ -1,10 +1,7 @@
 local u = require('utils')
 local lspconfig = require('lspconfig')
 local lspinstall = require('lspinstall')
-local lsp_status = require('lsp-status')
 local wk = require('which-key')
-
-lsp_status.register_progress()
 
 local lsp = vim.lsp
 local cmd = vim.cmd
@@ -26,15 +23,13 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 	}
 )
 
-local capabilities = lsp_status.capabilities
-if packer_plugins['nvim-cmp'] and packer_plugins['nvim-cmp'].loaded then
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+if isPackageLoaded('cmp_nvim_lsp') then
 	capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 end
 
 local function on_attach(client)
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
-
-	lsp_status.on_attach(client)
 
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
 	cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
@@ -72,10 +67,9 @@ local function on_attach(client)
 	wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
 	buf_nnoremap('gd', ':LspGoToDefinition<CR>')
+	buf_nnoremap('gD', ':LspGoToDeclaration<CR>')
 	buf_nnoremap('gi', ':LspImplementations<CR>')
 	buf_nnoremap('gr', ':LspReferences<CR>')
-	buf_nnoremap('gD', ':LspGoToDeclaration<CR>')
-	-- buf_nnoremap('gh', ':Lspsaga lsp_finder<CR>')
 	buf_nnoremap('gs', ':LspSignatureHelp<CR>')
 	buf_nnoremap('[g', ':LspPrevDiagnostic<CR>')
 	buf_nnoremap(']g', ':LspNextDiagnostic<CR>')

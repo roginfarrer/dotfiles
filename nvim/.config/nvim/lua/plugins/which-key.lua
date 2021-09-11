@@ -1,7 +1,5 @@
 local wk = require('which-key')
 
-local presets = require('which-key.plugins.presets')
-presets.objects['a('] = nil
 wk.setup({
 	triggers = 'auto',
 	plugins = { spelling = true },
@@ -11,7 +9,7 @@ wk.setup({
 local function searchDotfiles()
 	require('telescope.builtin').git_files({
 		cwd = '~/dotfiles',
-		prompt = '~ dotfiles ~',
+		prompt_title = '~ Dotfiles ~',
 	})
 end
 
@@ -21,10 +19,6 @@ local leader = {
 	q = { ':q<cr>', 'Quit' },
 	w = { ':w<CR>', 'Save' },
 	x = { ':wq<cr>', 'Save and Quit' },
-	-- p = 'which_key_ignore',
-	-- P = 'which_key_ignore',
-	-- y = 'which_key_ignore',
-	-- Y = 'which_key_ignore',
 	g = {
 		name = 'Git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },

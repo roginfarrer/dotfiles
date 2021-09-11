@@ -2,6 +2,11 @@ _G.dump = function(...)
 	print(vim.inspect(...))
 end
 
+-- Given a plugin name, returns a boolean if plugin is loaded
+_G.isPackageLoaded = function(package)
+	return packer_plugins[package] and packer_plugins[package].loaded
+end
+
 local M = {}
 
 M.functions = {}

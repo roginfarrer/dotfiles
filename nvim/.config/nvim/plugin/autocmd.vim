@@ -12,3 +12,5 @@ autocmd TermOpen * setlocal listchars= nonumber
 
 " Equalize splits when window resizes
 autocmd VimResized * wincmd =
+
+autocmd UIEnter * let g:gui_running = 1 | source $HOME/.config/nvim/gui.vim

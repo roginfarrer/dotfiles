@@ -37,9 +37,10 @@ return packer.startup(function()
 	use({
 		'neovim/nvim-lspconfig',
 		config = function()
-			if use_nvim_lsp then
-				require('plugins.lsp')
-			end
+			-- if use_nvim_lsp then
+			-- 	print('hello')
+			require('plugins.lsp')
+			-- end
 		end,
 		requires = {
 			'kabouzeid/nvim-lspinstall',

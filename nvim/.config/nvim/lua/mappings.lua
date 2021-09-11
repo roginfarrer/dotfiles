@@ -40,10 +40,10 @@ M.test = function()
 end
 
 M.packer = function()
-	u.nnoremap('<leader>pp', ':PackerSync<CR>')
-	u.nnoremap('<leader>ps', ':PackerStatus<CR>')
-	u.nnoremap('<leader>pi', ':PackerInstall<CR>')
-	u.nnoremap('<leader>pc', ':PackerCompile<CR>')
+	-- u.nnoremap('<leader>pp', ':PackerSync<CR>')
+	-- u.nnoremap('<leader>ps', ':PackerStatus<CR>')
+	-- u.nnoremap('<leader>pi', ':PackerInstall<CR>')
+	-- u.nnoremap('<leader>pc', ':PackerCompile<CR>')
 end
 
 return M
