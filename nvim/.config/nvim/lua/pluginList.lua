@@ -129,7 +129,8 @@ return packer.startup(function()
 
 	use({
 		'vuki656/package-info.nvim',
-		event = 'BufRead',
+		requires = 'MunifTanjim/nui.nvim',
+		ft = 'json',
 		config = function()
 			require('package-info').setup()
 		end,
@@ -433,4 +434,12 @@ return packer.startup(function()
 	use({ 'dhruvasagar/vim-open-url', cmd = '<Plug>(open-url-browser)' })
 	use({ 'whiteinge/diffconflicts', cmd = 'DiffConflicts' })
 	use('Pocco81/TrueZen.nvim')
+	use({
+		'mfussenegger/nvim-dap',
+		run = ':helptags ALL',
+		requires = { 'David-Kunz/jester' },
+		config = function()
+			require('plugins.dap')
+		end,
+	})
 end)

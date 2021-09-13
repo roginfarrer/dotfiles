@@ -2,7 +2,7 @@ local wk = require('which-key')
 
 wk.setup({
 	triggers = 'auto',
-	plugins = { spelling = true },
+	plugins = { spelling = true, presets = { operators = false } },
 	key_labels = { ['<leader>'] = 'SPC' },
 })
 
@@ -19,8 +19,12 @@ local leader = {
 	q = { ':q<cr>', 'Quit' },
 	w = { ':w<CR>', 'Save' },
 	x = { ':wq<cr>', 'Save and Quit' },
+	-- y = { '"+y' },
+	-- Y = { '"+Y' },
+	-- p = { '"+p' },
+	-- P = { '"+P' },
 	g = {
-		name = 'Git',
+		nme = 'Git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },
 		c = { ':GitCopyToClipboard<CR>', 'Copy GitHub URL to Clipboard' },
 		o = { ':GitOpenInBrowser<CR>', 'Open File in Browser' },
@@ -120,6 +124,10 @@ local leader = {
 wk.register(leader, { prefix = '<leader>' })
 
 local visual = {
+	-- p = { '"+p' },
+	-- P = { '"+P' },
+	-- y = { '"+y' },
+	-- Y = { '"+Y' },
 	g = {
 		name = 'Git',
 		c = { [[:'<,'>GitCopyToClipboard<CR>]], 'Copy GitHub URL to Clipboard' },
@@ -127,4 +135,4 @@ local visual = {
 	},
 }
 
-wk.register(visual, { prefix = '<leader>', mode = 'v' })
+wk.register(visual, { prefix = '<leader>', mode = 'x' })
