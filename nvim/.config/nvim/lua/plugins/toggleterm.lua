@@ -1,3 +1,5 @@
+local Terminal = require('toggleterm.terminal').Terminal
+
 require('toggleterm').setup({
 	shell = 'fish',
 	open_mapping = [[<C-t>]],
@@ -9,4 +11,19 @@ require('toggleterm').setup({
 			return vim.o.columns * 0.4
 		end
 	end,
+})
+
+local lazygit = Terminal:new({
+	cmd = 'lazygit',
+	hidden = true,
+	direction = 'window',
+})
+
+local function toggleLazyGit()
+	lazygit:toggle()
+	vim.cmd([[setlocal ft=lazygit]])
+end
+
+require('which-key').register({
+	['<leader>gt'] = { toggleLazyGit, 'lazygit' },
 })

@@ -37,14 +37,11 @@ return packer.startup(function()
 	use({
 		'neovim/nvim-lspconfig',
 		config = function()
-			-- if use_nvim_lsp then
-			-- 	print('hello')
 			require('plugins.lsp')
-			-- end
 		end,
 		requires = {
 			'kabouzeid/nvim-lspinstall',
-			-- 'hrsh7th/cmp-nvim-lsp'
+			'hrsh7th/cmp-nvim-lsp',
 		},
 	})
 
@@ -100,7 +97,7 @@ return packer.startup(function()
 	use({
 		'ms-jpq/coq_nvim',
 		branch = 'coq',
-		disable = not use_nvim_lsp,
+		disable = true,
 		requires = {
 			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
 		},
@@ -111,7 +108,7 @@ return packer.startup(function()
 
 	use({
 		'hrsh7th/nvim-cmp',
-		disable = true,
+		-- disable = true,
 		-- event = 'InsertEnter',
 		requires = {
 			{ 'hrsh7th/cmp-nvim-lsp' },
@@ -140,6 +137,7 @@ return packer.startup(function()
 
 	use({
 		'shadmansaleh/lualine.nvim',
+		after = 'nightfox.nvim',
 		requires = {
 			'kyazdani42/nvim-web-devicons',
 		},

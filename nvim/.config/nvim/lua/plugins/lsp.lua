@@ -1,10 +1,13 @@
 local u = require('utils')
 local lspconfig = require('lspconfig')
 local lspinstall = require('lspinstall')
+local lspstatus = require('lsp-status')
 local wk = require('which-key')
 
 local lsp = vim.lsp
 local cmd = vim.cmd
+
+lspstatus.register_progress()
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
@@ -23,12 +26,78 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 	}
 )
 
+local icons = {
+	Class = ' ',
+	Color = ' ',
+	Constant = ' ',
+	Constructor = ' ',
+	Enum = '了 ',
+	EnumMember = ' ',
+	Field = ' ',
+	File = ' ',
+	Folder = ' ',
+	Function = ' ',
+	Interface = 'ﰮ ',
+	Keyword = ' ',
+	Method = 'ƒ ',
+	Module = ' ',
+	Property = ' ',
+	Snippet = '﬌ ',
+	Struct = ' ',
+	Text = ' ',
+	Unit = ' ',
+	Value = ' ',
+	Variable = ' ',
+}
+
+local kinds = vim.lsp.protocol.CompletionItemKind
+for i, kind in ipairs(kinds) do
+	kinds[i] = icons[kind] or kind
+end
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 if isPackageLoaded('cmp_nvim_lsp') then
 	capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 end
+capabilities = vim.tbl_extend('keep', capabilities, lspstatus.capabilities)
+capabilities.textDocument.completion.completionItem.documentationFormat = {
+	'markdown',
+	'plaintext',
+}
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.preselectSupport = true
+capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+capabilities.textDocument.completion.completionItem.commitCharactersSupport =
+	true
+capabilities.textDocument.completion.completionItem.tagSupport = {
+	valueSet = { 1 },
+}
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+	properties = {
+		'documentation',
+		'detail',
+		'additionalTextEdits',
+	},
+}
+
+-- replace the default lsp diagnostic symbols
+local function lspSymbol(name, icon)
+	vim.fn.sign_define(
+		'LspDiagnosticsSign' .. name,
+		{ text = icon, numhl = 'LspDiagnosticsDefault' .. name }
+	)
+end
+
+lspSymbol('Error', '')
+lspSymbol('Information', '')
+lspSymbol('Hint', '')
+lspSymbol('Warning', '')
 
 local function on_attach(client)
+	lspstatus.on_attach(client)
+
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
@@ -53,6 +122,12 @@ local function on_attach(client)
 			r = { ':LspRenameSymbol<CR>', 'Rename Symbol' },
 			f = { ':Format<CR>', 'Format Document' },
 			x = { ':TroubleToggle<CR>', 'Trouble' },
+			q = { '<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>', 'Quickfix' },
+			s = { '<cmd>Telescope lsp_document_symbols<cr>', 'Document Symbols' },
+			S = {
+				'<cmd>Telescope lsp_dynamic_workspace_symbols<cr>',
+				'Workspace Symbols',
+			},
 		},
 	}
 
@@ -105,6 +180,9 @@ require('null-ls').config({
 		null_ls_builtins.formatting.stylua,
 		null_ls_builtins.formatting.fish_indent,
 		null_ls_builtins.formatting.shfmt,
+		null_ls_builtins.diagnostics.vint.with({
+			args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
+		}),
 	},
 })
 lspconfig['null-ls'].setup({
@@ -175,9 +253,9 @@ local function setup_servers()
 						eslint_bin = 'eslint_d',
 						eslint_opts = {
 							condition = function(utils)
-								return utils.root_has_file('.eslintrc.js')
-									or utils.root_has_file('.eslintrc')
-									or utils.root_has_file('.eslintrc.json')
+								return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
+									'.eslintrc'
+								) or utils.root_has_file('.eslintrc.json')
 							end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
@@ -208,9 +286,7 @@ local function setup_servers()
 
 	if packer_plugins['coq_nvim'] and packer_plugins['coq_nvim'].loaded then
 		for lang in pairs(config) do
-			lspconfig[lang].setup(
-				require('coq').lsp_ensure_capabilities(config[lang])
-			)
+			lspconfig[lang].setup(require('coq').lsp_ensure_capabilities(config[lang]))
 		end
 	else
 		for lang in pairs(config) do

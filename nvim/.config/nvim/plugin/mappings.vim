@@ -49,7 +49,7 @@ vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
 nnoremap <Tab> za
 
 " Copy file path to clipboard
-nnoremap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
+nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
 
 " To map <Esc> to exit terminal-mode: 
 tnoremap <leader><Esc> <C-\><C-n>
