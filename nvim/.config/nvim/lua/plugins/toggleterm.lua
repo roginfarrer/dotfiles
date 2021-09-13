@@ -17,11 +17,16 @@ local lazygit = Terminal:new({
 	cmd = 'lazygit',
 	hidden = true,
 	direction = 'window',
+	shell = 'bash',
 })
 
 local function toggleLazyGit()
-	lazygit:toggle()
-	vim.cmd([[setlocal ft=lazygit]])
+	if vim.fn.executable('lazygit') == 1 then
+		lazygit:toggle()
+		vim.cmd([[setlocal ft=lazygit]])
+	else
+		print('Please install lazygit (brew install lazygit)')
+	end
 end
 
 require('which-key').register({

@@ -22,8 +22,8 @@ local leader = {
 	g = {
 		name = 'Git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },
-		c = { ':GitCopyToClipboard<CR>', 'Open File in Browser' },
-		o = { ':GitOpenInBrowser<CR>', 'Copy GitHub URL to Clipboard' },
+		c = { ':GitCopyToClipboard<CR>', 'Copy GitHub URL to Clipboard' },
+		o = { ':GitOpenInBrowser<CR>', 'Open File in Browser' },
 		b = { '<Cmd>Telescope git_branches<CR>', 'Checkout Branch' },
 		C = {
 			'<cmd>Telescope git_bcommits<cr>',
