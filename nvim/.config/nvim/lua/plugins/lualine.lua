@@ -20,7 +20,7 @@ local function lsp_client_names()
 
 	if #vim.lsp.buf_get_clients() then
 		local clients = {}
-		for _, client in pairs(vim.lsp.get_active_clients()) do
+		for _, client in pairs(vim.lsp.buf_get_clients()) do
 			table.insert(clients, client.name)
 		end
 

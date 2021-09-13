@@ -49,7 +49,7 @@ vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
 nnoremap <Tab> za
 
 " Copy file path to clipboard
-nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
+" nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
 
 " To map <Esc> to exit terminal-mode: 
 tnoremap <leader><Esc> <C-\><C-n>
@@ -60,13 +60,13 @@ tnoremap <C-k> <C-\><C-n><C-W>
 tnoremap <C-l> <C-\><C-n><C-W>
 
 " Center the cursor on navigation operations
-nnoremap {  {zz
-nnoremap }  }zz
-nnoremap n  nzz
-nnoremap N  Nzz
-nnoremap ]c ]czz
-nnoremap [c [czz
-nnoremap [j <C-o>zz
-nnoremap ]j <C-i>zz
-nnoremap ]s ]szz
-nnoremap [s [szz
+" nnoremap {  {zz
+" nnoremap }  }zz
+" nnoremap n  nzz
+" nnoremap N  Nzz
+" nnoremap ]c ]czz
+" nnoremap [c [czz
+" nnoremap [j <C-o>zz
+" nnoremap ]j <C-i>zz
+" nnoremap ]s ]szz
+" nnoremap [s [szz
