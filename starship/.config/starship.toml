@@ -42,3 +42,6 @@ fish_style_pwd_dir_length = 1
 
 [git_branch]
 # truncation_length = 20
+
+[character]
+vicmd_symbol = "[V](bold green) "
