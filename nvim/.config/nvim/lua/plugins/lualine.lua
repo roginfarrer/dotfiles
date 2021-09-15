@@ -48,9 +48,9 @@ local config = {
 	options = {
 		theme = 'nightfox',
 		-- theme = 'tokyonight',
-		section_separators = { '', '' },
+		section_separators = { left = '', right = '' },
 		-- component_separators = { '', '' },
-		component_separators = { '', '' },
+		component_separators = { left = '', right = '' },
 	},
 	sections = {
 		lualine_a = { 'mode' },
@@ -58,9 +58,11 @@ local config = {
 			'branch',
 			{
 				'diff',
-				color_added = { fg = diffAddFg },
-				color_removed = { fg = diffDeleteFg },
-				color_modified = { fg = diffChangeFg },
+				diff_color = {
+					added = { fg = diffAddFg },
+					removed = { fg = diffDeleteFg },
+					modified = { fg = diffChangeFg },
+				},
 			},
 		},
 		lualine_c = { { 'filename', file_status = true } },

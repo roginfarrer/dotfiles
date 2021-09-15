@@ -2,8 +2,12 @@ local wk = require('which-key')
 
 wk.setup({
 	triggers = 'auto',
-	plugins = { spelling = true, presets = { operators = false } },
+	plugins = {
+		spelling = true,
+		-- presets = { operators = false }
+	},
 	key_labels = { ['<leader>'] = 'SPC' },
+	operators = { gc = 'Comments' },
 })
 
 local function searchDotfiles()
@@ -14,17 +18,16 @@ local function searchDotfiles()
 end
 
 local leader = {
-	[' '] = { '<cmd>e #<cr>', 'Switch to Last Buffer' },
 	[';'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
 	q = { ':q<cr>', 'Quit' },
 	w = { ':w<CR>', 'Save' },
 	x = { ':wq<cr>', 'Save and Quit' },
-	-- y = { '"+y' },
-	-- Y = { '"+Y' },
-	-- p = { '"+p' },
-	-- P = { '"+P' },
+	y = 'which_key_ignore',
+	Y = 'which_key_ignore',
+	p = 'which_key_ignore',
+	P = 'which_key_ignore',
 	g = {
-		nme = 'Git',
+		name = 'Git',
 		g = { '<cmd>Neogit<CR>', 'NeoGit' },
 		c = { ':GitCopyToClipboard<CR>', 'Copy GitHub URL to Clipboard' },
 		o = { ':GitOpenInBrowser<CR>', 'Open File in Browser' },
@@ -75,13 +78,26 @@ local leader = {
 			s = { '<cmd>PackerStatus<cr>', 'Status' },
 			i = { '<cmd>PackerInstall<cr>', 'Install' },
 			c = { '<cmd>PackerCompile<cr>', 'Compile' },
+			C = { '<cmd>PackerClean<cr>', 'Clean' },
+			l = { '<cmd>PackerLoad<cr>', 'Load' },
+			u = { '<cmd>PackerUpdate<cr>', 'Update' },
+			P = { '<cmd>PackerProfile<cr>', 'Profile' },
 		},
 	},
 	f = {
 		name = 'Find',
 		p = { '<cmd>Telescope git_files<CR>', 'Git Files' },
 		b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
-		['.'] = { '<cmd>Telescope find_files<CR>', 'All Files' },
+		f = { '<cmd>Telescope find_files<CR>', 'All Files' },
+		['.'] = {
+			function()
+				local currentDir = vim.fn.expand('%:p:h')
+				require('telescope.builtin').find_files({
+					cwd = currentDir,
+				})
+			end,
+			'Find in current directory',
+		},
 		d = { searchDotfiles, 'Dotfiles' },
 		h = { '<cmd>Telescope oldfiles<CR>', 'Old Files' },
 		g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
@@ -99,19 +115,19 @@ local leader = {
 	},
 	h = {
 		name = 'Help',
-		t = { '<cmd>:Telescope builtin<cr>', 'Telescope' },
-		c = { '<cmd>:Telescope commands<cr>', 'Commands' },
-		h = { '<cmd>:Telescope help_tags<cr>', 'Help Pages' },
-		m = { '<cmd>:Telescope man_pages<cr>', 'Man Pages' },
-		k = { '<cmd>:Telescope keymaps<cr>', 'Key Maps' },
-		s = { '<cmd>:Telescope highlights<cr>', 'Search Highlight Groups' },
+		t = { '<cmd>Telescope builtin<cr>', 'Telescope' },
+		c = { '<cmd>Telescope commands<cr>', 'Commands' },
+		h = { '<cmd>Telescope help_tags<cr>', 'Help Pages' },
+		m = { '<cmd>Telescope man_pages<cr>', 'Man Pages' },
+		k = { '<cmd>Telescope keymaps<cr>', 'Key Maps' },
+		s = { '<cmd>Telescope highlights<cr>', 'Search Highlight Groups' },
 		l = {
 			[[<cmd>TSHighlightCapturesUnderCursor<cr>]],
 			'Highlight Groups at cursor',
 		},
-		f = { '<cmd>:Telescope filetypes<cr>', 'File Types' },
-		o = { '<cmd>:Telescope vim_options<cr>', 'Options' },
-		a = { '<cmd>:Telescope autocommands<cr>', 'Auto Commands' },
+		f = { '<cmd>Telescope filetypes<cr>', 'File Types' },
+		o = { '<cmd>Telescope vim_options<cr>', 'Options' },
+		a = { '<cmd>Telescope autocommands<cr>', 'Auto Commands' },
 	},
 	s = {
 		name = 'Projects',
@@ -124,10 +140,8 @@ local leader = {
 wk.register(leader, { prefix = '<leader>' })
 
 local visual = {
-	-- p = { '"+p' },
-	-- P = { '"+P' },
-	-- y = { '"+y' },
-	-- Y = { '"+Y' },
+	y = 'which_key_ignore',
+	Y = 'which_key_ignore',
 	g = {
 		name = 'Git',
 		c = { [[:'<,'>GitCopyToClipboard<CR>]], 'Copy GitHub URL to Clipboard' },

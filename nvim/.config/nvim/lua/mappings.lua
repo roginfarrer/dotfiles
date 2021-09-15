@@ -26,24 +26,12 @@ M.gitlinker = function()
 	]])
 end
 
-M.floatterm = function()
-	u.nnoremap('<C-t>', [[:FloatermToggle<CR>]], { silent = true })
-	u.tnoremap('<C-t>', [[<C-\><C-n>:FloatermToggle<CR>]], { silent = true })
-end
-
 M.test = function()
 	u.nmap('t<C-n>', [[:TestNearest<CR>]])
 	u.nmap('t<C-f>', [[:TestFile<CR>]])
 	u.nmap('t<C-s>', [[:TestSuite<CR>]])
 	u.nmap('t<C-l>', [[:TestLast<CR>]])
 	u.nmap('t<C-g>', [[:TestVisit<CR>]])
-end
-
-M.packer = function()
-	-- u.nnoremap('<leader>pp', ':PackerSync<CR>')
-	-- u.nnoremap('<leader>ps', ':PackerStatus<CR>')
-	-- u.nnoremap('<leader>pi', ':PackerInstall<CR>')
-	-- u.nnoremap('<leader>pc', ':PackerCompile<CR>')
 end
 
 return M

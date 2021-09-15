@@ -23,7 +23,6 @@ local lazygit = Terminal:new({
 local function toggleLazyGit()
 	if vim.fn.executable('lazygit') == 1 then
 		lazygit:toggle()
-		vim.cmd([[setlocal ft=lazygit]])
 	else
 		print('Please install lazygit (brew install lazygit)')
 	end

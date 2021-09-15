@@ -19,19 +19,10 @@ end
 local use = packer.use
 
 return packer.startup(function()
-	use({
-		'wbthomason/packer.nvim',
-		setup = function()
-			require('mappings').packer()
-		end,
-	})
+	use('wbthomason/packer.nvim')
 	use({
 		'lewis6991/impatient.nvim',
 		rocks = 'mpack',
-		after = 'packer.nvim',
-		config = function()
-			require('impatient')
-		end,
 	})
 
 	use({
@@ -41,7 +32,7 @@ return packer.startup(function()
 		end,
 		requires = {
 			'kabouzeid/nvim-lspinstall',
-			'hrsh7th/cmp-nvim-lsp',
+			-- 'hrsh7th/cmp-nvim-lsp',
 		},
 	})
 
@@ -97,7 +88,7 @@ return packer.startup(function()
 	use({
 		'ms-jpq/coq_nvim',
 		branch = 'coq',
-		disable = true,
+		-- disable = true,
 		requires = {
 			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
 		},
@@ -108,7 +99,7 @@ return packer.startup(function()
 
 	use({
 		'hrsh7th/nvim-cmp',
-		-- disable = true,
+		disable = true,
 		-- event = 'InsertEnter',
 		requires = {
 			{ 'hrsh7th/cmp-nvim-lsp' },
@@ -126,6 +117,14 @@ return packer.startup(function()
 	---
 	-- End LSP
 	---
+
+	use({
+		'ggandor/lightspeed.nvim',
+		config = function()
+			require('utils').nmap('m', '<Plug>Lightspeed_s')
+			require('utils').nmap('M', '<Plug>Lightspeed_S')
+		end,
+	})
 
 	use({
 		'vuki656/package-info.nvim',
@@ -425,9 +424,10 @@ return packer.startup(function()
 		end,
 	})
 
+	use('antoinemadec/FixCursorHold.nvim') -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+
 	use({ 'tpope/vim-eunuch', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'duggiefresh/vim-easydir', event = { 'BufRead', 'BufNewFile' } })
-	use({ 'jesseleite/vim-agriculture', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'machakann/vim-sandwich', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'tpope/vim-commentary', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'tpope/vim-abolish', event = { 'BufRead', 'BufNewFile' } })
@@ -442,4 +442,11 @@ return packer.startup(function()
 			require('plugins.dap')
 		end,
 	})
+	use({
+		'sindrets/winshift.nvim',
+		config = function()
+			require('plugins.winshift')
+		end,
+	})
+	use('editorconfig/editorconfig-vim')
 end)
