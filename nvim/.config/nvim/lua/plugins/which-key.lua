@@ -3,8 +3,9 @@ local wk = require('which-key')
 wk.setup({
 	triggers = 'auto',
 	plugins = {
-		spelling = true,
-		-- presets = { operators = false }
+		spelling = {
+			enabled = true,
+		},
 	},
 	key_labels = { ['<leader>'] = 'SPC' },
 	operators = { gc = 'Comments' },
@@ -22,6 +23,7 @@ local leader = {
 	q = { ':q<cr>', 'Quit' },
 	w = { ':w<CR>', 'Save' },
 	x = { ':wq<cr>', 'Save and Quit' },
+	[' '] = 'which_key_ignore',
 	y = 'which_key_ignore',
 	Y = 'which_key_ignore',
 	p = 'which_key_ignore',
@@ -36,8 +38,8 @@ local leader = {
 			'<cmd>Telescope git_bcommits<cr>',
 			'Checkout commit(for current file)',
 		},
-		-- d = { '<cmd>DiffviewOpen<cr>', 'DiffView' },
-		d = { '<cmd>Gitsigns diffthis HEAD<cr>', 'Git Diff' },
+		d = { '<cmd>DiffviewOpen<cr>', 'DiffView' },
+		-- d = { '<cmd>Gitsigns diffthis HEAD<cr>', 'Git Diff' },
 		j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", 'Next Hunk' },
 		k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", 'Prev Hunk' },
 		l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", 'Blame' },
@@ -91,9 +93,9 @@ local leader = {
 		f = { '<cmd>Telescope find_files<CR>', 'All Files' },
 		['.'] = {
 			function()
-				local currentDir = vim.fn.expand('%:p:h')
 				require('telescope.builtin').find_files({
-					cwd = currentDir,
+					cwd = vim.fn.expand('%:p:h'),
+					prompt_title = vim.fn.expand('%:~:.:p:h'),
 				})
 			end,
 			'Find in current directory',
@@ -101,6 +103,12 @@ local leader = {
 		d = { searchDotfiles, 'Dotfiles' },
 		h = { '<cmd>Telescope oldfiles<CR>', 'Old Files' },
 		g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
+		G = {
+			function()
+				require('telescope.builtin').live_grep({ cwd = vim.fn.expand('%:p:h') })
+			end,
+			'Live Grep',
+		},
 	},
 	['<tab>'] = {
 		name = 'Workspace',
@@ -150,3 +158,13 @@ local visual = {
 }
 
 wk.register(visual, { prefix = '<leader>', mode = 'x' })
+
+wk.register({
+	['<C-n>'] = { ':TestNearest<CR>', 'Run nearest test' },
+	['<C-f>'] = { ':TestFile<CR>', 'Test file' },
+	['<C-s>'] = { ':TestSuite<CR>', 'Test suite' },
+	['<C-l>'] = { ':TestLast<CR>', 'Run last test' },
+	['<C-g>'] = { ':TestVisit<CR>' },
+}, {
+	prefix = 't',
+})

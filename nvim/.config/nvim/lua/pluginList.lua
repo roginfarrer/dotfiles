@@ -118,13 +118,13 @@ return packer.startup(function()
 	-- End LSP
 	---
 
-	use({
-		'ggandor/lightspeed.nvim',
-		config = function()
-			require('utils').nmap('m', '<Plug>Lightspeed_s')
-			require('utils').nmap('M', '<Plug>Lightspeed_S')
-		end,
-	})
+	-- use({
+	-- 	'ggandor/lightspeed.nvim',
+	-- 	config = function()
+	-- 		require('utils').nmap('m', '<Plug>Lightspeed_s')
+	-- 		require('utils').nmap('M', '<Plug>Lightspeed_S')
+	-- 	end,
+	-- })
 
 	use({
 		'vuki656/package-info.nvim',
@@ -167,47 +167,11 @@ return packer.startup(function()
 		config = function()
 			require('plugins.treesitter')
 		end,
-	})
-
-	-- use({
-	-- 	'nvim-treesitter/nvim-treesitter-textobjects',
-	-- 	after = 'nvim-treesitter',
-	-- })
-
-	use({
-		'David-Kunz/treesitter-unit',
-		requires = { 'nvim-treesitter/nvim-treesitter' },
-		config = function()
-			vim.api.nvim_set_keymap(
-				'x',
-				'iu',
-				':lua require"treesitter-unit".select()<CR>',
-				{ noremap = true }
-			)
-			vim.api.nvim_set_keymap(
-				'x',
-				'au',
-				':lua require"treesitter-unit".select(true)<CR>',
-				{ noremap = true }
-			)
-			vim.api.nvim_set_keymap(
-				'o',
-				'iu',
-				':<c-u>lua require"treesitter-unit".select()<CR>',
-				{ noremap = true }
-			)
-			vim.api.nvim_set_keymap(
-				'o',
-				'au',
-				':<c-u>lua require"treesitter-unit".select(true)<CR>',
-				{ noremap = true }
-			)
-		end,
+		requires = { 'nvim-treesitter/nvim-treesitter-textobjects' },
 	})
 
 	use({
 		'windwp/nvim-autopairs',
-		-- after = 'nvim-cmp',
 		config = function()
 			require('plugins.autopairs')
 		end,
@@ -216,24 +180,10 @@ return packer.startup(function()
 	use({
 		'vim-test/vim-test',
 		cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
-		-- requires = {
-		-- 	{
-		-- 		'kassio/neoterm',
-		-- 		setup = function()
-		-- 			vim.g.neoterm_default_mod = 'vertical'
-		-- 			vim.g.neoterm_shell = 'fish'
-		-- 		end,
-		-- 	},
-		-- },
 		config = function()
 			require('plugins.vim-test')
 		end,
-		setup = function()
-			require('mappings').test()
-		end,
 	})
-
-	use({ 'wellle/targets.vim', event = 'BufEnter' })
 
 	use({
 		'nvim-telescope/telescope.nvim',
@@ -242,6 +192,7 @@ return packer.startup(function()
 		end,
 		requires = {
 			'nvim-lua/plenary.nvim',
+			'nvim-telescope/telescope-fzy-native.nvim',
 			'nvim-telescope/telescope-fzf-writer.nvim',
 			'ahmedkhalf/project.nvim',
 			{
@@ -249,14 +200,6 @@ return packer.startup(function()
 				run = 'make',
 			},
 		},
-	})
-
-	use({
-		'camspiers/snap',
-		disable = true,
-		config = function()
-			require('plugins.snap')
-		end,
 	})
 
 	use({
@@ -277,7 +220,6 @@ return packer.startup(function()
 		requires = 'nvim-lua/plenary.nvim',
 		config = function()
 			require('plugins.gitlinker')
-			require('mappings').gitlinker()
 		end,
 	})
 
@@ -336,7 +278,6 @@ return packer.startup(function()
 
 	use({
 		'windwp/nvim-ts-autotag',
-		after = 'nvim-treesitter',
 		config = function()
 			require('nvim-ts-autotag').setup()
 		end,
@@ -346,7 +287,8 @@ return packer.startup(function()
 
 	use({
 		'tpope/vim-markdown',
-		event = { 'BufRead', 'BufNewFile' },
+		-- event = { 'BufRead', 'BufNewFile' },
+		ft = 'markdown',
 		config = function()
 			require('plugins.polyglot')
 		end,
@@ -354,17 +296,9 @@ return packer.startup(function()
 
 	use({
 		'JoosepAlviste/nvim-ts-context-commentstring',
-		event = { 'BufRead', 'BufNewFile' },
 	})
 
 	-- Colors
-	-- use('Rigellute/rigel')
-	-- use('cocopon/iceberg.vim')
-	-- use('bluz71/vim-nightfly-guicolors')
-	-- use({ 'Dualspc/spaceodyssey', branch = 'lua' })
-	-- use('windwp/wind-colors')
-	-- use({ 'metalelf0/jellybeans-nvim', requires = { 'rktjmp/lush.nvim' } })
-	-- use('christianchiarulli/nvcode-color-schemes.vim')
 	use({
 		'folke/tokyonight.nvim',
 		config = function()
@@ -372,8 +306,6 @@ return packer.startup(function()
 		end,
 	})
 	use('shaunsingh/nord.nvim')
-	-- use({ 'lighthaus-theme/vim-lighthaus' })
-	-- use('shaunsingh/moonlight.nvim')
 	use({ 'siduck76/nvim-base16.lua' })
 	use({
 		'EdenEast/nightfox.nvim',
@@ -417,23 +349,23 @@ return packer.startup(function()
 		end,
 	})
 
-	use({
-		'karb94/neoscroll.nvim',
-		config = function()
-			require('neoscroll').setup()
-		end,
-	})
+	-- use({
+	-- 	'karb94/neoscroll.nvim',
+	-- 	config = function()
+	-- 		require('neoscroll').setup()
+	-- 	end,
+	-- })
 
-	use('antoinemadec/FixCursorHold.nvim') -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+	-- use('antoinemadec/FixCursorHold.nvim') -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
 
 	use({ 'tpope/vim-eunuch', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'duggiefresh/vim-easydir', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'machakann/vim-sandwich', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'tpope/vim-commentary', event = { 'BufRead', 'BufNewFile' } })
 	use({ 'tpope/vim-abolish', event = { 'BufRead', 'BufNewFile' } })
-	use({ 'dhruvasagar/vim-open-url', cmd = '<Plug>(open-url-browser)' })
 	use({ 'whiteinge/diffconflicts', cmd = 'DiffConflicts' })
 	use('Pocco81/TrueZen.nvim')
+	use({ 'wellle/targets.vim', event = 'BufEnter' })
 	use({
 		'mfussenegger/nvim-dap',
 		run = ':helptags ALL',
@@ -449,4 +381,10 @@ return packer.startup(function()
 		end,
 	})
 	use('editorconfig/editorconfig-vim')
+	use({
+		'L3MON4D3/LuaSnip',
+		config = function()
+			require('plugins.luasnip')
+		end,
+	})
 end)
