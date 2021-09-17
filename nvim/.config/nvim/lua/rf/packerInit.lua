@@ -1,7 +1,3 @@
-local cmd = vim.cmd
-
-cmd('packadd packer.nvim')
-
 local present, packer = pcall(require, 'packer')
 
 if not present then
@@ -20,7 +16,6 @@ if not present then
 		packer_path,
 	})
 
-	cmd('packadd packer.nvim')
 	present, packer = pcall(require, 'packer')
 
 	if present then
@@ -32,7 +27,15 @@ end
 
 vim.cmd([[autocmd BufWritePost nvim/* source <afile> | PackerCompile]])
 
-return packer.init({
-	auto_clean = true,
-	compile_on_sync = true,
-})
+-- If your Neovim install doesn't include mpack, e.g. if installed via
+-- Homebrew, then you need to also install mpack from luarocks.
+-- There is an existing issue with luarocks on macOS where `luarocks install` is using a different version of lua.
+-- @see: https://github.com/wbthomason/packer.nvim/issues/180
+-- Make sure to add this on top of your plugins.lua to resolve this
+vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
+
+return packer.startup(function(use)
+	for _, plugin in ipairs(require('rf.pluginList')) do
+		use(plugin)
+	end
+end)

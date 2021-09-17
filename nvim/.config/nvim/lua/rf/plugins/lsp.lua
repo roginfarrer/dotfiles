@@ -152,7 +152,6 @@ local function on_attach(client)
 	wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
 	local function showDocs()
-		print('hello')
 		if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
 			vim.fn.execute('h ' .. vim.fn.expand('<cword>'))
 		else
@@ -294,6 +293,15 @@ local function setup_servers()
 					}
 					wk.register(leader, { prefix = '<leader>', buffer = bufnr })
 				end,
+			}
+      elseif lang == 'json' then
+			config.json = {
+				on_attach = function(client)
+          on_attach(client)
+          client.resolved_capabilities.document_formatting = false
+          client.resolved_capabilities.document_range_formatting = false
+        end,
+				capabilities = capabilities,
 			}
 		else
 			config[lang] = {

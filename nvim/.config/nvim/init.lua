@@ -6,7 +6,7 @@ _G.global = {}
 -- Safely require it, in case it doesn't exist
 pcall(require, 'local-config')
 
-require('rf.pluginList')
+require('rf.packerInit')
 
 local disabled_built_ins = {
 	'netrw',

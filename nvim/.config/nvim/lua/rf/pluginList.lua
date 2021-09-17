@@ -1,31 +1,14 @@
--- If your Neovim install doesn't include mpack, e.g. if installed via
--- Homebrew, then you need to also install mpack from luarocks.
--- There is an existing issue with luarocks on macOS where `luarocks install` is using a different version of lua.
--- @see: https://github.com/wbthomason/packer.nvim/issues/180
--- Make sure to add this on top of your plugins.lua to resolve this
-vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
-
 local use_nvim_lsp = vim.g.use_nvim_lsp == true
 
-local present, _ = pcall(require, 'rf.packerInit')
-local packer
+return {
+	'wbthomason/packer.nvim',
 
-if present then
-	packer = require('packer')
-else
-	return false
-end
-
-local use = packer.use
-
-return packer.startup(function()
-	use('wbthomason/packer.nvim')
-	use({
+	{
 		'lewis6991/impatient.nvim',
 		rocks = 'mpack',
-	})
+	},
 
-	use({
+	{
 		'neovim/nvim-lspconfig',
 		config = function()
 			require('rf.plugins.lsp')
@@ -34,19 +17,18 @@ return packer.startup(function()
 			'kabouzeid/nvim-lspinstall',
 			-- 'hrsh7th/cmp-nvim-lsp',
 		},
-	})
+	},
 
-	use({
+	{
 		'neoclide/coc.nvim',
-		-- event = {"BufRead", "BufNewFile"},
 		branch = 'release',
 		disable = use_nvim_lsp,
 		config = function()
 			require('rf.plugins.coc')
 		end,
-	})
+	},
 
-	use({
+	{
 		'jose-elias-alvarez/null-ls.nvim',
 		requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
 		config = function()
@@ -54,22 +36,22 @@ return packer.startup(function()
 				require('rf.plugins.null-ls')
 			end
 		end,
-	})
+	},
 
 	---
 	-- LSP
 	---
 
-	use({
+	{
 		'onsails/lspkind-nvim',
 		event = { 'BufRead', 'BufNewFile' },
 		disable = not use_nvim_lsp,
 		config = function()
 			require('lspkind').init({ preset = 'codicons' })
 		end,
-	})
+	},
 
-	use({
+	{
 		'folke/trouble.nvim',
 		requires = 'kyazdani42/nvim-web-devicons',
 		disable = not use_nvim_lsp,
@@ -77,15 +59,15 @@ return packer.startup(function()
 		config = function()
 			require('trouble').setup({})
 		end,
-	})
+	},
 
-	use({
+	{
 		'jose-elias-alvarez/nvim-lsp-ts-utils',
 		requires = { 'null-ls.nvim' },
 		disable = not use_nvim_lsp,
-	})
+	},
 
-	use({
+	{
 		'ms-jpq/coq_nvim',
 		branch = 'coq',
 		-- disable = true,
@@ -95,9 +77,9 @@ return packer.startup(function()
 		setup = function()
 			require('rf.plugins.coq')
 		end,
-	})
+	},
 
-	use({
+	{
 		'hrsh7th/nvim-cmp',
 		disable = true,
 		-- event = 'InsertEnter',
@@ -110,9 +92,9 @@ return packer.startup(function()
 		config = function()
 			require('rf.plugins.cmp')
 		end,
-	})
+	},
 
-	use({ 'nvim-lua/lsp-status.nvim', disable = not use_nvim_lsp })
+	{ 'nvim-lua/lsp-status.nvim', disable = not use_nvim_lsp },
 
 	---
 	-- End LSP
@@ -126,16 +108,16 @@ return packer.startup(function()
 	-- 	end,
 	-- })
 
-	use({
+	{
 		'vuki656/package-info.nvim',
 		requires = 'MunifTanjim/nui.nvim',
 		ft = 'json',
 		config = function()
 			require('package-info').setup()
 		end,
-	})
+	},
 
-	use({
+	{
 		'shadmansaleh/lualine.nvim',
 		after = 'nightfox.nvim',
 		requires = {
@@ -144,48 +126,48 @@ return packer.startup(function()
 		config = function()
 			require('rf.plugins.lualine')
 		end,
-	})
+	},
 
-	use({
+	{
 		'mhinz/vim-startify',
 		disable = true,
 		config = function()
 			require('rf.plugins.startify')
 		end,
-	})
+	},
 
-	use({
+	{
 		'glepnir/dashboard-nvim',
 		setup = function()
 			require('rf.plugins.dashboard')
 		end,
-	})
+	},
 
-	use({
+	{
 		'nvim-treesitter/nvim-treesitter',
 		run = ':TSUpdate',
 		config = function()
 			require('rf.plugins.treesitter')
 		end,
 		requires = { 'nvim-treesitter/nvim-treesitter-textobjects' },
-	})
+	},
 
-	use({
+	{
 		'windwp/nvim-autopairs',
 		config = function()
 			require('rf.plugins.autopairs')
 		end,
-	})
+	},
 
-	use({
+	{
 		'vim-test/vim-test',
 		cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
 		config = function()
 			require('rf.plugins.vim-test')
 		end,
-	})
+	},
 
-	use({
+	{
 		'nvim-telescope/telescope.nvim',
 		config = function()
 			require('rf.plugins.telescope')
@@ -200,9 +182,9 @@ return packer.startup(function()
 				run = 'make',
 			},
 		},
-	})
+	},
 
-	use({
+	{
 		'tamago324/lir.nvim',
 		event = { 'BufRead', 'BufNewFile' },
 		requires = {
@@ -213,17 +195,17 @@ return packer.startup(function()
 		config = function()
 			require('rf.plugins.lir')
 		end,
-	})
+	},
 
-	use({
+	{
 		'ruifm/gitlinker.nvim',
 		requires = 'nvim-lua/plenary.nvim',
 		config = function()
 			require('rf.plugins.gitlinker')
 		end,
-	})
+	},
 
-	use({
+	{
 		'TimUntersberger/neogit',
 		cmd = 'Neogit',
 		requires = {
@@ -240,9 +222,9 @@ return packer.startup(function()
 				},
 			})
 		end,
-	})
+	},
 
-	use({
+	{
 		'lewis6991/gitsigns.nvim',
 		event = { 'BufRead', 'BufNewFile' },
 		requires = {
@@ -251,9 +233,9 @@ return packer.startup(function()
 		config = function()
 			require('rf.plugins.gitsigns')
 		end,
-	})
+	},
 
-	use({
+	{
 		'kyazdani42/nvim-web-devicons',
 		config = function()
 			require('nvim-web-devicons').setup({
@@ -266,55 +248,53 @@ return packer.startup(function()
 				},
 			})
 		end,
-	})
+	},
 
-	use({
+	{
 		'norcalli/nvim-colorizer.lua',
 		event = { 'BufRead', 'BufNewFile' },
 		config = function()
 			require('colorizer').setup()
 		end,
-	})
+	},
 
-	use({
+	{
 		'windwp/nvim-ts-autotag',
 		config = function()
 			require('nvim-ts-autotag').setup()
 		end,
-	})
+	},
 
-	use({ 'jxnblk/vim-mdx-js', event = { 'BufRead', 'BufNewFile' } })
+	{ 'jxnblk/vim-mdx-js', event = { 'BufRead', 'BufNewFile' } },
 
-	use({
+	{
 		'tpope/vim-markdown',
 		-- event = { 'BufRead', 'BufNewFile' },
 		ft = 'markdown',
 		config = function()
 			require('rf.plugins.polyglot')
 		end,
-	})
+	},
 
-	use({
-		'JoosepAlviste/nvim-ts-context-commentstring',
-	})
+	'JoosepAlviste/nvim-ts-context-commentstring',
 
 	-- Colors
-	use({
+	{
 		'folke/tokyonight.nvim',
 		config = function()
 			require('rf.theme')
 		end,
-	})
-	use('shaunsingh/nord.nvim')
-	use({ 'siduck76/nvim-base16.lua' })
-	use({
+	},
+	'shaunsingh/nord.nvim',
+	{ 'siduck76/nvim-base16.lua' },
+	{
 		'EdenEast/nightfox.nvim',
 		config = function()
 			require('rf.theme')
 		end,
-	})
+	},
 
-	use({
+	{
 		'windwp/nvim-spectre',
 		requires = { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim' },
 		cmd = { 'FindAndReplace' },
@@ -324,30 +304,30 @@ return packer.startup(function()
 			)
 			require('rf.utils').nnoremap('<leader>fr', [[:FindAndReplace<CR>]])
 		end,
-	})
+	},
 
-	use({
+	{
 		'kkoomen/vim-doge',
 		run = ':call doge#install()',
 		cmd = { 'DogeGenerate', 'DogeCreateDocStandard' },
 		config = function()
 			require('rf.plugins.doge')
 		end,
-	})
+	},
 
-	use({
+	{
 		'folke/which-key.nvim',
 		config = function()
 			require('rf.plugins.which-key')
 		end,
-	})
+	},
 
-	use({
+	{
 		'akinsho/toggleterm.nvim',
 		config = function()
 			require('rf.plugins.toggleterm')
 		end,
-	})
+	},
 
 	-- use({
 	-- 	'karb94/neoscroll.nvim',
@@ -358,30 +338,28 @@ return packer.startup(function()
 
 	-- use('antoinemadec/FixCursorHold.nvim') -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
 
-	use({ 'tpope/vim-eunuch', event = { 'BufRead', 'BufNewFile' } })
-	use({ 'duggiefresh/vim-easydir', event = { 'BufRead', 'BufNewFile' } })
-	use({ 'machakann/vim-sandwich', event = { 'BufRead', 'BufNewFile' } })
-	use({ 'tpope/vim-commentary', event = { 'BufRead', 'BufNewFile' } })
-	use({ 'tpope/vim-abolish', event = { 'BufRead', 'BufNewFile' } })
-	use({ 'whiteinge/diffconflicts', cmd = 'DiffConflicts' })
-	use('Pocco81/TrueZen.nvim')
-	use({ 'wellle/targets.vim', event = 'BufEnter' })
-	use({
+	{ 'tpope/vim-eunuch', event = { 'BufRead', 'BufNewFile' } },
+	{ 'duggiefresh/vim-easydir', event = { 'BufRead', 'BufNewFile' } },
+	{ 'machakann/vim-sandwich', event = { 'BufRead', 'BufNewFile' } },
+	{ 'tpope/vim-commentary', event = { 'BufRead', 'BufNewFile' } },
+	{ 'tpope/vim-abolish', event = { 'BufRead', 'BufNewFile' } },
+	{ 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
+	'Pocco81/TrueZen.nvim',
+	{ 'wellle/targets.vim', event = 'BufEnter' },
+	{
 		'mfussenegger/nvim-dap',
 		run = ':helptags ALL',
 		requires = { 'David-Kunz/jester' },
 		config = function()
 			require('rf.plugins.dap')
 		end,
-	})
-	use({
+	},
+	{
 		'sindrets/winshift.nvim',
 		config = function()
 			require('rf.plugins.winshift')
 		end,
-	})
-	use('editorconfig/editorconfig-vim')
-	use({
-		'L3MON4D3/LuaSnip',
-	})
-end)
+	},
+	'editorconfig/editorconfig-vim',
+	'L3MON4D3/LuaSnip',
+}
