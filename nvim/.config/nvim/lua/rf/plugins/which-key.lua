@@ -11,10 +11,30 @@ wk.setup({
 	operators = { gc = 'Comments' },
 })
 
+local function get_module_name(s)
+	local module_name
+
+	module_name = s:gsub('%.lua', '')
+	module_name = module_name:gsub('%/', '.')
+	module_name = module_name:gsub('%.init', '')
+
+	return module_name
+end
+
 local function searchDotfiles()
 	require('telescope.builtin').git_files({
 		cwd = '~/dotfiles',
 		prompt_title = '~ Dotfiles ~',
+		attach_mappings = function(_, map)
+			map('i', '<c-e>', function()
+				-- these two a very self-explanatory
+				local entry = require('telescope.actions.state').get_selected_entry()
+				local name = get_module_name(entry.value)
+
+				reloadConfig(name)
+			end)
+			return true
+		end,
 	})
 end
 
@@ -74,6 +94,7 @@ local leader = {
 			'Open Kitty Config',
 		},
 		f = { ':e ~/dotfiles/fish/.config/fish/config.fish<CR>', 'Open Fish Config' },
+		r = { reloadConfig, 'Reload Configuration' },
 		p = {
 			name = 'Plugins',
 			p = { '<cmd>PackerSync<cr>', 'Sync' },

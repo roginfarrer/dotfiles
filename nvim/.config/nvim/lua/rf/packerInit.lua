@@ -30,7 +30,7 @@ if not present then
 	end
 end
 
-vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
+vim.cmd([[autocmd BufWritePost nvim/* source <afile> | PackerCompile]])
 
 return packer.init({
 	auto_clean = true,

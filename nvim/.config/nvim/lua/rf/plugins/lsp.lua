@@ -1,4 +1,4 @@
-local u = require('utils')
+local u = require('rf.utils')
 local lspconfig = require('lspconfig')
 local lspinstall = require('lspinstall')
 local lspstatus = require('lsp-status')
@@ -23,6 +23,16 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 		underline = true,
 		signs = true,
 		virtual_text = false,
+	}
+)
+
+lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+	border = 'single',
+})
+lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+	vim.lsp.handlers.signature_help,
+	{
+		border = 'single',
 	}
 )
 
@@ -141,6 +151,15 @@ local function on_attach(client)
 	wk.register(leader, { prefix = '<leader>' })
 	wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
+	local function showDocs()
+		print('hello')
+		if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
+			vim.fn.execute('h ' .. vim.fn.expand('<cword>'))
+		else
+			vim.fn.execute('LspHover')
+		end
+	end
+
 	buf_nnoremap('gd', ':LspGoToDefinition<CR>')
 	buf_nnoremap('gD', ':LspGoToDeclaration<CR>')
 	buf_nnoremap('gi', ':LspImplementations<CR>')
@@ -148,7 +167,7 @@ local function on_attach(client)
 	buf_nnoremap('gs', ':LspSignatureHelp<CR>')
 	buf_nnoremap('[g', ':LspPrevDiagnostic<CR>')
 	buf_nnoremap(']g', ':LspNextDiagnostic<CR>')
-	buf_nnoremap('K', ':LspHover<CR>')
+	buf_nnoremap('K', showDocs)
 
 	if client.resolved_capabilities.document_formatting then
 		vim.cmd('autocmd BufWritePre <buffer> FormatSync')
@@ -253,9 +272,9 @@ local function setup_servers()
 						eslint_bin = 'eslint_d',
 						eslint_opts = {
 							condition = function(utils)
-								return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
-									'.eslintrc'
-								) or utils.root_has_file('.eslintrc.json')
+								return utils.root_has_file('.eslintrc.js')
+									or utils.root_has_file('.eslintrc')
+									or utils.root_has_file('.eslintrc.json')
 							end,
 							diagnostics_format = '#{m} [#{c}]',
 						},

@@ -1,5 +1,5 @@
 local npairs = require('nvim-autopairs')
-local u = require('utils')
+local u = require('rf.utils')
 
 if isPackageLoaded('nvim-cmp') then
 	npairs.setup({

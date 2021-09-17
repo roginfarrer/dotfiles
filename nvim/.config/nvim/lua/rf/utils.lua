@@ -7,6 +7,17 @@ _G.isPackageLoaded = function(package)
 	return packer_plugins[package] and packer_plugins[package].loaded
 end
 
+_G.reloadConfig = function()
+	-- https://neovim.discourse.group/t/reload-init-lua-and-all-require-d-scripts/971/11
+	for name, _ in pairs(package.loaded) do
+		if name:match('^rf') then
+			package.loaded[name] = nil
+		end
+	end
+
+	dofile(vim.env.MYVIMRC)
+end
+
 local M = {}
 
 M.functions = {}
@@ -30,9 +41,9 @@ local function map(mode, key, cmd, opts, defaults)
 	if type(cmd) == 'function' then
 		table.insert(M.functions, cmd)
 		if opts.expr then
-			cmd = ([[luaeval('require("utils").execute(%d)')]]):format(#M.functions)
+			cmd = ([[luaeval('require("rf.utils").execute(%d)')]]):format(#M.functions)
 		else
-			cmd = ("<cmd>lua require('utils').execute(%d)<cr>"):format(#M.functions)
+			cmd = ("<cmd>lua require('rf.utils').execute(%d)<cr>"):format(#M.functions)
 		end
 	end
 	if opts.buffer ~= nil then

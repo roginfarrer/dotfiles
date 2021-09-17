@@ -7,7 +7,7 @@ vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
 
 local use_nvim_lsp = vim.g.use_nvim_lsp == true
 
-local present, _ = pcall(require, 'packerInit')
+local present, _ = pcall(require, 'rf.packerInit')
 local packer
 
 if present then
@@ -28,7 +28,7 @@ return packer.startup(function()
 	use({
 		'neovim/nvim-lspconfig',
 		config = function()
-			require('plugins.lsp')
+			require('rf.plugins.lsp')
 		end,
 		requires = {
 			'kabouzeid/nvim-lspinstall',
@@ -42,7 +42,7 @@ return packer.startup(function()
 		branch = 'release',
 		disable = use_nvim_lsp,
 		config = function()
-			require('plugins.coc')
+			require('rf.plugins.coc')
 		end,
 	})
 
@@ -51,7 +51,7 @@ return packer.startup(function()
 		requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
 		config = function()
 			if not use_nvim_lsp then
-				require('plugins.null-ls')
+				require('rf.plugins.null-ls')
 			end
 		end,
 	})
@@ -93,7 +93,7 @@ return packer.startup(function()
 			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
 		},
 		setup = function()
-			require('plugins.coq')
+			require('rf.plugins.coq')
 		end,
 	})
 
@@ -108,7 +108,7 @@ return packer.startup(function()
 			{ 'hrsh7th/cmp-path', after = 'nvim-cmp' },
 		},
 		config = function()
-			require('plugins.cmp')
+			require('rf.plugins.cmp')
 		end,
 	})
 
@@ -142,7 +142,7 @@ return packer.startup(function()
 			'kyazdani42/nvim-web-devicons',
 		},
 		config = function()
-			require('plugins.lualine')
+			require('rf.plugins.lualine')
 		end,
 	})
 
@@ -150,14 +150,14 @@ return packer.startup(function()
 		'mhinz/vim-startify',
 		disable = true,
 		config = function()
-			require('plugins.startify')
+			require('rf.plugins.startify')
 		end,
 	})
 
 	use({
 		'glepnir/dashboard-nvim',
 		setup = function()
-			require('plugins.dashboard')
+			require('rf.plugins.dashboard')
 		end,
 	})
 
@@ -165,7 +165,7 @@ return packer.startup(function()
 		'nvim-treesitter/nvim-treesitter',
 		run = ':TSUpdate',
 		config = function()
-			require('plugins.treesitter')
+			require('rf.plugins.treesitter')
 		end,
 		requires = { 'nvim-treesitter/nvim-treesitter-textobjects' },
 	})
@@ -173,7 +173,7 @@ return packer.startup(function()
 	use({
 		'windwp/nvim-autopairs',
 		config = function()
-			require('plugins.autopairs')
+			require('rf.plugins.autopairs')
 		end,
 	})
 
@@ -181,14 +181,14 @@ return packer.startup(function()
 		'vim-test/vim-test',
 		cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
 		config = function()
-			require('plugins.vim-test')
+			require('rf.plugins.vim-test')
 		end,
 	})
 
 	use({
 		'nvim-telescope/telescope.nvim',
 		config = function()
-			require('plugins.telescope')
+			require('rf.plugins.telescope')
 		end,
 		requires = {
 			'nvim-lua/plenary.nvim',
@@ -211,7 +211,7 @@ return packer.startup(function()
 			'tamago324/lir-git-status.nvim',
 		},
 		config = function()
-			require('plugins.lir')
+			require('rf.plugins.lir')
 		end,
 	})
 
@@ -219,7 +219,7 @@ return packer.startup(function()
 		'ruifm/gitlinker.nvim',
 		requires = 'nvim-lua/plenary.nvim',
 		config = function()
-			require('plugins.gitlinker')
+			require('rf.plugins.gitlinker')
 		end,
 	})
 
@@ -249,7 +249,7 @@ return packer.startup(function()
 			'nvim-lua/plenary.nvim',
 		},
 		config = function()
-			require('plugins.gitsigns')
+			require('rf.plugins.gitsigns')
 		end,
 	})
 
@@ -290,7 +290,7 @@ return packer.startup(function()
 		-- event = { 'BufRead', 'BufNewFile' },
 		ft = 'markdown',
 		config = function()
-			require('plugins.polyglot')
+			require('rf.plugins.polyglot')
 		end,
 	})
 
@@ -302,7 +302,7 @@ return packer.startup(function()
 	use({
 		'folke/tokyonight.nvim',
 		config = function()
-			require('theme')
+			require('rf.theme')
 		end,
 	})
 	use('shaunsingh/nord.nvim')
@@ -310,7 +310,7 @@ return packer.startup(function()
 	use({
 		'EdenEast/nightfox.nvim',
 		config = function()
-			require('theme')
+			require('rf.theme')
 		end,
 	})
 
@@ -322,7 +322,7 @@ return packer.startup(function()
 			vim.cmd(
 				[[command! FindAndReplace lua require('spectre').open({is_insert_mode = true})]]
 			)
-			require('utils').nnoremap('<leader>fr', [[:FindAndReplace<CR>]])
+			require('rf.utils').nnoremap('<leader>fr', [[:FindAndReplace<CR>]])
 		end,
 	})
 
@@ -331,28 +331,28 @@ return packer.startup(function()
 		run = ':call doge#install()',
 		cmd = { 'DogeGenerate', 'DogeCreateDocStandard' },
 		config = function()
-			require('plugins.doge')
+			require('rf.plugins.doge')
 		end,
 	})
 
 	use({
 		'folke/which-key.nvim',
 		config = function()
-			require('plugins.which-key')
+			require('rf.plugins.which-key')
 		end,
 	})
 
 	use({
 		'akinsho/toggleterm.nvim',
 		config = function()
-			require('plugins.toggleterm')
+			require('rf.plugins.toggleterm')
 		end,
 	})
 
 	-- use({
 	-- 	'karb94/neoscroll.nvim',
 	-- 	config = function()
-	-- 		require('neoscroll').setup()
+	-- 		require('rf.neoscroll').setup()
 	-- 	end,
 	-- })
 
@@ -371,20 +371,17 @@ return packer.startup(function()
 		run = ':helptags ALL',
 		requires = { 'David-Kunz/jester' },
 		config = function()
-			require('plugins.dap')
+			require('rf.plugins.dap')
 		end,
 	})
 	use({
 		'sindrets/winshift.nvim',
 		config = function()
-			require('plugins.winshift')
+			require('rf.plugins.winshift')
 		end,
 	})
 	use('editorconfig/editorconfig-vim')
 	use({
 		'L3MON4D3/LuaSnip',
-		config = function()
-			require('plugins.luasnip')
-		end,
 	})
 end)

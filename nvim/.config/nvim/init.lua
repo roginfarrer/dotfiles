@@ -6,7 +6,7 @@ _G.global = {}
 -- Safely require it, in case it doesn't exist
 pcall(require, 'local-config')
 
-require('pluginList')
+require('rf.pluginList')
 
 local disabled_built_ins = {
 	'netrw',
@@ -31,8 +31,4 @@ local disabled_built_ins = {
 
 for _, plugin in pairs(disabled_built_ins) do
 	vim.g['loaded_' .. plugin] = 1
-end
-
-local function openUrl(url)
-	vim.fn.execute('silent !open ' .. url)
 end

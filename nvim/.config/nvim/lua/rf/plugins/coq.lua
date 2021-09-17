@@ -1,4 +1,4 @@
-local u = require('utils')
+local u = require('rf.utils')
 
 vim.g.coq_settings = {
 	['auto_start'] = 'shut-up',
@@ -6,7 +6,6 @@ vim.g.coq_settings = {
 		recommended = false,
 		bigger_preview = '',
 		jump_to_mark = '',
-		eval_snips = '<leader>j',
 	},
 }
 
