@@ -33,8 +33,8 @@ nmap <C-l> <C-W>l
 
 " newline without insert
 nmap <CR> o<Esc>"_cc<Esc>
-nnoremap <leader>o o<Esc>"_cc<Esc>
-nnoremap <leader>O O<Esc>"_cc<Esc>
+" nnoremap <leader>o o<Esc>"_cc<Esc>
+" nnoremap <leader>O O<Esc>"_cc<Esc>
 " Go to last buffer
 nmap <BS> :e #<CR>
 
@@ -67,18 +67,6 @@ tnoremap <C-h> <C-\><C-n><C-W>h
 tnoremap <C-j> <C-\><C-n><C-W>j
 tnoremap <C-k> <C-\><C-n><C-W>k
 tnoremap <C-l> <C-\><C-n><C-W>l
-
-" Center the cursor on navigation operations
-" nnoremap {  {zz
-" nnoremap }  }zz
-" nnoremap n  nzz
-" nnoremap N  Nzz
-" nnoremap ]c ]czz
-" nnoremap [c [czz
-" nnoremap [j <C-o>zz
-" nnoremap ]j <C-i>zz
-" nnoremap ]s ]szz
-" nnoremap [s [szz
 
 " Preserve visual selection with indentation
 vnoremap < <gv

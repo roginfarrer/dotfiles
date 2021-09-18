@@ -21,7 +21,7 @@ nmap <silent> <C--> :call AdjustFontSize(-1)<CR>
 nmap <silent> <D-=> :call AdjustFontSize(1)<CR>
 nmap <silent> <D--> :call AdjustFontSize(-1)<CR>
 
-if exists(":GuiRenderLigatures")
+if exists(':GuiRenderLigatures')
   GuiRenderLigatures 1
 endif
 

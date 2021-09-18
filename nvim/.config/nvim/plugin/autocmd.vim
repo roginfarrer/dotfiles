@@ -20,3 +20,5 @@ autocmd Vimrc UIEnter * let g:gui_running = 1 | source $HOME/.config/nvim/gui.vi
 " Make the default filetype markdown
 " Will apply to filenames that don't have an extension
 autocmd Vimrc BufNewFile,BufRead * if expand('%:t') !~ '\.' | setlocal ft=markdown | endif
+
+autocmd Vimrc BufNewFile,BufRead *eslintrc,*prettierrc setlocal ft=json
