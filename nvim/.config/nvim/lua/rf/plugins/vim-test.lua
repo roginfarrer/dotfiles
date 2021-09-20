@@ -14,6 +14,7 @@ vim.api.nvim_exec(
 vim.g['test#strategy'] = 'toggleterm'
 
 local function getJestTestCmd()
+	print('runs')
 	local lsputil = require('lspconfig.util')
 	local path = lsputil.path
 
@@ -39,6 +40,7 @@ local function getJestTestCmd()
 		local pathHasLockFile = path.exists(
 			path.join(cwd, pkgJsonParentDir, 'yarn.lock')
 		) or path.exists(path.join(cwd, pkgJsonParentDir, 'package-lock.json'))
+		local isMonorepo = not pathHasLockFile
 		-- Check whether or not the working directory is using yarn
 		local hasYarn = path.exists(path.join(cwd, 'yarn.lock'))
 		local run = hasYarn and 'yarn' or 'npm run'
@@ -48,10 +50,15 @@ local function getJestTestCmd()
 
 		-- What we're expecting the script command to be
 		local expectedTestCmd = 'test'
-		local testCmd = jsonTable.scripts[expectedTestCmd]
+		local testCmd = jsonTable
+				and jsonTable.scripts
+				and jsonTable.scripts[expectedTestCmd]
+			or nil
 
-		cmd = pathHasLockFile and testCmd
-			or run .. ' --cwd ' .. pkgJsonParentDir .. ' ' .. testCmd
+		if testCmd ~= nil then
+			cmd = isMonorepo and run .. ' --cwd ' .. pkgJsonParentDir .. ' ' .. testCmd
+				or testCmd
+		end
 
 		io.close(file)
 	end
@@ -60,12 +67,13 @@ local function getJestTestCmd()
 end
 
 _G.setJestCmd = function()
-	vim.g['test#javascript#jest#executable'] = getJestTestCmd()
+	vim.b.jest_test_cmd = vim.b.jest_test_cmd or getJestTestCmd()
+	vim.g['test#javascript#jest#executable'] = vim.b.jest_test_cmd
 end
 
 vim.cmd([[
   augroup test
     autocmd!
-    autocmd BufEnter *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
+    autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
   augroup END
 ]])
