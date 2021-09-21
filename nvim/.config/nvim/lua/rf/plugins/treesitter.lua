@@ -12,26 +12,19 @@ require('nvim-treesitter.configs').setup({
 		'regex',
 		'php',
 		'graphql',
+		'vim',
+		'swift',
+		'kotlin',
+		'svelte',
+		'vue',
+		'scss',
 	},
-	indent = {
-		enable = true,
-	},
+	indent = { enable = true },
 	highlight = {
 		enable = true,
 		use_languagetree = true,
 	},
-	context_commentstring = {
-		enable = true,
-	},
-	-- incremental_selection = {
-	-- 	enable = true,
-	-- 	keymaps = {
-	-- 		init_selection = 'gnn',
-	-- 		node_incremental = 'grn',
-	-- 		scope_incremental = 'grc',
-	-- 		node_decremental = 'grm',
-	-- 	},
-	-- },
+	context_commentstring = { enable = true },
 	autopairs = {
 		enable = true,
 	},
@@ -52,13 +45,17 @@ require('nvim-treesitter.configs').setup({
 				-- You can use the capture groups defined in textobjects.scm
 				['ab'] = '@block.outer',
 				['af'] = '@function.outer',
-				['ac'] = '@conditional.outer',
+				['aC'] = '@conditional.outer',
+				['ac'] = '@comment.outer',
 				['as'] = '@statement.outer',
+				['am'] = '@call.outer',
 
 				['ib'] = '@block.inner',
 				['if'] = '@function.inner',
-				['ic'] = '@conditional.inner',
-				['is'] = '@statement.outer',
+				['iC'] = '@conditional.inner',
+				['ic'] = '@comment.inner',
+				['is'] = '@statement.inner',
+				['im'] = '@call.inner',
 			},
 		},
 		move = {

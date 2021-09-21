@@ -8,6 +8,8 @@ return {
 		rocks = 'mpack',
 	},
 
+	'antoinemadec/FixCursorHold.nvim', -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+
 	{
 		'neovim/nvim-lspconfig',
 		config = function()
@@ -337,7 +339,12 @@ return {
 	-- 	end,
 	-- })
 
-	-- use('antoinemadec/FixCursorHold.nvim') -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+	{
+		'IndianBoy42/hop.nvim',
+		requires = { 'nvim-treesitter' },
+		as = 'hop',
+		config = [[require('rf.plugins.hop')]],
+	},
 
 	{ 'tpope/vim-eunuch', event = { 'BufRead', 'BufNewFile' } },
 	{ 'duggiefresh/vim-easydir', event = { 'BufRead', 'BufNewFile' } },

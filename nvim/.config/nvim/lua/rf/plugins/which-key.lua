@@ -6,35 +6,28 @@ wk.setup({
 		spelling = {
 			enabled = true,
 		},
+		presets = { operators = false },
 	},
-	key_labels = { ['<leader>'] = 'SPC' },
-	operators = { gc = 'Comments' },
+	key_labels = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
+	operators = {
+		d = 'Delete',
+		c = 'Change',
+		y = 'Yank',
+		['g~'] = 'Toggle case',
+		['gu'] = 'Lowercase',
+		['gU'] = 'Uppercase',
+		v = 'Visual Character Mode',
+		gc = 'Comments',
+		sa = 'Sandwich Add',
+		sd = 'Sandwich Delete',
+		sr = 'Sandwich Replace',
+	},
 })
-
-local function get_module_name(s)
-	local module_name
-
-	module_name = s:gsub('%.lua', '')
-	module_name = module_name:gsub('%/', '.')
-	module_name = module_name:gsub('%.init', '')
-
-	return module_name
-end
 
 local function searchDotfiles()
 	require('telescope.builtin').git_files({
 		cwd = '~/dotfiles',
 		prompt_title = '~ Dotfiles ~',
-		attach_mappings = function(_, map)
-			map('i', '<c-e>', function()
-				-- these two a very self-explanatory
-				local entry = require('telescope.actions.state').get_selected_entry()
-				local name = get_module_name(entry.value)
-
-				reloadConfig(name)
-			end)
-			return true
-		end,
 	})
 end
 
@@ -43,6 +36,8 @@ local leader = {
 	q = { ':q<cr>', 'Quit' },
 	w = { ':w<CR>', 'Save' },
 	x = { ':wq<cr>', 'Save and Quit' },
+	a = { 'Swap next function paramater' },
+	A = { 'Swap previous function parameter' },
 	[' '] = 'which_key_ignore',
 	y = 'which_key_ignore',
 	Y = 'which_key_ignore',
@@ -188,4 +183,54 @@ wk.register({
 	['<C-g>'] = { ':TestVisit<CR>' },
 }, {
 	prefix = 't',
+})
+
+local hop = require('hop')
+local s = {
+	s = {
+		a = { 'Sandwich Add' },
+		d = { 'Sandwich Delete' },
+		r = { 'Sandwich Replace' },
+		s = { hop.hint_char2, 'Hop to 2 Chars' },
+		l = { hop.hint_lines, 'Hop Lines' },
+		['/'] = { hop.hint_patterns, 'Hop to Pattern' },
+	},
+}
+wk.register(s, { mode = 'n' })
+wk.register(s, { mode = 'o' })
+wk.register(s, { mode = 'x' })
+
+local textobjs = {
+	a = {
+		b = 'a code block (treesitter)',
+		f = 'a function block (treesitter)',
+		C = 'a conditional block (treesitter)',
+		c = 'a comment block (treesitter)',
+		s = 'a statement block (treesitter)',
+		m = 'a call block (treesitter)',
+	},
+	i = {
+		b = 'inside code block (treesitter)',
+		f = 'inside function block (treesitter)',
+		C = 'inside conditional block (treesitter)',
+		c = 'inside comment block (treesitter)',
+		s = 'inside statement block (treesitter)',
+		m = 'inside call block (treesitter)',
+	},
+}
+
+wk.register(textobjs, { mode = 'o' })
+wk.register(textobjs, { mode = 'x' })
+
+wk.register({
+	['[g'] = 'Go to previous diagnostic',
+	[']g'] = 'Go to next diagnostic',
+	[']m'] = 'Go to beginning of next function',
+	[']]'] = 'Go to beginning of next class',
+	[']M'] = 'Go to end of next function',
+	[']['] = 'Go to end of next class',
+	['[m'] = 'Go to beginning of previous function',
+	['[['] = 'Go to end of previous class',
+	['[M'] = 'Go to end of previous function',
+	['[]'] = 'Go to end of previous class',
 })
