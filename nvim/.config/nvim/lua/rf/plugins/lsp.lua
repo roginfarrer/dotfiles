@@ -5,6 +5,7 @@ local lspstatus = require('lsp-status')
 local wk = require('which-key')
 
 local lsp = vim.lsp
+local handlers = lsp.handlers
 local cmd = vim.cmd
 
 lspstatus.register_progress()
@@ -17,7 +18,13 @@ local function buf_nnoremap(keys, command)
 	return u.nnoremap(keys, command, { buffer = true })
 end
 
-lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
+local pop_opts = { border = 'rounded', max_width = 80 }
+handlers['textDocument/hover'] = lsp.with(handlers.hover, pop_opts)
+handlers['textDocument/signatureHelp'] = lsp.with(
+	handlers.signature_help,
+	pop_opts
+)
+handlers['textDocument/publishDiagnostics'] = lsp.with(
 	lsp.diagnostic.on_publish_diagnostics,
 	{
 		underline = true,
@@ -110,6 +117,8 @@ local function on_attach(client)
 
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
+	lsp.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
+
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
 	cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
 	cmd('command! LspHover lua vim.lsp.buf.hover()')
@@ -120,8 +129,8 @@ local function on_attach(client)
 	cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
 	cmd('command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()')
 	cmd('command! LspReferences lua vim.lsp.buf.references()')
-	cmd('command! LspPrevDiagnostic lua vim.lsp.diagnostic.goto_prev()')
-	cmd('command! LspNextDiagnostic lua vim.lsp.diagnostic.goto_next()')
+	cmd('command! LspPrevDiagnostic lua vim.lsp.diagnostic.goto_prev({popup_opts = {focusable=false,border="rounded"}})')
+	cmd('command! LspNextDiagnostic lua vim.lsp.diagnostic.goto_next({popup_opts = {focusable=false,border="rounded"}})')
 	cmd('command! Format lua vim.lsp.buf.formatting()')
 	cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
 
@@ -271,9 +280,9 @@ local function setup_servers()
 						eslint_bin = 'eslint_d',
 						eslint_opts = {
 							condition = function(utils)
-								return utils.root_has_file('.eslintrc.js')
-									or utils.root_has_file('.eslintrc')
-									or utils.root_has_file('.eslintrc.json')
+								return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
+									'.eslintrc'
+								) or utils.root_has_file('.eslintrc.json')
 							end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
@@ -294,13 +303,13 @@ local function setup_servers()
 					wk.register(leader, { prefix = '<leader>', buffer = bufnr })
 				end,
 			}
-      elseif lang == 'json' then
+		elseif lang == 'json' then
 			config.json = {
 				on_attach = function(client)
-          on_attach(client)
-          client.resolved_capabilities.document_formatting = false
-          client.resolved_capabilities.document_range_formatting = false
-        end,
+					on_attach(client)
+					client.resolved_capabilities.document_formatting = false
+					client.resolved_capabilities.document_range_formatting = false
+				end,
 				capabilities = capabilities,
 			}
 		else

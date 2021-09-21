@@ -66,6 +66,6 @@ end
 vim.cmd([[
   augroup test
     autocmd!
-    autocmd BufEnter *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
+    autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
   augroup END
 ]])
