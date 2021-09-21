@@ -1,2 +1,1 @@
-au BufRead,BufNewFile *.conf setfiletype config
-au BufRead,BufNewFile Brewfile setfiletype bash
+au BufRead,BufNewFile *.conf set filetype=config
