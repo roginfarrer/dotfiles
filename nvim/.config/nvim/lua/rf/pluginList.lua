@@ -161,7 +161,7 @@ return {
 
 	{
 		'vim-test/vim-test',
-		rocks = { 'lunajson' },
+		rocks = 'lunajson',
 		-- cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
 		config = function()
 			require('rf.plugins.vim-test')

@@ -36,7 +36,7 @@ nmap <CR> o<Esc>"_cc<Esc>
 " nnoremap <leader>o o<Esc>"_cc<Esc>
 " nnoremap <leader>O O<Esc>"_cc<Esc>
 " Go to last buffer
-nmap <BS> :e #<CR>
+nmap <BS> <C-^>
 
 " If you like long lines with line wrapping enabled, this solves the problem
 " that pressing down jumpes your cursor “over” the current line to the next

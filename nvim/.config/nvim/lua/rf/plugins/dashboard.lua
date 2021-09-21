@@ -25,7 +25,7 @@ vim.g.dashboard_custom_footer = {
 vim.g.dashboard_custom_section = {
 	a = {
 		description = { '  Dotfiles                  SPC f d' },
-		command = 'e ~/dotfiles/nvim/.config/nvim/lua/pluginList.lua',
+		command = 'e ~/dotfiles/nvim/.config/nvim/lua/rf/pluginList.lua',
 	},
 	b = {
 		description = { '  Project File              SPC f p' },
