@@ -17,7 +17,7 @@ return {
 		end,
 		requires = {
 			'kabouzeid/nvim-lspinstall',
-			-- 'hrsh7th/cmp-nvim-lsp',
+			'hrsh7th/cmp-nvim-lsp',
 		},
 	},
 
@@ -72,7 +72,7 @@ return {
 	{
 		'ms-jpq/coq_nvim',
 		branch = 'coq',
-		-- disable = true,
+		disable = true,
 		requires = {
 			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
 		},
@@ -83,11 +83,12 @@ return {
 
 	{
 		'hrsh7th/nvim-cmp',
-		disable = true,
+		-- disable = true,
 		-- event = 'InsertEnter',
 		requires = {
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
+			{ 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
 			{ 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
 			{ 'hrsh7th/cmp-path', after = 'nvim-cmp' },
 		},
@@ -369,5 +370,10 @@ return {
 		end,
 	},
 	'editorconfig/editorconfig-vim',
-	'L3MON4D3/LuaSnip',
+	{
+		'L3MON4D3/LuaSnip',
+		config = function()
+			require('rf.plugins.luasnip')
+		end,
+	},
 }
