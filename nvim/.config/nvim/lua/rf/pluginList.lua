@@ -113,6 +113,7 @@ return {
 
 	{
 		'vuki656/package-info.nvim',
+		disable = true,
 		requires = 'MunifTanjim/nui.nvim',
 		ft = 'json',
 		config = function()
@@ -164,8 +165,8 @@ return {
 
 	{
 		'vim-test/vim-test',
-		rocks = 'lunajson',
 		-- cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
+		rocks = 'lunajson',
 		config = function()
 			require('rf.plugins.vim-test')
 		end,
@@ -190,7 +191,7 @@ return {
 
 	{
 		'tamago324/lir.nvim',
-		event = { 'BufRead', 'BufNewFile' },
+		-- event = { 'BufRead', 'BufNewFile' },
 		requires = {
 			'nvim-lua/plenary.nvim',
 			'kyazdani42/nvim-web-devicons',
@@ -301,7 +302,7 @@ return {
 	{
 		'windwp/nvim-spectre',
 		requires = { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim' },
-		cmd = { 'FindAndReplace' },
+		-- cmd = { 'FindAndReplace' },
 		setup = function()
 			vim.cmd(
 				[[command! FindAndReplace lua require('spectre').open({is_insert_mode = true})]]
@@ -333,12 +334,12 @@ return {
 		end,
 	},
 
-	-- use({
-	-- 	'karb94/neoscroll.nvim',
-	-- 	config = function()
-	-- 		require('rf.neoscroll').setup()
-	-- 	end,
-	-- })
+	{
+		'karb94/neoscroll.nvim',
+		config = function()
+			require('neoscroll').setup()
+		end,
+	},
 
 	{
 		'IndianBoy42/hop.nvim',
