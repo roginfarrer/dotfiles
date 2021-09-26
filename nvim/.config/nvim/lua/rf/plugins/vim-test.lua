@@ -1,20 +1,22 @@
 vim.g['test#javascript#runner'] = 'jest'
 
-vim.api.nvim_exec(
-	[[
+vim.cmd([[
   function! ToggleTermStrategy(cmd) abort
-    execute "lua require('toggleterm').exec('" . a:cmd . "', 1)"
+    call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
   endfunction
 
   let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
-]],
-	false
-)
+]])
+
+-- local function toggleTermStrategy(cmd)
+-- 	require('toggleterm').exec(cmd, 1)
+-- end
+
+-- vim.g['test#custom_strategies'] = { toggleterm = toggleTermStrategy }
 
 vim.g['test#strategy'] = 'toggleterm'
 
 local function getJestTestCmd()
-	print('runs')
 	local lsputil = require('lspconfig.util')
 	local path = lsputil.path
 
@@ -28,6 +30,11 @@ local function getJestTestCmd()
 	local pkgJsonParentDir = lsputil.find_package_json_ancestor(
 		currentBufferFilePath
 	)
+
+	if not pkgJsonParentDir then
+		return cmd
+	end
+
 	local pkgJsonPath = path.join(cwd, pkgJsonParentDir, 'package.json')
 
 	local file = io.open(pkgJsonPath, 'r')
@@ -46,7 +53,7 @@ local function getJestTestCmd()
 		local run = hasYarn and 'yarn' or 'npm run'
 
 		local fileContents = file:read('*a')
-		local jsonTable = require('lunajson').decode(fileContents)
+		local jsonTable = vim.fn.json_decode(fileContents)
 
 		-- What we're expecting the script command to be
 		local expectedTestCmd = 'test'
@@ -65,6 +72,8 @@ local function getJestTestCmd()
 
 	return cmd
 end
+
+_G.getJestTestCmd = getJestTestCmd
 
 _G.setJestCmd = function()
 	vim.b.jest_test_cmd = vim.b.jest_test_cmd or getJestTestCmd()

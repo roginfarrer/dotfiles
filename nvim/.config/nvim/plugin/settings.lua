@@ -39,6 +39,9 @@ vim.o.wildmode = 'longest,full'
 vim.o.wildoptions = 'pum'
 
 vim.g.python3_host_prog = '/usr/local/bin/python3'
+-- vim.g.node_host_prog = vim.fn.expand(
+-- 	'$HOME/.fnm/aliases/default/bin/neovim-node-host'
+-- )
 
 -- https://github.com/mhinz/neovim-remote
 if vim.fn.executable('nvr') then
