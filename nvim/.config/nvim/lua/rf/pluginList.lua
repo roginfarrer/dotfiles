@@ -99,6 +99,8 @@ return {
 
 	{ 'nvim-lua/lsp-status.nvim', disable = not use_nvim_lsp },
 
+	-- { 'tami5/lspsaga.nvim', disable = not use_nvim_lsp },
+
 	---
 	-- End LSP
 	---
@@ -336,9 +338,15 @@ return {
 
 	{
 		'karb94/neoscroll.nvim',
+		disable = true,
 		config = function()
 			require('neoscroll').setup()
 		end,
+	},
+
+	{
+		'weilbith/nvim-code-action-menu',
+		cmd = 'CodeActionMenu',
 	},
 
 	{

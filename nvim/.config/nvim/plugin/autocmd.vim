@@ -22,5 +22,28 @@ augroup Vimrc
   " autocmd BufNewFile,BufRead * if expand('%:t') !~ '\.' | set ft=markdown | endif
 
   autocmd BufNewFile,BufRead *eslintrc,*prettierrc set ft=json
+
+  au ColorScheme * 
+        \ hi! link DiagnosticUnderlineError LspDiagnosticsUnderlineError  |
+        \ hi! link DiagnosticUnderlineHint LspDiagnosticsUnderlineHint |
+        \ hi! link DiagnosticUnderlineWarning LspDiagnosticsUnderlineWarning |
+ 
+        \ hi! link DiagnosticError LspDiagnosticsError  |
+        \ hi! link DiagnosticHint LspDiagnosticsHint |
+        \ hi! link DiagnosticInformation LspDiagnosticsInformation |
+        \ hi! link DiagnosticWarning LspDiagnosticsWarning |
+
+        \ hi! link DiagnosticsDefaultError           LspDiagnosticsDefaultError  |
+        \ hi! link DiagnosticsDefaultWarning         LspDiagnosticsDefaultWarning  |
+        \ hi! link DiagnosticsDefaultInformation     LspDiagnosticsDefaultInformation  |
+        \ hi! link DiagnosticsDefaultHint            LspDiagnosticsDefaultHint  |
+        \ hi! link DiagnosticsVirtualTextError       LspDiagnosticsVirtualTextError  |
+        \ hi! link DiagnosticsVirtualTextWarning     LspDiagnosticsVirtualTextWarning  |
+        \ hi! link DiagnosticsVirtualTextInformation LspDiagnosticsVirtualTextInformation  |
+        \ hi! link DiagnosticsVirtualTextHint        LspDiagnosticsVirtualTextHint  |
+        \ hi! link DiagnosticsUnderlineInformation   LspDiagnosticsUnderlineInformation |
+       " " \ highlight! NormalFloat guibg=#1f2335 |
+       " " \ highlight! FloatBorder guifg=white guibg=#1f2335
+        "\ hi! FloatBorder guibg=#131a24
 augroup END
 

@@ -18,7 +18,20 @@ local function buf_nnoremap(keys, command)
 	return u.nnoremap(keys, command, { buffer = true })
 end
 
-local pop_opts = { border = 'rounded', max_width = 80 }
+-- local pop_opts = { border = 'rounded', max_width = 80 }
+local pop_opts = {
+	border = {
+		{ '🭽', 'FloatBorder' },
+		{ '▔', 'FloatBorder' },
+		{ '🭾', 'FloatBorder' },
+		{ '▕', 'FloatBorder' },
+		{ '🭿', 'FloatBorder' },
+		{ '▁', 'FloatBorder' },
+		{ '🭼', 'FloatBorder' },
+		{ '▏', 'FloatBorder' },
+	},
+	max_width = 80,
+}
 handlers['textDocument/hover'] = lsp.with(handlers.hover, pop_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
 	handlers.signature_help,
@@ -33,14 +46,9 @@ handlers['textDocument/publishDiagnostics'] = lsp.with(
 	}
 )
 
-lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = 'single',
-})
-lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-	vim.lsp.handlers.signature_help,
-	{
-		border = 'single',
-	}
+vim.cmd([[highlight NormalFloat guibg=#131A24]])
+vim.cmd(
+	[[highlight FloatBorder guifg=#719cd6 guibg=#131A24]]
 )
 
 local icons = {
@@ -102,14 +110,15 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 -- replace the default lsp diagnostic symbols
 local function lspSymbol(name, icon)
 	vim.fn.sign_define(
-		'LspDiagnosticsSign' .. name,
-		{ text = icon, numhl = 'LspDiagnosticsDefault' .. name }
+		'DiagnosticSign' .. name,
+		{ text = icon, numhl = 'DiagnosticDefault' .. name }
 	)
 end
 
 lspSymbol('Error', '')
 lspSymbol('Information', '')
 lspSymbol('Hint', '')
+lspSymbol('Info', '')
 lspSymbol('Warning', '')
 
 local function on_attach(client)
@@ -117,7 +126,8 @@ local function on_attach(client)
 
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-	lsp.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
+	vim.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
+	-- require('lspsaga.diagnostic').show_line_diagnostics()
 
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
 	cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
@@ -129,19 +139,24 @@ local function on_attach(client)
 	cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
 	cmd('command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()')
 	cmd('command! LspReferences lua vim.lsp.buf.references()')
-	cmd('command! LspPrevDiagnostic lua vim.lsp.diagnostic.goto_prev({popup_opts = {focusable=false,border="rounded"}})')
-	cmd('command! LspNextDiagnostic lua vim.lsp.diagnostic.goto_next({popup_opts = {focusable=false,border="rounded"}})')
+	cmd(
+		'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev({popup_opts = {focusable=false,border="rounded"}})'
+	)
+	cmd(
+		'command! LspNextDiagnostic lua vim.diagnostic.goto_next({popup_opts = {focusable=false,border="rounded"}})'
+	)
 	cmd('command! Format lua vim.lsp.buf.formatting()')
 	cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
 
 	local leader = {
 		l = {
 			name = 'LSP',
-			a = { ':LspCodeAction<CR>', 'Code Action' },
+			a = { ':CodeActionMenu<CR>', 'Code Action' },
 			r = { ':LspRenameSymbol<CR>', 'Rename Symbol' },
+			-- r = { ':Lspsaga rename<CR>', 'Rename Symbol' },
 			f = { ':Format<CR>', 'Format Document' },
 			x = { ':TroubleToggle<CR>', 'Trouble' },
-			q = { '<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>', 'Quickfix' },
+			q = { '<cmd>lua vim.diagnostic.set_loclist()<cr>', 'Quickfix' },
 			s = { '<cmd>Telescope lsp_document_symbols<cr>', 'Document Symbols' },
 			S = {
 				'<cmd>Telescope lsp_dynamic_workspace_symbols<cr>',
@@ -153,7 +168,7 @@ local function on_attach(client)
 	local visual = {
 		l = {
 			name = 'LSP',
-			a = { ':LspRangeCodeAction<CR>', 'Code Action' },
+			a = { ':CodeActionMenu<CR>', 'Code Action' },
 		},
 	}
 
@@ -164,15 +179,20 @@ local function on_attach(client)
 		if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
 			vim.fn.execute('h ' .. vim.fn.expand('<cword>'))
 		else
+			-- vim.fn.execute('Lspsaga hover_doc')
 			vim.fn.execute('LspHover')
 		end
 	end
 
+	-- buf_nnoremap('gd', ':Lspsaga preview_definition<CR>')
 	buf_nnoremap('gd', ':LspGoToDefinition<CR>')
 	buf_nnoremap('gD', ':LspGoToDeclaration<CR>')
 	buf_nnoremap('gi', ':LspImplementations<CR>')
 	buf_nnoremap('gr', ':LspReferences<CR>')
+	-- buf_nnoremap('gs', ':Lspsaga signature_help<CR>')
 	buf_nnoremap('gs', ':LspSignatureHelp<CR>')
+	-- buf_nnoremap('[g', ':Lspsaga diagnostic_jump_prev<CR>')
+	-- buf_nnoremap(']g', ':Lspsaga diagnostic_jump_next<CR>')
 	buf_nnoremap('[g', ':LspPrevDiagnostic<CR>')
 	buf_nnoremap(']g', ':LspNextDiagnostic<CR>')
 	buf_nnoremap('K', showDocs)
@@ -278,12 +298,13 @@ local function setup_servers()
 						-- debug = true,
 						-- eslint
 						eslint_bin = 'eslint_d',
+						eslint_enable_diagnostics = true,
 						eslint_opts = {
-							condition = function(utils)
-								return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
-									'.eslintrc'
-								) or utils.root_has_file('.eslintrc.json')
-							end,
+							-- condition = function(utils)
+							-- 	return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
+							-- 		'.eslintrc'
+							-- 	) or utils.root_has_file('.eslintrc.json')
+							-- end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
 						-- formatting

@@ -18,6 +18,7 @@ require('nvim-treesitter.configs').setup({
 		'svelte',
 		'vue',
 		'scss',
+		'fish',
 	},
 	indent = { enable = true },
 	highlight = {
