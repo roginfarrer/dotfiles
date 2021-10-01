@@ -18,19 +18,20 @@ local function buf_nnoremap(keys, command)
 	return u.nnoremap(keys, command, { buffer = true })
 end
 
--- local pop_opts = { border = 'rounded', max_width = 80 }
+local border = 'rounded'
+-- local border = {
+-- 	{ '🭽', 'FloatBorder' },
+-- 	{ '▔', 'FloatBorder' },
+-- 	{ '🭾', 'FloatBorder' },
+-- 	{ '▕', 'FloatBorder' },
+-- 	{ '🭿', 'FloatBorder' },
+-- 	{ '▁', 'FloatBorder' },
+-- 	{ '🭼', 'FloatBorder' },
+-- 	{ '▏', 'FloatBorder' },
+-- }
 local pop_opts = {
-	border = {
-		{ '🭽', 'FloatBorder' },
-		{ '▔', 'FloatBorder' },
-		{ '🭾', 'FloatBorder' },
-		{ '▕', 'FloatBorder' },
-		{ '🭿', 'FloatBorder' },
-		{ '▁', 'FloatBorder' },
-		{ '🭼', 'FloatBorder' },
-		{ '▏', 'FloatBorder' },
-	},
-	max_width = 80,
+	border = border,
+	focusable = false,
 }
 handlers['textDocument/hover'] = lsp.with(handlers.hover, pop_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
@@ -44,11 +45,6 @@ handlers['textDocument/publishDiagnostics'] = lsp.with(
 		signs = true,
 		virtual_text = false,
 	}
-)
-
-vim.cmd([[highlight NormalFloat guibg=#131A24]])
-vim.cmd(
-	[[highlight FloatBorder guifg=#719cd6 guibg=#131A24]]
 )
 
 local icons = {
@@ -119,15 +115,21 @@ lspSymbol('Error', '')
 lspSymbol('Information', '')
 lspSymbol('Hint', '')
 lspSymbol('Info', '')
-lspSymbol('Warning', '')
+lspSymbol('Warn', '')
 
-local function on_attach(client)
+local function on_attach(client, bufnr)
 	lspstatus.on_attach(client)
+	require('lsp_signature').on_attach({
+		bind = true, -- This is mandatory, otherwise border config won't get registered.
+		hint_prefix = '✨ ',
+		handler_opts = {
+			border = 'rounded',
+		},
+	}, bufnr)
 
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-	vim.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
-	-- require('lspsaga.diagnostic').show_line_diagnostics()
+	-- vim.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
 
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
 	cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
@@ -140,10 +142,10 @@ local function on_attach(client)
 	cmd('command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()')
 	cmd('command! LspReferences lua vim.lsp.buf.references()')
 	cmd(
-		'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev({popup_opts = {focusable=false,border="rounded"}})'
+		'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev({popup_opts = {border = "rounded", focusable = false}})'
 	)
 	cmd(
-		'command! LspNextDiagnostic lua vim.diagnostic.goto_next({popup_opts = {focusable=false,border="rounded"}})'
+		'command! LspNextDiagnostic lua vim.diagnostic.goto_next({popup_opts = {border="rounded", focusable=false}})'
 	)
 	cmd('command! Format lua vim.lsp.buf.formatting()')
 	cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
@@ -153,7 +155,6 @@ local function on_attach(client)
 			name = 'LSP',
 			a = { ':CodeActionMenu<CR>', 'Code Action' },
 			r = { ':LspRenameSymbol<CR>', 'Rename Symbol' },
-			-- r = { ':Lspsaga rename<CR>', 'Rename Symbol' },
 			f = { ':Format<CR>', 'Format Document' },
 			x = { ':TroubleToggle<CR>', 'Trouble' },
 			q = { '<cmd>lua vim.diagnostic.set_loclist()<cr>', 'Quickfix' },
@@ -179,26 +180,24 @@ local function on_attach(client)
 		if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
 			vim.fn.execute('h ' .. vim.fn.expand('<cword>'))
 		else
-			-- vim.fn.execute('Lspsaga hover_doc')
 			vim.fn.execute('LspHover')
 		end
 	end
 
-	-- buf_nnoremap('gd', ':Lspsaga preview_definition<CR>')
 	buf_nnoremap('gd', ':LspGoToDefinition<CR>')
 	buf_nnoremap('gD', ':LspGoToDeclaration<CR>')
 	buf_nnoremap('gi', ':LspImplementations<CR>')
 	buf_nnoremap('gr', ':LspReferences<CR>')
-	-- buf_nnoremap('gs', ':Lspsaga signature_help<CR>')
 	buf_nnoremap('gs', ':LspSignatureHelp<CR>')
-	-- buf_nnoremap('[g', ':Lspsaga diagnostic_jump_prev<CR>')
-	-- buf_nnoremap(']g', ':Lspsaga diagnostic_jump_next<CR>')
 	buf_nnoremap('[g', ':LspPrevDiagnostic<CR>')
 	buf_nnoremap(']g', ':LspNextDiagnostic<CR>')
 	buf_nnoremap('K', showDocs)
 
 	if client.resolved_capabilities.document_formatting then
-		vim.cmd('autocmd BufWritePre <buffer> FormatSync')
+		vim.cmd([[augroup FormatOnSave
+              autocmd!
+              autocmd BufWritePre <buffer> FormatSync
+            augroup end]])
 	end
 end
 
@@ -230,6 +229,13 @@ require('null-ls').config({
 		null_ls_builtins.diagnostics.vint.with({
 			args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
 		}),
+    null_ls_builtins.formatting.trim_newlines.with({
+      filtetypes = { 'vim' }
+    }),
+    null_ls_builtins.formatting.trim_whitespace.with({
+      filtetypes = { 'vim' }
+    }),
+    null_ls_builtins.code_actions.gitsigns
 	},
 })
 lspconfig['null-ls'].setup({
@@ -290,7 +296,7 @@ local function setup_servers()
 				on_attach = function(client, bufnr)
 					client.resolved_capabilities.document_formatting = false
 					client.resolved_capabilities.document_range_formatting = false
-					on_attach(client)
+					on_attach(client, bufnr)
 
 					local ts_utils = require('nvim-lsp-ts-utils')
 
@@ -326,8 +332,8 @@ local function setup_servers()
 			}
 		elseif lang == 'json' then
 			config.json = {
-				on_attach = function(client)
-					on_attach(client)
+				on_attach = function(client, bufnr)
+					on_attach(client, bufnr)
 					client.resolved_capabilities.document_formatting = false
 					client.resolved_capabilities.document_range_formatting = false
 				end,

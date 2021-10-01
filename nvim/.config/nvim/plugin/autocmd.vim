@@ -17,33 +17,38 @@ augroup Vimrc
   autocmd UIEnter * let g:gui_running = 1 | source $HOME/.config/nvim/gui.vim
 
   " Make the default filetype markdown
-  " Will apply to filenames that don't have an extension
   autocmd BufNewFile,BufRead * if &ft == '' | set ft=markdown | endif
-  " autocmd BufNewFile,BufRead * if expand('%:t') !~ '\.' | set ft=markdown | endif
 
   autocmd BufNewFile,BufRead *eslintrc,*prettierrc set ft=json
 
-  au ColorScheme * 
+  autocmd ColorScheme * 
         \ hi! link DiagnosticUnderlineError LspDiagnosticsUnderlineError  |
         \ hi! link DiagnosticUnderlineHint LspDiagnosticsUnderlineHint |
+        \ hi! link DiagnosticUnderlineInformation LspDiagnosticsUnderlineInformation |
+        \ hi! link DiagnosticUnderlineWarning LspDiagnosticsUnderlineWarning |
         \ hi! link DiagnosticUnderlineWarning LspDiagnosticsUnderlineWarning |
  
+        \ hi! link DiagnosticFloatingError LspDiagnosticsFloatingError  |
+        \ hi! link DiagnosticFloatingHint LspDiagnosticsFloatingHint |
+        \ hi! link DiagnosticFloatingInformation LspDiagnosticsFloatingInformation |
+        \ hi! link DiagnosticFloatingWarning LspDiagnosticsFloatingWarning |
+
+        \ hi! link DiagnosticDefaultError LspDiagnosticsDefaultError  |
+        \ hi! link DiagnosticDefaultHint LspDiagnosticsDefaultHint |
+        \ hi! link DiagnosticDefaultInformation LspDiagnosticsDefaultInformation |
+        \ hi! link DiagnosticDefaultWarning LspDiagnosticsDefaultWarning |
+
         \ hi! link DiagnosticError LspDiagnosticsError  |
         \ hi! link DiagnosticHint LspDiagnosticsHint |
-        \ hi! link DiagnosticInformation LspDiagnosticsInformation |
-        \ hi! link DiagnosticWarning LspDiagnosticsWarning |
+        \ hi! link DiagnosticInfo LspDiagnosticsInfo |
+        \ hi! link DiagnosticWarn LspDiagnosticsWarn |
 
-        \ hi! link DiagnosticsDefaultError           LspDiagnosticsDefaultError  |
-        \ hi! link DiagnosticsDefaultWarning         LspDiagnosticsDefaultWarning  |
-        \ hi! link DiagnosticsDefaultInformation     LspDiagnosticsDefaultInformation  |
-        \ hi! link DiagnosticsDefaultHint            LspDiagnosticsDefaultHint  |
         \ hi! link DiagnosticsVirtualTextError       LspDiagnosticsVirtualTextError  |
         \ hi! link DiagnosticsVirtualTextWarning     LspDiagnosticsVirtualTextWarning  |
         \ hi! link DiagnosticsVirtualTextInformation LspDiagnosticsVirtualTextInformation  |
         \ hi! link DiagnosticsVirtualTextHint        LspDiagnosticsVirtualTextHint  |
-        \ hi! link DiagnosticsUnderlineInformation   LspDiagnosticsUnderlineInformation |
-       " " \ highlight! NormalFloat guibg=#1f2335 |
-       " " \ highlight! FloatBorder guifg=white guibg=#1f2335
-        "\ hi! FloatBorder guibg=#131a24
 augroup END
 
+" I don't know why these don't work in in the augroup above...
+autocmd Vimrc ColorScheme * hi! NormalFloat guibg=#131A24
+autocmd Vimrc ColorScheme * hi! FloatBorder guifg=#719cd6 guibg=#131A24
