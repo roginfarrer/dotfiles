@@ -18,7 +18,21 @@ local function buf_nnoremap(keys, command)
 	return u.nnoremap(keys, command, { buffer = true })
 end
 
-local pop_opts = { border = 'rounded', max_width = 80 }
+local border = 'rounded'
+-- local border = {
+-- 	{ '🭽', 'FloatBorder' },
+-- 	{ '▔', 'FloatBorder' },
+-- 	{ '🭾', 'FloatBorder' },
+-- 	{ '▕', 'FloatBorder' },
+-- 	{ '🭿', 'FloatBorder' },
+-- 	{ '▁', 'FloatBorder' },
+-- 	{ '🭼', 'FloatBorder' },
+-- 	{ '▏', 'FloatBorder' },
+-- }
+local pop_opts = {
+	border = border,
+	focusable = false,
+}
 handlers['textDocument/hover'] = lsp.with(handlers.hover, pop_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
 	handlers.signature_help,
@@ -30,16 +44,6 @@ handlers['textDocument/publishDiagnostics'] = lsp.with(
 		underline = true,
 		signs = true,
 		virtual_text = false,
-	}
-)
-
-lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = 'single',
-})
-lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-	vim.lsp.handlers.signature_help,
-	{
-		border = 'single',
 	}
 )
 
@@ -102,22 +106,30 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 -- replace the default lsp diagnostic symbols
 local function lspSymbol(name, icon)
 	vim.fn.sign_define(
-		'LspDiagnosticsSign' .. name,
-		{ text = icon, numhl = 'LspDiagnosticsDefault' .. name }
+		'DiagnosticSign' .. name,
+		{ text = icon, numhl = 'DiagnosticDefault' .. name }
 	)
 end
 
 lspSymbol('Error', '')
 lspSymbol('Information', '')
 lspSymbol('Hint', '')
-lspSymbol('Warning', '')
+lspSymbol('Info', '')
+lspSymbol('Warn', '')
 
-local function on_attach(client)
+local function on_attach(client, bufnr)
 	lspstatus.on_attach(client)
+	require('lsp_signature').on_attach({
+		bind = true, -- This is mandatory, otherwise border config won't get registered.
+		hint_prefix = '✨ ',
+		handler_opts = {
+			border = 'rounded',
+		},
+	}, bufnr)
 
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-	lsp.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
+	-- vim.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
 
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
 	cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
@@ -129,19 +141,23 @@ local function on_attach(client)
 	cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
 	cmd('command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()')
 	cmd('command! LspReferences lua vim.lsp.buf.references()')
-	cmd('command! LspPrevDiagnostic lua vim.lsp.diagnostic.goto_prev({popup_opts = {focusable=false,border="rounded"}})')
-	cmd('command! LspNextDiagnostic lua vim.lsp.diagnostic.goto_next({popup_opts = {focusable=false,border="rounded"}})')
+	cmd(
+		'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev({popup_opts = {border = "rounded", focusable = false}})'
+	)
+	cmd(
+		'command! LspNextDiagnostic lua vim.diagnostic.goto_next({popup_opts = {border="rounded", focusable=false}})'
+	)
 	cmd('command! Format lua vim.lsp.buf.formatting()')
 	cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
 
 	local leader = {
 		l = {
 			name = 'LSP',
-			a = { ':LspCodeAction<CR>', 'Code Action' },
+			a = { ':CodeActionMenu<CR>', 'Code Action' },
 			r = { ':LspRenameSymbol<CR>', 'Rename Symbol' },
 			f = { ':Format<CR>', 'Format Document' },
 			x = { ':TroubleToggle<CR>', 'Trouble' },
-			q = { '<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>', 'Quickfix' },
+			q = { '<cmd>lua vim.diagnostic.set_loclist()<cr>', 'Quickfix' },
 			s = { '<cmd>Telescope lsp_document_symbols<cr>', 'Document Symbols' },
 			S = {
 				'<cmd>Telescope lsp_dynamic_workspace_symbols<cr>',
@@ -153,7 +169,7 @@ local function on_attach(client)
 	local visual = {
 		l = {
 			name = 'LSP',
-			a = { ':LspRangeCodeAction<CR>', 'Code Action' },
+			a = { ':CodeActionMenu<CR>', 'Code Action' },
 		},
 	}
 
@@ -178,7 +194,10 @@ local function on_attach(client)
 	buf_nnoremap('K', showDocs)
 
 	if client.resolved_capabilities.document_formatting then
-		vim.cmd('autocmd BufWritePre <buffer> FormatSync')
+		vim.cmd([[augroup FormatOnSave
+              autocmd!
+              autocmd BufWritePre <buffer> FormatSync
+            augroup end]])
 	end
 end
 
@@ -210,6 +229,13 @@ require('null-ls').config({
 		null_ls_builtins.diagnostics.vint.with({
 			args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
 		}),
+    null_ls_builtins.formatting.trim_newlines.with({
+      filtetypes = { 'vim' }
+    }),
+    null_ls_builtins.formatting.trim_whitespace.with({
+      filtetypes = { 'vim' }
+    }),
+    null_ls_builtins.code_actions.gitsigns
 	},
 })
 lspconfig['null-ls'].setup({
@@ -270,7 +296,7 @@ local function setup_servers()
 				on_attach = function(client, bufnr)
 					client.resolved_capabilities.document_formatting = false
 					client.resolved_capabilities.document_range_formatting = false
-					on_attach(client)
+					on_attach(client, bufnr)
 
 					local ts_utils = require('nvim-lsp-ts-utils')
 
@@ -278,12 +304,13 @@ local function setup_servers()
 						-- debug = true,
 						-- eslint
 						eslint_bin = 'eslint_d',
+						eslint_enable_diagnostics = true,
 						eslint_opts = {
-							condition = function(utils)
-								return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
-									'.eslintrc'
-								) or utils.root_has_file('.eslintrc.json')
-							end,
+							-- condition = function(utils)
+							-- 	return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
+							-- 		'.eslintrc'
+							-- 	) or utils.root_has_file('.eslintrc.json')
+							-- end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
 						-- formatting
@@ -305,8 +332,8 @@ local function setup_servers()
 			}
 		elseif lang == 'json' then
 			config.json = {
-				on_attach = function(client)
-					on_attach(client)
+				on_attach = function(client, bufnr)
+					on_attach(client, bufnr)
 					client.resolved_capabilities.document_formatting = false
 					client.resolved_capabilities.document_range_formatting = false
 				end,

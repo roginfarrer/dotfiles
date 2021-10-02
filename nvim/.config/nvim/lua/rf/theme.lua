@@ -9,5 +9,5 @@ vim.g.nord_italic = true
 -- require('nord').set()
 
 local nightfox = require('nightfox')
-nightfox.setup({ fox = 'nordfox' })
+-- nightfox.setup({ fox = 'nordfox' })
 nightfox.load()

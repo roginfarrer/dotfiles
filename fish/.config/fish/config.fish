@@ -77,4 +77,5 @@ set -g FZF_CTRL_T_COMMAND 'rg --files'
 # set -g fish_user_paths "/usr/local/opt/python@3.8/bin" $fish_user_paths
 
 # source $XDG_CONFIG_HOME/fish/themes/tokyonight.fish
-source ~/.config/fish/themes/nordfox.fish
+# source ~/.config/fish/themes/nordfox.fish
+source ~/.config/fish/themes/nightfox.fish
