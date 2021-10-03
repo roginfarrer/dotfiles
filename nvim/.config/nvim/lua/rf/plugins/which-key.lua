@@ -104,7 +104,9 @@ local leader = {
 	},
 	f = {
 		name = 'Find',
+		t = { '<cmd>NvimTreeToggle<CR>', 'NvimTree' },
 		p = { '<cmd>Telescope git_files<CR>', 'Git Files' },
+		P = { ':Telescope projects<CR>', 'Change Project' },
 		b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
 		f = { '<cmd>Telescope find_files<CR>', 'All Files' },
 		['.'] = {
@@ -153,11 +155,12 @@ local leader = {
 		o = { '<cmd>Telescope vim_options<cr>', 'Options' },
 		a = { '<cmd>Telescope autocommands<cr>', 'Auto Commands' },
 	},
-	s = {
-		name = 'Projects',
-		s = { ':SessionSave<CR>', 'Save Session' },
-		l = { ':SessionLoad<CR>', 'Load Session' },
-		p = { ':Telescope projects<CR>', 'Change Project' },
+	W = {
+		name = 'Window',
+		['<Up>'] = { '<cmd>resize +5<CR>', 'Increase window height' },
+		['<Down>'] = { '<cmd>resize -5<CR>', 'Decrease window height' },
+		['<Left>'] = { '<cmd>vertical resize -5<CR>', 'Decrease window width' },
+		['<Right>'] = { '<cmd>vertical resize +5<CR>', 'Increase window width' },
 	},
 }
 

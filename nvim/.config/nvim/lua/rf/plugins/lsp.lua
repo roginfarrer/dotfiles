@@ -229,13 +229,13 @@ require('null-ls').config({
 		null_ls_builtins.diagnostics.vint.with({
 			args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
 		}),
-    null_ls_builtins.formatting.trim_newlines.with({
-      filtetypes = { 'vim' }
-    }),
-    null_ls_builtins.formatting.trim_whitespace.with({
-      filtetypes = { 'vim' }
-    }),
-    null_ls_builtins.code_actions.gitsigns
+		null_ls_builtins.formatting.trim_newlines.with({
+			filtetypes = { 'vim' },
+		}),
+		null_ls_builtins.formatting.trim_whitespace.with({
+			filtetypes = { 'vim' },
+		}),
+		null_ls_builtins.code_actions.gitsigns,
 	},
 })
 lspconfig['null-ls'].setup({
@@ -303,7 +303,7 @@ local function setup_servers()
 					ts_utils.setup({
 						-- debug = true,
 						-- eslint
-						eslint_bin = 'eslint_d',
+						eslint_bin = 'eslint',
 						eslint_enable_diagnostics = true,
 						eslint_opts = {
 							-- condition = function(utils)

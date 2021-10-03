@@ -68,10 +68,8 @@ tnoremap <C-j> <C-\><C-n><C-W>j
 tnoremap <C-k> <C-\><C-n><C-W>k
 tnoremap <C-l> <C-\><C-n><C-W>l
 
-" Preserve visual selection with indentation
-vnoremap < <gv
-vnoremap > >gv
-
 " Open URL under cursor in browser
 " Note that this only works on Macs
 nmap <silent> gx <cmd>!open <cfile><cr>
+
+nnoremap - <cmd>NvimTreeToggle<CR>

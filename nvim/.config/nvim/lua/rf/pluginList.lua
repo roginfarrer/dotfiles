@@ -140,16 +140,8 @@ return {
 	},
 
 	{
-		'mhinz/vim-startify',
-		disable = true,
-		config = config('startify'),
-	},
-
-	{
-		'glepnir/dashboard-nvim',
-		setup = function()
-			require('rf.plugins.dashboard')
-		end,
+		'goolord/alpha-nvim',
+		config = config('alpha'),
 	},
 
 	{
@@ -189,6 +181,7 @@ return {
 	{
 		'tamago324/lir.nvim',
 		-- event = { 'BufRead', 'BufNewFile' },
+		disable = true,
 		requires = {
 			'nvim-lua/plenary.nvim',
 			'kyazdani42/nvim-web-devicons',
@@ -358,5 +351,11 @@ return {
 	{
 		'L3MON4D3/LuaSnip',
 		config = config('luasnip'),
+	},
+
+	{
+		'kyazdani42/nvim-tree.lua',
+		requires = 'kyazdani42/nvim-web-devicons',
+		config = config('tree'),
 	},
 }

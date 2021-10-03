@@ -14,8 +14,8 @@ end
 starship init fish | source
 
 # fnm
-fnm env --shell fish --use-on-cd | source
-fnm completions --shell fish | source
+# fnm env --shell fish --use-on-cd | source
+# fnm completions --shell fish | source
 
 set USER rfarrer
 set -Ux EDITOR nvim
@@ -57,6 +57,7 @@ abbr gitlogstat "git log --oneline --stat" # number of lines changed
 abbr gitloggraph "git log --oneline --graph" # graph view of branches
 abbr gcp "git cherry-pick"
 abbr ls exa
+abbr ll exa -1
 
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
