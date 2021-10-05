@@ -82,4 +82,5 @@ SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_user_paths:/Users/rfarrer/\x2elocal/share/nvim/lspinstall/lua\x1e/Users/rfarrer/\x2elocal/share/nvim/lspinstall/lua/sumneko\x2dlua\x2dlanguage\x2dserver\x1e/Users/rfarrer/\x2ecargo/bin\x1e/usr/local/opt/fzf/bin
 SETUVAR nvm_data:/Users/rfarrer/\x2elocal/share/nvm
+SETUVAR nvm_default_version:v14\x2e15\x2e1
 SETUVAR nvm_mirror:https\x3a//nodejs\x2eorg/dist

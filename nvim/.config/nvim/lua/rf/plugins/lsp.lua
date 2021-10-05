@@ -303,8 +303,8 @@ local function setup_servers()
 					ts_utils.setup({
 						-- debug = true,
 						-- eslint
-						eslint_bin = 'eslint',
-						eslint_enable_diagnostics = true,
+						eslint_bin = 'eslint_d',
+						eslint_enable_diagnostics = false,
 						eslint_opts = {
 							-- condition = function(utils)
 							-- 	return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
@@ -313,10 +313,6 @@ local function setup_servers()
 							-- end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
-						-- formatting
-						formatter = 'prettierd',
-						-- Currently handled by null-ls directly
-						enable_formatting = false,
 					})
 					ts_utils.setup_client(client)
 

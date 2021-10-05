@@ -26,7 +26,7 @@ augroup Vimrc
         \ hi! link DiagnosticUnderlineHint LspDiagnosticsUnderlineHint |
         \ hi! link DiagnosticUnderlineInformation LspDiagnosticsUnderlineInformation |
         \ hi! link DiagnosticUnderlineWarning LspDiagnosticsUnderlineWarning |
-        \ hi! link DiagnosticUnderlineWarning LspDiagnosticsUnderlineWarning |
+        \ hi! link DiagnosticUnderlineWarn LspDiagnosticsUnderlineWarning |
  
         \ hi! link DiagnosticFloatingError LspDiagnosticsFloatingError  |
         \ hi! link DiagnosticFloatingHint LspDiagnosticsFloatingHint |
