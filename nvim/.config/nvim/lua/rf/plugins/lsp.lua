@@ -304,7 +304,7 @@ local function setup_servers()
 						-- debug = true,
 						-- eslint
 						eslint_bin = 'eslint_d',
-						eslint_enable_diagnostics = false,
+						eslint_enable_diagnostics = true,
 						eslint_opts = {
 							-- condition = function(utils)
 							-- 	return utils.root_has_file('.eslintrc.js') or utils.root_has_file(

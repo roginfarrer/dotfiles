@@ -16,7 +16,14 @@ return {
 	'duggiefresh/vim-easydir',
 	'machakann/vim-sandwich',
 	'tpope/vim-eunuch',
-	'tpope/vim-commentary',
+	'tpope/vim-repeat',
+	-- 'tpope/vim-commentary',
+	{
+		'numToStr/Comment.nvim',
+		config = function()
+			require('Comment').setup()
+		end,
+	},
 	'tpope/vim-abolish',
 	'Pocco81/TrueZen.nvim',
 	'wellle/targets.vim',
