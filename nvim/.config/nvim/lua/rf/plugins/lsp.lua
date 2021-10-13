@@ -129,8 +129,6 @@ local function on_attach(client, bufnr)
 
 	vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-	-- vim.diagnostic.show_line_diagnostics({ focusable = false, border = 'rounded' })
-
 	cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
 	cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
 	cmd('command! LspHover lua vim.lsp.buf.hover()')
@@ -194,10 +192,7 @@ local function on_attach(client, bufnr)
 	buf_nnoremap('K', showDocs)
 
 	if client.resolved_capabilities.document_formatting then
-		vim.cmd([[augroup FormatOnSave
-              autocmd!
-              autocmd BufWritePre <buffer> FormatSync
-            augroup end]])
+		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]])
 	end
 end
 
@@ -205,6 +200,7 @@ local null_ls = require('null-ls')
 local null_ls_builtins = null_ls.builtins
 
 require('null-ls').config({
+	-- debug = true,
 	sources = {
 		null_ls_builtins.formatting.prettierd.with({
 			filetypes = {
@@ -242,6 +238,10 @@ lspconfig['null-ls'].setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
+-- lspconfig['eslint'].setup({
+-- 	on_attach = on_attach,
+-- 	capabilities = capabilities,
+-- })
 
 -- install these servers by default
 local function install_servers()
@@ -301,16 +301,21 @@ local function setup_servers()
 					local ts_utils = require('nvim-lsp-ts-utils')
 
 					ts_utils.setup({
-						-- debug = true,
+						debug = false,
 						-- eslint
+						enable_import_on_completion = true,
+						eslint_enable_code_actions = true,
 						eslint_bin = 'eslint_d',
 						eslint_enable_diagnostics = true,
 						eslint_opts = {
-							-- condition = function(utils)
-							-- 	return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
-							-- 		'.eslintrc'
-							-- 	) or utils.root_has_file('.eslintrc.json')
-							-- end,
+							default_timeout = 10000,
+							condition = function(utils)
+								return utils.root_has_file('.eslintrc.js')
+									or utils.root_has_file('.eslintrc.json')
+									or utils.root_has_file('.git')
+									or utils.root_has_file('package.json')
+									or utils.root_has_file('tasconfig.json')
+							end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
 					})

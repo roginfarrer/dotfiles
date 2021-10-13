@@ -23,12 +23,6 @@
 	sslVerify = false
 [pack]
 	useSparse = true
-; [merge]
-;        tool = vscode
-[mergetool "meld"]
-    # Choose one of these 2 lines (not both!) explained below.
-    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
-    ; cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
 [mergetool "vscode"]
         cmd = code --wait $MERGED
 [mergetool]

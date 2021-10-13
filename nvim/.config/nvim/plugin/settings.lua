@@ -31,7 +31,7 @@ vim.o.timeoutlen = 500
 vim.o.breakindent = true
 vim.o.breakindentopt = 'shift:2'
 vim.o.showbreak = '↳ '
-vim.o.grepprg = 'rg --vimgrep --no-heading --hidden --smart-case'
+vim.o.grepprg = 'rg --vimgrep --hidden --smart-case --glob !.git'
 vim.o.pumblend = 10
 vim.o.showcmd = false
 vim.o.showmode = false
@@ -39,9 +39,6 @@ vim.o.wildmode = 'longest,full'
 vim.o.wildoptions = 'pum'
 
 vim.g.python3_host_prog = '/usr/local/bin/python3'
--- vim.g.node_host_prog = vim.fn.expand(
--- 	'$HOME/.fnm/aliases/default/bin/neovim-node-host'
--- )
 
 -- https://github.com/mhinz/neovim-remote
 if vim.fn.executable('nvr') then

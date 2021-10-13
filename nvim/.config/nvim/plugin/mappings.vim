@@ -1,4 +1,4 @@
-let mapleader = " "
+let mapleader = ' '
 
 " Easier cursor movement in insert mode
 inoremap <C-h> <Left>

@@ -9,7 +9,7 @@ augroup Vimrc
 
   autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="Substitute", timeout=250}
 
-  autocmd TermOpen * setlocal listchars= nonumber | startinsert
+  autocmd TermOpen term://* setlocal listchars= nonumber | startinsert
 
   " Equalize splits when window resizes
   autocmd VimResized * wincmd =
@@ -19,34 +19,7 @@ augroup Vimrc
   " Make the default filetype markdown
   autocmd BufNewFile,BufRead * if &ft == '' | set ft=markdown | endif
 
-  autocmd BufNewFile,BufRead *eslintrc,*prettierrc set ft=json
-
-  autocmd ColorScheme * 
-        \ hi! link DiagnosticUnderlineError LspDiagnosticsUnderlineError  |
-        \ hi! link DiagnosticUnderlineHint LspDiagnosticsUnderlineHint |
-        \ hi! link DiagnosticUnderlineInformation LspDiagnosticsUnderlineInformation |
-        \ hi! link DiagnosticUnderlineWarning LspDiagnosticsUnderlineWarning |
-        \ hi! link DiagnosticUnderlineWarn LspDiagnosticsUnderlineWarning |
- 
-        \ hi! link DiagnosticFloatingError LspDiagnosticsFloatingError  |
-        \ hi! link DiagnosticFloatingHint LspDiagnosticsFloatingHint |
-        \ hi! link DiagnosticFloatingInformation LspDiagnosticsFloatingInformation |
-        \ hi! link DiagnosticFloatingWarning LspDiagnosticsFloatingWarning |
-
-        \ hi! link DiagnosticDefaultError LspDiagnosticsDefaultError  |
-        \ hi! link DiagnosticDefaultHint LspDiagnosticsDefaultHint |
-        \ hi! link DiagnosticDefaultInformation LspDiagnosticsDefaultInformation |
-        \ hi! link DiagnosticDefaultWarning LspDiagnosticsDefaultWarning |
-
-        \ hi! link DiagnosticError LspDiagnosticsError  |
-        \ hi! link DiagnosticHint LspDiagnosticsHint |
-        \ hi! link DiagnosticInfo LspDiagnosticsInfo |
-        \ hi! link DiagnosticWarn LspDiagnosticsWarn |
-
-        \ hi! link DiagnosticsVirtualTextError       LspDiagnosticsVirtualTextError  |
-        \ hi! link DiagnosticsVirtualTextWarning     LspDiagnosticsVirtualTextWarning  |
-        \ hi! link DiagnosticsVirtualTextInformation LspDiagnosticsVirtualTextInformation  |
-        \ hi! link DiagnosticsVirtualTextHint        LspDiagnosticsVirtualTextHint  |
+  autocmd BufNewFile,BufRead *rc if &ft == '' | set ft=json | endif
 augroup END
 
 " I don't know why these don't work in in the augroup above...
