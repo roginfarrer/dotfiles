@@ -12,18 +12,23 @@ return {
 		rocks = 'mpack',
 	},
 
-	'antoinemadec/FixCursorHold.nvim', -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+	{
+		-- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open	'antoinemadec/FixCursorHold.nvim',
+		setup = function()
+			vim.g.cursorhold_updatetime = 250
+		end,
+	},
+	'editorconfig/editorconfig-vim',
 	'duggiefresh/vim-easydir',
 	'machakann/vim-sandwich',
 	'tpope/vim-eunuch',
 	'tpope/vim-repeat',
-	'tpope/vim-commentary',
-	-- {
-	-- 	'numToStr/Comment.nvim',
-	-- 	config = function()
-	-- 		require('Comment').setup()
-	-- 	end,
-	-- },
+	{
+		'numToStr/Comment.nvim',
+		config = function()
+			require('Comment').setup()
+		end,
+	},
 	'tpope/vim-abolish',
 	'Pocco81/TrueZen.nvim',
 	'wellle/targets.vim',
@@ -36,13 +41,6 @@ return {
 			'kabouzeid/nvim-lspinstall',
 			'hrsh7th/cmp-nvim-lsp',
 		},
-	},
-
-	{
-		'neoclide/coc.nvim',
-		branch = 'release',
-		disable = use_nvim_lsp,
-		config = config('coc'),
 	},
 
 	{
@@ -165,8 +163,7 @@ return {
 
 	{
 		'vim-test/vim-test',
-		-- cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
-		rocks = 'lunajson',
+		cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
 		config = config('vim-test'),
 	},
 
@@ -187,7 +184,6 @@ return {
 
 	{
 		'tamago324/lir.nvim',
-		-- event = { 'BufRead', 'BufNewFile' },
 		disable = true,
 		requires = {
 			'nvim-lua/plenary.nvim',
@@ -203,6 +199,8 @@ return {
 		config = config('gitlinker'),
 	},
 
+	'tpope/vim-fugitive',
+
 	{
 		'TimUntersberger/neogit',
 		cmd = 'Neogit',
@@ -215,6 +213,12 @@ return {
 		},
 		config = function()
 			require('neogit').setup({
+				signs = {
+					-- { CLOSED, OPENED }
+					section = { '', '' },
+					item = { '', '' },
+					hunk = { '', '' },
+				},
 				integrations = {
 					diffview = true,
 				},
@@ -250,7 +254,10 @@ return {
 		'norcalli/nvim-colorizer.lua',
 		event = { 'BufRead', 'BufNewFile' },
 		config = function()
-			require('colorizer').setup()
+			require('colorizer').setup({}, {
+				css = true,
+				css_fn = true,
+			})
 		end,
 	},
 
@@ -265,7 +272,6 @@ return {
 
 	{
 		'tpope/vim-markdown',
-		-- event = { 'BufRead', 'BufNewFile' },
 		ft = { 'markdown', 'mdx', 'markdown.mdx' },
 	},
 
@@ -288,25 +294,6 @@ return {
 	},
 
 	{
-		'windwp/nvim-spectre',
-		requires = { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim' },
-		-- cmd = { 'FindAndReplace' },
-		setup = function()
-			vim.cmd(
-				[[command! FindAndReplace lua require('spectre').open({is_insert_mode = true})]]
-			)
-			require('rf.utils').nnoremap('<leader>fr', [[:FindAndReplace<CR>]])
-		end,
-	},
-
-	{
-		'kkoomen/vim-doge',
-		run = ':call doge#install()',
-		cmd = { 'DogeGenerate', 'DogeCreateDocStandard' },
-		config = config('doge'),
-	},
-
-	{
 		'folke/which-key.nvim',
 		config = config('which-key'),
 	},
@@ -316,45 +303,30 @@ return {
 		config = config('toggleterm'),
 	},
 
-	{
-		'karb94/neoscroll.nvim',
-		disable = true,
-		config = function()
-			require('neoscroll').setup()
-		end,
-	},
+	-- {
+	-- 	'karb94/neoscroll.nvim',
+	-- 	config = function()
+	-- 		require('neoscroll').setup()
+	-- 	end,
+	-- },
 
 	{
 		'weilbith/nvim-code-action-menu',
-		cmd = 'CodeActionMenu',
 	},
 
 	{
 		'IndianBoy42/hop.nvim',
 		requires = { 'nvim-treesitter' },
-		as = 'hop',
 		config = config('hop'),
 	},
 
-	-- { 'tpope/vim-eunuch', event = { 'BufRead', 'BufNewFile' } },
-	-- { 'duggiefresh/vim-easydir', event = { 'BufRead', 'BufNewFile' } },
-	-- { 'machakann/vim-sandwich', event = { 'BufRead', 'BufNewFile' } },
-	-- { 'tpope/vim-commentary', event = { 'BufRead', 'BufNewFile' } },
-	-- { 'tpope/vim-abolish', event = { 'BufRead', 'BufNewFile' } },
-	-- { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
-	-- 'Pocco81/TrueZen.nvim',
-	-- { 'wellle/targets.vim', event = 'BufEnter' },
 	{
 		'mfussenegger/nvim-dap',
 		run = ':helptags ALL',
 		requires = { 'David-Kunz/jester' },
 		config = config('dap'),
 	},
-	{
-		'sindrets/winshift.nvim',
-		config = config('winshift'),
-	},
-	'editorconfig/editorconfig-vim',
+
 	{
 		'L3MON4D3/LuaSnip',
 		config = config('luasnip'),
@@ -365,4 +337,8 @@ return {
 		requires = 'kyazdani42/nvim-web-devicons',
 		config = config('tree'),
 	},
+
+	'simeji/winresizer',
+	'sindrets/winshift.nvim',
+	'kevinhwang91/nvim-bqf',
 }

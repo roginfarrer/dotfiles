@@ -33,8 +33,6 @@ nmap <C-l> <C-W>l
 
 " newline without insert
 nmap <CR> o<Esc>"_cc<Esc>
-" nnoremap <leader>o o<Esc>"_cc<Esc>
-" nnoremap <leader>O O<Esc>"_cc<Esc>
 " Go to last buffer
 nmap <BS> <C-^>
 
@@ -58,7 +56,7 @@ vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
 nnoremap <leader><leader> za
 
 " Copy file path to clipboard
-" nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
+nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
 
 " " To map <Esc> to exit terminal-mode: 
 tnoremap <Leader><Esc> <C-\><C-n>
@@ -72,4 +70,15 @@ tnoremap <C-l> <C-\><C-n><C-W>l
 " Note that this only works on Macs
 nmap <silent> gx <cmd>!open <cfile><cr>
 
+" Quickfix and Location List
+nnoremap [q :cp<CR>
+nnoremap ]q :cn<CR>
+nnoremap [Q :cfirst<CR>
+nnoremap ]Q :clast<CR>
+nnoremap [l :lprevious<CR>
+nnoremap ]l :lnext<CR>
+nnoremap [L :lfirst<CR>
+nnoremap ]L :llast<CR>
+
 nnoremap - <cmd>NvimTreeToggle<CR>
+nmap <C-W><C-W> <cmd>WinShift<CR>

@@ -9,7 +9,7 @@ augroup Vimrc
 
   autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="Substitute", timeout=250}
 
-  autocmd TermOpen term://* setlocal listchars= nonumber | startinsert
+  autocmd TermOpen term://* setlocal listchars= nonumber
 
   " Equalize splits when window resizes
   autocmd VimResized * wincmd =

@@ -18,25 +18,27 @@ local function buf_nnoremap(keys, command)
 	return u.nnoremap(keys, command, { buffer = true })
 end
 
-local border = 'rounded'
--- local border = {
--- 	{ '🭽', 'FloatBorder' },
--- 	{ '▔', 'FloatBorder' },
--- 	{ '🭾', 'FloatBorder' },
--- 	{ '▕', 'FloatBorder' },
--- 	{ '🭿', 'FloatBorder' },
--- 	{ '▁', 'FloatBorder' },
--- 	{ '🭼', 'FloatBorder' },
--- 	{ '▏', 'FloatBorder' },
--- }
-local pop_opts = {
+-- local border = 'rounded'
+local border = {
+	{ '🭽', 'FloatBorder' },
+	{ '▔', 'FloatBorder' },
+	{ '🭾', 'FloatBorder' },
+	{ '▕', 'FloatBorder' },
+	{ '🭿', 'FloatBorder' },
+	{ '▁', 'FloatBorder' },
+	{ '🭼', 'FloatBorder' },
+	{ '▏', 'FloatBorder' },
+}
+
+local popup_opts = {
 	border = border,
 	focusable = false,
 }
-handlers['textDocument/hover'] = lsp.with(handlers.hover, pop_opts)
+_G.global.popup_opts = popup_opts
+handlers['textDocument/hover'] = lsp.with(handlers.hover, popup_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
 	handlers.signature_help,
-	pop_opts
+	popup_opts
 )
 handlers['textDocument/publishDiagnostics'] = lsp.with(
 	lsp.diagnostic.on_publish_diagnostics,
@@ -47,61 +49,11 @@ handlers['textDocument/publishDiagnostics'] = lsp.with(
 	}
 )
 
-local icons = {
-	Class = ' ',
-	Color = ' ',
-	Constant = ' ',
-	Constructor = ' ',
-	Enum = '了 ',
-	EnumMember = ' ',
-	Field = ' ',
-	File = ' ',
-	Folder = ' ',
-	Function = ' ',
-	Interface = 'ﰮ ',
-	Keyword = ' ',
-	Method = 'ƒ ',
-	Module = ' ',
-	Property = ' ',
-	Snippet = '﬌ ',
-	Struct = ' ',
-	Text = ' ',
-	Unit = ' ',
-	Value = ' ',
-	Variable = ' ',
-}
-
-local kinds = vim.lsp.protocol.CompletionItemKind
-for i, kind in ipairs(kinds) do
-	kinds[i] = icons[kind] or kind
-end
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 if isPackageLoaded('cmp_nvim_lsp') then
 	capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 end
 capabilities = vim.tbl_extend('keep', capabilities, lspstatus.capabilities)
-capabilities.textDocument.completion.completionItem.documentationFormat = {
-	'markdown',
-	'plaintext',
-}
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport =
-	true
-capabilities.textDocument.completion.completionItem.tagSupport = {
-	valueSet = { 1 },
-}
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-	properties = {
-		'documentation',
-		'detail',
-		'additionalTextEdits',
-	},
-}
 
 -- replace the default lsp diagnostic symbols
 local function lspSymbol(name, icon)
@@ -121,9 +73,9 @@ local function on_attach(client, bufnr)
 	lspstatus.on_attach(client)
 	require('lsp_signature').on_attach({
 		bind = true, -- This is mandatory, otherwise border config won't get registered.
-		hint_prefix = '✨ ',
+		hint_prefix = '● ',
 		handler_opts = {
-			border = 'rounded',
+			border = popup_opts.border,
 		},
 	}, bufnr)
 
@@ -140,10 +92,10 @@ local function on_attach(client, bufnr)
 	cmd('command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()')
 	cmd('command! LspReferences lua vim.lsp.buf.references()')
 	cmd(
-		'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev({popup_opts = {border = "rounded", focusable = false}})'
+		'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev({popup_opts = global.popup_opts})'
 	)
 	cmd(
-		'command! LspNextDiagnostic lua vim.diagnostic.goto_next({popup_opts = {border="rounded", focusable=false}})'
+		'command! LspNextDiagnostic lua vim.diagnostic.goto_next({popup_opts = global.popup_opts})'
 	)
 	cmd('command! Format lua vim.lsp.buf.formatting()')
 	cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
@@ -155,7 +107,8 @@ local function on_attach(client, bufnr)
 			r = { ':LspRenameSymbol<CR>', 'Rename Symbol' },
 			f = { ':Format<CR>', 'Format Document' },
 			x = { ':TroubleToggle<CR>', 'Trouble' },
-			q = { '<cmd>lua vim.diagnostic.set_loclist()<cr>', 'Quickfix' },
+			q = { '<cmd>lua vim.diagnostic.setloclist()<cr>', 'Quickfix' },
+			R = { '<cmd>Telescope lsp_references<cr>', 'References' },
 			s = { '<cmd>Telescope lsp_document_symbols<cr>', 'Document Symbols' },
 			S = {
 				'<cmd>Telescope lsp_dynamic_workspace_symbols<cr>',
@@ -183,14 +136,19 @@ local function on_attach(client, bufnr)
 	end
 
 	buf_nnoremap('gd', ':LspGoToDefinition<CR>')
-	buf_nnoremap('gD', ':LspGoToDeclaration<CR>')
 	buf_nnoremap('gi', ':LspImplementations<CR>')
 	buf_nnoremap('gr', ':LspReferences<CR>')
 	buf_nnoremap('gs', ':LspSignatureHelp<CR>')
+	buf_nnoremap('gy', ':LspTypeDefinition<CR>')
 	buf_nnoremap('[g', ':LspPrevDiagnostic<CR>')
 	buf_nnoremap(']g', ':LspNextDiagnostic<CR>')
 	buf_nnoremap('K', showDocs)
 
+	u.inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', { buffer = true })
+
+	vim.cmd(
+		[[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+	)
 	if client.resolved_capabilities.document_formatting then
 		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]])
 	end
@@ -245,7 +203,7 @@ lspconfig['null-ls'].setup({
 
 -- install these servers by default
 local function install_servers()
-	local required_servers = { 'lua', 'typescript', 'bash' }
+	local required_servers = { 'lua', 'typescript', 'bash', 'json' }
 	local installed_servers = lspinstall.installed_servers()
 	for _, server in pairs(required_servers) do
 		if not vim.tbl_contains(installed_servers, server) then
@@ -308,13 +266,12 @@ local function setup_servers()
 						eslint_bin = 'eslint_d',
 						eslint_enable_diagnostics = true,
 						eslint_opts = {
-							default_timeout = 10000,
 							condition = function(utils)
-								return utils.root_has_file('.eslintrc.js')
-									or utils.root_has_file('.eslintrc.json')
-									or utils.root_has_file('.git')
-									or utils.root_has_file('package.json')
-									or utils.root_has_file('tasconfig.json')
+								return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
+									'.eslintrc.json'
+								) or utils.root_has_file('.git') or utils.root_has_file(
+									'package.json'
+								) or utils.root_has_file('tasconfig.json')
 							end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
@@ -348,7 +305,7 @@ local function setup_servers()
 		end
 	end
 
-	if packer_plugins['coq_nvim'] and packer_plugins['coq_nvim'].loaded then
+	if isPackageLoaded('coq_nvim') then
 		for lang in pairs(config) do
 			lspconfig[lang].setup(require('coq').lsp_ensure_capabilities(config[lang]))
 		end

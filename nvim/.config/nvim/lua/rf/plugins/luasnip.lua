@@ -1,20 +1,4 @@
 local ls = require('luasnip')
--- local types = ls.types
-
--- ls.config.setup({
--- 	ext_opts = {
--- 		[types.choiceNode] = {
--- 			active = {
--- 				virt_text = { { '●', 'Identifier' } },
--- 			},
--- 		},
--- 		[types.insertNode] = {
--- 			active = {
--- 				virt_text = { { '●', 'Float' } },
--- 			},
--- 		},
--- 	},
--- })
 
 local text = ls.text_node
 local insert = ls.insert_node
@@ -36,7 +20,7 @@ local jsSnips = {
 	}),
 	snip('cfn', {
 		text('const '),
-		insert(1, 'functionName'),
+		insert(1, 'name'),
 		text(' = ('),
 		insert(2, 'args'),
 		text({ ') => {', '\t' }),
@@ -45,9 +29,9 @@ local jsSnips = {
 	}),
 	snip('fn', {
 		text('function '),
-		insert(1),
+		insert(1, 'name'),
 		text('('),
-		insert(2),
+		insert(2, 'args'),
 		text({ ') {', '\t' }),
 		insert(0),
 		text({ '', '}' }),
@@ -59,6 +43,21 @@ ls.snippets = {
 	javascriptreact = jsSnips,
 	typescriptreact = jsSnips,
 	typescript = jsSnips,
+	lua = {
+		snip({
+			trig = 'lfunc',
+			name = 'Local Function',
+			dscr = 'Skeleton of a local function',
+		}, {
+			text('local function '),
+			insert(1, 'name'),
+			text('('),
+			insert(2, 'args'),
+			text({ ')', '\t' }),
+			insert(0),
+			text({ '', 'end' }),
+		}),
+	},
 }
 
 ls.autosnippets = {
