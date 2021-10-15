@@ -9,7 +9,7 @@ return {
     rocks = 'mpack',
   },
   {
-    -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open	'antoinemadec/FixCursorHold.nvim',
+    -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
     'antoinemadec/FixCursorHold.nvim',
     setup = function()
       vim.g.cursorhold_updatetime = 250
