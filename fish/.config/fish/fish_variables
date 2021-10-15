@@ -3,6 +3,7 @@
 SETUVAR --export EDITOR:nvim
 SETUVAR --export GPG_TTY:/dev/ttys003
 SETUVAR --export MANPAGER:nvim\x20\x2bMan\x21
+SETUVAR --path PATH:/usr/local/opt/php\x407\x2e2/bin\x1e/usr/local/opt/php\x407\x2e2/sbin\x1e/usr/local/opt/php\x407\x2e2/bin\x1e/usr/local/opt/php\x407\x2e2/sbin\x1e/Users/rfarrer/\x2elocal/share/nvim/lspinstall/lua\x1e/Users/rfarrer/\x2elocal/share/nvim/lspinstall/lua/sumneko\x2dlua\x2dlanguage\x2dserver\x1e/Users/rfarrer/\x2ecargo/bin\x1e/usr/local/opt/fzf/bin\x1e/usr/local/opt/php\x407\x2e2/bin\x1e/usr/local/opt/php\x407\x2e2/sbin\x1e/Users/rfarrer/\x2elocal/share/nvm/v14\x2e15\x2e1/bin\x1e/Applications/kitty\x2eapp/Contents/MacOS\x1e/usr/local/bin\x1e/usr/bin\x1e/bin\x1e/usr/local/sbin\x1e/usr/sbin\x1e/sbin
 SETUVAR --export RNDR_CLI_VM:webphp\x2d146zzq1\x2edev\x2ebo1\x2ecsnzoo\x2ecom
 SETUVAR --export RNDR_VM:webphp\x2d146zzq1\x2edev\x2ebo1\x2ecsnzoo\x2ecom
 SETUVAR --export VISUAL:nvim
@@ -40,6 +41,7 @@ SETUVAR _fish_abbr_pull:git\x20pull
 SETUVAR _fish_abbr_push:git\x20push
 SETUVAR _fish_abbr_renameBranch:git\x20branch\x20\x2dm
 SETUVAR _fish_abbr_squash:git\x20merge\x20\x2d\x2dsquash
+SETUVAR _fish_abbr_sshbox:ssh\x20webphp\x2d146zzq1\x2edev\x2ebo1\x2ecsnzoo\x2ecom
 SETUVAR _fish_abbr_staged:git\x20diff\x20\x2d\x2dstaged
 SETUVAR _fish_abbr_unamend:git\x20reset\x20\x2d\x2dsoft\x20HEAD\x40\x7b1\x7d
 SETUVAR _fish_abbr_uncommit:git\x20reset\x20\x2d\x2dsoft\x20HEAD\x7e1

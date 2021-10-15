@@ -28,17 +28,7 @@ local function lsp_client_names()
 			return msg
 		end
 
-		-- local bufnr = vim.api.nvim_get_current_buf()
-		-- local count = vim.lsp.diagnostic.get_count(bufnr, 'Error')
-		-- count = count + vim.lsp.diagnostic.get_count(bufnr, 'Warning')
-		-- count = count + vim.lsp.diagnostic.get_count(bufnr, 'Info')
-		-- count = count + vim.lsp.diagnostic.get_count(bufnr, 'Hint')
-
-		-- if count == 0 then
 		return ' LSP: ' .. table.concat(clients, ',')
-		-- else
-		-- 	return ''
-		-- end
 	end
 
 	return msg
@@ -46,10 +36,8 @@ end
 
 local config = {
 	options = {
-		theme = 'nightfox',
-		-- theme = 'tokyonight',
+		theme = vim.g.colors_name,
 		section_separators = { left = '', right = '' },
-		-- component_separators = { '', '' },
 		component_separators = { left = '', right = '' },
 	},
 	sections = {
@@ -68,7 +56,7 @@ local config = {
 		lualine_c = { { 'filename', file_status = true } },
 		lualine_x = {
 			lsp_status,
-			{ 'diagnostics', sources = { 'nvim_lsp', 'coc' } },
+			{ 'diagnostics', sources = { 'nvim_lsp' } },
 		},
 		lualine_y = { 'filetype' },
 		lualine_z = { lsp_client_names },

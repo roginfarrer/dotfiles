@@ -20,6 +20,11 @@ augroup Vimrc
   autocmd BufNewFile,BufRead * if &ft == '' | set ft=markdown | endif
 
   autocmd BufNewFile,BufRead *rc if &ft == '' | set ft=json | endif
+
+  " Diagnostic group names changing in recent Neovim builds, this
+  " fixes one that happens in a few colorschemes
+  autocmd ColorScheme * hi! link DiagnosticUnderlineWarn DiagnosticUnderlineWarning
+  autocmd ColorScheme * hi! link DiagnosticUnderlineInfo DiagnosticUnderlineInformation
 augroup END
 
 " I don't know why these don't work in in the augroup above...

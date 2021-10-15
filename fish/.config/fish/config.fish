@@ -70,8 +70,8 @@ alias fcb="fgb | xargs git checkout"
 
 bind \cg\cb fgb
 
-if test -e ./local-config.fish
-    source ./local-config.fish
+if test -e $HOME/.config/fish/local-config.fish
+    source $HOME/.config/fish/local-config.fish
 end
 
 set -g FZF_CTRL_T_COMMAND 'rg --files'

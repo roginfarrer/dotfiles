@@ -6,7 +6,6 @@ wk.setup({
 		spelling = {
 			enabled = true,
 		},
-		presets = { operators = false },
 	},
 	key_labels = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
 	operators = {
@@ -17,7 +16,8 @@ wk.setup({
 		['gu'] = 'Lowercase',
 		['gU'] = 'Uppercase',
 		v = 'Visual Character Mode',
-		gc = 'Comments',
+		gc = 'Comment',
+		gb = 'Line Comment',
 		sa = 'Sandwich Add',
 		sd = 'Sandwich Delete',
 		sr = 'Sandwich Replace',
@@ -228,6 +228,14 @@ wk.register(textobjs, { mode = 'x' })
 wk.register({
 	['[g'] = 'Go to previous diagnostic',
 	[']g'] = 'Go to next diagnostic',
+	['[q'] = 'Go to previous quickfix',
+	[']q'] = 'Go to next quickfix',
+	['[Q'] = 'Go to first quickfix',
+	[']Q'] = 'Go to last quickfix',
+	['[l'] = 'Go to previous location list item',
+	[']l'] = 'Go to next location list item',
+	['[L'] = 'Go to first location list item',
+	[']L'] = 'Go to last location list item',
 	[']m'] = 'Go to beginning of next function',
 	[']]'] = 'Go to beginning of next class',
 	[']M'] = 'Go to end of next function',

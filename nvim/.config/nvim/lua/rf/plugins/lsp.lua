@@ -146,9 +146,9 @@ local function on_attach(client, bufnr)
 
 	u.inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', { buffer = true })
 
-	vim.cmd(
-		[[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
-	)
+	-- vim.cmd(
+	-- 	[[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics(global.popup_opts)]]
+	-- )
 	if client.resolved_capabilities.document_formatting then
 		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]])
 	end
@@ -196,10 +196,13 @@ lspconfig['null-ls'].setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
--- lspconfig['eslint'].setup({
--- 	on_attach = on_attach,
--- 	capabilities = capabilities,
--- })
+lspconfig['eslint'].setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+  settings = {
+    run = 'onSave'
+  }
+})
 
 -- install these servers by default
 local function install_servers()
@@ -262,16 +265,16 @@ local function setup_servers()
 						debug = false,
 						-- eslint
 						enable_import_on_completion = true,
-						eslint_enable_code_actions = true,
+						eslint_enable_code_actions = false,
 						eslint_bin = 'eslint_d',
-						eslint_enable_diagnostics = true,
+						eslint_enable_diagnostics = false,
 						eslint_opts = {
 							condition = function(utils)
-								return utils.root_has_file('.eslintrc.js') or utils.root_has_file(
-									'.eslintrc.json'
-								) or utils.root_has_file('.git') or utils.root_has_file(
-									'package.json'
-								) or utils.root_has_file('tasconfig.json')
+								return utils.root_has_file('.eslintrc.js')
+									or utils.root_has_file('.eslintrc.json')
+									or utils.root_has_file('.git')
+									or utils.root_has_file('package.json')
+									or utils.root_has_file('tasconfig.json')
 							end,
 							diagnostics_format = '#{m} [#{c}]',
 						},
