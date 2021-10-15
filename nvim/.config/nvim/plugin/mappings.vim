@@ -1,4 +1,6 @@
+nnoremap <silent> <Space> <Nop>
 let mapleader = ' '
+let maplocalleader = ' '
 
 " Easier cursor movement in insert mode
 inoremap <C-h> <Left>
@@ -82,3 +84,4 @@ nnoremap ]L :llast<CR>
 
 nnoremap - <cmd>NvimTreeToggle<CR>
 nmap <C-W><C-W> <cmd>WinShift<CR>
+nmap <C-W>e <cmd>WinResizerStartResize<CR>

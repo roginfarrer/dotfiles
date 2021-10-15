@@ -199,9 +199,9 @@ lspconfig['null-ls'].setup({
 lspconfig['eslint'].setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-  settings = {
-    run = 'onSave'
-  }
+	settings = {
+		run = 'onSave',
+	},
 })
 
 -- install these servers by default
