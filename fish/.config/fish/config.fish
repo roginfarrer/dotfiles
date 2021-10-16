@@ -53,6 +53,7 @@ abbr gitloggraph "git log --oneline --graph" # graph view of branches
 abbr gcp "git cherry-pick"
 abbr ls exa
 abbr ll exa -1
+abbr sshpi "ssh -t pi@192.168.0.194 'export TERM=linux; fish'"
 
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
