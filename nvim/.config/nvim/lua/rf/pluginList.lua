@@ -24,12 +24,13 @@ return {
     'neovim/nvim-lspconfig',
     config = config('lsp'),
     requires = {
-      'kabouzeid/nvim-lspinstall',
+      'williamboman/nvim-lsp-installer',
       'hrsh7th/cmp-nvim-lsp',
     },
   },
   {
     'jose-elias-alvarez/null-ls.nvim',
+    -- commit = '81a3e7d7d97be0532a9a9e4f46747db01c7f2ddf',
     requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
   },
   {

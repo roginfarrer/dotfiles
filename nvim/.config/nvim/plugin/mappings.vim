@@ -14,12 +14,13 @@ inoremap <C-v> <C-r>*
 " yank to clipboard
 nnoremap <Leader>y "+y
 nnoremap <Leader>Y "+Y
-vnoremap <Leader>p "+p
-vnoremap <Leader>P "+P
+vnoremap <Leader>y "+y
+vnoremap <Leader>Y "+Y
 
 " Put from clipboard
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
+inoremap <C-r>v <C-r>+
 
 " When changing, don't save to register
 nnoremap c "_c
