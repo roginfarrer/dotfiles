@@ -30,7 +30,6 @@ return {
   },
   {
     'jose-elias-alvarez/null-ls.nvim',
-    -- commit = '81a3e7d7d97be0532a9a9e4f46747db01c7f2ddf',
     requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
   },
   {
@@ -50,6 +49,7 @@ return {
   },
   {
     'jose-elias-alvarez/nvim-lsp-ts-utils',
+    branch = 'resolve-bin',
     requires = { 'null-ls.nvim' },
   },
   'nvim-lua/lsp-status.nvim',
@@ -162,7 +162,12 @@ return {
     'folke/which-key.nvim',
     config = config('which-key'),
   },
-  'simeji/winresizer',
+  {
+    'simeji/winresizer',
+    setup = function()
+      vim.g.winresizer_start_key = ''
+    end,
+  },
   'sindrets/winshift.nvim',
   'kevinhwang91/nvim-bqf',
   {

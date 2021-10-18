@@ -240,27 +240,27 @@ local function setup(server)
       client.resolved_capabilities.document_range_formatting = false
       on_attach(client, bufnr)
 
-      local ts_utils = require('nvim-lsp-ts-utils')
-
-      ts_utils.setup({
-        debug = false,
-        -- eslint
-        enable_import_on_completion = true,
-        eslint_enable_code_actions = false,
-        eslint_bin = 'eslint_d',
-        eslint_enable_diagnostics = false,
-        eslint_opts = {
-          condition = function(utils)
-            return utils.root_has_file('.eslintrc.js')
-              or utils.root_has_file('.eslintrc.json')
-              or utils.root_has_file('.git')
-              or utils.root_has_file('package.json')
-              or utils.root_has_file('tasconfig.json')
-          end,
-          diagnostics_format = '#{m} [#{c}]',
-        },
-      })
-      ts_utils.setup_client(client)
+      -- local ts_utils = require('nvim-lsp-ts-utils')
+      --
+      -- ts_utils.setup({
+      --   debug = false,
+      --   -- eslint
+      --   enable_import_on_completion = true,
+      --   eslint_enable_code_actions = false,
+      --   eslint_bin = 'eslint',
+      --   eslint_enable_diagnostics = false,
+      --   eslint_opts = {
+      --     -- condition = function(utils)
+      --     --   return utils.root_has_file('.eslintrc.js')
+      --     --   -- or utils.root_has_file('.eslintrc.json')
+      --     --   -- or utils.root_has_file('.git')
+      --     --   -- or utils.root_has_file('package.json')
+      --     --   -- or utils.root_has_file('tasconfig.json')
+      --     -- end,
+      --     diagnostics_format = '#{m} [#{c}]',
+      --   },
+      -- })
+      -- ts_utils.setup_client(client)
 
       local leader = {
         l = {
