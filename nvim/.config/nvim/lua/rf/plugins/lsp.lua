@@ -1,6 +1,6 @@
 local u = require('rf.utils')
 local lspconfig = require('lspconfig')
-local lspinstall = require('lspinstall')
+local lspinstaller = require('nvim-lsp-installer')
 local lspstatus = require('lsp-status')
 local wk = require('which-key')
 
@@ -35,6 +35,7 @@ local popup_opts = {
   focusable = false,
 }
 _G.global.popup_opts = popup_opts
+
 handlers['textDocument/hover'] = lsp.with(handlers.hover, popup_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
   handlers.signature_help,
@@ -150,7 +151,12 @@ local function on_attach(client, bufnr)
   -- 	[[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics(global.popup_opts)]]
   -- )
   if client.resolved_capabilities.document_formatting then
-    vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]])
+    vim.cmd([[
+      augroup Formatter
+        autocmd!
+        autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+      augroup END
+    ]])
   end
 end
 
@@ -158,7 +164,7 @@ local null_ls = require('null-ls')
 local null_ls_builtins = null_ls.builtins
 
 require('null-ls').config({
-  -- debug = true,
+  debug = true,
   sources = {
     null_ls_builtins.formatting.prettierd.with({
       filetypes = {
@@ -183,9 +189,9 @@ require('null-ls').config({
     null_ls_builtins.diagnostics.vint.with({
       args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
     }),
-    null_ls_builtins.formatting.trim_newlines.with({
-      filtetypes = { 'vim' },
-    }),
+    -- null_ls_builtins.formatting.trim_newlines.with({
+    --   filtetypes = { 'vim' },
+    -- }),
     null_ls_builtins.formatting.trim_whitespace.with({
       filtetypes = { 'vim' },
     }),
@@ -196,135 +202,84 @@ lspconfig['null-ls'].setup({
   on_attach = on_attach,
   capabilities = capabilities,
 })
-lspconfig['eslint'].setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    run = 'onSave',
-  },
-})
 
--- install these servers by default
-local function install_servers()
-  local required_servers = { 'lua', 'typescript', 'bash', 'json' }
-  local installed_servers = lspinstall.installed_servers()
-  for _, server in pairs(required_servers) do
-    if not vim.tbl_contains(installed_servers, server) then
-      lspinstall.install_server(server)
-    end
-  end
-end
+local function setup(server)
+  local opts = {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
 
-local function setup_servers()
-  lspinstall.setup()
-  local servers = lspinstall.installed_servers()
-
-  local config = {}
-
-  for _, lang in pairs(servers) do
-    if lang == 'lua' then
-      config.lua = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-        settings = {
-          Lua = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            runtime = {
-              version = 'LuaJIT',
-              -- Setup your lua path
-              path = runtime_path,
-            },
-            diagnostics = {
-              globals = {
-                -- Get the language server to recognize the `vim` global
-                'vim',
-              },
-            },
-            workspace = {
-              -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file('', true),
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-              enable = false,
-            },
+  if server.name == 'sumneko_lua' then
+    opts.settings = {
+      Lua = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        runtime = {
+          version = 'LuaJIT',
+          -- Setup your lua path
+          path = runtime_path,
+        },
+        diagnostics = {
+          globals = {
+            -- Get the language server to recognize the `vim` global
+            'vim',
           },
         },
-      }
-    elseif lang == 'typescript' then
-      config.typescript = {
-        capabilities = capabilities,
-        on_attach = function(client, bufnr)
-          client.resolved_capabilities.document_formatting = false
-          client.resolved_capabilities.document_range_formatting = false
-          on_attach(client, bufnr)
+        workspace = {
+          -- Make the server aware of Neovim runtime files
+          library = vim.api.nvim_get_runtime_file('', true),
+        },
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+          enable = false,
+        },
+      },
+    }
+  elseif server.name == 'tsserver' then
+    opts.on_attach = function(client, bufnr)
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+      on_attach(client, bufnr)
 
-          local ts_utils = require('nvim-lsp-ts-utils')
+      local ts_utils = require('nvim-lsp-ts-utils')
 
-          ts_utils.setup({
-            debug = false,
-            -- eslint
-            enable_import_on_completion = true,
-            eslint_enable_code_actions = false,
-            eslint_bin = 'eslint_d',
-            eslint_enable_diagnostics = false,
-            eslint_opts = {
-              condition = function(utils)
-                return utils.root_has_file('.eslintrc.js')
-                  or utils.root_has_file('.eslintrc.json')
-                  or utils.root_has_file('.git')
-                  or utils.root_has_file('package.json')
-                  or utils.root_has_file('tasconfig.json')
-              end,
-              diagnostics_format = '#{m} [#{c}]',
-            },
-          })
-          ts_utils.setup_client(client)
+      ts_utils.setup({
+        debug = false,
+        -- eslint
+        enable_import_on_completion = true,
+        eslint_enable_code_actions = false,
+        eslint_bin = 'eslint_d',
+        eslint_enable_diagnostics = false,
+        eslint_opts = {
+          condition = function(utils)
+            return utils.root_has_file('.eslintrc.js')
+              or utils.root_has_file('.eslintrc.json')
+              or utils.root_has_file('.git')
+              or utils.root_has_file('package.json')
+              or utils.root_has_file('tasconfig.json')
+          end,
+          diagnostics_format = '#{m} [#{c}]',
+        },
+      })
+      ts_utils.setup_client(client)
 
-          local leader = {
-            l = {
-              o = { ':TSLspOrganize<CR>', '(TS) Organize Imports' },
-              i = { ':TSLspImportAll<CR>', '(TS) Import Missing Imports' },
-              R = { ':TSLspRenameFile<CR>', '(TS) Rename File' },
-            },
-          }
-          wk.register(leader, { prefix = '<leader>', buffer = bufnr })
-        end,
+      local leader = {
+        l = {
+          o = { ':TSLspOrganize<CR>', '(TS) Organize Imports' },
+          i = { ':TSLspImportAll<CR>', '(TS) Import Missing Imports' },
+          R = { ':TSLspRenameFile<CR>', '(TS) Rename File' },
+        },
       }
-    elseif lang == 'json' then
-      config.json = {
-        on_attach = function(client, bufnr)
-          on_attach(client, bufnr)
-          client.resolved_capabilities.document_formatting = false
-          client.resolved_capabilities.document_range_formatting = false
-        end,
-        capabilities = capabilities,
-      }
-    else
-      config[lang] = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-      }
+      wk.register(leader, { prefix = '<leader>', buffer = bufnr })
+    end
+  elseif server.name == 'jsonls' then
+    opts.on_attach = function(client, bufnr)
+      on_attach(client, bufnr)
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
     end
   end
-
-  if isPackageLoaded('coq_nvim') then
-    for lang in pairs(config) do
-      lspconfig[lang].setup(
-        require('coq').lsp_ensure_capabilities(config[lang])
-      )
-    end
-  else
-    for lang in pairs(config) do
-      lspconfig[lang].setup(config[lang])
-    end
-  end
+  server:setup(opts)
+  vim.cmd([[ do User LspAttachBuffers ]])
 end
 
-install_servers()
-setup_servers()
-
-lspinstall.post_install_hook = function()
-  setup_servers()
-  vim.cmd([[bufdo e]])
-end
+lspinstaller.on_server_ready(setup)

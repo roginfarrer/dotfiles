@@ -5,11 +5,6 @@ if not functions -q fisher
     fish -c fisher
 end
 
-if not test -d $XDG_CONFIG_HOME/nnn/plugins
-    echo "Missing nnn plugins, installing..."
-    curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
-end
-
 # Initialize starship prompt
 starship init fish | source
 
@@ -58,6 +53,7 @@ abbr gitloggraph "git log --oneline --graph" # graph view of branches
 abbr gcp "git cherry-pick"
 abbr ls exa
 abbr ll exa -1
+abbr sshpi "ssh -t pi@192.168.0.194 'export TERM=linux; fish'"
 
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -79,4 +75,4 @@ set -g FZF_CTRL_T_COMMAND 'rg --files'
 
 # source $XDG_CONFIG_HOME/fish/themes/tokyonight.fish
 # source ~/.config/fish/themes/nordfox.fish
-source ~/.config/fish/themes/nightfox.fish
+source $HOME/.config/fish/themes/nightfox.fish
