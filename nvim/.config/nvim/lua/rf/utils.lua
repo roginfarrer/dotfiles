@@ -25,6 +25,14 @@ _G.reloadConfig = function(args)
   dofile(vim.env.MYVIMRC)
 end
 
+_G.mergetable = function(tableA, tableB)
+  local tbl = tableA
+  for k, v in pairs(tableB) do
+    tbl[k] = v
+  end
+  return tbl
+end
+
 local M = {}
 
 M.functions = {}

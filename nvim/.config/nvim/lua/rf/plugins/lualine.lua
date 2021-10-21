@@ -55,7 +55,7 @@ local config = {
     },
     lualine_c = { { 'filename', file_status = true } },
     lualine_x = {
-      lsp_status,
+      -- lsp_status,
       { 'diagnostics', sources = { 'nvim_lsp' } },
     },
     lualine_y = { 'filetype' },

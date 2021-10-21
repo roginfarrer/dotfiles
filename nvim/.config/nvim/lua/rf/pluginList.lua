@@ -16,6 +16,19 @@ return {
     end,
   },
 
+  {
+    'luukvbaal/stabilize.nvim',
+    config = function()
+      require('stabilize').setup({
+        force = true, -- stabilize window even when current cursor position will be hidden behind new window
+        ignore = { -- do not manage windows matching these file/buftypes
+          filetype = { 'help', 'list', 'Trouble' },
+          buftype = { 'terminal', 'quickfix', 'loclist' },
+        },
+      })
+    end,
+  },
+
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
   -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -49,7 +62,6 @@ return {
   },
   {
     'jose-elias-alvarez/nvim-lsp-ts-utils',
-    branch = 'resolve-bin',
     requires = { 'null-ls.nvim' },
   },
   'nvim-lua/lsp-status.nvim',
@@ -165,7 +177,7 @@ return {
   {
     'simeji/winresizer',
     setup = function()
-      vim.g.winresizer_start_key = ''
+      vim.g.winresizer_start_key = '<C-w>e'
     end,
   },
   'sindrets/winshift.nvim',

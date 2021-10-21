@@ -1,4 +1,4 @@
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.expandtab = true
 vim.o.foldlevel = 99
 vim.o.foldmethod = 'expr'

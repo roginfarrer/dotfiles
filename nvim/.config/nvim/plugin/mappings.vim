@@ -61,7 +61,7 @@ nnoremap <leader><leader> za
 " Copy file path to clipboard
 nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
 
-" " To map <Esc> to exit terminal-mode: 
+" " To map <Esc> to exit terminal-mode:
 tnoremap <Leader><Esc> <C-\><C-n>
 tnoremap <Leader>j <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-W>h
@@ -85,4 +85,4 @@ nnoremap ]L :llast<CR>
 
 nnoremap - <cmd>NvimTreeToggle<CR>
 nmap <C-W><C-W> <cmd>WinShift<CR>
-nmap <C-W>e <cmd>WinResizerStartResize<CR>
+" nmap <C-W>e <cmd>WinResizerStartResize<CR>

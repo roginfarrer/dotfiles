@@ -70,6 +70,25 @@ if test -e $HOME/.config/fish/local-config.fish
     source $HOME/.config/fish/local-config.fish
 end
 
+function check_nvm --description 'Change node version'
+    # check if nvm is present
+    if test -q nvm
+        # check if directory has a nvmrc
+        if test -e $PWD/.nvmrc
+            nvm use
+            # or else a package.json
+        else if test -e $PWD/package.json
+            nvm use lts
+        end
+    end
+end
+
+function __check_nvm --on-variable PWD --description 'Change node version on cd'
+    check_nvm
+end
+
+check_nvm
+
 set -g FZF_CTRL_T_COMMAND 'rg --files'
 # set -g fish_user_paths "/usr/local/opt/python@3.8/bin" $fish_user_paths
 

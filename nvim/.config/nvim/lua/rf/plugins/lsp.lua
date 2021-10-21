@@ -10,45 +10,71 @@ local cmd = vim.cmd
 
 lspstatus.register_progress()
 
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init.lua')
+local runtime_path = {
+  'lua/?.lua',
+  'lua/?/init.lua',
+}
+
+for _, v in ipairs(vim.split(package.path, ';')) do
+  table.insert(runtime_path, v)
+end
+
+local lua_lib = {}
+
+local function lua_add_lib(lib)
+  for _, p in pairs(vim.fn.expand(lib, false, true)) do
+    p = vim.loop.fs_realpath(p)
+    lua_lib[p] = true
+  end
+end
+
+lua_add_lib('$VIMRUNTIME')
+lua_add_lib('~/.config/nvim')
 
 local function buf_nnoremap(keys, command)
   return u.nnoremap(keys, command, { buffer = true })
 end
 
--- local border = 'rounded'
-local border = {
-  { '🭽', 'FloatBorder' },
-  { '▔', 'FloatBorder' },
-  { '🭾', 'FloatBorder' },
-  { '▕', 'FloatBorder' },
-  { '🭿', 'FloatBorder' },
-  { '▁', 'FloatBorder' },
-  { '🭼', 'FloatBorder' },
-  { '▏', 'FloatBorder' },
-}
+local border = 'rounded'
+-- local border = {
+--   { '🭽', 'FloatBorder' },
+--   { '▔', 'FloatBorder' },
+--   { '🭾', 'FloatBorder' },
+--   { '▕', 'FloatBorder' },
+--   { '🭿', 'FloatBorder' },
+--   { '▁', 'FloatBorder' },
+--   { '🭼', 'FloatBorder' },
+--   { '▏', 'FloatBorder' },
+-- }
 
 local popup_opts = {
   border = border,
   focusable = false,
+  max_width = 80,
 }
-_G.global.popup_opts = popup_opts
 
 handlers['textDocument/hover'] = lsp.with(handlers.hover, popup_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
   handlers.signature_help,
   popup_opts
 )
-handlers['textDocument/publishDiagnostics'] = lsp.with(
-  lsp.diagnostic.on_publish_diagnostics,
-  {
-    underline = true,
-    signs = true,
-    virtual_text = false,
-  }
-)
+vim.diagnostic.config({
+  virtual_text = false,
+  float = mergetable(popup_opts, {
+    format = function(diagnostic)
+      if diagnostic.source == 'eslint' then
+        return string.format(
+          '%s [%s]',
+          diagnostic.message,
+          -- shows the name of the rule
+          diagnostic.user_data.lsp.code
+        )
+      end
+      return string.format('%s [%s]', diagnostic.message, diagnostic.source)
+    end,
+    severity_sort = true,
+  }),
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 if isPackageLoaded('cmp_nvim_lsp') then
@@ -92,12 +118,8 @@ local function on_attach(client, bufnr)
   cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
   cmd('command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()')
   cmd('command! LspReferences lua vim.lsp.buf.references()')
-  cmd(
-    'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev({popup_opts = global.popup_opts})'
-  )
-  cmd(
-    'command! LspNextDiagnostic lua vim.diagnostic.goto_next({popup_opts = global.popup_opts})'
-  )
+  cmd('command! LspPrevDiagnostic lua vim.diagnostic.goto_prev()')
+  cmd('command! LspNextDiagnostic lua vim.diagnostic.goto_next()')
   cmd('command! Format lua vim.lsp.buf.formatting()')
   cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
 
@@ -147,9 +169,9 @@ local function on_attach(client, bufnr)
 
   u.inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', { buffer = true })
 
-  -- vim.cmd(
-  -- 	[[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics(global.popup_opts)]]
-  -- )
+  vim.cmd(
+    [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
+  )
   if client.resolved_capabilities.document_formatting then
     vim.cmd([[
       augroup Formatter
@@ -226,7 +248,8 @@ local function setup(server)
         },
         workspace = {
           -- Make the server aware of Neovim runtime files
-          library = vim.api.nvim_get_runtime_file('', true),
+          -- library = vim.api.nvim_get_runtime_file('', true),
+          library = lua_lib,
         },
         -- Do not send telemetry data containing a randomized but unique identifier
         telemetry = {
