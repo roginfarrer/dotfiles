@@ -72,7 +72,7 @@ end
 
 function check_nvm --description 'Change node version'
     # check if nvm is present
-    if test -q nvm
+    if test -q $nvm
         # check if directory has a nvmrc
         if test -e $PWD/.nvmrc
             nvm use

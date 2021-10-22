@@ -22,7 +22,7 @@ return {
       require('stabilize').setup({
         force = true, -- stabilize window even when current cursor position will be hidden behind new window
         ignore = { -- do not manage windows matching these file/buftypes
-          filetype = { 'help', 'list', 'Trouble' },
+          filetype = { 'help', 'list', 'Trouble', 'packer' },
           buftype = { 'terminal', 'quickfix', 'loclist' },
         },
       })
@@ -120,7 +120,7 @@ return {
   -- -- -- -- -- -- -- --
 
   {
-    'shadmansaleh/lualine.nvim',
+    'nvim-lualine/lualine.nvim',
     after = 'nightfox.nvim',
     requires = {
       'kyazdani42/nvim-web-devicons',
