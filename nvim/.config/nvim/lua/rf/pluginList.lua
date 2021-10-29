@@ -15,19 +15,20 @@ return {
       vim.g.cursorhold_updatetime = 250
     end,
   },
+  -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
 
-  {
-    'luukvbaal/stabilize.nvim',
-    config = function()
-      require('stabilize').setup({
-        force = true, -- stabilize window even when current cursor position will be hidden behind new window
-        ignore = { -- do not manage windows matching these file/buftypes
-          filetype = { 'help', 'list', 'Trouble', 'packer' },
-          buftype = { 'terminal', 'quickfix', 'loclist' },
-        },
-      })
-    end,
-  },
+  -- {
+  --   'luukvbaal/stabilize.nvim',
+  --   config = function()
+  --     require('stabilize').setup({
+  --       force = true, -- stabilize window even when current cursor position will be hidden behind new window
+  --       ignore = { -- do not manage windows matching these file/buftypes
+  --         filetype = { 'help', 'list', 'Trouble', 'packer' },
+  --         buftype = { 'terminal', 'quickfix', 'loclist' },
+  --       },
+  --     })
+  --   end,
+  -- },
 
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
@@ -35,7 +36,7 @@ return {
 
   {
     'neovim/nvim-lspconfig',
-    config = config('lsp'),
+    config = config 'lsp',
     requires = {
       'williamboman/nvim-lsp-installer',
       'hrsh7th/cmp-nvim-lsp',
@@ -49,7 +50,7 @@ return {
     'onsails/lspkind-nvim',
     event = { 'BufRead', 'BufNewFile' },
     config = function()
-      require('lspkind').init({ preset = 'codicons' })
+      require('lspkind').init { preset = 'codicons' }
     end,
   },
   {
@@ -57,7 +58,7 @@ return {
     requires = 'kyazdani42/nvim-web-devicons',
     cmd = { 'Trouble', 'TroubleToggle' },
     config = function()
-      require('trouble').setup({})
+      require('trouble').setup {}
     end,
   },
   {
@@ -75,27 +76,28 @@ return {
       { 'ms-jpq/coq.artifacts', branch = 'artifacts' },
     },
     setup = function()
-      require('rf.plugins.coq')
+      require 'rf.plugins.coq'
     end,
   },
   {
     'hrsh7th/nvim-cmp',
     requires = {
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-nvim-lua' },
-      { 'saadparwaiz1/cmp_luasnip' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lua',
+      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      { 'petertriho/cmp-git', requires = 'nvim-lua/plenary.nvim' },
     },
-    config = config('cmp'),
+    config = config 'cmp',
   },
   {
     'windwp/nvim-autopairs',
-    config = config('autopairs'),
+    config = config 'autopairs',
   },
   {
     'L3MON4D3/LuaSnip',
-    config = config('luasnip'),
+    config = config 'luasnip',
   },
 
   -- -- -- -- -- --
@@ -112,7 +114,7 @@ return {
   'wellle/targets.vim',
   {
     'numToStr/Comment.nvim',
-    config = config('comment'),
+    config = config 'comment',
   },
 
   -- -- -- -- -- -- -- --
@@ -125,16 +127,16 @@ return {
     requires = {
       'kyazdani42/nvim-web-devicons',
     },
-    config = config('lualine'),
+    config = config 'lualine',
   },
   {
     'goolord/alpha-nvim',
-    config = config('alpha'),
+    config = config 'alpha',
   },
   {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
-    config = config('treesitter'),
+    config = config 'treesitter',
     requires = {
       'nvim-treesitter/nvim-treesitter-textobjects',
       'JoosepAlviste/nvim-ts-context-commentstring',
@@ -149,7 +151,7 @@ return {
   {
     'kyazdani42/nvim-web-devicons',
     config = function()
-      require('nvim-web-devicons').setup({
+      require('nvim-web-devicons').setup {
         override = {
           lir_folder_icon = {
             icon = '',
@@ -157,7 +159,7 @@ return {
             name = 'LirFolderNode',
           },
         },
-      })
+      }
     end,
   },
   {
@@ -172,7 +174,7 @@ return {
   },
   {
     'folke/which-key.nvim',
-    config = config('which-key'),
+    config = config 'which-key',
   },
   {
     'simeji/winresizer',
@@ -196,22 +198,22 @@ return {
   {
     'vim-test/vim-test',
     cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
-    config = config('vim-test'),
+    config = config 'vim-test',
   },
   {
     'mfussenegger/nvim-dap',
     run = ':helptags ALL',
     requires = { 'David-Kunz/jester' },
-    config = config('dap'),
+    config = config 'dap',
   },
   {
     'IndianBoy42/hop.nvim',
     requires = { 'nvim-treesitter' },
-    config = config('hop'),
+    config = config 'hop',
   },
   {
     'akinsho/toggleterm.nvim',
-    config = config('toggleterm'),
+    config = config 'toggleterm',
   },
 
   -- -- -- --
@@ -222,7 +224,7 @@ return {
   {
     'ruifm/gitlinker.nvim',
     requires = 'nvim-lua/plenary.nvim',
-    config = config('gitlinker'),
+    config = config 'gitlinker',
   },
   { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
   {
@@ -236,7 +238,7 @@ return {
       },
     },
     config = function()
-      require('neogit').setup({
+      require('neogit').setup {
         signs = {
           -- { CLOSED, OPENED }
           section = { '', '' },
@@ -246,7 +248,7 @@ return {
         integrations = {
           diffview = true,
         },
-      })
+      }
     end,
   },
   {
@@ -255,8 +257,9 @@ return {
     requires = {
       'nvim-lua/plenary.nvim',
     },
-    config = config('gitsigns'),
+    config = config 'gitsigns',
   },
+  'pwntester/octo.nvim',
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
@@ -270,16 +273,16 @@ return {
       'kyazdani42/nvim-web-devicons',
       'tamago324/lir-git-status.nvim',
     },
-    config = config('lir'),
+    config = config 'lir',
   },
   {
     'kyazdani42/nvim-tree.lua',
     requires = 'kyazdani42/nvim-web-devicons',
-    config = config('tree'),
+    config = config 'tree',
   },
   {
     'nvim-telescope/telescope.nvim',
-    config = config('telescope'),
+    config = config 'telescope',
     requires = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-fzy-native.nvim',
@@ -304,7 +307,7 @@ return {
   {
     'folke/tokyonight.nvim',
     config = function()
-      require('rf.theme')
+      require 'rf.theme'
     end,
   },
   'shaunsingh/nord.nvim',
@@ -312,7 +315,7 @@ return {
   {
     'EdenEast/nightfox.nvim',
     config = function()
-      require('rf.theme')
+      require 'rf.theme'
     end,
   },
 }

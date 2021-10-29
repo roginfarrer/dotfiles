@@ -48,7 +48,7 @@ local border = 'rounded'
 -- }
 
 local popup_opts = {
-  border = border,
+  -- border = border,
   focusable = false,
   max_width = 80,
 }
@@ -102,7 +102,7 @@ local function on_attach(client, bufnr)
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     hint_prefix = '● ',
     handler_opts = {
-      border = popup_opts.border,
+      -- border = popup_opts.border,
     },
   }, bufnr)
 
@@ -211,9 +211,9 @@ require('null-ls').config({
     null_ls_builtins.diagnostics.vint.with({
       args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
     }),
-    -- null_ls_builtins.formatting.trim_newlines.with({
-    --   filtetypes = { 'vim' },
-    -- }),
+    null_ls_builtins.formatting.trim_newlines.with({
+      filtetypes = { 'vim' },
+    }),
     null_ls_builtins.formatting.trim_whitespace.with({
       filtetypes = { 'vim' },
     }),
@@ -263,27 +263,9 @@ local function setup(server)
       client.resolved_capabilities.document_range_formatting = false
       on_attach(client, bufnr)
 
-      -- local ts_utils = require('nvim-lsp-ts-utils')
-      --
-      -- ts_utils.setup({
-      --   debug = false,
-      --   -- eslint
-      --   enable_import_on_completion = true,
-      --   eslint_enable_code_actions = false,
-      --   eslint_bin = 'eslint',
-      --   eslint_enable_diagnostics = false,
-      --   eslint_opts = {
-      --     -- condition = function(utils)
-      --     --   return utils.root_has_file('.eslintrc.js')
-      --     --   -- or utils.root_has_file('.eslintrc.json')
-      --     --   -- or utils.root_has_file('.git')
-      --     --   -- or utils.root_has_file('package.json')
-      --     --   -- or utils.root_has_file('tasconfig.json')
-      --     -- end,
-      --     diagnostics_format = '#{m} [#{c}]',
-      --   },
-      -- })
-      -- ts_utils.setup_client(client)
+      local ts_utils = require('nvim-lsp-ts-utils')
+
+      ts_utils.setup_client(client)
 
       local leader = {
         l = {
@@ -295,6 +277,59 @@ local function setup(server)
       wk.register(leader, { prefix = '<leader>', buffer = bufnr })
     end
   elseif server.name == 'jsonls' then
+    opts.on_attach = function(client, bufnr)
+      on_attach(client, bufnr)
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+    end
+    opts.settings = {
+      json = {
+        -- Schemas https://www.schemastore.org
+        schemas = {
+          {
+            fileMatch = { 'package.json' },
+            url = 'https://json.schemastore.org/package.json',
+          },
+          {
+            fileMatch = { 'tsconfig*.json' },
+            url = 'https://json.schemastore.org/tsconfig.json',
+          },
+          {
+            fileMatch = {
+              '.prettierrc',
+              '.prettierrc.json',
+              'prettier.config.json',
+            },
+            url = 'https://json.schemastore.org/prettierrc.json',
+          },
+          {
+            fileMatch = { '.eslintrc', '.eslintrc.json' },
+            url = 'https://json.schemastore.org/eslintrc.json',
+          },
+          {
+            fileMatch = { '.babelrc', '.babelrc.json', 'babel.config.json' },
+            url = 'https://json.schemastore.org/babelrc.json',
+          },
+          {
+            fileMatch = { 'lerna.json' },
+            url = 'https://json.schemastore.org/lerna.json',
+          },
+          {
+            fileMatch = { 'now.json', 'vercel.json' },
+            url = 'https://json.schemastore.org/now.json',
+          },
+          {
+            fileMatch = {
+              '.stylelintrc',
+              '.stylelintrc.json',
+              'stylelint.config.json',
+            },
+            url = 'http://json.schemastore.org/stylelintrc.json',
+          },
+        },
+      },
+    }
+  else
     opts.on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       client.resolved_capabilities.document_formatting = false
