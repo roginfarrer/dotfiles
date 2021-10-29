@@ -17,7 +17,7 @@ _G.reloadConfig = function(args)
   end
 
   for name, _ in pairs(package.loaded) do
-    if name:match('^rf') then
+    if name:match '^rf' then
       package.loaded[name] = nil
     end
   end

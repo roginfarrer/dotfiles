@@ -1,12 +1,12 @@
 vim.g['test#javascript#runner'] = 'jest'
 
-vim.cmd([[
+vim.cmd [[
   function! ToggleTermStrategy(cmd) abort
     call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
   endfunction
 
   let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
-]])
+]]
 
 -- local function toggleTermStrategy(cmd)
 -- 	require('toggleterm').exec(cmd, 1)
@@ -17,7 +17,7 @@ vim.cmd([[
 vim.g['test#strategy'] = 'toggleterm'
 
 local function getJestTestCmd()
-  local lsputil = require('lspconfig.util')
+  local lsputil = require 'lspconfig.util'
   local path = lsputil.path
 
   -- Our default command
@@ -25,7 +25,7 @@ local function getJestTestCmd()
 
   local cwd = vim.loop.cwd()
   -- path of the current buffer, relative to the cwd
-  local currentBufferFilePath = vim.fn.expand('%:~:.')
+  local currentBufferFilePath = vim.fn.expand '%:~:.'
 
   local pkgJsonParentDir = lsputil.find_package_json_ancestor(
     currentBufferFilePath
@@ -52,7 +52,7 @@ local function getJestTestCmd()
     local hasYarn = path.exists(path.join(cwd, 'yarn.lock'))
     local run = hasYarn and 'yarn' or 'npm run'
 
-    local fileContents = file:read('*a')
+    local fileContents = file:read '*a'
     local jsonTable = vim.fn.json_decode(fileContents)
 
     -- What we're expecting the script command to be
@@ -81,9 +81,9 @@ _G.setJestCmd = function()
   vim.g['test#javascript#jest#executable'] = vim.b.jest_test_cmd
 end
 
-vim.cmd([[
+vim.cmd [[
   augroup test
     autocmd!
     autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
   augroup END
-]])
+]]

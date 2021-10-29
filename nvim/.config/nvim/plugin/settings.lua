@@ -41,11 +41,9 @@ vim.o.wildoptions = 'pum'
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 
 -- https://github.com/mhinz/neovim-remote
-if vim.fn.executable('nvr') then
-  vim.cmd([[ let $GIT_EDITOR = 'nvr -cc split --remote-wait' ]])
-  vim.cmd(
-    [[autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete]]
-  )
+if vim.fn.executable 'nvr' then
+  vim.cmd [[ let $GIT_EDITOR = 'nvr -cc split --remote-wait' ]]
+  vim.cmd [[autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete]]
 end
 
 local disabled_built_ins = {

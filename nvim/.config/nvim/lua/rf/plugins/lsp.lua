@@ -1,8 +1,8 @@
-local u = require('rf.utils')
-local lspconfig = require('lspconfig')
-local lspinstaller = require('nvim-lsp-installer')
-local lspstatus = require('lsp-status')
-local wk = require('which-key')
+local u = require 'rf.utils'
+local lspconfig = require 'lspconfig'
+local lspinstaller = require 'nvim-lsp-installer'
+local lspstatus = require 'lsp-status'
+local wk = require 'which-key'
 
 local lsp = vim.lsp
 local handlers = lsp.handlers
@@ -28,8 +28,8 @@ local function lua_add_lib(lib)
   end
 end
 
-lua_add_lib('$VIMRUNTIME')
-lua_add_lib('~/.config/nvim')
+lua_add_lib '$VIMRUNTIME'
+lua_add_lib '~/.config/nvim'
 
 local function buf_nnoremap(keys, command)
   return u.nnoremap(keys, command, { buffer = true })
@@ -58,7 +58,7 @@ handlers['textDocument/signatureHelp'] = lsp.with(
   handlers.signature_help,
   popup_opts
 )
-vim.diagnostic.config({
+vim.diagnostic.config {
   virtual_text = false,
   float = mergetable(popup_opts, {
     format = function(diagnostic)
@@ -74,10 +74,10 @@ vim.diagnostic.config({
     end,
     severity_sort = true,
   }),
-})
+}
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-if isPackageLoaded('cmp_nvim_lsp') then
+if isPackageLoaded 'cmp_nvim_lsp' then
   capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 end
 capabilities = vim.tbl_extend('keep', capabilities, lspstatus.capabilities)
@@ -108,20 +108,20 @@ local function on_attach(client, bufnr)
 
   vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-  cmd('command! LspGoToDefinition lua vim.lsp.buf.definition()')
-  cmd('command! LspGoToDeclaration lua vim.lsp.buf.declaration()')
-  cmd('command! LspHover lua vim.lsp.buf.hover()')
-  cmd('command! LspImplementations lua vim.lsp.buf.implementation()')
-  cmd('command! LspSignatureHelp lua vim.lsp.buf.signature_help()')
-  cmd('command! LspTypeDefinition lua vim.lsp.buf.type_definition()')
-  cmd('command! LspRenameSymbol lua vim.lsp.buf.rename()')
-  cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
-  cmd('command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()')
-  cmd('command! LspReferences lua vim.lsp.buf.references()')
-  cmd('command! LspPrevDiagnostic lua vim.diagnostic.goto_prev()')
-  cmd('command! LspNextDiagnostic lua vim.diagnostic.goto_next()')
-  cmd('command! Format lua vim.lsp.buf.formatting()')
-  cmd('command! FormatSync lua vim.lsp.buf.formatting_sync()')
+  cmd 'command! LspGoToDefinition lua vim.lsp.buf.definition()'
+  cmd 'command! LspGoToDeclaration lua vim.lsp.buf.declaration()'
+  cmd 'command! LspHover lua vim.lsp.buf.hover()'
+  cmd 'command! LspImplementations lua vim.lsp.buf.implementation()'
+  cmd 'command! LspSignatureHelp lua vim.lsp.buf.signature_help()'
+  cmd 'command! LspTypeDefinition lua vim.lsp.buf.type_definition()'
+  cmd 'command! LspRenameSymbol lua vim.lsp.buf.rename()'
+  cmd 'command! LspCodeAction lua vim.lsp.buf.code_action()'
+  cmd 'command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()'
+  cmd 'command! LspReferences lua vim.lsp.buf.references()'
+  cmd 'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev()'
+  cmd 'command! LspNextDiagnostic lua vim.diagnostic.goto_next()'
+  cmd 'command! Format lua vim.lsp.buf.formatting()'
+  cmd 'command! FormatSync lua vim.lsp.buf.formatting_sync()'
 
   local leader = {
     l = {
@@ -152,9 +152,9 @@ local function on_attach(client, bufnr)
 
   local function showDocs()
     if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
-      vim.fn.execute('h ' .. vim.fn.expand('<cword>'))
+      vim.fn.execute('h ' .. vim.fn.expand '<cword>')
     else
-      vim.fn.execute('LspHover')
+      vim.fn.execute 'LspHover'
     end
   end
 
@@ -169,26 +169,24 @@ local function on_attach(client, bufnr)
 
   u.inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', { buffer = true })
 
-  vim.cmd(
-    [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
-  )
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
   if client.resolved_capabilities.document_formatting then
-    vim.cmd([[
+    vim.cmd [[
       augroup Formatter
         autocmd!
         autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
       augroup END
-    ]])
+    ]]
   end
 end
 
-local null_ls = require('null-ls')
+local null_ls = require 'null-ls'
 local null_ls_builtins = null_ls.builtins
 
-require('null-ls').config({
+require('null-ls').config {
   debug = true,
   sources = {
-    null_ls_builtins.formatting.prettierd.with({
+    null_ls_builtins.formatting.prettierd.with {
       filetypes = {
         'javascript',
         'javascriptreact',
@@ -204,26 +202,26 @@ require('null-ls').config({
         'markdown',
         'markdown.mdx',
       },
-    }),
+    },
     null_ls_builtins.formatting.stylua,
     null_ls_builtins.formatting.fish_indent,
     null_ls_builtins.formatting.shfmt,
-    null_ls_builtins.diagnostics.vint.with({
+    null_ls_builtins.diagnostics.vint.with {
       args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
-    }),
-    null_ls_builtins.formatting.trim_newlines.with({
+    },
+    null_ls_builtins.formatting.trim_newlines.with {
       filtetypes = { 'vim' },
-    }),
-    null_ls_builtins.formatting.trim_whitespace.with({
+    },
+    null_ls_builtins.formatting.trim_whitespace.with {
       filtetypes = { 'vim' },
-    }),
+    },
     null_ls_builtins.code_actions.gitsigns,
   },
-})
-lspconfig['null-ls'].setup({
+}
+lspconfig['null-ls'].setup {
   on_attach = on_attach,
   capabilities = capabilities,
-})
+}
 
 local function setup(server)
   local opts = {
@@ -263,7 +261,7 @@ local function setup(server)
       client.resolved_capabilities.document_range_formatting = false
       on_attach(client, bufnr)
 
-      local ts_utils = require('nvim-lsp-ts-utils')
+      local ts_utils = require 'nvim-lsp-ts-utils'
 
       ts_utils.setup_client(client)
 
@@ -337,7 +335,7 @@ local function setup(server)
     end
   end
   server:setup(opts)
-  vim.cmd([[ do User LspAttachBuffers ]])
+  vim.cmd [[ do User LspAttachBuffers ]]
 end
 
 lspinstaller.on_server_ready(setup)

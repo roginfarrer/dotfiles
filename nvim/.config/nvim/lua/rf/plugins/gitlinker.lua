@@ -1,6 +1,6 @@
 local work_github_url = _G.work_github_url or 'shim'
 
-require('gitlinker').setup({
+require('gitlinker').setup {
   opts = {
     mappings = nil,
     -- adds current line nr in the url for normal mode
@@ -9,7 +9,7 @@ require('gitlinker').setup({
   callbacks = {
     [work_github_url] = require('gitlinker.hosts').get_github_type_url,
   },
-})
+}
 
 function _G.gitCopyToClipboard(range)
   local mode = range > 0 and 'v' or 'n'
@@ -26,9 +26,9 @@ function _G.gitOpenInBrowser(range)
   )
 end
 
-vim.cmd([[
+vim.cmd [[
   command! -nargs=0 -range GitCopyToClipboard call v:lua.gitCopyToClipboard(<range>)
-]])
-vim.cmd([[
+]]
+vim.cmd [[
   command! -nargs=0 -range GitOpenInBrowser call v:lua.gitOpenInBrowser(<range>)
-]])
+]]

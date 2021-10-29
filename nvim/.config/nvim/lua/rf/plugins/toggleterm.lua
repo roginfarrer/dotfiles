@@ -1,6 +1,6 @@
 local Terminal = require('toggleterm.terminal').Terminal
 
-require('toggleterm').setup({
+require('toggleterm').setup {
   shell = 'fish',
   open_mapping = [[<C-t>]],
   direction = 'vertical',
@@ -11,23 +11,23 @@ require('toggleterm').setup({
       return vim.o.columns * 0.4
     end
   end,
-})
+}
 
-local lazygit = Terminal:new({
+local lazygit = Terminal:new {
   cmd = 'lazygit',
   hidden = true,
   direction = 'window',
   shell = 'bash',
-})
+}
 
 local function toggleLazyGit()
-  if vim.fn.executable('lazygit') == 1 then
+  if vim.fn.executable 'lazygit' == 1 then
     lazygit:toggle()
   else
-    print('Please install lazygit (brew install lazygit)')
+    print 'Please install lazygit (brew install lazygit)'
   end
 end
 
-require('which-key').register({
+require('which-key').register {
   ['<leader>gt'] = { toggleLazyGit, 'lazygit' },
-})
+}

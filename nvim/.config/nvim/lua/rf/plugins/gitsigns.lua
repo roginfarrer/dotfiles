@@ -1,4 +1,4 @@
-require('gitsigns').setup({
+require('gitsigns').setup {
   signs = {
     add = { hl = 'GitGutterAdd', text = '▋' },
     change = { hl = 'GitGutterChange', text = '▋' },
@@ -6,4 +6,4 @@ require('gitsigns').setup({
     topdelete = { hl = 'GitGutterDeleteChange', text = '▔' },
     changedelete = { hl = 'GitGutterChange', text = '▎' },
   },
-})
+}

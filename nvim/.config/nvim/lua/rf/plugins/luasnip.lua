@@ -1,4 +1,4 @@
-local ls = require('luasnip')
+local ls = require 'luasnip'
 
 local text = ls.text_node
 local insert = ls.insert_node
@@ -6,35 +6,35 @@ local snip = ls.snippet
 
 local jsAutoSnips = {
   snip('clog', {
-    text('console.log('),
+    text 'console.log(',
     insert(0),
-    text(');'),
+    text ');',
   }),
 }
 
 local jsSnips = {
   snip('clog', {
-    text('console.log('),
+    text 'console.log(',
     insert(0),
-    text(');'),
+    text ');',
   }),
   snip('cfn', {
-    text('const '),
+    text 'const ',
     insert(1, 'name'),
-    text(' = ('),
+    text ' = (',
     insert(2, 'args'),
-    text({ ') => {', '\t' }),
+    text { ') => {', '\t' },
     insert(0),
-    text({ '', '}' }),
+    text { '', '}' },
   }),
   snip('fn', {
-    text('function '),
+    text 'function ',
     insert(1, 'name'),
-    text('('),
+    text '(',
     insert(2, 'args'),
-    text({ ') {', '\t' }),
+    text { ') {', '\t' },
     insert(0),
-    text({ '', '}' }),
+    text { '', '}' },
   }),
 }
 
@@ -49,13 +49,13 @@ ls.snippets = {
       name = 'Local Function',
       dscr = 'Skeleton of a local function',
     }, {
-      text('local function '),
+      text 'local function ',
       insert(1, 'name'),
-      text('('),
+      text '(',
       insert(2, 'args'),
-      text({ ')', '\t' }),
+      text { ')', '\t' },
       insert(0),
-      text({ '', 'end' }),
+      text { '', 'end' },
     }),
   },
 }

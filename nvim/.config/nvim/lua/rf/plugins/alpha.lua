@@ -1,5 +1,5 @@
-local alpha = require('alpha')
-local startify = require('alpha.themes.startify')
+local alpha = require 'alpha'
+local startify = require 'alpha.themes.startify'
 
 startify.section.header.val = {
   [[███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗]],

@@ -1,6 +1,6 @@
-local wk = require('which-key')
+local wk = require 'which-key'
 
-wk.setup({
+wk.setup {
   triggers = 'auto',
   plugins = {
     spelling = {
@@ -22,13 +22,13 @@ wk.setup({
     sd = 'Sandwich Delete',
     sr = 'Sandwich Replace',
   },
-})
+}
 
 local function searchDotfiles()
-  require('telescope.builtin').git_files({
+  require('telescope.builtin').git_files {
     cwd = '~/dotfiles',
     prompt_title = '~ Dotfiles ~',
-  })
+  }
 end
 
 local leader = {
@@ -111,10 +111,10 @@ local leader = {
     f = { '<cmd>Telescope find_files<CR>', 'All Files' },
     ['.'] = {
       function()
-        require('telescope.builtin').find_files({
-          cwd = vim.fn.expand('%:p:h'),
-          prompt_title = vim.fn.expand('%:~:.:p:h'),
-        })
+        require('telescope.builtin').find_files {
+          cwd = vim.fn.expand '%:p:h',
+          prompt_title = vim.fn.expand '%:~:.:p:h',
+        }
       end,
       'Find in current directory',
     },
@@ -123,7 +123,7 @@ local leader = {
     g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
     G = {
       function()
-        require('telescope.builtin').live_grep({ cwd = vim.fn.expand('%:p:h') })
+        require('telescope.builtin').live_grep { cwd = vim.fn.expand '%:p:h' }
       end,
       'Live Grep',
     },
@@ -188,7 +188,7 @@ wk.register({
   prefix = 't',
 })
 
-local hop = require('hop')
+local hop = require 'hop'
 local s = {
   s = {
     a = { 'Sandwich Add' },
@@ -225,7 +225,7 @@ local textobjs = {
 wk.register(textobjs, { mode = 'o' })
 wk.register(textobjs, { mode = 'x' })
 
-wk.register({
+wk.register {
   ['[g'] = 'Go to previous diagnostic',
   [']g'] = 'Go to next diagnostic',
   ['[q'] = 'Go to previous quickfix',
@@ -244,4 +244,4 @@ wk.register({
   ['[['] = 'Go to end of previous class',
   ['[M'] = 'Go to end of previous function',
   ['[]'] = 'Go to end of previous class',
-})
+}
