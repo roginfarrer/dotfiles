@@ -83,6 +83,6 @@ nnoremap ]l :lnext<CR>
 nnoremap [L :lfirst<CR>
 nnoremap ]L :llast<CR>
 
-nnoremap - <cmd>NvimTreeToggle<CR>
+" nnoremap - <cmd>NvimTreeToggle<CR>
 nmap <C-W><C-W> <cmd>WinShift<CR>
 " nmap <C-W>e <cmd>WinResizerStartResize<CR>

@@ -267,7 +267,7 @@ return {
 
   {
     'tamago324/lir.nvim',
-    disable = true,
+    -- disable = true,
     requires = {
       'nvim-lua/plenary.nvim',
       'kyazdani42/nvim-web-devicons',
@@ -277,6 +277,7 @@ return {
   },
   {
     'kyazdani42/nvim-tree.lua',
+    disable = true,
     requires = 'kyazdani42/nvim-web-devicons',
     config = config 'tree',
   },
