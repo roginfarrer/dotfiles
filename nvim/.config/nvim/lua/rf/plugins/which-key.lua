@@ -79,7 +79,10 @@ local leader = {
   d = {
     name = 'Configuration',
     d = { searchDotfiles, 'Search Dotfiles' },
-    n = { ':e ~/dotfiles/nvim/.config/nvim/pluginList<CR>', 'Open Neovim Config' },
+    n = {
+      ':e ~/dotfiles/nvim/.config/nvim/pluginList<CR>',
+      'Open Neovim Config',
+    },
     l = {
       ':e ~/.config/nvim/lua/local-config.lua<CR>',
       'Open Local Neovim Config',
@@ -88,7 +91,10 @@ local leader = {
       ':e ~/dotfiles/kitty/.config/kitty/kitty.conf<CR>',
       'Open Kitty Config',
     },
-    f = { ':e ~/dotfiles/fish/.config/fish/config.fish<CR>', 'Open Fish Config' },
+    f = {
+      ':e ~/dotfiles/fish/.config/fish/config.fish<CR>',
+      'Open Fish Config',
+    },
     r = { reloadConfig, 'Reload Configuration' },
     p = {
       name = 'Plugins',
@@ -139,7 +145,7 @@ local leader = {
     f = { '<cmd>tabfirst<CR>', 'First' },
     l = { '<cmd>tablast<CR>', 'Last' },
   },
-  h = {
+  H = {
     name = 'Help',
     t = { '<cmd>Telescope builtin<cr>', 'Telescope' },
     c = { '<cmd>Telescope commands<cr>', 'Commands' },

@@ -1,35 +1,32 @@
 local u = require 'rf.utils'
 local lspconfig = require 'lspconfig'
 local lspinstaller = require 'nvim-lsp-installer'
-local lspstatus = require 'lsp-status'
 local wk = require 'which-key'
 
 local lsp = vim.lsp
 local handlers = lsp.handlers
 local cmd = vim.cmd
 
-lspstatus.register_progress()
-
-local runtime_path = {
-  'lua/?.lua',
-  'lua/?/init.lua',
-}
-
-for _, v in ipairs(vim.split(package.path, ';')) do
-  table.insert(runtime_path, v)
-end
-
-local lua_lib = {}
-
-local function lua_add_lib(lib)
-  for _, p in pairs(vim.fn.expand(lib, false, true)) do
-    p = vim.loop.fs_realpath(p)
-    lua_lib[p] = true
-  end
-end
-
-lua_add_lib '$VIMRUNTIME'
-lua_add_lib '~/.config/nvim'
+-- local runtime_path = {
+--   'lua/?.lua',
+--   'lua/?/init.lua',
+-- }
+--
+-- for _, v in ipairs(vim.split(package.path, ';')) do
+--   table.insert(runtime_path, v)
+-- end
+--
+-- local lua_lib = {}
+--
+-- local function lua_add_lib(lib)
+--   for _, p in pairs(vim.fn.expand(lib, false, true)) do
+--     p = vim.loop.fs_realpath(p)
+--     lua_lib[p] = true
+--   end
+-- end
+--
+-- lua_add_lib '$VIMRUNTIME'
+-- lua_add_lib '~/.config/nvim'
 
 local function buf_nnoremap(keys, command)
   return u.nnoremap(keys, command, { buffer = true })
@@ -48,7 +45,7 @@ local border = 'rounded'
 -- }
 
 local popup_opts = {
-  -- border = border,
+  border = border,
   focusable = false,
   max_width = 80,
 }
@@ -80,7 +77,6 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 if isPackageLoaded 'cmp_nvim_lsp' then
   capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 end
-capabilities = vim.tbl_extend('keep', capabilities, lspstatus.capabilities)
 
 -- replace the default lsp diagnostic symbols
 local function lspSymbol(name, icon)
@@ -97,7 +93,6 @@ lspSymbol('Info', '')
 lspSymbol('Warn', '')
 
 local function on_attach(client, bufnr)
-  lspstatus.on_attach(client)
   require('lsp_signature').on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     hint_prefix = '● ',
@@ -230,31 +225,32 @@ local function setup(server)
   }
 
   if server.name == 'sumneko_lua' then
-    opts.settings = {
-      Lua = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        runtime = {
-          version = 'LuaJIT',
-          -- Setup your lua path
-          path = runtime_path,
-        },
-        diagnostics = {
-          globals = {
-            -- Get the language server to recognize the `vim` global
-            'vim',
-          },
-        },
-        workspace = {
-          -- Make the server aware of Neovim runtime files
-          -- library = vim.api.nvim_get_runtime_file('', true),
-          library = lua_lib,
-        },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-          enable = false,
-        },
-      },
-    }
+    opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
+    -- opts.settings = {
+    --   Lua = {
+    --     -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+    --     runtime = {
+    --       version = 'LuaJIT',
+    --       -- Setup your lua path
+    --       path = runtime_path,
+    --     },
+    --     diagnostics = {
+    --       globals = {
+    --         -- Get the language server to recognize the `vim` global
+    --         'vim',
+    --       },
+    --     },
+    --     workspace = {
+    --       -- Make the server aware of Neovim runtime files
+    --       -- library = vim.api.nvim_get_runtime_file('', true),
+    --       library = lua_lib,
+    --     },
+    --     -- Do not send telemetry data containing a randomized but unique identifier
+    --     telemetry = {
+    --       enable = false,
+    --     },
+    --   },
+    -- }
   elseif server.name == 'tsserver' then
     opts.on_attach = function(client, bufnr)
       client.resolved_capabilities.document_formatting = false

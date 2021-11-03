@@ -25,7 +25,7 @@ if not present then
   end
 end
 
-vim.cmd [[autocmd BufWritePost nvim/* source <afile> | PackerCompile]]
+vim.cmd [[autocmd BufWritePost <silent> nvim/* source <afile> | PackerCompile]]
 
 -- If your Neovim install doesn't include mpack, e.g. if installed via
 -- Homebrew, then you need to also install mpack from luarocks.

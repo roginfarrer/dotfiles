@@ -34,6 +34,10 @@ return {
   --  Language Server Protocol (LSP)  --
   -- -- -- -- -- -- -- -- -- -- -- -- --
 
+  'nvim-lua/lsp-status.nvim',
+  'ray-x/lsp_signature.nvim',
+  'weilbith/nvim-code-action-menu',
+  'folke/lua-dev.nvim',
   {
     'neovim/nvim-lspconfig',
     config = config 'lsp',
@@ -64,20 +68,6 @@ return {
   {
     'jose-elias-alvarez/nvim-lsp-ts-utils',
     requires = { 'null-ls.nvim' },
-  },
-  'nvim-lua/lsp-status.nvim',
-  'ray-x/lsp_signature.nvim',
-  'weilbith/nvim-code-action-menu',
-  {
-    'ms-jpq/coq_nvim',
-    branch = 'coq',
-    disable = true,
-    requires = {
-      { 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-    },
-    setup = function()
-      require 'rf.plugins.coq'
-    end,
   },
   {
     'hrsh7th/nvim-cmp',
@@ -115,6 +105,11 @@ return {
   {
     'numToStr/Comment.nvim',
     config = config 'comment',
+  },
+  {
+    'ThePrimeagen/harpoon',
+    requires = 'nvim-lua/plenary.nvim',
+    config = config 'harpoon',
   },
 
   -- -- -- -- -- -- -- --

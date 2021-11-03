@@ -33,10 +33,10 @@ require('nvim-treesitter.configs').setup {
     swap = {
       enable = true,
       swap_next = {
-        ['<leader>a'] = '@parameter.inner',
+        ['<leader>fa'] = '@parameter.inner',
       },
       swap_previous = {
-        ['<leader>A'] = '@parameter.inner',
+        ['<leader>fA'] = '@parameter.inner',
       },
     },
     select = {
@@ -50,6 +50,7 @@ require('nvim-treesitter.configs').setup {
         ['ac'] = '@comment.outer',
         ['as'] = '@statement.outer',
         ['am'] = '@call.outer',
+        ['aP'] = '@parameter.outer',
 
         ['ib'] = '@block.inner',
         ['if'] = '@function.inner',
@@ -57,6 +58,7 @@ require('nvim-treesitter.configs').setup {
         ['ic'] = '@comment.inner',
         ['is'] = '@statement.inner',
         ['im'] = '@call.inner',
+        ['iP'] = '@parameter.inner',
       },
     },
     move = {
