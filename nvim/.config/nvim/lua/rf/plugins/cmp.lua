@@ -68,8 +68,9 @@ cmp.setup {
     end,
   },
   sources = {
-    { name = 'nvim_lua' },
+    { name = 'npm' },
     { name = 'cmp_git' },
+    { name = 'nvim_lua' },
     { name = 'luasnip' },
     { name = 'nvim_lsp' },
     { name = 'path' },

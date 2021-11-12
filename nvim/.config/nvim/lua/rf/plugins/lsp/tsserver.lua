@@ -3,8 +3,6 @@ local M = {}
 M.on_attach = function(client, bufnr)
   local ts_utils = require 'nvim-lsp-ts-utils'
 
-  print('this was called')
-
   ts_utils.setup_client(client)
 
   local leader = {

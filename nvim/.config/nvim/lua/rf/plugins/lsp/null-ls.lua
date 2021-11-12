@@ -5,6 +5,7 @@ local M = {}
 
 M.setup = function(on_attach)
   null_ls.config {
+    autostart = true,
     sources = {
       b.formatting.prettierd.with {
         filetypes = {
@@ -42,14 +43,14 @@ M.setup = function(on_attach)
   require('lspconfig')['null-ls'].setup {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
-      if client.resolved_capabilities.document_formatting then
+      -- if client.resolved_capabilities.document_formatting then
         vim.cmd [[
           augroup Formatter
             autocmd!
             autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
           augroup END
         ]]
-      end
+      -- end
     end,
   }
 end

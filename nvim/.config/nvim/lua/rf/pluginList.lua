@@ -15,20 +15,14 @@ return {
       vim.g.cursorhold_updatetime = 250
     end,
   },
-  -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
+  'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
 
-  -- {
-  --   'luukvbaal/stabilize.nvim',
-  --   config = function()
-  --     require('stabilize').setup({
-  --       force = true, -- stabilize window even when current cursor position will be hidden behind new window
-  --       ignore = { -- do not manage windows matching these file/buftypes
-  --         filetype = { 'help', 'list', 'Trouble', 'packer' },
-  --         buftype = { 'terminal', 'quickfix', 'loclist' },
-  --       },
-  --     })
-  --   end,
-  -- },
+  {
+    'luukvbaal/stabilize.nvim',
+    config = function()
+      require('stabilize').setup()
+    end,
+  },
 
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
@@ -78,6 +72,7 @@ return {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       { 'petertriho/cmp-git', requires = 'nvim-lua/plenary.nvim' },
+      { 'David-Kunz/cmp-npm', requires = { 'nvim-lua/plenary.nvim' } },
     },
     config = config 'cmp',
   },
@@ -142,6 +137,10 @@ return {
         end,
       },
     },
+  },
+  {
+    'nvim-treesitter/playground',
+    requires = { 'nvim-treesitter/nvim-treesitter' },
   },
   {
     'kyazdani42/nvim-web-devicons',

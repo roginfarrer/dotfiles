@@ -17,7 +17,8 @@ augroup Vimrc
   autocmd UIEnter * let g:gui_running = 1 | source $HOME/.config/nvim/gui.vim
 
   " Make the default filetype markdown
-  autocmd BufNewFile,BufRead * if &ft == '' | set ft=markdown | endif
+  " Currently broken with filetype.nvim
+  autocmd BufEnter * if &ft == '' | set ft=markdown | endif
 
   autocmd BufNewFile,BufRead *rc if &ft == '' | set ft=json | endif
 
@@ -25,7 +26,7 @@ augroup Vimrc
   " fixes one that happens in a few colorschemes
   " autocmd ColorScheme * hi! link DiagnosticUnderlineWarn DiagnosticUnderlineWarning
   " autocmd ColorScheme * hi! link DiagnosticUnderlineInfo DiagnosticUnderlineInformation
-  autocmd Vimrc ColorScheme * hi! NormalFloat guibg=#131A24
-  autocmd Vimrc ColorScheme * hi! FloatBorder guifg=#719cd6 guibg=#131A24
-augroup END
 
+  " autocmd Vimrc ColorScheme * hi! NormalFloat guibg=#131A24
+  " autocmd Vimrc ColorScheme * hi! FloatBorder guifg=#719cd6 guibg=#131A24
+augroup END
