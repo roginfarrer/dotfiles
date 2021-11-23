@@ -14,11 +14,11 @@ augroup Vimrc
   " Equalize splits when window resizes
   autocmd VimResized * wincmd =
 
-  autocmd UIEnter * let g:gui_running = 1 | source $HOME/.config/nvim/gui.vim
+  " autocmd UIEnter * let g:gui_running = 1 | source $HOME/.config/nvim/gui.vim
 
   " Make the default filetype markdown
   " Currently broken with filetype.nvim
-  autocmd BufEnter * if &ft == '' | set ft=markdown | endif
+  autocmd CursorHold * if &ft == '' | set ft=markdown | endif
 
   autocmd BufNewFile,BufRead *rc if &ft == '' | set ft=json | endif
 

@@ -17,6 +17,7 @@ set -Ux EDITOR nvim
 set -Ux VISUAL nvim
 set -Ux MANPAGER "nvim +Man!"
 
+alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
 abbr v nvim
 
 ### Git it!
