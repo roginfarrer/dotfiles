@@ -16,7 +16,7 @@ return {
     end,
   },
   'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
-  'dstein64/vim-startuptime',
+  { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
   {
     'luukvbaal/stabilize.nvim',
     config = function()
@@ -45,7 +45,7 @@ return {
   { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
   {
     'neovim/nvim-lspconfig',
-    -- event = 'BufRead',
+    event = 'BufRead',
     ft = {
       'css',
       'fish',
@@ -57,9 +57,6 @@ return {
       'lua',
       'markdown',
       'mdx',
-      'python',
-      'ruby',
-      'rust',
       'scss',
       'sh',
       'typescript',
@@ -69,8 +66,8 @@ return {
     },
     config = config 'lsp',
     requires = {
-      'williamboman/nvim-lsp-installer',
-      'hrsh7th/cmp-nvim-lsp',
+      { 'williamboman/nvim-lsp-installer' },
+      { 'hrsh7th/cmp-nvim-lsp' },
       'folke/lua-dev.nvim',
       'ray-x/lsp_signature.nvim',
       {
@@ -318,6 +315,7 @@ return {
     'tamago324/lir.nvim',
     -- event = 'BufRead',
     -- disable = true,
+    keys = '-',
     requires = {
       'nvim-lua/plenary.nvim',
       'kyazdani42/nvim-web-devicons',
