@@ -194,20 +194,20 @@ wk.register({
   prefix = 't',
 })
 
-local hop = require 'hop'
-local s = {
-  s = {
-    a = { 'Sandwich Add' },
-    d = { 'Sandwich Delete' },
-    r = { 'Sandwich Replace' },
-    s = { hop.hint_char2, 'Hop to 2 Chars' },
-    l = { hop.hint_lines, 'Hop Lines' },
-    ['/'] = { hop.hint_patterns, 'Hop to Pattern' },
-  },
-}
-wk.register(s, { mode = 'n' })
-wk.register(s, { mode = 'o' })
-wk.register(s, { mode = 'x' })
+-- local hop = require 'hop'
+-- local s = {
+--   s = {
+--     a = { 'Sandwich Add' },
+--     d = { 'Sandwich Delete' },
+--     r = { 'Sandwich Replace' },
+--     s = { hop.hint_char2, 'Hop to 2 Chars' },
+--     l = { hop.hint_lines, 'Hop Lines' },
+--     ['/'] = { hop.hint_patterns, 'Hop to Pattern' },
+--   },
+-- }
+-- wk.register(s, { mode = 'n' })
+-- wk.register(s, { mode = 'o' })
+-- wk.register(s, { mode = 'x' })
 
 local textobjs = {
   a = {

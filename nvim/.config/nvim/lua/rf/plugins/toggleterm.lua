@@ -29,5 +29,6 @@ local function toggleLazyGit()
 end
 
 require('which-key').register {
+  ['<C-t>'] = '<cmd>ToggleTerm<CR>',
   ['<leader>gt'] = { toggleLazyGit, 'lazygit' },
 }

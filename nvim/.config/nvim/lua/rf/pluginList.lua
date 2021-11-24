@@ -16,131 +16,12 @@ return {
     end,
   },
   'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
-
+  'dstein64/vim-startuptime',
   {
     'luukvbaal/stabilize.nvim',
     config = function()
       require('stabilize').setup()
     end,
-  },
-
-  -- -- -- -- -- -- -- -- -- -- -- -- --
-  --  Language Server Protocol (LSP)  --
-  -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  'nvim-lua/lsp-status.nvim',
-  'ray-x/lsp_signature.nvim',
-  'weilbith/nvim-code-action-menu',
-  'folke/lua-dev.nvim',
-  {
-    'neovim/nvim-lspconfig',
-    config = config 'lsp',
-    requires = {
-      'williamboman/nvim-lsp-installer',
-      'hrsh7th/cmp-nvim-lsp',
-    },
-  },
-  {
-    'jose-elias-alvarez/null-ls.nvim',
-    requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-  },
-  {
-    'onsails/lspkind-nvim',
-    event = { 'BufRead', 'BufNewFile' },
-    config = function()
-      require('lspkind').init { preset = 'codicons' }
-    end,
-  },
-  {
-    'folke/trouble.nvim',
-    requires = 'kyazdani42/nvim-web-devicons',
-    cmd = { 'Trouble', 'TroubleToggle' },
-    config = function()
-      require('trouble').setup {}
-    end,
-  },
-  {
-    'jose-elias-alvarez/nvim-lsp-ts-utils',
-    requires = { 'null-ls.nvim' },
-  },
-  {
-    'hrsh7th/nvim-cmp',
-    requires = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lua',
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      { 'petertriho/cmp-git', requires = 'nvim-lua/plenary.nvim' },
-      { 'David-Kunz/cmp-npm', requires = { 'nvim-lua/plenary.nvim' } },
-    },
-    config = config 'cmp',
-  },
-  {
-    'windwp/nvim-autopairs',
-    config = config 'autopairs',
-  },
-  {
-    'L3MON4D3/LuaSnip',
-    config = config 'luasnip',
-  },
-
-  -- -- -- -- -- --
-  --   Editing   --
-  -- -- -- -- -- --
-
-  'editorconfig/editorconfig-vim',
-  'duggiefresh/vim-easydir',
-  'machakann/vim-sandwich',
-  'tpope/vim-eunuch',
-  'tpope/vim-repeat',
-  'tpope/vim-abolish',
-  'Pocco81/TrueZen.nvim',
-  'wellle/targets.vim',
-  {
-    'numToStr/Comment.nvim',
-    config = config 'comment',
-  },
-  {
-    'ThePrimeagen/harpoon',
-    requires = 'nvim-lua/plenary.nvim',
-    config = config 'harpoon',
-  },
-
-  -- -- -- -- -- -- -- --
-  --   User Interface  --
-  -- -- -- -- -- -- -- --
-
-  {
-    'nvim-lualine/lualine.nvim',
-    after = 'nightfox.nvim',
-    requires = {
-      'kyazdani42/nvim-web-devicons',
-    },
-    config = config 'lualine',
-  },
-  {
-    'goolord/alpha-nvim',
-    config = config 'alpha',
-  },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-    config = config 'treesitter',
-    requires = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      {
-        'windwp/nvim-ts-autotag',
-        config = function()
-          require('nvim-ts-autotag').setup()
-        end,
-      },
-    },
-  },
-  {
-    'nvim-treesitter/playground',
-    requires = { 'nvim-treesitter/nvim-treesitter' },
   },
   {
     'kyazdani42/nvim-web-devicons',
@@ -156,9 +37,173 @@ return {
       }
     end,
   },
+
+  -- -- -- -- -- -- -- -- -- -- -- -- --
+  --  Language Server Protocol (LSP)  --
+  -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
+  {
+    'neovim/nvim-lspconfig',
+    -- event = 'BufRead',
+    ft = {
+      'css',
+      'fish',
+      'html',
+      'javascript',
+      'javascriptreact',
+      'json',
+      'jsonc',
+      'lua',
+      'markdown',
+      'mdx',
+      'python',
+      'ruby',
+      'rust',
+      'scss',
+      'sh',
+      'typescript',
+      'typescriptreact',
+      'vim',
+      'yaml',
+    },
+    config = config 'lsp',
+    requires = {
+      'williamboman/nvim-lsp-installer',
+      'hrsh7th/cmp-nvim-lsp',
+      'folke/lua-dev.nvim',
+      'ray-x/lsp_signature.nvim',
+      {
+        'jose-elias-alvarez/null-ls.nvim',
+        requires = { 'nvim-lua/plenary.nvim' },
+      },
+      {
+        'jose-elias-alvarez/nvim-lsp-ts-utils',
+        requires = { 'null-ls.nvim' },
+      },
+    },
+  },
+  {
+    'folke/trouble.nvim',
+    requires = 'kyazdani42/nvim-web-devicons',
+    cmd = { 'Trouble', 'TroubleToggle' },
+    config = function()
+      require('trouble').setup {}
+    end,
+  },
+  {
+    {
+      'hrsh7th/nvim-cmp',
+      after = 'nvim-lspconfig',
+      requires = {
+        {
+          'L3MON4D3/LuaSnip',
+          after = 'nvim-lspconfig',
+          config = config 'luasnip',
+        },
+        {
+          'onsails/lspkind-nvim',
+          after = 'nvim-lspconfig',
+          config = function()
+            require('lspkind').init { preset = 'codicons' }
+          end,
+        },
+      },
+      config = config 'cmp',
+    },
+    { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
+    { 'saadparwaiz1/cmp_luasnip', event = 'CursorHold ' },
+    { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+    {
+      'petertriho/cmp-git',
+      after = 'nvim-cmp',
+      requires = 'nvim-lua/plenary.nvim',
+    },
+    {
+      'David-Kunz/cmp-npm',
+      after = 'nvim-cmp',
+      requires = { 'nvim-lua/plenary.nvim' },
+    },
+  },
+  {
+    'windwp/nvim-autopairs',
+    after = 'nvim-cmp',
+    config = config 'autopairs',
+  },
+
+  -- -- -- -- -- --
+  --   Editing   --
+  -- -- -- -- -- --
+
+  { 'editorconfig/editorconfig-vim', event = 'BufRead' },
+  { 'duggiefresh/vim-easydir', event = 'BufRead' },
+  { 'machakann/vim-sandwich', event = 'BufRead' },
+  { 'tpope/vim-eunuch', event = 'BufRead' },
+  { 'tpope/vim-repeat', event = 'BufRead' },
+  { 'tpope/vim-abolish', event = 'BufRead' },
+  { 'wellle/targets.vim', event = 'BufRead' },
+  {
+    'numToStr/Comment.nvim',
+    event = 'BufRead',
+    config = config 'comment',
+  },
+  {
+    'ThePrimeagen/harpoon',
+    requires = 'nvim-lua/plenary.nvim',
+    event = 'BufRead',
+    config = config 'harpoon',
+  },
+
+  -- -- -- -- -- -- -- --
+  --   User Interface  --
+  -- -- -- -- -- -- -- --
+
+  {
+    'nvim-lualine/lualine.nvim',
+    after = 'nightfox.nvim',
+    event = 'BufEnter',
+    requires = {
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = config 'lualine',
+  },
+  {
+    'goolord/alpha-nvim',
+    config = config 'alpha',
+  },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    event = 'CursorHold',
+    run = ':TSUpdate',
+    config = config 'treesitter',
+    requires = {
+      {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        after = 'nvim-treesitter',
+      },
+      {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        after = 'nvim-treesitter',
+      },
+      {
+        'windwp/nvim-ts-autotag',
+        after = 'nvim-treesitter',
+        config = function()
+          require('nvim-ts-autotag').setup()
+        end,
+      },
+    },
+  },
+  {
+    'nvim-treesitter/playground',
+    requires = { 'nvim-treesitter/nvim-treesitter' },
+    after = 'nvim-treesitter',
+  },
   {
     'norcalli/nvim-colorizer.lua',
-    event = { 'BufRead', 'BufNewFile' },
+    event = 'CursorHold',
     config = function()
       require('colorizer').setup({}, {
         css = true,
@@ -172,14 +217,20 @@ return {
   },
   {
     'simeji/winresizer',
+    cmd = {
+      'WinResizerStartResize',
+      'WinResizerStartMove',
+      'WinResizerStartFocus',
+    },
     setup = function()
       vim.g.winresizer_start_key = '<C-w>e'
     end,
   },
-  'sindrets/winshift.nvim',
-  'kevinhwang91/nvim-bqf',
+  { 'sindrets/winshift.nvim', cmd = 'WinShift' },
+  { 'kevinhwang91/nvim-bqf', ft = 'qf' },
   {
     'karb94/neoscroll.nvim',
+    event = 'WinScrolled',
     config = function()
       require('neoscroll').setup()
     end,
@@ -194,19 +245,22 @@ return {
     cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
     setup = config 'vim-test',
   },
-  {
-    'mfussenegger/nvim-dap',
-    run = ':helptags ALL',
-    requires = { 'David-Kunz/jester' },
-    config = config 'dap',
-  },
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   run = ':helptags ALL',
+  --   requires = { 'David-Kunz/jester' },
+  --   config = config 'dap',
+  -- },
   {
     'IndianBoy42/hop.nvim',
+    after = 'nvim-treesitter',
+    event = 'BufRead',
     requires = { 'nvim-treesitter' },
     config = config 'hop',
   },
   {
     'akinsho/toggleterm.nvim',
+    -- cmd = { 'ToggleTerm', 'ToggleTermAll', 'TermExec' },
     config = config 'toggleterm',
   },
 
@@ -214,10 +268,11 @@ return {
   --  Git  --
   -- -- -- --
 
-  'tpope/vim-fugitive',
+  { 'tpope/vim-fugitive', event = 'BufRead' },
   {
     'ruifm/gitlinker.nvim',
     requires = 'nvim-lua/plenary.nvim',
+    event = 'BufRead',
     config = config 'gitlinker',
   },
   { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
@@ -247,13 +302,13 @@ return {
   },
   {
     'lewis6991/gitsigns.nvim',
-    event = { 'BufRead', 'BufNewFile' },
+    event = 'BufRead',
     requires = {
       'nvim-lua/plenary.nvim',
     },
     config = config 'gitsigns',
   },
-  'pwntester/octo.nvim',
+  -- 'pwntester/octo.nvim',
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
@@ -261,6 +316,7 @@ return {
 
   {
     'tamago324/lir.nvim',
+    -- event = 'BufRead',
     -- disable = true,
     requires = {
       'nvim-lua/plenary.nvim',
@@ -271,12 +327,14 @@ return {
   },
   {
     'kyazdani42/nvim-tree.lua',
+    event = 'CursorHold',
     disable = true,
     requires = 'kyazdani42/nvim-web-devicons',
     config = config 'tree',
   },
   {
     'nvim-telescope/telescope.nvim',
+    event = 'CursorHold',
     config = config 'telescope',
     requires = {
       'nvim-lua/plenary.nvim',
