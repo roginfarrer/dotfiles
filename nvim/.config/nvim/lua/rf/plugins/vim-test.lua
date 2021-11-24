@@ -21,7 +21,8 @@ local function getJestTestCmd()
   local path = lsputil.path
 
   -- Our default command
-  local cmd = 'jest'
+  local jestCmd = 'jest'
+  local cypressCmd = 'cypress'
 
   local cwd = vim.loop.cwd()
   -- path of the current buffer, relative to the cwd
@@ -32,7 +33,8 @@ local function getJestTestCmd()
   )
 
   if not pkgJsonParentDir then
-    return cmd
+    vim.b.jest_test_cmd = jestCmd
+    vim.b.cypress_test_cmd = cypressCmd
   end
 
   local pkgJsonPath = path.join(cwd, pkgJsonParentDir, 'package.json')
@@ -57,33 +59,40 @@ local function getJestTestCmd()
 
     -- What we're expecting the script command to be
     local expectedTestCmd = 'test'
-    local testCmd = jsonTable
+    local pkgJestTestCmd = jsonTable
         and jsonTable.scripts
         and jsonTable.scripts[expectedTestCmd]
       or nil
 
-    if testCmd ~= nil then
-      cmd = isMonorepo
-          and run .. ' --cwd ' .. pkgJsonParentDir .. ' ' .. testCmd
-        or testCmd
+    vim.b.javascript_cmd_root = isMonorepo
+      and run .. ' --cwd ' .. pkgJsonParentDir
+
+    if pkgJestTestCmd ~= nil then
+      jestCmd = vim.b.javascript_cmd_root .. ' ' .. pkgJestTestCmd
+        or pkgJestTestCmd
     end
+
+    vim.b.jest_test_cmd = jestCmd
+    vim.b.cypress_test_cmd = vim.b.javascript_cmd_root .. ' run ' .. cypressCmd
 
     io.close(file)
   end
-
-  return cmd
 end
 
 _G.getJestTestCmd = getJestTestCmd
 
 _G.setJestCmd = function()
-  vim.b.jest_test_cmd = vim.b.jest_test_cmd or getJestTestCmd()
+  if vim.b.jest_test_cmd == nil then
+    getJestTestCmd()
+  end
   vim.g['test#javascript#jest#executable'] = vim.b.jest_test_cmd
+  vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
 end
 
 vim.cmd [[
   augroup test
     autocmd!
     autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
+    autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
   augroup END
 ]]

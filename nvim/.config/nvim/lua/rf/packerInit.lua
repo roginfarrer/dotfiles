@@ -34,6 +34,7 @@ vim.cmd [[autocmd BufWritePost <silent> nvim/* source <afile> | PackerCompile]]
 -- Make sure to add this on top of your plugins.lua to resolve this
 vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
 
+packer.init { max_jobs = 16 }
 return packer.startup(function(use)
   for _, plugin in ipairs(require 'rf.pluginList') do
     use(plugin)

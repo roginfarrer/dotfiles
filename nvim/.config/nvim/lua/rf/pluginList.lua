@@ -192,7 +192,7 @@ return {
   {
     'vim-test/vim-test',
     cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
-    config = config 'vim-test',
+    setup = config 'vim-test',
   },
   {
     'mfussenegger/nvim-dap',

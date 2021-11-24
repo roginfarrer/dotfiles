@@ -71,10 +71,10 @@ cmp.setup {
     { name = 'npm' },
     { name = 'cmp_git' },
     { name = 'nvim_lua' },
-    { name = 'luasnip' },
     { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'buffer', keyword_length = 4 },
+    { name = 'luasnip' },
   },
   experimental = {
     native_menu = false,
