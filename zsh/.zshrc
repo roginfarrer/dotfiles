@@ -38,3 +38,6 @@ eval "$(fnm env)"
 export NNN_PLUG='f:fzcd;o:fzopen;'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/vault vault

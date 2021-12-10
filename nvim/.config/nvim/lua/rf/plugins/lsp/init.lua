@@ -12,6 +12,7 @@ local popup_opts = {
   -- border = border,
   focusable = false,
   max_width = 80,
+  close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
 }
 
 require('rf.plugins.lsp.fancy_rename').setup()
@@ -35,13 +36,14 @@ vim.diagnostic.config {
       return string.format('%s [%s]', diagnostic.message, diagnostic.source)
     end,
     severity_sort = true,
+    close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
   }),
 }
 
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-if isPackageLoaded 'cmp_nvim_lsp' then
-  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-end
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- replace the default lsp diagnostic symbols
 local function lspSymbol(name, icon)
@@ -151,9 +153,11 @@ local function setup(server)
   if server.name == 'sumneko_lua' then
     opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
   elseif server.name == 'tsserver' then
+    local tsserver_settings = require 'rf.plugins.lsp.tsserver'
+    opts = vim.tbl_deep_extend('force', opts, tsserver_settings)
     opts.on_attach = function(client, bufnr)
       on_attach(client, bufnr)
-      require('rf.plugins.lsp.tsserver').on_attach(client, bufnr)
+      tsserver_settings.on_attach(client, bufnr)
     end
   elseif server.name == 'jsonls' then
     opts = vim.tbl_deep_extend('force', opts, require 'rf.plugins.lsp.json')

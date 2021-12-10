@@ -15,7 +15,7 @@ return {
       vim.g.cursorhold_updatetime = 250
     end,
   },
-  'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
+  -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
   {
     'luukvbaal/stabilize.nvim',
@@ -46,24 +46,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     event = 'BufRead',
-    ft = {
-      'css',
-      'fish',
-      'html',
-      'javascript',
-      'javascriptreact',
-      'json',
-      'jsonc',
-      'lua',
-      'markdown',
-      'mdx',
-      'scss',
-      'sh',
-      'typescript',
-      'typescriptreact',
-      'vim',
-      'yaml',
-    },
     config = config 'lsp',
     requires = {
       { 'williamboman/nvim-lsp-installer' },
@@ -95,7 +77,7 @@ return {
       requires = {
         {
           'L3MON4D3/LuaSnip',
-          after = 'nvim-lspconfig',
+          -- after = 'nvim-lspconfig',
           config = config 'luasnip',
         },
         {
@@ -108,7 +90,7 @@ return {
       },
       config = config 'cmp',
     },
-    { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-nvim-lsp' },
     { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
     { 'saadparwaiz1/cmp_luasnip', event = 'CursorHold ' },
     { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },

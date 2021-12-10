@@ -15,4 +15,8 @@ M.on_attach = function(client, bufnr)
   require('which-key').register(leader, { prefix = '<leader>', buffer = bufnr })
 end
 
+M.flags = {
+  debounce_text_changes = 500,
+}
+
 return M

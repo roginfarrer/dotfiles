@@ -1,10 +1,3 @@
-local function lsp_status()
-  if #vim.lsp.buf_get_clients() then
-    return require('lsp-status').status_progress()
-  end
-  return ''
-end
-
 -- https://vi.stackexchange.com/a/12294
 local function getHighlightTerm(group, term)
   local output = vim.fn.execute('hi ' .. group)
@@ -55,8 +48,7 @@ local config = {
     },
     lualine_c = { { 'filename', file_status = true } },
     lualine_x = {
-      -- lsp_status,
-      { 'diagnostics', sources = { 'nvim_lsp' } },
+      { 'diagnostics', sources = { 'nvim_diagnostic' } },
     },
     lualine_y = { 'filetype' },
     lualine_z = { lsp_client_names },

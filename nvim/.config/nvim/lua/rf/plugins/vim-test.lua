@@ -8,12 +8,6 @@ vim.cmd [[
   let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
 ]]
 
--- local function toggleTermStrategy(cmd)
--- 	require('toggleterm').exec(cmd, 1)
--- end
-
--- vim.g['test#custom_strategies'] = { toggleterm = toggleTermStrategy }
-
 vim.g['test#strategy'] = 'toggleterm'
 
 local function getJestTestCmd()

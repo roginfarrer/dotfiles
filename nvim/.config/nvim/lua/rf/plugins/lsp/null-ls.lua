@@ -7,7 +7,7 @@ M.setup = function(on_attach)
   null_ls.config {
     autostart = true,
     sources = {
-      b.formatting.prettier.with {
+      b.formatting.prettierd.with {
         filetypes = {
           'javascript',
           'javascriptreact',
