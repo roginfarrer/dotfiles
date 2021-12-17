@@ -25,12 +25,12 @@ if not present then
   end
 end
 
-vim.cmd [[
-augroup packer_user_config
-  autocmd!
-  autocmd BufWritePost $HOME/dotfiles/nvim/* source <afile> | PackerCompile | echo 'compiled!'
-augroup end
-]]
+-- vim.cmd [[
+-- augroup packer_user_config
+--   autocmd!
+--   autocmd BufWritePost $HOME/dotfiles/nvim/* source <afile> | PackerCompile | echo 'compiled!'
+-- augroup end
+-- ]]
 
 -- If your Neovim install doesn't include mpack, e.g. if installed via
 -- Homebrew, then you need to also install mpack from luarocks.

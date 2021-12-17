@@ -49,7 +49,12 @@ local function getJestTestCmd()
     local run = hasYarn and 'yarn' or 'npm run'
 
     local fileContents = file:read '*a'
+    if fileContents ~= nil then
+      return
+    end
     local jsonTable = vim.fn.json_decode(fileContents)
+
+    dump(fileContents, jsonTable)
 
     -- What we're expecting the script command to be
     local expectedTestCmd = 'test'

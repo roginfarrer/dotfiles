@@ -1,4 +1,5 @@
 local actions = require 'telescope.actions'
+local action_layout = require 'telescope.actions.layout'
 
 require('telescope').setup {
   defaults = {
@@ -23,6 +24,7 @@ require('telescope').setup {
       -- insert mode
       i = {
         ['<esc>'] = actions.close,
+        ['?'] = action_layout.toggle_preview,
       },
       -- normal mode
       n = {
@@ -38,14 +40,9 @@ require('telescope').setup {
       sort_mru = true,
     },
   },
-  -- extensions = {
-  -- 	fzy_native = {
-  -- 		override_generic_sorter = false,
-  -- 		override_file_sorter = true,
-  -- 	},
-  -- },
 }
 
 require('project_nvim').setup {}
--- require('telescope').load_extension('fzy_native')
 require('telescope').load_extension 'projects'
+-- https://github.com/nvim-telescope/telescope-node-modules.nvim
+require'telescope'.load_extension'node_modules'

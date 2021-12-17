@@ -4,7 +4,7 @@ local b = null_ls.builtins
 local M = {}
 
 M.setup = function(on_attach)
-  null_ls.config {
+  null_ls.setup {
     autostart = true,
     sources = {
       b.formatting.prettierd.with {
@@ -38,9 +38,6 @@ M.setup = function(on_attach)
       },
       b.code_actions.gitsigns,
     },
-  }
-
-  require('lspconfig')['null-ls'].setup {
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       if client.resolved_capabilities.document_formatting then

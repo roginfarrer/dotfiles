@@ -44,11 +44,11 @@ return {
 
   { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
   {
-    'neovim/nvim-lspconfig',
+    'williamboman/nvim-lsp-installer',
     event = 'BufRead',
     config = config 'lsp',
     requires = {
-      { 'williamboman/nvim-lsp-installer' },
+      'neovim/nvim-lspconfig',
       { 'hrsh7th/cmp-nvim-lsp' },
       'folke/lua-dev.nvim',
       'ray-x/lsp_signature.nvim',
@@ -62,6 +62,7 @@ return {
       },
     },
   },
+  'neovim/nvim-lspconfig',
   {
     'folke/trouble.nvim',
     requires = 'kyazdani42/nvim-web-devicons',
@@ -92,7 +93,7 @@ return {
     },
     { 'hrsh7th/cmp-nvim-lsp' },
     { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
-    { 'saadparwaiz1/cmp_luasnip', event = 'CursorHold ' },
+    { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
     { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
     { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
     {
@@ -154,7 +155,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    event = 'CursorHold',
+    -- event = 'CursorHold',
     run = ':TSUpdate',
     config = config 'treesitter',
     requires = {
@@ -318,9 +319,9 @@ return {
     config = config 'telescope',
     requires = {
       'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope-fzy-native.nvim',
       'nvim-telescope/telescope-fzf-writer.nvim',
       'ahmedkhalf/project.nvim',
+      'nvim-telescope/telescope-node-modules.nvim',
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make',
@@ -333,10 +334,10 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
-  {
-    'tpope/vim-markdown',
-    ft = { 'markdown', 'mdx', 'markdown.mdx' },
-  },
+  -- {
+  --   'tpope/vim-markdown',
+  --   ft = { 'markdown', 'mdx', 'markdown.mdx' },
+  -- },
   {
     'folke/tokyonight.nvim',
     config = function()
