@@ -1,36 +1,33 @@
-local present, packer = pcall(require, 'packer')
+local fn = vim.fn
 
-if not present then
-  local packer_path = vim.fn.stdpath 'data'
-    .. '/site/pack/packer/opt/packer.nvim'
-
-  print 'Cloning packer..'
-  -- remove the dir before cloning
-  vim.fn.delete(packer_path, 'rf')
-  vim.fn.system {
+-- Automatically install packer
+local install_path = fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  PACKER_BOOTSTRAP = fn.system {
     'git',
     'clone',
-    'https://github.com/wbthomason/packer.nvim',
     '--depth',
-    '20',
-    packer_path,
+    '1',
+    'https://github.com/wbthomason/packer.nvim',
+    install_path,
   }
-
-  present, packer = pcall(require, 'packer')
-
-  if present then
-    print 'Packer cloned successfully.'
-  else
-    error("Couldn't clone packer !\nPacker path: " .. packer_path)
-  end
+  print 'Installing packer close and reopen Neovim...'
+  vim.cmd [[packadd packer.nvim]]
 end
 
+-- -- Autocommand that reloads neovim whenever you save the plugins.lua file
 -- vim.cmd [[
--- augroup packer_user_config
---   autocmd!
---   autocmd BufWritePost $HOME/dotfiles/nvim/* source <afile> | PackerCompile | echo 'compiled!'
--- augroup end
+--   augroup packer_user_config
+--     autocmd!
+--     autocmd BufWritePost pluginList.lua source <afile> | PackerSync
+--   augroup end
 -- ]]
+
+-- Use a protected call so we don't error out on first use
+local status_ok, packer = pcall(require, 'packer')
+if not status_ok then
+  return
+end
 
 -- If your Neovim install doesn't include mpack, e.g. if installed via
 -- Homebrew, then you need to also install mpack from luarocks.
@@ -43,5 +40,11 @@ packer.init { max_jobs = 16 }
 return packer.startup(function(use)
   for _, plugin in ipairs(require 'rf.pluginList') do
     use(plugin)
+  end
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if PACKER_BOOTSTRAP then
+    require('packer').sync()
   end
 end)

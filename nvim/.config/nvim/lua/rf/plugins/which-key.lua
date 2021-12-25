@@ -168,6 +168,16 @@ local leader = {
     ['<Left>'] = { '<cmd>vertical resize -5<CR>', 'Decrease window width' },
     ['<Right>'] = { '<cmd>vertical resize +5<CR>', 'Increase window width' },
   },
+  z = {
+    name = 'Telekasten',
+    f = { require('telekasten').find_notes, 'Find Notes' },
+    d = { require('telekasten').find_daily_notes, 'Find Daily Notes' },
+    g = { require('telekasten').search_notes, 'Search Notes' },
+    z = { require('telekasten').follow_link, 'Follow Link' },
+    t = { require('telekasten').goto_today, 'Goto Today' },
+    n = { require('telekasten').new_note, 'New Note' },
+    y = { require('telekasten').yank_notelink, 'Yank Notelink' },
+  },
 }
 
 wk.register(leader, { prefix = '<leader>' })

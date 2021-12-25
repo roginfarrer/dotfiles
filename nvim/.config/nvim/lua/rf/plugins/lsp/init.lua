@@ -9,7 +9,7 @@ local cmd = vim.cmd
 local border = 'rounded'
 
 local popup_opts = {
-  -- border = border,
+  border = border,
   focusable = false,
   max_width = 80,
   close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
@@ -70,13 +70,13 @@ local function on_attach(client, bufnr)
     client.resolved_capabilities.document_range_formatting = false
   end
 
-  require('lsp_signature').on_attach({
-    bind = true, -- This is mandatory, otherwise border config won't get registered.
-    hint_prefix = '● ',
-    handler_opts = {
-      -- border = popup_opts.border,
-    },
-  }, bufnr)
+  -- require('lsp_signature').on_attach({
+  --   bind = true, -- This is mandatory, otherwise border config won't get registered.
+  --   hint_prefix = '● ',
+  --   handler_opts = {
+  --     border = popup_opts.border,
+  --   },
+  -- }, bufnr)
 
   vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 

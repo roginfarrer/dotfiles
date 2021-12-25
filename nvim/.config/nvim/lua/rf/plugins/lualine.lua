@@ -4,9 +4,9 @@ local function getHighlightTerm(group, term)
   return vim.fn.matchstr(output, term .. '=\\zs\\S*')
 end
 
-local diffAddFg = getHighlightTerm('LspSagaRenameBorder', 'guifg')
-local diffChangeFg = getHighlightTerm('LspDiagnosticsHint', 'guifg')
-local diffDeleteFg = getHighlightTerm('LspDiagnosticsError', 'guifg')
+-- local diffAddFg = getHighlightTerm('LspSagaRenameBorder', 'guifg')
+-- local diffChangeFg = getHighlightTerm('LspDiagnosticsHint', 'guifg')
+-- local diffDeleteFg = getHighlightTerm('LspDiagnosticsError', 'guifg')
 
 local function lsp_client_names()
   local msg = 'no active lsp'
@@ -39,11 +39,11 @@ local config = {
       'branch',
       {
         'diff',
-        diff_color = {
-          added = { fg = diffAddFg },
-          removed = { fg = diffDeleteFg },
-          modified = { fg = diffChangeFg },
-        },
+        -- diff_color = {
+        --   added = { fg = diffAddFg },
+        --   removed = { fg = diffDeleteFg },
+        --   modified = { fg = diffChangeFg },
+        -- },
       },
     },
     lualine_c = { { 'filename', file_status = true } },

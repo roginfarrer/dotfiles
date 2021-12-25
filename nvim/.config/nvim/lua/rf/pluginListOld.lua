@@ -4,7 +4,6 @@ end
 
 return {
   'wbthomason/packer.nvim',
-  'nvim-lua/plenary.nvim',
   {
     'lewis6991/impatient.nvim',
     rocks = 'mpack',
@@ -16,14 +15,14 @@ return {
       vim.g.cursorhold_updatetime = 250
     end,
   },
-  'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
+  -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
-  -- {
-  --   'luukvbaal/stabilize.nvim',
-  --   config = function()
-  --     require('stabilize').setup()
-  --   end,
-  -- },
+  {
+    'luukvbaal/stabilize.nvim',
+    config = function()
+      require('stabilize').setup()
+    end,
+  },
   {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -46,39 +45,71 @@ return {
   { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
   {
     'williamboman/nvim-lsp-installer',
+    event = 'BufRead',
     config = config 'lsp',
+    requires = {
+      'neovim/nvim-lspconfig',
+      { 'hrsh7th/cmp-nvim-lsp' },
+      'folke/lua-dev.nvim',
+      'ray-x/lsp_signature.nvim',
+      {
+        'jose-elias-alvarez/null-ls.nvim',
+        requires = { 'nvim-lua/plenary.nvim' },
+      },
+      {
+        'jose-elias-alvarez/nvim-lsp-ts-utils',
+        requires = { 'null-ls.nvim' },
+      },
+    },
   },
-  'folke/lua-dev.nvim',
-  -- 'ray-x/lsp_signature.nvim',
-  'jose-elias-alvarez/null-ls.nvim',
-  'jose-elias-alvarez/nvim-lsp-ts-utils',
   'neovim/nvim-lspconfig',
   {
     'folke/trouble.nvim',
+    requires = 'kyazdani42/nvim-web-devicons',
     cmd = { 'Trouble', 'TroubleToggle' },
     config = function()
       require('trouble').setup {}
     end,
   },
   {
-    'hrsh7th/nvim-cmp',
-    config = config 'cmp',
+    {
+      'hrsh7th/nvim-cmp',
+      after = 'nvim-lspconfig',
+      requires = {
+        {
+          'L3MON4D3/LuaSnip',
+          -- after = 'nvim-lspconfig',
+          config = config 'luasnip',
+        },
+        {
+          'onsails/lspkind-nvim',
+          after = 'nvim-lspconfig',
+          config = function()
+            require('lspkind').init { preset = 'codicons' }
+          end,
+        },
+      },
+      config = config 'cmp',
+    },
+    { 'hrsh7th/cmp-nvim-lsp' },
+    { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
+    { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+    {
+      'petertriho/cmp-git',
+      after = 'nvim-cmp',
+      requires = 'nvim-lua/plenary.nvim',
+    },
+    {
+      'David-Kunz/cmp-npm',
+      after = 'nvim-cmp',
+      requires = { 'nvim-lua/plenary.nvim' },
+    },
   },
-  {
-    'L3MON4D3/LuaSnip',
-    config = config 'luasnip',
-  },
-  {
-    'onsails/lspkind-nvim',
-    config = function()
-      require('lspkind').init { preset = 'codicons' }
-    end,
-  },
-  'hrsh7th/cmp-nvim-lsp',
-  'petertriho/cmp-git',
-  'David-Kunz/cmp-npm',
   {
     'windwp/nvim-autopairs',
+    after = 'nvim-cmp',
     config = config 'autopairs',
   },
 
@@ -86,57 +117,84 @@ return {
   --   Editing   --
   -- -- -- -- -- --
 
-  { 'duggiefresh/vim-easydir', event = 'CmdLineEnter' },
-  -- 'machakann/vim-sandwich',
-  -- {
-  --   'blackCauldron7/surround.nvim',
-  --   config = function()
-  --     require('surround').setup { mappings_style = 'sandwich' }
-  --   end,
-  -- },
+  { 'editorconfig/editorconfig-vim', event = 'BufRead' },
+  { 'duggiefresh/vim-easydir', event = 'BufRead' },
+  { 'machakann/vim-sandwich', event = 'BufRead' },
+  { 'tpope/vim-eunuch', event = 'BufRead' },
+  { 'tpope/vim-repeat', event = 'BufRead' },
+  { 'tpope/vim-abolish', event = 'BufRead' },
+  { 'wellle/targets.vim', event = 'BufRead' },
   {
-    'echasnovski/mini.nvim',
-    config = function()
-      require('mini.surround').setup {}
-    end,
+    'numToStr/Comment.nvim',
+    event = 'BufRead',
+    config = config 'comment',
   },
-  { 'tpope/vim-eunuch', event = 'CmdLineEnter' },
-  -- 'tpope/vim-repeat',
-  { 'tpope/vim-abolish', event = 'CmdlineEnter' },
-  'wellle/targets.vim',
-  { 'numToStr/Comment.nvim', config = config 'comment' },
-  { 'ThePrimeagen/harpoon', config = config 'harpoon' },
+  {
+    'ThePrimeagen/harpoon',
+    requires = 'nvim-lua/plenary.nvim',
+    event = 'BufRead',
+    config = config 'harpoon',
+  },
 
   -- -- -- -- -- -- -- --
   --   User Interface  --
   -- -- -- -- -- -- -- --
 
-  { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
-  { 'goolord/alpha-nvim', config = config 'alpha' },
+  {
+    'nvim-lualine/lualine.nvim',
+    after = 'nightfox.nvim',
+    event = 'BufEnter',
+    requires = {
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = config 'lualine',
+  },
+  {
+    'goolord/alpha-nvim',
+    config = config 'alpha',
+  },
   {
     'nvim-treesitter/nvim-treesitter',
+    -- event = 'CursorHold',
     run = ':TSUpdate',
     config = config 'treesitter',
+    requires = {
+      {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        after = 'nvim-treesitter',
+      },
+      {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        after = 'nvim-treesitter',
+      },
+      {
+        'windwp/nvim-ts-autotag',
+        after = 'nvim-treesitter',
+        config = function()
+          require('nvim-ts-autotag').setup()
+        end,
+      },
+    },
   },
-  { 'nvim-treesitter/nvim-treesitter-textobjects', event = 'BufRead' },
-  'JoosepAlviste/nvim-ts-context-commentstring',
   {
-    'windwp/nvim-ts-autotag',
-    config = function()
-      require('nvim-ts-autotag').setup()
-    end,
+    'nvim-treesitter/playground',
+    requires = { 'nvim-treesitter/nvim-treesitter' },
+    after = 'nvim-treesitter',
   },
   {
     'norcalli/nvim-colorizer.lua',
+    event = 'CursorHold',
     config = function()
-      vim.o.termguicolors = true
       require('colorizer').setup({}, {
         css = true,
         css_fn = true,
       })
     end,
   },
-  { 'folke/which-key.nvim', config = config 'which-key' },
+  {
+    'folke/which-key.nvim',
+    config = config 'which-key',
+  },
   {
     'simeji/winresizer',
     cmd = {
@@ -173,7 +231,13 @@ return {
   --   requires = { 'David-Kunz/jester' },
   --   config = config 'dap',
   -- },
-  { 'IndianBoy42/hop.nvim', config = config 'hop' },
+  {
+    'IndianBoy42/hop.nvim',
+    after = 'nvim-treesitter',
+    event = 'BufRead',
+    requires = { 'nvim-treesitter' },
+    config = config 'hop',
+  },
   {
     'akinsho/toggleterm.nvim',
     -- cmd = { 'ToggleTerm', 'ToggleTermAll', 'TermExec' },
@@ -184,31 +248,11 @@ return {
   --  Git  --
   -- -- -- --
 
-  {
-    'tpope/vim-fugitive',
-    cmd = {
-      'G',
-      'Git',
-      'Grep',
-      'Gsplit',
-      'Gedit',
-      'Gvsplit',
-      'Gread',
-      'Gwrite',
-      'Gdiffsplit',
-      'Gvdiffsplit',
-      'GMove',
-      'GRename',
-      'GDelete',
-      'GRemove',
-      'GBrowse',
-    },
-  },
+  { 'tpope/vim-fugitive', event = 'BufRead' },
   {
     'ruifm/gitlinker.nvim',
     requires = 'nvim-lua/plenary.nvim',
-    cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
-    module_patterns = 'gitlinker*',
+    event = 'BufRead',
     config = config 'gitlinker',
   },
   { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
@@ -216,6 +260,7 @@ return {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
     requires = {
+      'nvim-lua/plenary.nvim',
       {
         'sindrets/diffview.nvim',
         cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
@@ -237,6 +282,10 @@ return {
   },
   {
     'lewis6991/gitsigns.nvim',
+    event = 'BufRead',
+    requires = {
+      'nvim-lua/plenary.nvim',
+    },
     config = config 'gitsigns',
   },
   -- 'pwntester/octo.nvim',
@@ -247,6 +296,8 @@ return {
 
   {
     'tamago324/lir.nvim',
+    -- event = 'BufRead',
+    -- disable = true,
     keys = '-',
     requires = {
       'nvim-lua/plenary.nvim',
@@ -255,18 +306,19 @@ return {
     },
     config = config 'lir',
   },
-  -- {
-  --   'kyazdani42/nvim-tree.lua',
-  --   disable = true,
-  --   requires = 'kyazdani42/nvim-web-devicons',
-  --   config = config 'tree',
-  -- },
+  {
+    'kyazdani42/nvim-tree.lua',
+    event = 'CursorHold',
+    disable = true,
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = config 'tree',
+  },
   {
     'nvim-telescope/telescope.nvim',
+    event = 'CursorHold',
     config = config 'telescope',
-    -- cmd = { 'Telescope', 'Telekasten' },
-    -- module_patterns = 'telescope',
     requires = {
+      'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-fzf-writer.nvim',
       'ahmedkhalf/project.nvim',
       'nvim-telescope/telescope-node-modules.nvim',
@@ -292,22 +344,12 @@ return {
       require 'rf.theme'
     end,
   },
+  'shaunsingh/nord.nvim',
+  { 'siduck76/nvim-base16.lua' },
   {
     'EdenEast/nightfox.nvim',
     config = function()
       require 'rf.theme'
     end,
-  },
-  'rebelot/kanagawa.nvim',
-
-  { 'stevearc/gkeep.nvim', run = ':UpdateRemotePlugins' },
-  {
-    'renerocksai/telekasten.nvim',
-    config = config 'telekasten',
-    -- cmd = 'Telekasten',
-    -- module_patterns = 'telekasten',
-    requires = {
-      'renerocksai/calendar-vim',
-    },
   },
 }

@@ -8,10 +8,6 @@ end
 # Initialize starship prompt
 starship init fish | source
 
-# fnm
-# fnm env --shell fish --use-on-cd | source
-# fnm completions --shell fish | source
-
 set USER rfarrer
 set -Ux EDITOR nvim
 set -Ux VISUAL nvim
@@ -71,27 +67,27 @@ if test -e $HOME/.config/fish/local-config.fish
     source $HOME/.config/fish/local-config.fish
 end
 
-function check_nvm --description 'Change node version'
-    # check if nvm is present
-    if test -q $nvm
-        # check if directory has a nvmrc
-        if test -e $PWD/.nvmrc
-            nvm use
-            # or else a package.json
-        else if test -e $PWD/package.json
-            nvm use lts
-        end
-    end
-end
+# function check_nvm --description 'Change node version'
+#     # check if nvm is present
+#     if test -q $nvm
+#         # check if directory has a nvmrc
+#         if test -e $PWD/.nvmrc
+#             nvm use
+#             # or else a package.json
+#         else if test -e $PWD/package.json
+#             nvm use lts
+#         end
+#     end
+# end
+#
+# function __check_nvm --on-variable PWD --description 'Change node version on cd'
+#     check_nvm
+# end
+#
+# check_nvm
 
-function __check_nvm --on-variable PWD --description 'Change node version on cd'
-    check_nvm
-end
-
-check_nvm
-
-set -g FZF_CTRL_T_COMMAND 'rg --files'
-# set -g fish_user_paths "/usr/local/opt/python@3.8/bin" $fish_user_paths
+set -g FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
+set -g FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
 # source $XDG_CONFIG_HOME/fish/themes/tokyonight.fish
 # source ~/.config/fish/themes/nordfox.fish
