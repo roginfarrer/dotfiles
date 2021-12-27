@@ -1,4 +1,4 @@
-local u = require 'rf.utils'
+local u = require 'user.utils'
 local lspinstaller = require 'nvim-lsp-installer'
 local wk = require 'which-key'
 
@@ -15,7 +15,7 @@ local popup_opts = {
   close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
 }
 
-require('rf.plugins.lsp.fancy_rename').setup()
+require('user.plugins.lsp.fancy_rename').setup()
 handlers['textDocument/hover'] = lsp.with(handlers.hover, popup_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
   handlers.signature_help,
@@ -153,20 +153,20 @@ local function setup(server)
   if server.name == 'sumneko_lua' then
     opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
   elseif server.name == 'tsserver' then
-    local tsserver_settings = require 'rf.plugins.lsp.tsserver'
+    local tsserver_settings = require 'user.plugins.lsp.tsserver'
     opts = vim.tbl_deep_extend('force', opts, tsserver_settings)
     opts.on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       tsserver_settings.on_attach(client, bufnr)
     end
   elseif server.name == 'jsonls' then
-    opts = vim.tbl_deep_extend('force', opts, require 'rf.plugins.lsp.json')
+    opts = vim.tbl_deep_extend('force', opts, require 'user.plugins.lsp.json')
   end
 
   server:setup(opts)
   vim.cmd [[ do User LspAttachBuffers ]]
 end
 
-require('rf.plugins.lsp.null-ls').setup(on_attach)
+require('user.plugins.lsp.null-ls').setup(on_attach)
 
 lspinstaller.on_server_ready(setup)

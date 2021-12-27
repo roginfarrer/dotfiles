@@ -1,14 +1,11 @@
 local function config(name)
-  return string.format("require('rf.plugins.%s')", name)
+  return string.format("require('user.plugins.%s')", name)
 end
 
 return {
   'wbthomason/packer.nvim',
   'nvim-lua/plenary.nvim',
-  {
-    'lewis6991/impatient.nvim',
-    rocks = 'mpack',
-  },
+  { 'lewis6991/impatient.nvim', rocks = 'mpack' },
   {
     -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
     'antoinemadec/FixCursorHold.nvim',
@@ -77,23 +74,13 @@ return {
   'hrsh7th/cmp-nvim-lsp',
   'petertriho/cmp-git',
   'David-Kunz/cmp-npm',
-  {
-    'windwp/nvim-autopairs',
-    config = config 'autopairs',
-  },
+  { 'windwp/nvim-autopairs', config = config 'autopairs' },
 
   -- -- -- -- -- --
   --   Editing   --
   -- -- -- -- -- --
 
   { 'duggiefresh/vim-easydir', event = 'CmdLineEnter' },
-  -- 'machakann/vim-sandwich',
-  -- {
-  --   'blackCauldron7/surround.nvim',
-  --   config = function()
-  --     require('surround').setup { mappings_style = 'sandwich' }
-  --   end,
-  -- },
   {
     'echasnovski/mini.nvim',
     config = function()
@@ -101,9 +88,8 @@ return {
     end,
   },
   { 'tpope/vim-eunuch', event = 'CmdLineEnter' },
-  -- 'tpope/vim-repeat',
   { 'tpope/vim-abolish', event = 'CmdlineEnter' },
-  'wellle/targets.vim',
+  { 'wellle/targets.vim', event = 'CursorMoved' },
   { 'numToStr/Comment.nvim', config = config 'comment' },
   { 'ThePrimeagen/harpoon', config = config 'harpoon' },
 
@@ -176,7 +162,6 @@ return {
   { 'IndianBoy42/hop.nvim', config = config 'hop' },
   {
     'akinsho/toggleterm.nvim',
-    -- cmd = { 'ToggleTerm', 'ToggleTermAll', 'TermExec' },
     config = config 'toggleterm',
   },
 
@@ -206,7 +191,6 @@ return {
   },
   {
     'ruifm/gitlinker.nvim',
-    requires = 'nvim-lua/plenary.nvim',
     cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
     module_patterns = 'gitlinker*',
     config = config 'gitlinker',
@@ -249,8 +233,6 @@ return {
     'tamago324/lir.nvim',
     keys = '-',
     requires = {
-      'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons',
       'tamago324/lir-git-status.nvim',
     },
     config = config 'lir',
@@ -276,38 +258,31 @@ return {
       },
     },
   },
+  -- { 'stevearc/gkeep.nvim', run = ':UpdateRemotePlugins' },
+  {
+    'renerocksai/telekasten.nvim',
+    config = config 'telekasten',
+    requires = {
+      { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
+    },
+  },
 
   -- -- -- -- -- -- -- --
   --  Themes & Syntax  --
   -- -- -- -- -- -- -- --
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
-  -- {
-  --   'tpope/vim-markdown',
-  --   ft = { 'markdown', 'mdx', 'markdown.mdx' },
-  -- },
   {
     'folke/tokyonight.nvim',
     config = function()
-      require 'rf.theme'
+      require 'user.theme'
     end,
   },
   {
     'EdenEast/nightfox.nvim',
     config = function()
-      require 'rf.theme'
+      require 'user.theme'
     end,
   },
   'rebelot/kanagawa.nvim',
-
-  { 'stevearc/gkeep.nvim', run = ':UpdateRemotePlugins' },
-  {
-    'renerocksai/telekasten.nvim',
-    config = config 'telekasten',
-    -- cmd = 'Telekasten',
-    -- module_patterns = 'telekasten',
-    requires = {
-      'renerocksai/calendar-vim',
-    },
-  },
 }

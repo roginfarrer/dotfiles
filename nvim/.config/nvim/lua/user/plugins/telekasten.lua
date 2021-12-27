@@ -1,4 +1,4 @@
-local home = vim.fn.expand '~/zettelkasten'
+local home = vim.fn.expand '~/Dropbox (Maestral)/Obsidian'
 require('telekasten').setup {
   home = home,
 
@@ -103,3 +103,21 @@ require('telekasten').setup {
   --                        except for notes/with/subdirs/in/title.
   new_note_location = 'smart',
 }
+
+require('which-key').register({
+  z = {
+    name = 'Telekasten',
+    n = { require('telekasten').new_note, 'New Note' },
+    f = { require('telekasten').find_notes, 'Find Notes' },
+    g = { require('telekasten').search_notes, 'Grep Notes' },
+    w = { require('telekasten').find_weekly_notes, 'Find Weekly Notes' },
+    T = { require('telekasten').goto_thisweek, 'Goto Today' },
+    d = { require('telekasten').find_daily_notes, 'Find Daily Notes' },
+    t = { require('telekasten').goto_today, 'Goto Today' },
+    y = { require('telekasten').yank_notelink, 'Yank Notelink' },
+    z = { require('telekasten').follow_link, 'Follow Link' },
+    c = { require('telekasten').toggle_todo, 'Toggle Todo' },
+  },
+}, {
+  prefix = '<leader>',
+})

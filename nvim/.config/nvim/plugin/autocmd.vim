@@ -20,13 +20,4 @@ augroup Vimrc
   " autocmd BufReadPost * if &ft == '' | set ft=markdown | endif
 
   autocmd BufReadPost *rc if &ft == '' | set ft=json | endif
-
-  " Diagnostic group names changing in recent Neovim builds, this
-  " fixes one that happens in a few colorschemes
-  " autocmd ColorScheme * hi! link DiagnosticUnderlineWarn DiagnosticUnderlineWarning
-  " autocmd ColorScheme * hi! link DiagnosticUnderlineInfo DiagnosticUnderlineInformation
-  autocmd ColorScheme * hi! link FloatBorder LspSagaRenameBorder
-
-  " autocmd Vimrc ColorScheme * hi! NormalFloat guibg=#131A24
-  " autocmd Vimrc ColorScheme * hi! FloatBorder guifg=#719cd6 guibg=#131A24
 augroup END

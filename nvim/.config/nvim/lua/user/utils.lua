@@ -60,7 +60,7 @@ local function map(mode, key, cmd, opts, defaults)
         #M.functions
       )
     else
-      cmd = ("<cmd>lua require('rf.utils').execute(%d)<cr>"):format(
+      cmd = ("<cmd>lua require('user.utils').execute(%d)<cr>"):format(
         #M.functions
       )
     end

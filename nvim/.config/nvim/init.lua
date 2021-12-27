@@ -1,3 +1,8 @@
+-- impatient.nvim will only be required until https://github.com/neovim/neovim/pull/15436 is merged
+if not pcall(require, 'impatient') then
+  print 'failed to load impatient.nvim'
+end
+
 _G.global = {}
 
 local disabled_built_ins = {
@@ -29,4 +34,4 @@ end
 pcall(require, 'local-config')
 pcall(vim.cmd, 'source $HOME/.config/nvim/local-config.vim')
 
-require 'rf.packerInit'
+require 'user.packerInit'

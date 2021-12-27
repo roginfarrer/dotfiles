@@ -1,4 +1,4 @@
-local u = require 'rf.utils'
+local u = require 'user.utils'
 
 vim.g.coq_settings = {
   ['auto_start'] = 'shut-up',

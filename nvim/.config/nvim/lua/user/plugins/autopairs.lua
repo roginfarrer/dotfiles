@@ -1,6 +1,6 @@
 local pairs = require 'nvim-autopairs'
 local cmp = require 'cmp'
-local u = require 'rf.utils'
+local u = require 'user.utils'
 
 pairs.setup {
   check_ts = true,

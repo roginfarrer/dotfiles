@@ -7,7 +7,7 @@ local actions = require 'lir.actions'
 local mark_actions = require 'lir.mark.actions'
 local clipboard_actions = require 'lir.clipboard.actions'
 local utils = require 'lir.utils'
-local u = require 'rf.utils'
+local u = require 'user.utils'
 
 u.nnoremap('-', function()
   if vim.fn.expand '%' == '' then
