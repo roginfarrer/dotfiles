@@ -151,7 +151,39 @@ local function setup(server)
   }
 
   if server.name == 'sumneko_lua' then
-    opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
+    opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {}, {
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = {
+              -- Mapx.nvim globals
+              'map',
+              'nmap',
+              'vmap',
+              'xmap',
+              'smap',
+              'omap',
+              'imap',
+              'lmap',
+              'cmap',
+              'tmap',
+              'noremap',
+              'nnoremap',
+              'vnoremap',
+              'xnoremap',
+              'snoremap',
+              'onoremap',
+              'inoremap',
+              'lnoremap',
+              'cnoremap',
+              'tnoremap',
+              'mapbang',
+              'noremapbang',
+            },
+          },
+        },
+      },
+    })
   elseif server.name == 'tsserver' then
     local tsserver_settings = require 'user.plugins.lsp.tsserver'
     opts = vim.tbl_deep_extend('force', opts, tsserver_settings)

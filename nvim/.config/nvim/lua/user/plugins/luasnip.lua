@@ -65,4 +65,20 @@ ls.autosnippets = {
   javascriptreact = jsAutoSnips,
   typescriptreact = jsAutoSnips,
   typescript = jsAutoSnips,
+  markdown = {
+    snip({ trig = '-x', name = 'Empty Todo' }, {
+      text '- [ ] ',
+      insert(0),
+    }),
+  },
+  telekasten = {
+    snip({ trig = '-x', name = 'Empty Todo' }, {
+      text '- [ ] ',
+      insert(0),
+    }),
+  },
+}
+
+ls.config.setup {
+  enable_autosnippets = true,
 }

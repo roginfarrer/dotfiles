@@ -71,9 +71,15 @@ return {
       require('lspkind').init { preset = 'codicons' }
     end,
   },
-  'hrsh7th/cmp-nvim-lsp',
-  'petertriho/cmp-git',
-  'David-Kunz/cmp-npm',
+  {
+    'saadparwaiz1/cmp_luasnip',
+    'hrsh7th/cmp-nvim-lsp',
+    'petertriho/cmp-git',
+    'David-Kunz/cmp-npm',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-nvim-lua',
+  },
   { 'windwp/nvim-autopairs', config = config 'autopairs' },
 
   -- -- -- -- -- --
@@ -123,6 +129,10 @@ return {
     end,
   },
   { 'folke/which-key.nvim', config = config 'which-key' },
+  {
+    'b0o/mapx.nvim',
+    config = config 'mapx',
+  },
   {
     'simeji/winresizer',
     cmd = {
@@ -285,4 +295,57 @@ return {
     end,
   },
   'rebelot/kanagawa.nvim',
+  -- {
+  --   'mickael-menu/zk-nvim',
+  --   config = function()
+  --     require('zk').setup {
+  --       -- create user commands such as :ZkNew
+  --       create_user_commands = true,
+  --
+  --       lsp = {
+  --         -- `config` is passed to `vim.lsp.start_client(config)`
+  --         config = {
+  --           cmd = { 'zk', 'lsp' },
+  --           name = 'zk',
+  --           -- init_options = ...
+  --           -- on_attach = ...
+  --           -- etc, see `:h vim.lsp.start_client()`
+  --         },
+  --
+  --         -- automatically attach buffers in a zk notebook that match the given filetypes
+  --         auto_attach = {
+  --           enabled = true,
+  --           filetypes = { 'markdown', 'telekasten' },
+  --         },
+  --       },
+  --     }
+  --     require('telescope').load_extension 'zk'
+  --   end,
+  -- },
+  {
+    'nvim-neorg/neorg',
+    after = 'nvim-treesitter',
+    config = function()
+      require('neorg').setup {
+        -- Tell Neorg what modules to load
+        load = {
+          ['core.defaults'] = {}, -- Load all the default modules
+          ['core.norg.concealer'] = {}, -- Allows for use of icons
+          ['core.norg.dirman'] = { -- Manage your directories with Neorg
+            config = {
+              workspaces = {
+                my_workspace = '~/neorg',
+              },
+            },
+          },
+          ['core.norg.completion'] = {
+            config = {
+              engine = 'nvim-cmp',
+            },
+          },
+        },
+      }
+    end,
+    requires = 'nvim-lua/plenary.nvim',
+  },
 }

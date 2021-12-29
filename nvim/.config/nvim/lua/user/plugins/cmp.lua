@@ -62,16 +62,17 @@ cmp.setup {
     end,
   },
   sources = {
+    { name = 'luasnip' },
     { name = 'npm' },
     { name = 'cmp_git' },
     { name = 'nvim_lua' },
+    { name = 'neorg' },
     { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'buffer', keyword_length = 4 },
-    { name = 'luasnip' },
   },
-  experimental = {
-    native_menu = false,
-    ghost_text = true,
-  },
+  -- experimental = {
+  --   native_menu = false,
+  --   ghost_text = true,
+  -- },
 }

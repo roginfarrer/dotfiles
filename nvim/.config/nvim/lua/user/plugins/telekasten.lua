@@ -1,4 +1,16 @@
 local home = vim.fn.expand '~/Dropbox (Maestral)/Obsidian'
+_G.zk_maps = function()
+  inoremap('[[', "<ESC>:lua require('telekasten').insert_link({i=true})<CR>")
+  nnoremap('gf', function()
+    require('telekasten').follow_link()
+  end)
+end
+vim.cmd [[
+  augroup zk
+    autocmd!
+    autocmd BufEnter */Obsidian/*.md lua _G.zk_maps()
+  augroup END
+]]
 require('telekasten').setup {
   home = home,
 
@@ -7,7 +19,7 @@ require('telekasten').setup {
 
   -- auto-set telekasten filetype: if false, the telekasten filetype will not be used
   --                               and thus the telekasten syntax will not be loaded either
-  auto_set_filetype = true,
+  auto_set_filetype = false,
 
   dailies = home .. '/' .. 'daily',
   weeklies = home .. '/' .. 'weekly',
@@ -32,11 +44,11 @@ require('telekasten').setup {
 
   -- template for newly created daily notes (goto_today)
   -- set to `nil` or do not specify if you do not want a template
-  -- template_new_daily = home .. '/' .. 'templates/daily.md',
+  template_new_daily = home .. '/' .. 'templates/daily.md',
 
   -- template for newly created weekly notes (goto_thisweek)
   -- set to `nil` or do not specify if you do not want a template
-  -- template_new_weekly = home .. '/' .. 'templates/weekly.md',
+  template_new_weekly = home .. '/' .. 'templates/weekly.md',
 
   -- image link style
   -- wiki:     ![[image name]]
@@ -70,7 +82,7 @@ require('telekasten').setup {
 
   -- when linking to a note in subdir/, create a [[subdir/title]] link
   -- instead of a [[title only]] link
-  subdirs_in_links = true,
+  subdirs_in_links = false,
 
   -- template_handling
   -- What to do when creating a new note via `new_note()` or `follow_link()`

@@ -17,7 +17,7 @@ startify.section.bottom_buttons.val = {
   startify.button(
     'v',
     'Open Neovim Plugins',
-    '<cmd>e ~/dotfiles/nvim/.config/nvim/lua/rf/pluginList.lua<CR>'
+    '<cmd>e ~/dotfiles/nvim/.config/nvim/lua/user/plugins.lua<CR>'
   ),
   startify.button(
     'k',

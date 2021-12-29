@@ -45,4 +45,4 @@ require('telescope').setup {
 require('project_nvim').setup {}
 require('telescope').load_extension 'projects'
 -- https://github.com/nvim-telescope/telescope-node-modules.nvim
-require'telescope'.load_extension'node_modules'
+require('telescope').load_extension 'node_modules'
