@@ -29,6 +29,11 @@ startify.section.bottom_buttons.val = {
     'Open Fish Config',
     '<cmd>e ~/dotfiles/fish/.config/fish/config.fish<CR>'
   ),
+  startify.button(
+    't',
+    'Open daily note',
+    '<cmd>lua require("telekasten").goto_today()<CR>'
+  ),
 }
 
 alpha.setup(startify.opts)
