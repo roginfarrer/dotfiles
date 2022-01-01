@@ -68,7 +68,7 @@ end
 
 local config = {
   options = {
-    theme = vim.g.colors_name,
+    theme = 'auto',
     section_separators = { left = '', right = '' },
     component_separators = { left = '', right = '' },
     icons_enabled = true,
@@ -88,11 +88,39 @@ local config = {
     },
     lualine_c = { { 'filename', file_status = true } },
     lualine_x = {
-      { lsp_progress, 'diagnostics', sources = { 'nvim_diagnostic' } },
+      {
+        'lsp_progress',
+        display_components = {
+          'lsp_client_name',
+          { 'title', 'message', 'percentage' },
+          'spinner',
+        },
+        separators = {
+          component = ' ',
+          progress = ' | ',
+          message = { pre = '(', post = ')' },
+          percentage = { pre = ' ', post = '%%' },
+          title = { pre = '', post = ': ' },
+          lsp_client_name = { pre = '[', post = ']' },
+          spinner = { pre = '', post = '' },
+        },
+        spinner_symbols = {
+          '⣾',
+          '⣽',
+          '⣻',
+          '⢿',
+          '⡿',
+          '⣟',
+          '⣯',
+          '⣷',
+        },
+      },
+      { 'diagnostics', sources = { 'nvim_diagnostic' } },
     },
     lualine_y = { 'filetype' },
     lualine_z = { lsp_client_names },
   },
+  extensions = { 'fugitive' },
 }
 
 require('lualine').setup(config)

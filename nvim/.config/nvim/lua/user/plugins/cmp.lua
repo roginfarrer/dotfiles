@@ -9,24 +9,24 @@ cmp.setup {
     end,
   },
   formatting = {
-    format = function(entry, vim_item)
-      -- fancy icons and a name of kind
-      vim_item.kind = require('lspkind').presets.default[vim_item.kind]
-        .. ' '
-        .. vim_item.kind
-
-      -- set a name for each source
-      vim_item.menu = ({
+    format = require('lspkind').cmp_format {
+      with_text = true,
+      menu = {
         buffer = '[Buffer]',
         nvim_lsp = '[LSP]',
         luasnip = '[LuaSnip]',
         nvim_lua = '[Lua]',
         latex_symbols = '[Latex]',
-      })[entry.source.name]
-      return vim_item
-    end,
+      },
+    },
   },
   mapping = {
+    ['<C-n>'] = cmp.mapping.select_next_item {
+      behavior = cmp.SelectBehavior.Select,
+    },
+    ['<C-p>'] = cmp.mapping.select_prev_item {
+      behavior = cmp.SelectBehavior.Select,
+    },
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -59,17 +59,35 @@ cmp.setup {
   },
   sources = cmp.config.sources {
     -- { name = 'zk' },
-    { name = 'luasnip' },
-    { name = 'npm' },
-    { name = 'cmp_git' },
-    { name = 'nvim_lua' },
-    { name = 'neorg' },
-    { name = 'nvim_lsp' },
-    { name = 'path' },
-    { name = 'buffer' },
+    {
+      { name = 'luasnip' },
+      { name = 'npm' },
+      { name = 'cmp_git' },
+      { name = 'nvim_lua' },
+      { name = 'neorg' },
+      { name = 'nvim_lsp' },
+      { name = 'path' },
+    },
+    { { name = 'buffer' } },
   },
   experimental = {
-    native_menu = false,
+    -- native_menu = false,
     ghost_text = true,
   },
 }
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' },
+  },
+})
+
+-- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline(':', {
+--   sources = cmp.config.sources({
+--     { name = 'path' },
+--   }, {
+--     { name = 'cmdline' },
+--   }),
+-- })
