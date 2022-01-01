@@ -131,7 +131,9 @@ return {
   { 'folke/which-key.nvim', config = config 'which-key' },
   {
     'b0o/mapx.nvim',
-    config = config 'mapx',
+    config = function()
+      require('mapx').setup { global = true }
+    end,
   },
   {
     'simeji/winresizer',
@@ -269,13 +271,13 @@ return {
     },
   },
   -- { 'stevearc/gkeep.nvim', run = ':UpdateRemotePlugins' },
-  {
-    'renerocksai/telekasten.nvim',
-    config = config 'telekasten',
-    requires = {
-      { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
-    },
-  },
+  -- {
+  --   'renerocksai/telekasten.nvim',
+  --   config = config 'telekasten',
+  --   requires = {
+  --     { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
+  --   },
+  -- },
 
   -- -- -- -- -- -- -- --
   --  Themes & Syntax  --
@@ -295,33 +297,10 @@ return {
     end,
   },
   'rebelot/kanagawa.nvim',
-  -- {
-  --   'mickael-menu/zk-nvim',
-  --   config = function()
-  --     require('zk').setup {
-  --       -- create user commands such as :ZkNew
-  --       create_user_commands = true,
-  --
-  --       lsp = {
-  --         -- `config` is passed to `vim.lsp.start_client(config)`
-  --         config = {
-  --           cmd = { 'zk', 'lsp' },
-  --           name = 'zk',
-  --           -- init_options = ...
-  --           -- on_attach = ...
-  --           -- etc, see `:h vim.lsp.start_client()`
-  --         },
-  --
-  --         -- automatically attach buffers in a zk notebook that match the given filetypes
-  --         auto_attach = {
-  --           enabled = true,
-  --           filetypes = { 'markdown', 'telekasten' },
-  --         },
-  --       },
-  --     }
-  --     require('telescope').load_extension 'zk'
-  --   end,
-  -- },
+  {
+    'mickael-menu/zk-nvim',
+    config = config 'zk',
+  },
   {
     'nvim-neorg/neorg',
     after = 'nvim-treesitter',

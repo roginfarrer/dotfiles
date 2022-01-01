@@ -1,16 +1,17 @@
 local home = vim.fn.expand '~/Dropbox (Maestral)/Obsidian'
-_G.zk_maps = function()
-  inoremap('[[', "<ESC>:lua require('telekasten').insert_link({i=true})<CR>")
-  nnoremap('gf', function()
-    require('telekasten').follow_link()
-  end)
-end
-vim.cmd [[
-  augroup zk
-    autocmd!
-    autocmd BufEnter */Obsidian/*.md lua _G.zk_maps()
-  augroup END
-]]
+-- _G.zk_maps = function()
+--   -- inoremap('[[', "<ESC>:lua require('telekasten').insert_link({i=true})<CR>")
+--   vim.cmd [[set ft=markdown.zk]]
+--   nnoremap('gf', function()
+--     require('telekasten').follow_link()
+--   end)
+-- end
+-- vim.cmd [[
+--   augroup zk
+--     autocmd!
+--     autocmd BufEnter */Obsidian/*.md lua _G.zk_maps()
+--   augroup END
+-- ]]
 require('telekasten').setup {
   home = home,
 
@@ -116,20 +117,24 @@ require('telekasten').setup {
   new_note_location = 'smart',
 }
 
-require('which-key').register({
-  z = {
-    name = 'Telekasten',
-    n = { require('telekasten').new_note, 'New Note' },
-    f = { require('telekasten').find_notes, 'Find Notes' },
-    g = { require('telekasten').search_notes, 'Grep Notes' },
-    w = { require('telekasten').find_weekly_notes, 'Find Weekly Notes' },
-    T = { require('telekasten').goto_thisweek, 'Goto Today' },
-    d = { require('telekasten').find_daily_notes, 'Find Daily Notes' },
-    t = { require('telekasten').goto_today, 'Goto Today' },
-    y = { require('telekasten').yank_notelink, 'Yank Notelink' },
-    z = { require('telekasten').follow_link, 'Follow Link' },
-    c = { require('telekasten').toggle_todo, 'Toggle Todo' },
-  },
-}, {
-  prefix = '<leader>',
-})
+-- require('which-key').register({
+--   z = {
+--     name = 'Telekasten',
+--     n = { require('telekasten').new_note, 'New Note' },
+--     N = { require('telekasten').new_templated_note, 'New Templeted Note' },
+--     f = { require('telekasten').find_notes, 'Find Notes' },
+--     g = { require('telekasten').search_notes, 'Grep Notes' },
+--     w = { require('telekasten').find_weekly_notes, 'Find Weekly Notes' },
+--     T = { require('telekasten').goto_thisweek, 'Goto Today' },
+--     d = { require('telekasten').find_daily_notes, 'Find Daily Notes' },
+--     t = { require('telekasten').goto_today, 'Goto Today' },
+--     y = { require('telekasten').yank_notelink, 'Yank Notelink' },
+--     z = { require('telekasten').follow_link, 'Follow Link' },
+--     c = { require('telekasten').toggle_todo, 'Toggle Todo' },
+--     a = { require('telekasten').show_tags, 'Show Tags' },
+--     ['#'] = { require('telekasten').show_tags, 'Show Tags' },
+--     p = { require('telekasten').panel, 'Panel' },
+--   },
+-- }, {
+--   prefix = '<leader>',
+-- })

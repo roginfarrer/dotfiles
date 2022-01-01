@@ -1,5 +1,7 @@
 local ls = require 'luasnip'
 
+require('luasnip/loaders/from_vscode').load()
+
 local text = ls.text_node
 local insert = ls.insert_node
 local snip = ls.snippet
