@@ -74,15 +74,15 @@ require('nvim-treesitter.configs').setup {
     },
   },
   textobjects = {
-    swap = {
-      enable = true,
-      swap_next = {
-        ['<leader>fa'] = '@parameter.inner',
-      },
-      swap_previous = {
-        ['<leader>fA'] = '@parameter.inner',
-      },
-    },
+    -- swap = {
+    --   enable = true,
+    --   swap_next = {
+    --     ['<leader>fa'] = '@parameter.inner',
+    --   },
+    --   swap_previous = {
+    --     ['<leader>fA'] = '@parameter.inner',
+    --   },
+    -- },
     select = {
       enable = true,
       lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
@@ -127,3 +127,8 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+
+local autoTagPresent, autotag = pcall(require, 'nvim-ts-autotag')
+if autoTagPresent then
+  autotag.setup()
+end

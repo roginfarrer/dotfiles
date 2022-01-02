@@ -13,6 +13,8 @@ require('telescope').setup {
       '--line-number',
       '--column',
       '--smart-case',
+      '-g',
+      '!.git',
     },
     layout_config = {
       horizontal = {
@@ -46,3 +48,7 @@ require('project_nvim').setup {}
 require('telescope').load_extension 'projects'
 -- https://github.com/nvim-telescope/telescope-node-modules.nvim
 require('telescope').load_extension 'node_modules'
+-- https://github.com/nvim-telescope/telescope-packer.nvim
+require('telescope').load_extension 'packer'
+-- https://github.com/nvim-telescope/telescope-fzf-native.nvim
+require('telescope').load_extension 'fzf'

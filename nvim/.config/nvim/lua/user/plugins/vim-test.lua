@@ -88,10 +88,10 @@ _G.setJestCmd = function()
   vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
 end
 
--- vim.cmd [[
---   augroup test
---     autocmd!
---     autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
---     autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
---   augroup END
--- ]]
+vim.cmd [[
+  augroup test
+    autocmd!
+    autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
+    autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
+  augroup END
+]]

@@ -15,12 +15,12 @@ return {
   },
   'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
-  -- {
-  --   'luukvbaal/stabilize.nvim',
-  --   config = function()
-  --     require('stabilize').setup()
-  --   end,
-  -- },
+  {
+    'luukvbaal/stabilize.nvim',
+    config = function()
+      require('stabilize').setup()
+    end,
+  },
   {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -46,7 +46,6 @@ return {
     config = config 'lsp',
   },
   'folke/lua-dev.nvim',
-  -- 'ray-x/lsp_signature.nvim',
   'jose-elias-alvarez/null-ls.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'neovim/nvim-lspconfig',
@@ -60,6 +59,16 @@ return {
   {
     'hrsh7th/nvim-cmp',
     config = config 'cmp',
+    requires = {
+      'saadparwaiz1/cmp_luasnip',
+      'petertriho/cmp-git',
+      'David-Kunz/cmp-npm',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-cmdline',
+    },
   },
   {
     'L3MON4D3/LuaSnip',
@@ -70,15 +79,6 @@ return {
     config = function()
       require('lspkind').init { preset = 'codicons' }
     end,
-  },
-  {
-    'saadparwaiz1/cmp_luasnip',
-    'hrsh7th/cmp-nvim-lsp',
-    'petertriho/cmp-git',
-    'David-Kunz/cmp-npm',
-    'hrsh7th/cmp-path',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-nvim-lua',
   },
   { 'windwp/nvim-autopairs', config = config 'autopairs' },
 
@@ -112,12 +112,7 @@ return {
   },
   { 'nvim-treesitter/nvim-treesitter-textobjects', event = 'BufRead' },
   'JoosepAlviste/nvim-ts-context-commentstring',
-  {
-    'windwp/nvim-ts-autotag',
-    config = function()
-      require('nvim-ts-autotag').setup()
-    end,
-  },
+  'windwp/nvim-ts-autotag',
   {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -155,6 +150,7 @@ return {
       require('neoscroll').setup()
     end,
   },
+  { 'folke/zen-mode.nvim', config = config 'zen' },
 
   -- -- -- -- -- -- -- -- -- -- --
   --   Extended Functionality   --
@@ -217,19 +213,7 @@ return {
         cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
       },
     },
-    config = function()
-      require('neogit').setup {
-        signs = {
-          -- { CLOSED, OPENED }
-          section = { '', '' },
-          item = { '', '' },
-          hunk = { '', '' },
-        },
-        integrations = {
-          diffview = true,
-        },
-      }
-    end,
+    config = config 'neogit',
   },
   {
     'lewis6991/gitsigns.nvim',
@@ -264,6 +248,7 @@ return {
       'nvim-telescope/telescope-fzf-writer.nvim',
       'ahmedkhalf/project.nvim',
       'nvim-telescope/telescope-node-modules.nvim',
+      'nvim-telescope/telescope-packer.nvim',
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make',
@@ -285,18 +270,16 @@ return {
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
   {
-    'folke/tokyonight.nvim',
-    config = function()
-      require 'user.theme'
-    end,
-  },
-  {
     'EdenEast/nightfox.nvim',
     config = function()
       require 'user.theme'
     end,
   },
-  'rebelot/kanagawa.nvim',
+
+  -- -- -- -- -- -- --
+  --  Zettelkasten  --
+  -- -- -- -- -- -- --
+
   {
     'mickael-menu/zk-nvim',
     config = config 'zk',
@@ -305,6 +288,6 @@ return {
     'nvim-neorg/neorg',
     after = 'nvim-treesitter',
     config = config 'neorg',
-    disable = true
+    disable = true,
   },
 }

@@ -1,6 +1,5 @@
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
--- require 'user.plugins.cmp-zk'
 
 cmp.setup {
   snippet = {
@@ -58,7 +57,6 @@ cmp.setup {
     end,
   },
   sources = cmp.config.sources {
-    -- { name = 'zk' },
     {
       { name = 'luasnip' },
       { name = 'npm' },
@@ -76,18 +74,23 @@ cmp.setup {
   },
 }
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline('/', {
-  sources = {
-    { name = 'buffer' },
-  },
-})
+-- -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline('/', {
+--   sources = {
+--     { name = 'buffer' },
+--   },
+-- })
+-- cmp.setup.cmdline('?', {
+--   sources = {
+--     { name = 'buffer' },
+--   },
+-- })
 
 -- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 -- cmp.setup.cmdline(':', {
 --   sources = cmp.config.sources({
 --     { name = 'path' },
 --   }, {
---     { name = 'cmdline' },
+--     { name = 'cmdline', max_item_count = 20, keyword_length = 2 },
 --   }),
 -- })

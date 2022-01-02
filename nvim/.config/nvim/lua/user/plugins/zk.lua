@@ -1,6 +1,6 @@
 require('zk').setup {
   -- create user commands such as :ZkNew
-  create_user_commands = true,
+  picker = 'telescope',
 
   lsp = {
     -- `config` is passed to `vim.lsp.start_client(config)`
@@ -45,7 +45,7 @@ require('which-key').register({
       end,
       'New Note',
     },
-    f = { '<cmd>ZkList<CR>', 'Find Notes' },
+    f = { '<cmd>ZkNotes<CR>', 'Find Notes' },
     g = {
       function()
         require('telescope.builtin').live_grep {
@@ -71,9 +71,7 @@ require('which-key').register({
       'Find Weekly Notes',
     },
     t = {
-      function()
-        require('zk').new(nil, { group = 'daily', dir = 'daily' })
-      end,
+      '<cmd>ZkNew {template="daily.md", dir="daily"}<CR>',
       'Goto Today',
     },
     d = {
@@ -90,11 +88,12 @@ require('which-key').register({
       'Find Daily Notes',
     },
     T = {
-      function()
-        require('zk').new(nil, { group = 'weekly', dir = 'weekly' })
-      end,
+      '<cmd>ZkNew {template="weekly.md", dir="weekly"}<CR>',
       'Goto Today',
     },
+    l = { '<cmd>ZkLinks<CR>', 'Links' },
+    b = { '<cmd>ZkBacklinks<CR>', 'Backlinks' },
+    i = { '<cmd>ZkIndex<CR>', 'Index' },
   },
 }, {
   prefix = '<leader>',
@@ -103,9 +102,13 @@ require('which-key').register({
 require('which-key').register({
   z = {
     name = 'ZK',
-    c = {
-      require('zk').new_link,
-      'Create note from selection',
+    N = {
+      "'<,'>ZkNewFromContentSelection",
+      'Create note with title',
+    },
+    n = {
+      "'<,'>ZkNewFromTitleSelection",
+      'Create note with title',
     },
   },
 }, {
