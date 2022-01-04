@@ -112,7 +112,7 @@ local leader = {
     name = 'Find',
     t = { '<cmd>NvimTreeToggle<CR>', 'NvimTree' },
     p = { '<cmd>Telescope git_files<CR>', 'Git Files' },
-    P = { ':Telescope projects<CR>', 'Change Project' },
+    P = { '<cmd>Telescope projects<CR>', 'Change Project' },
     b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
     f = { '<cmd>Telescope find_files<CR>', 'All Files' },
     ['.'] = {
@@ -126,6 +126,7 @@ local leader = {
     },
     d = { searchDotfiles, 'Dotfiles' },
     h = { '<cmd>Telescope oldfiles<CR>', 'Old Files' },
+    H = { '<cmd>Telescope help_tags<CR>', 'Help tags' },
     g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
     G = {
       function()

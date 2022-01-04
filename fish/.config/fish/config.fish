@@ -93,3 +93,6 @@ set -Ux ZK_NOTEBOOK_DIR $HOME/Dropbox\ \(Maestral\)/Obsidian
 # source $XDG_CONFIG_HOME/fish/themes/tokyonight.fish
 # source ~/.config/fish/themes/nordfox.fish
 source $HOME/.config/fish/themes/nightfox.fish
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/rfarrer/Downloads/google-cloud-sdk/path.fish.inc' ]; . '/Users/rfarrer/Downloads/google-cloud-sdk/path.fish.inc'; end

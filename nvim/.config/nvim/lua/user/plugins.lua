@@ -275,6 +275,17 @@ return {
       require 'user.theme'
     end,
   },
+  {
+    'catppuccin/nvim',
+    as = 'catppuccin',
+    config = function()
+      require('catppuccin').setup {
+        hop = true,
+        neogit = true,
+        which_key = true,
+      }
+    end,
+  },
 
   -- -- -- -- -- -- --
   --  Zettelkasten  --

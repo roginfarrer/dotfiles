@@ -103,11 +103,11 @@ require('which-key').register({
   z = {
     name = 'ZK',
     N = {
-      "'<,'>ZkNewFromContentSelection",
-      'Create note with title',
+      "'<,'>ZkNewFromContentSelection<CR>",
+      'Create note with content',
     },
     n = {
-      "'<,'>ZkNewFromTitleSelection",
+      "'<,'>ZkNewFromTitleSelection<CR>",
       'Create note with title',
     },
   },

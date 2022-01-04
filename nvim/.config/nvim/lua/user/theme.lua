@@ -3,4 +3,6 @@ vim.g.tokyonight_italic_functions = true
 
 local nightfox = require 'nightfox'
 -- nightfox.setup({ fox = 'nordfox' })
-nightfox.load()
+-- nightfox.load()
+
+vim.cmd [[colorscheme catppuccin]]
