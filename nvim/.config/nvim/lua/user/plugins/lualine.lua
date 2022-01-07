@@ -1,13 +1,3 @@
--- https://vi.stackexchange.com/a/12294
-local function getHighlightTerm(group, term)
-  local output = vim.fn.execute('hi ' .. group)
-  return vim.fn.matchstr(output, term .. '=\\zs\\S*')
-end
-
--- local diffAddFg = getHighlightTerm('LspSagaRenameBorder', 'guifg')
--- local diffChangeFg = getHighlightTerm('LspDiagnosticsHint', 'guifg')
--- local diffDeleteFg = getHighlightTerm('LspDiagnosticsError', 'guifg')
-
 local function lsp_progress(_, is_active)
   if not is_active then
     return
@@ -77,44 +67,11 @@ local config = {
     lualine_a = { 'mode' },
     lualine_b = {
       'branch',
-      {
-        'diff',
-        -- diff_color = {
-        --   added = { fg = diffAddFg },
-        --   removed = { fg = diffDeleteFg },
-        --   modified = { fg = diffChangeFg },
-        -- },
-      },
+      'diff',
     },
     lualine_c = { { 'filename', file_status = true } },
     lualine_x = {
-      {
-        'lsp_progress',
-        display_components = {
-          'lsp_client_name',
-          { 'title', 'message', 'percentage' },
-          'spinner',
-        },
-        separators = {
-          component = ' ',
-          progress = ' | ',
-          message = { pre = '(', post = ')' },
-          percentage = { pre = ' ', post = '%%' },
-          title = { pre = '', post = ': ' },
-          lsp_client_name = { pre = '[', post = ']' },
-          spinner = { pre = '', post = '' },
-        },
-        spinner_symbols = {
-          '⣾',
-          '⣽',
-          '⣻',
-          '⢿',
-          '⡿',
-          '⣟',
-          '⣯',
-          '⣷',
-        },
-      },
+      lsp_progress,
       { 'diagnostics', sources = { 'nvim_diagnostic' } },
     },
     lualine_y = { 'filetype' },

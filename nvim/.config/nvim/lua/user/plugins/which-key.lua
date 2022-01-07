@@ -83,9 +83,16 @@ local leader = {
       ':e ~/dotfiles/nvim/.config/nvim/pluginList<CR>',
       'Open Neovim Config',
     },
-    l = {
-      ':e ~/.config/nvim/lua/local-config.lua<CR>',
-      'Open Local Neovim Config',
+    L = {
+      name = 'Local files',
+      f = {
+        '<cmd> e $HOME/.config/fish/local-config.fish',
+        'Fish',
+      },
+      n = {
+        ':e $HOME/.config/nvim/lua/local-config.lua<CR>',
+        'Neovim',
+      },
     },
     k = {
       ':e ~/dotfiles/kitty/.config/kitty/kitty.conf<CR>',

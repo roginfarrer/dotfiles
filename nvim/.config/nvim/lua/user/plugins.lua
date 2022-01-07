@@ -67,7 +67,6 @@ return {
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lua',
-      'hrsh7th/cmp-cmdline',
     },
   },
   {
@@ -98,6 +97,11 @@ return {
   { 'wellle/targets.vim', event = 'CursorMoved' },
   { 'numToStr/Comment.nvim', config = config 'comment' },
   { 'ThePrimeagen/harpoon', config = config 'harpoon' },
+  {
+    'Julian/vim-textobj-variable-segment',
+    requires = 'kana/vim-textobj-user',
+    event = 'CursorMoved',
+  },
 
   -- -- -- -- -- -- -- --
   --   User Interface  --
@@ -255,14 +259,6 @@ return {
       },
     },
   },
-  -- { 'stevearc/gkeep.nvim', run = ':UpdateRemotePlugins' },
-  -- {
-  --   'renerocksai/telekasten.nvim',
-  --   config = config 'telekasten',
-  --   requires = {
-  --     { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
-  --   },
-  -- },
 
   -- -- -- -- -- -- -- --
   --  Themes & Syntax  --
@@ -301,4 +297,11 @@ return {
     config = config 'neorg',
     disable = true,
   },
+  -- {
+  --   'renerocksai/telekasten.nvim',
+  --   config = config 'telekasten',
+  --   requires = {
+  --     { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
+  --   },
+  -- },
 }

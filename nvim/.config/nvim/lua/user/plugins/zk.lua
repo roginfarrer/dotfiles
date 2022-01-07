@@ -21,20 +21,6 @@ require('zk').setup {
 }
 require('telescope').load_extension 'zk'
 
--- _G.zk_maps = function()
---   -- inoremap('[[', "<ESC>:lua require('telekasten').insert_link({i=true})<CR>")
---   vim.cmd [[set ft=markdown.zk]]
---   nnoremap('gf', function()
---     require('telekasten').follow_link()
---   end)
--- end
--- vim.cmd [[
---   augroup zk
---     autocmd!
---     autocmd BufEnter */Obsidian/*.md lua _G.zk_maps()
---   augroup END
--- ]]
-
 require('which-key').register({
   z = {
     name = 'ZK',
