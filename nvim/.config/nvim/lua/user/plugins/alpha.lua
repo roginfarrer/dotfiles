@@ -32,7 +32,7 @@ startify.section.bottom_buttons.val = {
   startify.button(
     't',
     'Open daily note',
-    '<cmd>lua require("telekasten").goto_today()<CR>'
+    '<cmd>ZkNew {template="daily.md", dir="daily"}<CR>'
   ),
 }
 

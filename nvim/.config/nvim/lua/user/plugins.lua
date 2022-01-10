@@ -35,6 +35,11 @@ return {
       }
     end,
   },
+  {
+    'b0o/mapx.nvim',
+    config = config 'mapx',
+  },
+  { 'ggandor/lightspeed.nvim', config = config 'lightspeed' },
 
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
@@ -49,13 +54,13 @@ return {
   'jose-elias-alvarez/null-ls.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'neovim/nvim-lspconfig',
-  {
-    'folke/trouble.nvim',
-    cmd = { 'Trouble', 'TroubleToggle' },
-    config = function()
-      require('trouble').setup {}
-    end,
-  },
+  -- {
+  --   'folke/trouble.nvim',
+  --   cmd = { 'Trouble', 'TroubleToggle' },
+  --   config = function()
+  --     require('trouble').setup {}
+  --   end,
+  -- },
   {
     'hrsh7th/nvim-cmp',
     config = config 'cmp',
@@ -108,7 +113,7 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
-  { 'goolord/alpha-nvim', config = config 'alpha' },
+  { 'goolord/alpha-nvim', branch = 'main', config = config 'alpha' },
   {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -128,12 +133,6 @@ return {
     end,
   },
   { 'folke/which-key.nvim', config = config 'which-key' },
-  {
-    'b0o/mapx.nvim',
-    config = function()
-      require('mapx').setup { global = true }
-    end,
-  },
   {
     'simeji/winresizer',
     cmd = {
@@ -155,6 +154,7 @@ return {
     end,
   },
   { 'folke/zen-mode.nvim', config = config 'zen' },
+  { 'akinsho/bufferline.nvim', config = config 'bufferline' },
 
   -- -- -- -- -- -- -- -- -- -- --
   --   Extended Functionality   --
@@ -224,6 +224,7 @@ return {
     config = config 'gitsigns',
   },
   -- 'pwntester/octo.nvim',
+  'moll/vim-bbye',
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
