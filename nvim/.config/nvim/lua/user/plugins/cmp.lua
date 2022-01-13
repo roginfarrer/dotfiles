@@ -56,16 +56,17 @@ cmp.setup {
       end
     end,
   },
-  sources = {
+  sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'npm' },
     { name = 'cmp_git' },
     { name = 'nvim_lua' },
     { name = 'neorg' },
     { name = 'luasnip' },
-    { name = 'path' },
-    { name = 'buffer' },
-  },
+    { name = 'fuzzy_path' },
+  }, {
+    { name = 'buffer', keyword_length = 4 },
+  }),
   experimental = {
     -- native_menu = false,
     ghost_text = true,
@@ -84,10 +85,10 @@ cmp.setup {
 --   },
 -- })
 
--- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 -- cmp.setup.cmdline(':', {
 --   sources = cmp.config.sources({
---     { name = 'path' },
+--     { name = 'fuzzy_path', max_item_count = 10 },
 --   }, {
 --     { name = 'cmdline', max_item_count = 20, keyword_length = 2 },
 --   }),

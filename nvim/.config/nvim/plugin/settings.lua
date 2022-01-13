@@ -37,6 +37,7 @@ vim.o.timeoutlen = 500
 vim.o.undofile = true
 vim.o.updatetime = 250
 vim.o.wildmode = 'longest,full'
+vim.cmd [[set path+=**]]
 vim.o.wildoptions = 'pum'
 
 vim.g.python3_host_prog = '/usr/local/bin/python3'
