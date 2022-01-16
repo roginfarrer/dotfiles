@@ -15,7 +15,7 @@ local popup_opts = {
   close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
 }
 
-require('user.plugins.lsp.fancy_rename').setup()
+-- require('user.plugins.lsp.fancy_rename').setup()
 handlers['textDocument/hover'] = lsp.with(handlers.hover, popup_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
   handlers.signature_help,
@@ -86,7 +86,7 @@ local function on_attach(client, bufnr)
   cmd 'command! LspImplementations lua vim.lsp.buf.implementation()'
   cmd 'command! LspSignatureHelp lua vim.lsp.buf.signature_help()'
   cmd 'command! LspTypeDefinition lua vim.lsp.buf.type_definition()'
-  cmd 'command! LspRenameSymbol lua vim.lsp.buf.rename.float()'
+  cmd 'command! LspRenameSymbol lua vim.lsp.buf.rename()'
   cmd 'command! LspCodeAction lua vim.lsp.buf.code_action()'
   cmd 'command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()'
   cmd 'command! LspReferences lua vim.lsp.buf.references()'
@@ -99,7 +99,7 @@ local function on_attach(client, bufnr)
     l = {
       name = 'LSP',
       a = { ':CodeActionMenu<CR>', 'Code Action' },
-      r = { '<cmd>LspRenameSymbol<CR>viW', 'Rename Symbol' },
+      r = { '<cmd>LspRenameSymbol<CR>', 'Rename Symbol' },
       f = { ':Format<CR>', 'Format Document' },
       x = { ':TroubleToggle<CR>', 'Trouble' },
       q = { '<cmd>lua vim.diagnostic.setloclist()<cr>', 'Quickfix' },

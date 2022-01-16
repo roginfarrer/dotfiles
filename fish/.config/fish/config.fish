@@ -9,9 +9,10 @@ end
 starship init fish | source
 
 set USER rfarrer
-set -Ux EDITOR nvim
-set -Ux VISUAL nvim
-set -Ux MANPAGER "nvim +Man!"
+set -gx EDITOR (which nvim)
+set -gx VISUAL $EDITOR
+set -gx SUDO_EDITOR $EDITOR
+set -gx MANPAGER "nvim +Man!"
 
 alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
 abbr v nvim
@@ -92,4 +93,4 @@ set -Ux ZK_NOTEBOOK_DIR $HOME/Dropbox\ \(Maestral\)/Obsidian
 
 # source $XDG_CONFIG_HOME/fish/themes/tokyonight.fish
 # source ~/.config/fish/themes/nordfox.fish
-source $HOME/.config/fish/themes/nightfox.fish
+# source $HOME/.config/fish/themes/nightfox.fish

@@ -8,20 +8,20 @@ wk.setup {
     },
   },
   key_labels = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
-  operators = {
-    d = 'Delete',
-    c = 'Change',
-    y = 'Yank',
-    ['g~'] = 'Toggle case',
-    ['gu'] = 'Lowercase',
-    ['gU'] = 'Uppercase',
-    v = 'Visual Character Mode',
-    gc = 'Comment',
-    gb = 'Line Comment',
-    sa = 'Sandwich Add',
-    sd = 'Sandwich Delete',
-    sr = 'Sandwich Replace',
-  },
+  -- operators = {
+  --   d = 'Delete',
+  --   c = 'Change',
+  --   y = 'Yank',
+  --   ['g~'] = 'Toggle case',
+  --   ['gu'] = 'Lowercase',
+  --   ['gU'] = 'Uppercase',
+  --   v = 'Visual Character Mode',
+  --   gc = 'Comment',
+  --   gb = 'Line Comment',
+  --   sa = 'Sandwich Add',
+  --   sd = 'Sandwich Delete',
+  --   sr = 'Sandwich Replace',
+  -- },
 }
 
 local function searchDotfiles()
@@ -83,9 +83,16 @@ local leader = {
       ':e ~/dotfiles/nvim/.config/nvim/pluginList<CR>',
       'Open Neovim Config',
     },
-    l = {
-      ':e ~/.config/nvim/lua/local-config.lua<CR>',
-      'Open Local Neovim Config',
+    L = {
+      name = 'Local files',
+      f = {
+        '<cmd> e $HOME/.config/fish/local-config.fish',
+        'Fish',
+      },
+      n = {
+        ':e $HOME/.config/nvim/lua/local-config.lua<CR>',
+        'Neovim',
+      },
     },
     k = {
       ':e ~/dotfiles/kitty/.config/kitty/kitty.conf<CR>',
@@ -112,7 +119,7 @@ local leader = {
     name = 'Find',
     t = { '<cmd>NvimTreeToggle<CR>', 'NvimTree' },
     p = { '<cmd>Telescope git_files<CR>', 'Git Files' },
-    P = { ':Telescope projects<CR>', 'Change Project' },
+    P = { '<cmd>Telescope projects<CR>', 'Change Project' },
     b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
     f = { '<cmd>Telescope find_files<CR>', 'All Files' },
     ['.'] = {
@@ -126,6 +133,7 @@ local leader = {
     },
     d = { searchDotfiles, 'Dotfiles' },
     h = { '<cmd>Telescope oldfiles<CR>', 'Old Files' },
+    H = { '<cmd>Telescope help_tags<CR>', 'Help tags' },
     g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
     G = {
       function()

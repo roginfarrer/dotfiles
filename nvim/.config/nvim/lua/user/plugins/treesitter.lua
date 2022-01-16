@@ -55,7 +55,7 @@ require('nvim-treesitter.configs').setup {
       'markdown',
     },
   },
-  context_commentstring = { enable = true },
+  context_commentstring = { enable = true, enable_autocmd = false },
   autopairs = {
     enable = true,
   },

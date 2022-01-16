@@ -2,7 +2,7 @@ local Terminal = require('toggleterm.terminal').Terminal
 
 require('toggleterm').setup {
   shell = 'fish',
-  open_mapping = [[<C-\>]],
+  open_mapping = [[<C-t>]],
   direction = 'vertical',
   size = function(term)
     if term.direction == 'horizontal' then

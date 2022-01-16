@@ -21,10 +21,10 @@ cmp.setup {
   },
   mapping = {
     ['<C-n>'] = cmp.mapping.select_next_item {
-      behavior = cmp.SelectBehavior.Select,
+      behavior = cmp.SelectBehavior.Insert,
     },
     ['<C-p>'] = cmp.mapping.select_prev_item {
-      behavior = cmp.SelectBehavior.Select,
+      behavior = cmp.SelectBehavior.Insert,
     },
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
@@ -56,17 +56,15 @@ cmp.setup {
       end
     end,
   },
-  sources = cmp.config.sources {
-    {
-      { name = 'luasnip' },
-      { name = 'npm' },
-      { name = 'cmp_git' },
-      { name = 'nvim_lua' },
-      { name = 'neorg' },
-      { name = 'nvim_lsp' },
-      { name = 'path' },
-    },
-    { { name = 'buffer' } },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'npm' },
+    { name = 'cmp_git' },
+    { name = 'nvim_lua' },
+    { name = 'neorg' },
+    { name = 'luasnip' },
+    { name = 'path' },
+    { name = 'buffer' },
   },
   experimental = {
     -- native_menu = false,

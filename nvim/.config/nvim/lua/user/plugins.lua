@@ -35,6 +35,11 @@ return {
       }
     end,
   },
+  {
+    'b0o/mapx.nvim',
+    config = config 'mapx',
+  },
+  { 'ggandor/lightspeed.nvim', config = config 'lightspeed' },
 
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
@@ -49,13 +54,13 @@ return {
   'jose-elias-alvarez/null-ls.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'neovim/nvim-lspconfig',
-  {
-    'folke/trouble.nvim',
-    cmd = { 'Trouble', 'TroubleToggle' },
-    config = function()
-      require('trouble').setup {}
-    end,
-  },
+  -- {
+  --   'folke/trouble.nvim',
+  --   cmd = { 'Trouble', 'TroubleToggle' },
+  --   config = function()
+  --     require('trouble').setup {}
+  --   end,
+  -- },
   {
     'hrsh7th/nvim-cmp',
     config = config 'cmp',
@@ -67,7 +72,6 @@ return {
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lua',
-      'hrsh7th/cmp-cmdline',
     },
   },
   {
@@ -98,13 +102,18 @@ return {
   { 'wellle/targets.vim', event = 'CursorMoved' },
   { 'numToStr/Comment.nvim', config = config 'comment' },
   { 'ThePrimeagen/harpoon', config = config 'harpoon' },
+  {
+    'Julian/vim-textobj-variable-segment',
+    requires = 'kana/vim-textobj-user',
+    event = 'CursorMoved',
+  },
 
   -- -- -- -- -- -- -- --
   --   User Interface  --
   -- -- -- -- -- -- -- --
 
   { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
-  { 'goolord/alpha-nvim', config = config 'alpha' },
+  { 'goolord/alpha-nvim', branch = 'main', config = config 'alpha' },
   {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -124,12 +133,6 @@ return {
     end,
   },
   { 'folke/which-key.nvim', config = config 'which-key' },
-  {
-    'b0o/mapx.nvim',
-    config = function()
-      require('mapx').setup { global = true }
-    end,
-  },
   {
     'simeji/winresizer',
     cmd = {
@@ -151,6 +154,7 @@ return {
     end,
   },
   { 'folke/zen-mode.nvim', config = config 'zen' },
+  { 'akinsho/bufferline.nvim', config = config 'bufferline' },
 
   -- -- -- -- -- -- -- -- -- -- --
   --   Extended Functionality   --
@@ -220,6 +224,7 @@ return {
     config = config 'gitsigns',
   },
   -- 'pwntester/octo.nvim',
+  'moll/vim-bbye',
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
@@ -255,14 +260,6 @@ return {
       },
     },
   },
-  -- { 'stevearc/gkeep.nvim', run = ':UpdateRemotePlugins' },
-  -- {
-  --   'renerocksai/telekasten.nvim',
-  --   config = config 'telekasten',
-  --   requires = {
-  --     { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
-  --   },
-  -- },
 
   -- -- -- -- -- -- -- --
   --  Themes & Syntax  --
@@ -273,6 +270,17 @@ return {
     'EdenEast/nightfox.nvim',
     config = function()
       require 'user.theme'
+    end,
+  },
+  {
+    'catppuccin/nvim',
+    as = 'catppuccin',
+    config = function()
+      require('catppuccin').setup {
+        hop = true,
+        neogit = true,
+        which_key = true,
+      }
     end,
   },
 
@@ -290,4 +298,11 @@ return {
     config = config 'neorg',
     disable = true,
   },
+  -- {
+  --   'renerocksai/telekasten.nvim',
+  --   config = config 'telekasten',
+  --   requires = {
+  --     { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
+  --   },
+  -- },
 }
