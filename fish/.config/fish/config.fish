@@ -9,12 +9,22 @@ end
 starship init fish | source
 
 set USER rfarrer
-set -gx EDITOR (which nvim)
-set -gx VISUAL $EDITOR
+
+alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
+if test -n "$NVIM_LISTEN_ADDRESS"
+    alias nvim "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+end
+if test -n "$NVIM_LISTEN_ADDRESS"
+    set -gx VISUAL "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+    set -gx EDITOR "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+else
+    set -gx EDITOR nvim
+    set -gx VISUAL nvim
+end
+
 set -gx SUDO_EDITOR $EDITOR
 set -gx MANPAGER "nvim +Man!"
 
-alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
 abbr v nvim
 
 ### Git it!
@@ -68,29 +78,6 @@ if test -e $HOME/.config/fish/local-config.fish
     source $HOME/.config/fish/local-config.fish
 end
 
-# function check_nvm --description 'Change node version'
-#     # check if nvm is present
-#     if test -q $nvm
-#         # check if directory has a nvmrc
-#         if test -e $PWD/.nvmrc
-#             nvm use
-#             # or else a package.json
-#         else if test -e $PWD/package.json
-#             nvm use lts
-#         end
-#     end
-# end
-#
-# function __check_nvm --on-variable PWD --description 'Change node version on cd'
-#     check_nvm
-# end
-#
-# check_nvm
-
 set -g FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
 set -g FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -Ux ZK_NOTEBOOK_DIR $HOME/Dropbox\ \(Maestral\)/Obsidian
-
-# source $XDG_CONFIG_HOME/fish/themes/tokyonight.fish
-# source ~/.config/fish/themes/nordfox.fish
-# source $HOME/.config/fish/themes/nightfox.fish

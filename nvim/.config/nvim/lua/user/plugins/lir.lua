@@ -7,9 +7,8 @@ local actions = require 'lir.actions'
 local mark_actions = require 'lir.mark.actions'
 local clipboard_actions = require 'lir.clipboard.actions'
 local utils = require 'lir.utils'
-local u = require 'user.utils'
 
-u.nnoremap('-', function()
+nnoremap('-', function()
   if vim.fn.expand '%' == '' then
     vim.fn.execute [[edit .]]
   else
@@ -128,10 +127,11 @@ require('lir.git_status').setup {
 
 -- use visual mode
 function _G.LirSettings()
-  u.xnoremap(
+  xnoremap(
     'J',
     ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
-    { buffer = true, silent = true }
+    'buffer',
+    'silent'
   )
 
   -- echo cwd

@@ -1,1 +1,1 @@
-require('user.utils').nnoremap('bd', '<cmd>Bdelete %<CR>')
+-- require('user.utils').nnoremap('bd', '<cmd>Bdelete %<CR>')

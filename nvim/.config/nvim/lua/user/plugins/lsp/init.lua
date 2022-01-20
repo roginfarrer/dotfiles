@@ -1,4 +1,3 @@
-local u = require 'user.utils'
 local lspinstaller = require 'nvim-lsp-installer'
 local wk = require 'which-key'
 
@@ -60,7 +59,7 @@ lspSymbol('Info', '')
 lspSymbol('Warn', '')
 
 local function buf_nnoremap(keys, command)
-  return u.nnoremap(keys, command, { buffer = true })
+  return nnoremap(keys, command, 'buffer')
 end
 
 local function on_attach(client, bufnr)
@@ -131,7 +130,7 @@ local function on_attach(client, bufnr)
   end
 
   buf_nnoremap('gd', ':LspGoToDefinition<CR>')
-  buf_nnoremap('gi', ':LspImplementations<CR>')
+  -- buf_nnoremap('gi', ':LspImplementations<CR>')
   buf_nnoremap('gr', ':LspReferences<CR>')
   buf_nnoremap('gs', ':LspSignatureHelp<CR>')
   buf_nnoremap('gy', ':LspTypeDefinition<CR>')
@@ -139,7 +138,7 @@ local function on_attach(client, bufnr)
   buf_nnoremap(']g', ':LspNextDiagnostic<CR>')
   buf_nnoremap('K', showDocs)
 
-  u.inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', { buffer = true })
+  inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', 'buffer')
 
   -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
 end

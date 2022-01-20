@@ -5,6 +5,7 @@ local M = {}
 
 M.setup = function(on_attach)
   null_ls.setup {
+    debug = true,
     autostart = true,
     sources = {
       b.formatting.prettierd.with {
@@ -44,7 +45,7 @@ M.setup = function(on_attach)
         vim.cmd [[
             augroup Formatter
               autocmd!
-              autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+              autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)
             augroup END
           ]]
       end

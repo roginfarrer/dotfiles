@@ -39,7 +39,11 @@ return {
     'b0o/mapx.nvim',
     config = config 'mapx',
   },
-  { 'ggandor/lightspeed.nvim', config = config 'lightspeed' },
+  {
+    'ggandor/lightspeed.nvim',
+    config = config 'lightspeed',
+    -- keys = { 's', 'S', 'f', 'F', 't', 'T' },
+  },
 
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
@@ -54,13 +58,6 @@ return {
   'jose-elias-alvarez/null-ls.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'neovim/nvim-lspconfig',
-  -- {
-  --   'folke/trouble.nvim',
-  --   cmd = { 'Trouble', 'TroubleToggle' },
-  --   config = function()
-  --     require('trouble').setup {}
-  --   end,
-  -- },
   {
     'hrsh7th/nvim-cmp',
     config = config 'cmp',
@@ -72,8 +69,8 @@ return {
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lua',
-      'hrsh7th/cmp-cmdline',
-      'tzachar/cmp-fuzzy-path',
+      -- 'hrsh7th/cmp-cmdline',
+      { 'tzachar/cmp-fuzzy-path', requires = 'tzachar/fuzzy.nvim' },
     },
   },
   {
@@ -155,7 +152,7 @@ return {
       require('neoscroll').setup()
     end,
   },
-  { 'folke/zen-mode.nvim', config = config 'zen' },
+  { 'folke/zen-mode.nvim', config = config 'zen', cmd = 'ZenMode' },
   { 'akinsho/bufferline.nvim', config = config 'bufferline' },
 
   -- -- -- -- -- -- -- -- -- -- --
@@ -167,13 +164,12 @@ return {
     cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
     setup = config 'vim-test',
   },
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   run = ':helptags ALL',
-  --   requires = { 'David-Kunz/jester' },
-  --   config = config 'dap',
-  -- },
-  { 'IndianBoy42/hop.nvim', config = config 'hop' },
+  {
+    'mfussenegger/nvim-dap',
+    run = ':helptags ALL',
+    requires = { 'David-Kunz/jester' },
+    config = config 'dap',
+  },
   {
     'akinsho/toggleterm.nvim',
     config = config 'toggleterm',
@@ -183,33 +179,33 @@ return {
   --  Git  --
   -- -- -- --
 
-  {
-    'tpope/vim-fugitive',
-    cmd = {
-      'G',
-      'Git',
-      'Grep',
-      'Gsplit',
-      'Gedit',
-      'Gvsplit',
-      'Gread',
-      'Gwrite',
-      'Gdiffsplit',
-      'Gvdiffsplit',
-      'GMove',
-      'GRename',
-      'GDelete',
-      'GRemove',
-      'GBrowse',
-    },
-  },
+  -- {
+  --   'tpope/vim-fugitive',
+  --   cmd = {
+  --     'G',
+  --     'Git',
+  --     'Grep',
+  --     'Gsplit',
+  --     'Gedit',
+  --     'Gvsplit',
+  --     'Gread',
+  --     'Gwrite',
+  --     'Gdiffsplit',
+  --     'Gvdiffsplit',
+  --     'GMove',
+  --     'GRename',
+  --     'GDelete',
+  --     'GRemove',
+  --     'GBrowse',
+  --   },
+  -- },
   {
     'ruifm/gitlinker.nvim',
     cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
     module_patterns = 'gitlinker*',
     config = config 'gitlinker',
   },
-  { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
+  -- { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
   {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
@@ -226,7 +222,7 @@ return {
     config = config 'gitsigns',
   },
   -- 'pwntester/octo.nvim',
-  'moll/vim-bbye',
+  { 'moll/vim-bbye', cmd = 'Bdelete' },
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
@@ -255,7 +251,8 @@ return {
       'nvim-telescope/telescope-fzf-writer.nvim',
       'ahmedkhalf/project.nvim',
       'nvim-telescope/telescope-node-modules.nvim',
-      'nvim-telescope/telescope-packer.nvim',
+      -- 'nvim-telescope/telescope-packer.nvim',
+      { 'roginfarrer/telescope-packer.nvim', branch = 'patch-1' },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make',
@@ -268,21 +265,17 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
-  {
-    'EdenEast/nightfox.nvim',
-    config = function()
-      require 'user.theme'
-    end,
-  },
+  -- {
+  --   'EdenEast/nightfox.nvim',
+  --   config = function()
+  --     require 'user.theme'
+  --   end,
+  -- },
   {
     'catppuccin/nvim',
     as = 'catppuccin',
     config = function()
-      require('catppuccin').setup {
-        hop = true,
-        neogit = true,
-        which_key = true,
-      }
+      require 'user.theme'
     end,
   },
 
@@ -294,12 +287,12 @@ return {
     'mickael-menu/zk-nvim',
     config = config 'zk',
   },
-  {
-    'nvim-neorg/neorg',
-    after = 'nvim-treesitter',
-    config = config 'neorg',
-    disable = true,
-  },
+  -- {
+  --   'nvim-neorg/neorg',
+  --   after = 'nvim-treesitter',
+  --   config = config 'neorg',
+  --   disable = true,
+  -- },
   -- {
   --   'renerocksai/telekasten.nvim',
   --   config = config 'telekasten',
