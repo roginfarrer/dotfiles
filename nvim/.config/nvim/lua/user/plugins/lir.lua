@@ -1,8 +1,3 @@
-local present, lir = pcall(require, 'lir')
-if not present then
-  return
-end
-
 local actions = require 'lir.actions'
 local mark_actions = require 'lir.mark.actions'
 local clipboard_actions = require 'lir.clipboard.actions'
@@ -127,11 +122,11 @@ require('lir.git_status').setup {
 
 -- use visual mode
 function _G.LirSettings()
-  xnoremap(
+  map(
+    'x',
     'J',
     ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
-    'buffer',
-    'silent'
+    { buffer = true, silent = true }
   )
 
   -- echo cwd

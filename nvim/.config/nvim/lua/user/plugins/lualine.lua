@@ -77,7 +77,6 @@ local config = {
     lualine_y = { 'filetype' },
     lualine_z = { lsp_client_names },
   },
-  extensions = { 'fugitive' },
 }
 
 require('lualine').setup(config)

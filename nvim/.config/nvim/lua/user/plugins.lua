@@ -35,10 +35,6 @@ return {
       }
     end,
   },
-  -- {
-  --   'b0o/mapx.nvim',
-  --   config = config 'mapx',
-  -- },
   {
     'ggandor/lightspeed.nvim',
     config = config 'lightspeed',
@@ -205,7 +201,6 @@ return {
     module_patterns = 'gitlinker*',
     config = config 'gitlinker',
   },
-  -- { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
   {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
@@ -221,7 +216,6 @@ return {
     'lewis6991/gitsigns.nvim',
     config = config 'gitsigns',
   },
-  -- 'pwntester/octo.nvim',
   { 'moll/vim-bbye', cmd = 'Bdelete' },
 
   -- -- -- -- -- -- -- --
@@ -245,8 +239,6 @@ return {
   {
     'nvim-telescope/telescope.nvim',
     config = config 'telescope',
-    -- cmd = { 'Telescope', 'Telekasten' },
-    -- module_patterns = 'telescope',
     requires = {
       'nvim-telescope/telescope-fzf-writer.nvim',
       'ahmedkhalf/project.nvim',
@@ -265,12 +257,6 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
-  -- {
-  --   'EdenEast/nightfox.nvim',
-  --   config = function()
-  --     require 'user.theme'
-  --   end,
-  -- },
   {
     'catppuccin/nvim',
     as = 'catppuccin',
