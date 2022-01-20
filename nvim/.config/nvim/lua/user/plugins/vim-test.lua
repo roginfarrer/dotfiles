@@ -48,28 +48,10 @@ local function getJestTestCmd()
     local hasYarn = path.exists(path.join(cwd, 'yarn.lock'))
     local run = hasYarn and 'yarn' or 'npm run'
 
-    local fileContents = file:read '*a'
-    if fileContents ~= nil then
-      return
-    end
-    local jsonTable = vim.fn.json_decode(fileContents)
-
-    dump(fileContents, jsonTable)
-
-    -- What we're expecting the script command to be
-    local expectedTestCmd = 'test'
-    local pkgJestTestCmd = jsonTable
-        and jsonTable.scripts
-        and jsonTable.scripts[expectedTestCmd]
-      or nil
-
     vim.b.javascript_cmd_root = isMonorepo
       and run .. ' --cwd ' .. pkgJsonParentDir
 
-    if pkgJestTestCmd ~= nil then
-      jestCmd = vim.b.javascript_cmd_root .. ' ' .. pkgJestTestCmd
-        or pkgJestTestCmd
-    end
+    jestCmd = vim.b.javascript_cmd_root .. ' jest' or 'jest'
 
     vim.b.jest_test_cmd = jestCmd
     vim.b.cypress_test_cmd = vim.b.javascript_cmd_root .. ' run ' .. cypressCmd
@@ -88,10 +70,10 @@ _G.setJestCmd = function()
   vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
 end
 
--- vim.cmd [[
---   augroup test
---     autocmd!
---     autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
---     autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
---   augroup END
--- ]]
+vim.cmd [[
+  augroup test
+    autocmd!
+    autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua _G.setJestCmd()
+    autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
+  augroup END
+]]

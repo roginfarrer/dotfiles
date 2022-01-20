@@ -8,7 +8,7 @@ local mark_actions = require 'lir.mark.actions'
 local clipboard_actions = require 'lir.clipboard.actions'
 local utils = require 'lir.utils'
 
-nnoremap('-', function()
+map('n', '-', function()
   if vim.fn.expand '%' == '' then
     vim.fn.execute [[edit .]]
   else

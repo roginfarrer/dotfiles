@@ -69,6 +69,27 @@ local leader = {
   },
   t = {
     name = 'Test',
+    -- n = {
+    --   function()
+    --     require('jester').run {
+    --       cmd = vim.g['test#javascript#jest#executable']
+    --         .. ' -t "$result" -- $file',
+    --     }
+    --   end,
+    --   'Test Nearest',
+    -- },
+    -- f = {
+    --   function()
+    --     require('jester').run_file {
+    --       cmd = vim.g['test#javascript#jest#executable']
+    --         .. " -t '$result' -- $file",
+    --     }
+    --   end,
+    --   'Test File',
+    -- },
+    -- l = { require('jester').run_last, 'Test Nearest' },
+    -- d = { require('jester').debug, 'Test Nearest' },
+    -- D = { require('jester').debug_file, 'Test Nearest' },
     n = { '<cmd>TestNearest<CR>', 'Test Nearest' },
     f = { '<cmd>TestFile<CR>', 'Test File' },
     s = { '<cmd>TestSuite<CR>', 'Test Suite' },

@@ -1,2 +1,2 @@
-nmap('s', '<Plug>Lightspeed_s')
-nmap('S', '<Plug>Lightspeed_S')
+map('n', 's', '<Plug>Lightspeed_s')
+map('n', 'S', '<Plug>Lightspeed_S')

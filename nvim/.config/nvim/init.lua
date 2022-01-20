@@ -30,6 +30,8 @@ for _, plugin in pairs(disabled_built_ins) do
   vim.g['loaded_' .. plugin] = 1
 end
 
+require 'user.utils'
+
 -- Safely require it, in case it doesn't exist
 pcall(require, 'local-config')
 pcall(vim.cmd, 'source $HOME/.config/nvim/local-config.vim')

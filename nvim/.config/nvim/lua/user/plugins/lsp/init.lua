@@ -58,10 +58,6 @@ lspSymbol('Hint', '')
 lspSymbol('Info', '')
 lspSymbol('Warn', '')
 
-local function buf_nnoremap(keys, command)
-  return nnoremap(keys, command, 'buffer')
-end
-
 local function on_attach(client, bufnr)
   -- All formatting handled by null-ls
   if client.name ~= 'null-ls' then
@@ -129,16 +125,20 @@ local function on_attach(client, bufnr)
     end
   end
 
-  buf_nnoremap('gd', ':LspGoToDefinition<CR>')
-  -- buf_nnoremap('gi', ':LspImplementations<CR>')
-  buf_nnoremap('gr', ':LspReferences<CR>')
-  buf_nnoremap('gs', ':LspSignatureHelp<CR>')
-  buf_nnoremap('gy', ':LspTypeDefinition<CR>')
-  buf_nnoremap('[g', ':LspPrevDiagnostic<CR>')
-  buf_nnoremap(']g', ':LspNextDiagnostic<CR>')
-  buf_nnoremap('K', showDocs)
+  local function bufmap(mode, lhs, rhs)
+    map(mode, lhs, rhs, { buffer = true })
+  end
 
-  inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', 'buffer')
+  bufmap('n', 'gd', ':LspGoToDefinition<CR>')
+  -- bufmap('gi', ':LspImplementations<CR>')
+  bufmap('n', 'gr', ':LspReferences<CR>')
+  bufmap('n', 'gs', ':LspSignatureHelp<CR>')
+  bufmap('n', 'gy', ':LspTypeDefinition<CR>')
+  bufmap('n', '[g', ':LspPrevDiagnostic<CR>')
+  bufmap('n', ']g', ':LspNextDiagnostic<CR>')
+  bufmap('n', 'K', showDocs)
+
+  bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', 'buffer')
 
   -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
 end

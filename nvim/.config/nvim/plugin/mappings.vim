@@ -62,7 +62,7 @@ nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
 
 " " To map <Esc> to exit terminal-mode:
 tnoremap <Leader><Esc> <C-\><C-n>
-tnoremap <Leader>j <C-\><C-n>
+" tnoremap <Leader>j <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-W>h
 tnoremap <C-j> <C-\><C-n><C-W>j
 tnoremap <C-k> <C-\><C-n><C-W>k

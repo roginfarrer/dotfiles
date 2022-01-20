@@ -35,10 +35,10 @@ return {
       }
     end,
   },
-  {
-    'b0o/mapx.nvim',
-    config = config 'mapx',
-  },
+  -- {
+  --   'b0o/mapx.nvim',
+  --   config = config 'mapx',
+  -- },
   {
     'ggandor/lightspeed.nvim',
     config = config 'lightspeed',
@@ -164,12 +164,12 @@ return {
     cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
     setup = config 'vim-test',
   },
-  {
-    'mfussenegger/nvim-dap',
-    run = ':helptags ALL',
-    requires = { 'David-Kunz/jester' },
-    config = config 'dap',
-  },
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   run = ':helptags ALL',
+  --   requires = { 'David-Kunz/jester' },
+  --   config = config 'dap',
+  -- },
   {
     'akinsho/toggleterm.nvim',
     config = config 'toggleterm',
