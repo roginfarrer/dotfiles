@@ -71,13 +71,12 @@ local config = {
     },
     lualine_c = { { 'filename', file_status = true } },
     lualine_x = {
-      lsp_progress,
+      -- lsp_progress,
       { 'diagnostics', sources = { 'nvim_diagnostic' } },
     },
     lualine_y = { 'filetype' },
     lualine_z = { lsp_client_names },
   },
-  extensions = { 'fugitive' },
 }
 
 require('lualine').setup(config)

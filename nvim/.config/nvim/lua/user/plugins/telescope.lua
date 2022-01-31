@@ -3,7 +3,6 @@ local action_layout = require 'telescope.actions.layout'
 
 require('telescope').setup {
   defaults = {
-    -- file_sorter = require('telescope.sorters').get_fzy_sorter,
     vimgrep_arguments = {
       'rg',
       '--hidden',
@@ -12,6 +11,7 @@ require('telescope').setup {
       '--with-filename',
       '--line-number',
       '--column',
+      '--trim',
       '--smart-case',
       '-g',
       '!.git',
@@ -37,6 +37,9 @@ require('telescope').setup {
     set_env = { ['COLORTERM'] = 'truecolor' },
   },
   pickers = {
+    find_files = {
+      find_command = { 'fd', '--type', 'f', '--strip-cwd-prefix' },
+    },
     buffers = {
       ignore_current_buffer = true,
       sort_mru = true,
@@ -44,8 +47,8 @@ require('telescope').setup {
   },
 }
 
-require('project_nvim').setup {}
-require('telescope').load_extension 'projects'
+-- require('project_nvim').setup {}
+-- require('telescope').load_extension 'projects'
 -- https://github.com/nvim-telescope/telescope-node-modules.nvim
 require('telescope').load_extension 'node_modules'
 -- https://github.com/nvim-telescope/telescope-packer.nvim

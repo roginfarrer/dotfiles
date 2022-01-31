@@ -15,7 +15,7 @@
 	excludesfile = /Users/rfarrer/.gitignore_global
 	editor = nvim
 	symlinks = true
-	pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
+  pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
 
 [log]
 	decorate = short
@@ -45,5 +45,12 @@
 [mergetool "diffconflicts"]
 	cmd = nvim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
 	trustExitCode = true
+  prompt = false
 [merge]
 	tool = diffconflicts
+[diff]
+  tool = diffview
+[difftool "diffview"]
+  cmd = nvim -c DiffviewOpen
+[difftool "nvimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE

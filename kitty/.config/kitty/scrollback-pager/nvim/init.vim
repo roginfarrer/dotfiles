@@ -1,6 +1,3 @@
-packadd hop.nvim
-packadd nightfox.nvim
-
 set number
 set mouse=a
 set termguicolors
@@ -23,7 +20,11 @@ nnoremap <silent><expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 
 
 autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="Substitute", timeout=250}
 
+packadd lightspeed.nvim
+packadd nightfox.nvim
+
 lua << EOF
-  require("hop").setup()
-  require("nightfox").load()
+  if pcall(require, 'nightfox') then
+    require("nightfox").load()
+  end
 EOF

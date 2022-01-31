@@ -1,3 +1,10 @@
+local lsputil = require 'lspconfig.util'
+local path = lsputil.path
+
+-- Our default command
+local jestCmd = 'jest'
+local cypressCmd = 'cypress'
+
 vim.g['test#javascript#runner'] = 'jest'
 
 vim.cmd [[
@@ -10,14 +17,11 @@ vim.cmd [[
 
 vim.g['test#strategy'] = 'toggleterm'
 
+local yarn_lock_name = 'yarn.lock'
+local npm_lock_name = 'package-lock.json'
+local pnpm_lock_name = 'pnpm-lock.yaml'
+
 local function getJestTestCmd()
-  local lsputil = require 'lspconfig.util'
-  local path = lsputil.path
-
-  -- Our default command
-  local jestCmd = 'jest'
-  local cypressCmd = 'cypress'
-
   local cwd = vim.loop.cwd()
   -- path of the current buffer, relative to the cwd
   local currentBufferFilePath = vim.fn.expand '%:~:.'
@@ -41,35 +45,27 @@ local function getJestTestCmd()
     -- whether or not the workspace is a monorepo
     -- (which means we need to adjust the command accordingly)
     local pathHasLockFile = path.exists(
-      path.join(cwd, pkgJsonParentDir, 'yarn.lock')
-    ) or path.exists(path.join(cwd, pkgJsonParentDir, 'package-lock.json'))
+      path.join(cwd, pkgJsonParentDir, yarn_lock_name)
+    ) or path.exists(path.join(cwd, pkgJsonParentDir, npm_lock_name)) or path.exists(
+      path.join(cwd, pkgJsonParentDir, pnpm_lock_name)
+    )
     local isMonorepo = not pathHasLockFile
-    -- Check whether or not the working directory is using yarn
-    local hasYarn = path.exists(path.join(cwd, 'yarn.lock'))
-    local run = hasYarn and 'yarn' or 'npm run'
 
-    local fileContents = file:read '*a'
-    if fileContents ~= nil then
-      return
+    if path.is_file(path.join(path, 'yarn.lock')) then
+      vim.b.javascript_cmd_root = isMonorepo
+          and 'yarn --cwd ' .. pkgJsonParentDir
+        or 'yarn'
+    elseif path.is_file(path.join(path, 'pnpm-lock.yaml')) then
+      vim.b.javascript_cmd_root = isMonorepo and 'pnpm ' .. pkgJsonParentDir
+        or 'pnpm '
+      vim.b.javascript_cmd_root = 'pnpm '
+    else
+      vim.b.javascript_cmd_root = isMonorepo
+          and 'npm --cwd ' .. pkgJsonParentDir
+        or 'npm '
     end
-    local jsonTable = vim.fn.json_decode(fileContents)
 
-    dump(fileContents, jsonTable)
-
-    -- What we're expecting the script command to be
-    local expectedTestCmd = 'test'
-    local pkgJestTestCmd = jsonTable
-        and jsonTable.scripts
-        and jsonTable.scripts[expectedTestCmd]
-      or nil
-
-    vim.b.javascript_cmd_root = isMonorepo
-      and run .. ' --cwd ' .. pkgJsonParentDir
-
-    if pkgJestTestCmd ~= nil then
-      jestCmd = vim.b.javascript_cmd_root .. ' ' .. pkgJestTestCmd
-        or pkgJestTestCmd
-    end
+    jestCmd = vim.b.javascript_cmd_root .. ' jest' or 'jest'
 
     vim.b.jest_test_cmd = jestCmd
     vim.b.cypress_test_cmd = vim.b.javascript_cmd_root .. ' run ' .. cypressCmd
@@ -88,10 +84,11 @@ _G.setJestCmd = function()
   vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
 end
 
--- vim.cmd [[
---   augroup test
---     autocmd!
---     autocmd BufRead *.tsx,*.ts,*.js,*.jsx call v:lua.setJestCmd()
---     autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
---   augroup END
--- ]]
+vim.cmd [[
+  augroup test
+    autocmd!
+    autocmd BufEnter * lua _G.setJestCmd()
+    " autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua _G.setJestCmd()
+    autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
+  augroup END
+]]

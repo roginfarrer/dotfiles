@@ -7,17 +7,6 @@ dap.adapters.node2 = {
     os.getenv 'HOME' .. '/repos/vscode-node-debug2/out/src/nodeDebug.js',
   },
 }
-dap.configurations.javascript = {
-  {
-    type = 'node2',
-    request = 'launch',
-    program = '${file}',
-    cwd = vim.fn.getcwd(),
-    sourceMaps = true,
-    protocol = 'inspector',
-    console = 'integratedTerminal',
-  },
-}
 dap.adapters.chrome = {
   type = 'executable',
   command = 'node',
@@ -26,28 +15,44 @@ dap.adapters.chrome = {
   },
 }
 
-dap.configurations.javascriptreact = { -- change this to javascript if needed
+dap.configurations.javascript = {
   {
-    type = 'chrome',
-    request = 'attach',
+    type = 'node2',
+    request = 'launch',
     program = '${file}',
+    -- program = '${workspaceFolder}/node_modules/.bin/jest',
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
     protocol = 'inspector',
-    port = 9222,
+    console = 'integratedTerminal',
+    sourceMaps = true,
     webRoot = '${workspaceFolder}',
   },
 }
 
-dap.configurations.typescriptreact = { -- change to typescript if needed
+local dir = '~/repos/rainbow-sprinkles/packages/rainbow-sprinkles'
+
+dap.configurations.typescript = {
   {
-    type = 'chrome',
-    request = 'attach',
-    program = '${file}',
-    cwd = vim.fn.getcwd(),
+    type = 'node2',
+    request = 'launch',
+    program = 'node',
+    cwd = '${workspaceFolder}',
     sourceMaps = true,
-    protocol = 'inspector',
-    port = 9222,
-    webRoot = '${workspaceFolder}',
+    console = 'integratedTerminal',
+    outFiles = {
+      '${workspaceFolder}/**/*.js',
+    },
+    skipFiles = {
+      '<node_internals>/**',
+    },
+    program = '${workspaceFolder}/node_modules/jest/bin/jest.js',
+    args = { '--runInBand' },
+    internalConsoleOptions = 'neverOpen',
+    disableOptimisticBPs = true,
   },
 }
+
+require('dapui').setup {}
+
+-- dap.defaults.fallback.terminal_win_cmd = ':ToggleTerm'

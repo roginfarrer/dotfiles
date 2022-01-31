@@ -1,4 +1,3 @@
-local u = require 'user.utils'
 local lspinstaller = require 'nvim-lsp-installer'
 local wk = require 'which-key'
 
@@ -6,7 +5,17 @@ local lsp = vim.lsp
 local handlers = lsp.handlers
 local cmd = vim.cmd
 
-local border = 'rounded'
+-- local border = 'rounded'
+local border = {
+  { '🭽', 'FloatBorder' },
+  { '▔', 'FloatBorder' },
+  { '🭾', 'FloatBorder' },
+  { '▕', 'FloatBorder' },
+  { '🭿', 'FloatBorder' },
+  { '▁', 'FloatBorder' },
+  { '🭼', 'FloatBorder' },
+  { '▏', 'FloatBorder' },
+}
 
 local popup_opts = {
   border = border,
@@ -58,10 +67,6 @@ lspSymbol('Information', '')
 lspSymbol('Hint', '')
 lspSymbol('Info', '')
 lspSymbol('Warn', '')
-
-local function buf_nnoremap(keys, command)
-  return u.nnoremap(keys, command, { buffer = true })
-end
 
 local function on_attach(client, bufnr)
   -- All formatting handled by null-ls
@@ -130,16 +135,20 @@ local function on_attach(client, bufnr)
     end
   end
 
-  buf_nnoremap('gd', ':LspGoToDefinition<CR>')
-  buf_nnoremap('gi', ':LspImplementations<CR>')
-  buf_nnoremap('gr', ':LspReferences<CR>')
-  buf_nnoremap('gs', ':LspSignatureHelp<CR>')
-  buf_nnoremap('gy', ':LspTypeDefinition<CR>')
-  buf_nnoremap('[g', ':LspPrevDiagnostic<CR>')
-  buf_nnoremap(']g', ':LspNextDiagnostic<CR>')
-  buf_nnoremap('K', showDocs)
+  local function bufmap(mode, lhs, rhs)
+    map(mode, lhs, rhs, { buffer = true })
+  end
 
-  u.inoremap('<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', { buffer = true })
+  bufmap('n', 'gd', ':LspGoToDefinition<CR>')
+  -- bufmap('gi', ':LspImplementations<CR>')
+  bufmap('n', 'gr', ':LspReferences<CR>')
+  bufmap('n', 'gs', ':LspSignatureHelp<CR>')
+  bufmap('n', 'gy', ':LspTypeDefinition<CR>')
+  bufmap('n', '[g', ':LspPrevDiagnostic<CR>')
+  bufmap('n', ']g', ':LspNextDiagnostic<CR>')
+  bufmap('n', 'K', showDocs)
+
+  bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
 
   -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
 end

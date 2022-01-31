@@ -1,5 +1,3 @@
-local u = require 'user.utils'
-
 require('bufferline').setup {
   numbers = 'none',
   close_command = 'Bdelete! %d', -- can be a string | function, see "Mouse actions"
@@ -7,5 +5,5 @@ require('bufferline').setup {
   left_mouse_command = 'buffer %d', -- can be a string | function, see "Mouse actions"
 }
 
-u.nnoremap('<A-h>', '<cmd>BufferLineCyclePrev<CR>')
-u.nnoremap('<A-l>', '<cmd>BufferLineCycleNext<CR>')
+map('n', '<A-h>', '<cmd>BufferLineCyclePrev<CR>')
+map('n', '<A-l>', '<cmd>BufferLineCycleNext<CR>')

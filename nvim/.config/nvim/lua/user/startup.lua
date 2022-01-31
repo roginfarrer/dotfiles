@@ -1,7 +1,7 @@
 -- [[
 --
 -- https://github.com/henriquehbr/nvim-startup.lua
--- 
+--
 -- MIT License
 --
 -- Copyright (c) 2021 Henrique Borges

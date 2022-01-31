@@ -47,7 +47,6 @@ nmap <BS> <C-^>
 nnoremap <silent><expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <silent><expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 
-nnoremap 0 ^
 
 " Move entire lines with Alt + jk
 nnoremap <silent> <A-k> :m .-2<CR>==
@@ -63,7 +62,7 @@ nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
 
 " " To map <Esc> to exit terminal-mode:
 tnoremap <Leader><Esc> <C-\><C-n>
-tnoremap <Leader>j <C-\><C-n>
+" tnoremap <Leader>j <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-W>h
 tnoremap <C-j> <C-\><C-n><C-W>j
 tnoremap <C-k> <C-\><C-n><C-W>k
@@ -86,3 +85,6 @@ nnoremap ]L :llast<CR>
 " nnoremap - <cmd>NvimTreeToggle<CR>
 nmap <C-W><C-W> <cmd>WinShift<CR>
 " nmap <C-W>e <cmd>WinResizerStartResize<CR>
+
+nnoremap $ g$
+nnoremap 0 g^

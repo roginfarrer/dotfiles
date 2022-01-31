@@ -1,15 +1,10 @@
-local present, lir = pcall(require, 'lir')
-if not present then
-  return
-end
-
+local lir = require 'lir'
 local actions = require 'lir.actions'
 local mark_actions = require 'lir.mark.actions'
 local clipboard_actions = require 'lir.clipboard.actions'
 local utils = require 'lir.utils'
-local u = require 'user.utils'
 
-u.nnoremap('-', function()
+map('n', '-', function()
   if vim.fn.expand '%' == '' then
     vim.fn.execute [[edit .]]
   else
@@ -111,6 +106,9 @@ lir.setup {
     ['yf'] = actions.yank_path,
     ['.'] = actions.toggle_show_hidden,
     ['d'] = actions.delete,
+    ['<Tab>'] = function()
+      mark_actions.toggle_mark()
+    end,
     ['J'] = function()
       mark_actions.toggle_mark()
       vim.cmd 'normal! j'
@@ -128,7 +126,8 @@ require('lir.git_status').setup {
 
 -- use visual mode
 function _G.LirSettings()
-  u.xnoremap(
+  map(
+    'x',
     'J',
     ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
     { buffer = true, silent = true }
@@ -138,7 +137,9 @@ function _G.LirSettings()
   vim.api.nvim_echo({ { vim.fn.expand '%:p', 'Normal' } }, false, {})
 end
 
-vim.cmd [[augroup lir-settings]]
-vim.cmd [[  autocmd!]]
-vim.cmd [[  autocmd Filetype lir :lua LirSettings()]]
-vim.cmd [[augroup END]]
+vim.cmd [[
+augroup lir-settings
+  autocmd!
+  autocmd Filetype lir :lua LirSettings()
+augroup END
+]]

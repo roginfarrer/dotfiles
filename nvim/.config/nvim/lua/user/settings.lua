@@ -4,8 +4,8 @@ vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.expandtab = true
 vim.o.foldexpr = [[nvim_treesitter#foldexpr()]]
 vim.o.foldlevel = 99
--- vim.o.foldmethod = 'expr'
-vim.o.foldmethod = 'syntax'
+vim.o.foldmethod = 'expr'
+vim.o.foldmethod = 'expr'
 vim.o.foldnestmax = 10
 vim.o.grepprg = 'rg --vimgrep --hidden --smart-case --glob !.git'
 vim.o.hidden = true
@@ -37,9 +37,10 @@ vim.o.timeoutlen = 500
 vim.o.undofile = true
 vim.o.updatetime = 250
 vim.o.wildmode = 'longest,full'
-vim.o.wildoptions = 'pum'
+vim.cmd [[set path+=**]]
 
 vim.g.python3_host_prog = '/usr/local/bin/python3'
+vim.g.python_host_prog = '/usr/bin/python'
 
 -- https://github.com/mhinz/neovim-remote
 if vim.fn.executable 'nvr' then
