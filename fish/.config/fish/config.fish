@@ -30,6 +30,8 @@ abbr v nvim
 ### Git it!
 abbr g git
 abbr gs "git status"
+abbr gd "nvim -c DiffviewOpen"
+abbr lg lazygit
 abbr commit "git commit"
 abbr mycommits "git log --author=$USER"
 abbr branch "git for-each-ref --sort=committerdate refs/heads --color --format='%(HEAD)%(color:bold green)%(committerdate:short)|%(color:yellow)%(refname:short)%(color:reset)'|column -ts'|'"

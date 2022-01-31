@@ -1,11 +1,9 @@
-vim.g.tokyonight_italic_functions = true
--- vim.cmd([[colorscheme tokyonight]])
-
 -- local nightfox = require 'nightfox'
--- nightfox.setup({ fox = 'nordfox' })
--- nightfox.load()
+-- nightfox.setup { fox = 'dayfox' }
+-- -- nightfox.load()
 
-require('catppuccin').setup {
+local cat = require 'catppuccin'
+cat.setup {
   integrations = {
     treesitter = true,
     native_lsp = {
@@ -17,10 +15,10 @@ require('catppuccin').setup {
         information = 'italic',
       },
       underlines = {
-        errors = 'underline',
-        hints = 'underline',
-        warnings = 'underline',
-        information = 'underline',
+        errors = 'undercurl',
+        hints = 'undercurl',
+        warnings = 'undercurl',
+        information = 'undercurl',
       },
     },
     lsp_trouble = false,
@@ -30,7 +28,7 @@ require('catppuccin').setup {
     gitsigns = true,
     telescope = true,
     nvimtree = {
-      enabled = false,
+      enabled = true,
       show_root = false,
     },
     which_key = true,
@@ -53,17 +51,3 @@ require('catppuccin').setup {
   },
 }
 vim.cmd [[colorscheme catppuccin]]
-
-vim.cmd [[
-augroup lsp_underlines
-  autocmd!
-  au ColorScheme * hi DiagnosticUnderlineError cterm=undercurl gui=undercurl
-        \ | hi DiagnosticUnderlineWarn cterm=undercurl gui=undercurlhi
-        \ | hi DiagnosticUnderlineInfo cterm=undercurl gui=undercurl
-        \ | hi DiagnosticUnderlineHint cterm=undercurl gui=undercurl
-        \ | hi LspDiagnosticsUnderlineError cterm=undercurl gui=undercurl
-        \ | hi LspDiagnosticsUnderlineWarning cterm=undercurl gui=undercurl
-        \ | hi LspDiagnosticsUnderlineInformation cterm=undercurl gui=undercurl
-        \ | hi LspDiagnosticsUnderlineHint cterm=undercurl gui=undercurl
-augroup END
-]]

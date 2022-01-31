@@ -5,7 +5,17 @@ local lsp = vim.lsp
 local handlers = lsp.handlers
 local cmd = vim.cmd
 
-local border = 'rounded'
+-- local border = 'rounded'
+local border = {
+  { '🭽', 'FloatBorder' },
+  { '▔', 'FloatBorder' },
+  { '🭾', 'FloatBorder' },
+  { '▕', 'FloatBorder' },
+  { '🭿', 'FloatBorder' },
+  { '▁', 'FloatBorder' },
+  { '🭼', 'FloatBorder' },
+  { '▏', 'FloatBorder' },
+}
 
 local popup_opts = {
   border = border,
@@ -138,7 +148,7 @@ local function on_attach(client, bufnr)
   bufmap('n', ']g', ':LspNextDiagnostic<CR>')
   bufmap('n', 'K', showDocs)
 
-  bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>', 'buffer')
+  bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
 
   -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
 end

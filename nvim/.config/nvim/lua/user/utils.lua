@@ -34,8 +34,15 @@ _G.mergetable = function(tableA, tableB)
 end
 
 _G.map = function(mode, lhs, rhs, opts)
-  vim.keymap.set(mode, lhs, rhs, opts)
+  vim.keymap.set(
+    mode,
+    lhs,
+    rhs,
+    vim.tbl_deep_extend('force', { silent = true, noremap = true }, opts or {})
+  )
 end
+
+_G.is_gui = vim.fn.has 'gui_vimr'
 
 local M = {}
 

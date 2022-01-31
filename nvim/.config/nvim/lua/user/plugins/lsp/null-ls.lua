@@ -43,9 +43,9 @@ M.setup = function(on_attach)
       on_attach(client, bufnr)
       if client.resolved_capabilities.document_formatting then
         vim.cmd [[
-            augroup Formatter
-              autocmd!
-              autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)
+            augroup LspFormatting
+              autocmd! * <buffer>
+              autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
             augroup END
           ]]
       end

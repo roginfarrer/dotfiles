@@ -63,7 +63,7 @@ cmp.setup {
     { name = 'nvim_lua' },
     { name = 'neorg' },
     { name = 'luasnip' },
-    { name = 'fuzzy_path' },
+    { name = 'path' },
   }, {
     { name = 'buffer', keyword_length = 4 },
   }),

@@ -1,3 +1,10 @@
+local lsputil = require 'lspconfig.util'
+local path = lsputil.path
+
+-- Our default command
+local jestCmd = 'jest'
+local cypressCmd = 'cypress'
+
 vim.g['test#javascript#runner'] = 'jest'
 
 vim.cmd [[
@@ -10,14 +17,11 @@ vim.cmd [[
 
 vim.g['test#strategy'] = 'toggleterm'
 
+local yarn_lock_name = 'yarn.lock'
+local npm_lock_name = 'package-lock.json'
+local pnpm_lock_name = 'pnpm-lock.yaml'
+
 local function getJestTestCmd()
-  local lsputil = require 'lspconfig.util'
-  local path = lsputil.path
-
-  -- Our default command
-  local jestCmd = 'jest'
-  local cypressCmd = 'cypress'
-
   local cwd = vim.loop.cwd()
   -- path of the current buffer, relative to the cwd
   local currentBufferFilePath = vim.fn.expand '%:~:.'
@@ -41,15 +45,25 @@ local function getJestTestCmd()
     -- whether or not the workspace is a monorepo
     -- (which means we need to adjust the command accordingly)
     local pathHasLockFile = path.exists(
-      path.join(cwd, pkgJsonParentDir, 'yarn.lock')
-    ) or path.exists(path.join(cwd, pkgJsonParentDir, 'package-lock.json'))
+      path.join(cwd, pkgJsonParentDir, yarn_lock_name)
+    ) or path.exists(path.join(cwd, pkgJsonParentDir, npm_lock_name)) or path.exists(
+      path.join(cwd, pkgJsonParentDir, pnpm_lock_name)
+    )
     local isMonorepo = not pathHasLockFile
-    -- Check whether or not the working directory is using yarn
-    local hasYarn = path.exists(path.join(cwd, 'yarn.lock'))
-    local run = hasYarn and 'yarn' or 'npm run'
 
-    vim.b.javascript_cmd_root = isMonorepo
-      and run .. ' --cwd ' .. pkgJsonParentDir
+    if path.is_file(path.join(path, 'yarn.lock')) then
+      vim.b.javascript_cmd_root = isMonorepo
+          and 'yarn --cwd ' .. pkgJsonParentDir
+        or 'yarn'
+    elseif path.is_file(path.join(path, 'pnpm-lock.yaml')) then
+      vim.b.javascript_cmd_root = isMonorepo and 'pnpm ' .. pkgJsonParentDir
+        or 'pnpm '
+      vim.b.javascript_cmd_root = 'pnpm '
+    else
+      vim.b.javascript_cmd_root = isMonorepo
+          and 'npm --cwd ' .. pkgJsonParentDir
+        or 'npm '
+    end
 
     jestCmd = vim.b.javascript_cmd_root .. ' jest' or 'jest'
 
@@ -73,7 +87,8 @@ end
 vim.cmd [[
   augroup test
     autocmd!
-    autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua _G.setJestCmd()
+    autocmd BufEnter * lua _G.setJestCmd()
+    " autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua _G.setJestCmd()
     autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
   augroup END
 ]]

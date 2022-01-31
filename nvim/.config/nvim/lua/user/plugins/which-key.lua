@@ -25,10 +25,23 @@ wk.setup {
 }
 
 local function searchDotfiles()
+  require('telescope.builtin').live_grep {
+    cwd = '~/dotfiles',
+    prompt_title = '~ Dotfiles ~',
+  }
+end
+local function findDotfiles()
   require('telescope.builtin').git_files {
     cwd = '~/dotfiles',
     prompt_title = '~ Dotfiles ~',
   }
+end
+local function project_files()
+  local opts = {} -- define here if you want to define something
+  local ok = pcall(require('telescope.builtin').git_files, opts)
+  if not ok then
+    require('telescope.builtin').find_files(opts)
+  end
 end
 
 local leader = {
@@ -54,7 +67,6 @@ local leader = {
       'Checkout commit(for current file)',
     },
     d = { '<cmd>DiffviewOpen<cr>', 'DiffView' },
-    -- d = { '<cmd>Gitsigns diffthis HEAD<cr>', 'Git Diff' },
     j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", 'Next Hunk' },
     k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", 'Prev Hunk' },
     l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", 'Blame' },
@@ -73,38 +85,36 @@ local leader = {
     --   function()
     --     require('jester').run {
     --       cmd = vim.g['test#javascript#jest#executable']
-    --         .. ' -t "$result" -- $file',
+    --         .. " -t '$result' -- $file",
     --     }
     --   end,
     --   'Test Nearest',
     -- },
-    -- f = {
+    -- j = {
     --   function()
-    --     require('jester').run_file {
-    --       cmd = vim.g['test#javascript#jest#executable']
-    --         .. " -t '$result' -- $file",
+    --     require('jester').debug {
+    --       path_to_jest = './node_modules/jest/bin/jest.js',
     --     }
     --   end,
     --   'Test File',
     -- },
-    -- l = { require('jester').run_last, 'Test Nearest' },
-    -- d = { require('jester').debug, 'Test Nearest' },
-    -- D = { require('jester').debug_file, 'Test Nearest' },
+    -- -- l = { require('jester').run_last, 'Test Nearest' },
     n = { '<cmd>TestNearest<CR>', 'Test Nearest' },
     f = { '<cmd>TestFile<CR>', 'Test File' },
     s = { '<cmd>TestSuite<CR>', 'Test Suite' },
     l = { '<cmd>TestLast<CR>', 'Test Last' },
     g = { '<cmd>TestVisit<CR>', 'Test Visit' },
-    e = { '<cmd>vs<CR>:terminal fish<CR>', 'New Terminal' },
+    -- e = { '<cmd>vs<CR>:terminal fish<CR>', 'New Terminal' },
   },
   d = {
     name = 'Configuration',
-    d = { searchDotfiles, 'Search Dotfiles' },
+    d = { findDotfiles, 'Find Dotfiles' },
+    g = { searchDotfiles, 'Search Dotfiles' },
     n = {
-      ':e ~/dotfiles/nvim/.config/nvim/pluginList<CR>',
+      ':e ~/dotfiles/nvim/.config/nvim/lua/user/plugins.lua<CR>',
       'Open Neovim Config',
     },
-    L = {
+    l = {
       name = 'Local files',
       f = {
         '<cmd> e $HOME/.config/fish/local-config.fish',
@@ -138,8 +148,8 @@ local leader = {
   },
   f = {
     name = 'Find',
-    t = { '<cmd>NvimTreeToggle<CR>', 'NvimTree' },
-    p = { '<cmd>Telescope git_files<CR>', 'Git Files' },
+    t = { ':Telescope<Space>', 'Telescope' },
+    p = { project_files, 'Git Files' },
     P = { '<cmd>Telescope projects<CR>', 'Change Project' },
     b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
     f = { '<cmd>Telescope find_files<CR>', 'All Files' },
@@ -152,7 +162,7 @@ local leader = {
       end,
       'Find in current directory',
     },
-    d = { searchDotfiles, 'Dotfiles' },
+    d = { findDotfiles, 'Dotfiles' },
     h = { '<cmd>Telescope oldfiles<CR>', 'Old Files' },
     H = { '<cmd>Telescope help_tags<CR>', 'Help tags' },
     g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
@@ -182,10 +192,6 @@ local leader = {
     m = { '<cmd>Telescope man_pages<cr>', 'Man Pages' },
     k = { '<cmd>Telescope keymaps<cr>', 'Key Maps' },
     s = { '<cmd>Telescope highlights<cr>', 'Search Highlight Groups' },
-    l = {
-      [[<cmd>TSHighlightCapturesUnderCursor<cr>]],
-      'Highlight Groups at cursor',
-    },
     f = { '<cmd>Telescope filetypes<cr>', 'File Types' },
     o = { '<cmd>Telescope vim_options<cr>', 'Options' },
     a = { '<cmd>Telescope autocommands<cr>', 'Auto Commands' },
@@ -200,6 +206,10 @@ local leader = {
 }
 
 wk.register(leader, { prefix = '<leader>' })
+map('n', '<S-Left>', '<cmd>vertical resize -5<CR>')
+map('n', '<S-Up>', '<cmd>resize +5<CR>')
+map('n', '<S-Down>', '<cmd>resize -5<CR>')
+map('n', '<S-Right>', '<cmd>vertical resize +5<CR>')
 
 local visual = {
   y = 'which_key_ignore',
@@ -222,21 +232,6 @@ wk.register({
 }, {
   prefix = 't',
 })
-
--- local hop = require 'hop'
--- local s = {
---   s = {
---     a = { 'Sandwich Add' },
---     d = { 'Sandwich Delete' },
---     r = { 'Sandwich Replace' },
---     s = { hop.hint_char2, 'Hop to 2 Chars' },
---     l = { hop.hint_lines, 'Hop Lines' },
---     ['/'] = { hop.hint_patterns, 'Hop to Pattern' },
---   },
--- }
--- wk.register(s, { mode = 'n' })
--- wk.register(s, { mode = 'o' })
--- wk.register(s, { mode = 'x' })
 
 local textobjs = {
   a = {
@@ -261,16 +256,16 @@ wk.register(textobjs, { mode = 'o' })
 wk.register(textobjs, { mode = 'x' })
 
 wk.register {
-  ['[g'] = 'Go to previous diagnostic',
-  [']g'] = 'Go to next diagnostic',
-  ['[q'] = 'Go to previous quickfix',
-  [']q'] = 'Go to next quickfix',
-  ['[Q'] = 'Go to first quickfix',
-  [']Q'] = 'Go to last quickfix',
-  ['[l'] = 'Go to previous location list item',
-  [']l'] = 'Go to next location list item',
-  ['[L'] = 'Go to first location list item',
-  [']L'] = 'Go to last location list item',
+  ['[g'] = 'Diagnostic Previous',
+  [']g'] = 'Diagnostic Next',
+  ['[q'] = 'Quickfix Previous',
+  [']q'] = 'Quickfix Next',
+  ['[Q'] = 'Quickfix First',
+  [']Q'] = 'Quickfix Last',
+  ['[l'] = 'Location List Previous',
+  [']l'] = 'Location List Next',
+  ['[L'] = 'Location List First',
+  [']L'] = 'Location List Last',
   [']m'] = 'Go to beginning of next function',
   [']]'] = 'Go to beginning of next class',
   [']M'] = 'Go to end of next function',

@@ -2,6 +2,10 @@ local function config(name)
   return string.format("require('user.plugins.%s')", name)
 end
 
+local function misc(name)
+  return require('user.plugins.misc')[name]
+end
+
 return {
   'wbthomason/packer.nvim',
   'nvim-lua/plenary.nvim',
@@ -15,45 +19,21 @@ return {
   },
   'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
-  {
-    'luukvbaal/stabilize.nvim',
-    config = function()
-      require('stabilize').setup()
-    end,
-  },
-  {
-    'kyazdani42/nvim-web-devicons',
-    config = function()
-      require('nvim-web-devicons').setup {
-        override = {
-          lir_folder_icon = {
-            icon = '',
-            color = '#7ebae4',
-            name = 'LirFolderNode',
-          },
-        },
-      }
-    end,
-  },
-  {
-    'ggandor/lightspeed.nvim',
-    config = config 'lightspeed',
-    -- keys = { 's', 'S', 'f', 'F', 't', 'T' },
-  },
+  { 'luukvbaal/stabilize.nvim', config = misc 'stabilize' },
+  { 'kyazdani42/nvim-web-devicons', config = misc 'devicons' },
+  { 'ggandor/lightspeed.nvim', setup = config 'lightspeed' },
 
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
   -- -- -- -- -- -- -- -- -- -- -- -- --
 
   { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
-  {
-    'williamboman/nvim-lsp-installer',
-    config = config 'lsp',
-  },
+  { 'williamboman/nvim-lsp-installer', config = config 'lsp' },
   'folke/lua-dev.nvim',
   'jose-elias-alvarez/null-ls.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'neovim/nvim-lspconfig',
+  { 'j-hui/fidget.nvim', config = misc 'fidget' },
   {
     'hrsh7th/nvim-cmp',
     config = config 'cmp',
@@ -64,21 +44,12 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lua',
-      -- 'hrsh7th/cmp-cmdline',
-      { 'tzachar/cmp-fuzzy-path', requires = 'tzachar/fuzzy.nvim' },
     },
   },
-  {
-    'L3MON4D3/LuaSnip',
-    config = config 'luasnip',
-  },
-  {
-    'onsails/lspkind-nvim',
-    config = function()
-      require('lspkind').init { preset = 'codicons' }
-    end,
-  },
+  { 'L3MON4D3/LuaSnip', config = config 'luasnip' },
+  { 'onsails/lspkind-nvim', config = misc 'lspkind' },
   { 'windwp/nvim-autopairs', config = config 'autopairs' },
 
   -- -- -- -- -- --
@@ -86,29 +57,28 @@ return {
   -- -- -- -- -- --
 
   { 'duggiefresh/vim-easydir', event = 'CmdLineEnter' },
-  {
-    'echasnovski/mini.nvim',
-    config = function()
-      require('mini.surround').setup {}
-    end,
-  },
+  { 'echasnovski/mini.nvim', config = misc 'mini' },
   { 'tpope/vim-eunuch', event = 'CmdLineEnter' },
   { 'tpope/vim-abolish', event = 'CmdlineEnter' },
   { 'wellle/targets.vim', event = 'CursorMoved' },
   { 'numToStr/Comment.nvim', config = config 'comment' },
-  { 'ThePrimeagen/harpoon', config = config 'harpoon' },
   {
-    'Julian/vim-textobj-variable-segment',
-    requires = 'kana/vim-textobj-user',
-    event = 'CursorMoved',
+    'ThePrimeagen/harpoon',
+    config = config 'harpoon',
+    module_patterns = 'harpoon',
   },
+  -- {
+  --   'Julian/vim-textobj-variable-segment',
+  --   requires = 'kana/vim-textobj-user',
+  --   event = 'CursorMoved',
+  -- },
 
   -- -- -- -- -- -- -- --
   --   User Interface  --
   -- -- -- -- -- -- -- --
 
   { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
-  { 'goolord/alpha-nvim', branch = 'main', config = config 'alpha' },
+  { 'goolord/alpha-nvim', config = config 'alpha' },
   {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -117,39 +87,28 @@ return {
   { 'nvim-treesitter/nvim-treesitter-textobjects', event = 'BufRead' },
   'JoosepAlviste/nvim-ts-context-commentstring',
   'windwp/nvim-ts-autotag',
-  {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      vim.o.termguicolors = true
-      require('colorizer').setup({}, {
-        css = true,
-        css_fn = true,
-      })
-    end,
-  },
+  { 'norcalli/nvim-colorizer.lua', config = misc 'colorizer' },
   { 'folke/which-key.nvim', config = config 'which-key' },
-  {
-    'simeji/winresizer',
-    cmd = {
-      'WinResizerStartResize',
-      'WinResizerStartMove',
-      'WinResizerStartFocus',
-    },
-    setup = function()
-      vim.g.winresizer_start_key = '<C-w>e'
-    end,
-  },
-  { 'sindrets/winshift.nvim', cmd = 'WinShift' },
+  -- {
+  --   'simeji/winresizer',
+  --   cmd = {
+  --     'WinResizerStartResize',
+  --     'WinResizerStartMove',
+  --     'WinResizerStartFocus',
+  --   },
+  --   setup = function()
+  --     vim.g.winresizer_start_key = '<C-w>e'
+  --   end,
+  -- },
+  -- { 'sindrets/winshift.nvim', cmd = 'WinShift' },
   { 'kevinhwang91/nvim-bqf', ft = 'qf' },
   {
     'karb94/neoscroll.nvim',
     event = 'WinScrolled',
-    config = function()
-      require('neoscroll').setup()
-    end,
+    config = misc 'neoscroll',
   },
   { 'folke/zen-mode.nvim', config = config 'zen', cmd = 'ZenMode' },
-  { 'akinsho/bufferline.nvim', config = config 'bufferline' },
+  -- { 'akinsho/bufferline.nvim', config = config 'bufferline' },
 
   -- -- -- -- -- -- -- -- -- -- --
   --   Extended Functionality   --
@@ -163,7 +122,11 @@ return {
   -- {
   --   'mfussenegger/nvim-dap',
   --   run = ':helptags ALL',
-  --   requires = { 'David-Kunz/jester' },
+  --   requires = {
+  --     'David-Kunz/jester',
+  --     'theHamsta/nvim-dap-virtual-text',
+  --     'rcarriga/nvim-dap-ui',
+  --   },
   --   config = config 'dap',
   -- },
   {
@@ -216,7 +179,7 @@ return {
     'lewis6991/gitsigns.nvim',
     config = config 'gitsigns',
   },
-  { 'moll/vim-bbye', cmd = 'Bdelete' },
+  { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
@@ -230,18 +193,12 @@ return {
     },
     config = config 'lir',
   },
-  -- {
-  --   'kyazdani42/nvim-tree.lua',
-  --   disable = true,
-  --   requires = 'kyazdani42/nvim-web-devicons',
-  --   config = config 'tree',
-  -- },
+  { 'kyazdani42/nvim-tree.lua', config = config 'tree', cmd = 'NvimTreeToggle' },
   {
     'nvim-telescope/telescope.nvim',
     config = config 'telescope',
     requires = {
-      'nvim-telescope/telescope-fzf-writer.nvim',
-      'ahmedkhalf/project.nvim',
+      -- 'ahmedkhalf/project.nvim',
       'nvim-telescope/telescope-node-modules.nvim',
       -- 'nvim-telescope/telescope-packer.nvim',
       { 'roginfarrer/telescope-packer.nvim', branch = 'patch-1' },
@@ -257,13 +214,8 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
-  {
-    'catppuccin/nvim',
-    as = 'catppuccin',
-    config = function()
-      require 'user.theme'
-    end,
-  },
+  { 'catppuccin/nvim', as = 'catppuccin' },
+  -- 'EdenEast/nightfox.nvim',
 
   -- -- -- -- -- -- --
   --  Zettelkasten  --
@@ -286,4 +238,30 @@ return {
   --     { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
   --   },
   -- },
+
+  -- -- -- -- -- -- -- --
+  --  New For Testing  --
+  -- -- -- -- -- -- -- --
+  {
+    'rcarriga/vim-ultest',
+    requires = { 'vim-test/vim-test' },
+    run = ':UpdateRemotePlugins',
+    config = config 'ultest',
+    cmd = {
+      'Ultest',
+      'UltestNearest',
+      'UltestLast',
+      'UltestDebug',
+      'UltestDebugNearest',
+      'UltestOutput',
+      'UltestAttach',
+      'UltestStop',
+      'UltestStopNearest',
+      'UltestSummary',
+    },
+  },
+  'Matt-A-Bennett/vim-surround-funk',
+  -- { 'elihunter173/dirbuf.nvim', config = misc 'dirbuf' },
+  'stevearc/dressing.nvim',
+  { 'moll/vim-bbye', cmd = 'Bdelete' },
 }
