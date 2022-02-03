@@ -215,6 +215,7 @@ return {
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
   { 'catppuccin/nvim', as = 'catppuccin' },
+  'p00f/nvim-ts-rainbow',
   -- 'EdenEast/nightfox.nvim',
 
   -- -- -- -- -- -- --
