@@ -15,4 +15,5 @@ pcall(require, 'local-config')
 pcall(vim.cmd, 'source $HOME/.config/nvim/local-config.vim')
 
 require 'user.packerInit'
+require 'user.mappings'
 require 'user.theme'

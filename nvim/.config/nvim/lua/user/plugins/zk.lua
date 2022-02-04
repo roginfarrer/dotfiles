@@ -24,10 +24,11 @@ require('telescope').load_extension 'zk'
 require('which-key').register({
   z = {
     name = 'ZK',
+    z = { ':e $ZK_NOTEBOOK_DIR/Dashboard.md<CR>', 'Go to Dashboard' },
     n = {
       function()
         local title = vim.fn.input 'Title: '
-        require('zk').new(nil, { title = title })
+        require('zk').new { title = title }
       end,
       'New Note',
     },

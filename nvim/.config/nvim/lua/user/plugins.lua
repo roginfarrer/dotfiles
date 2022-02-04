@@ -17,7 +17,7 @@ return {
       vim.g.cursorhold_updatetime = 250
     end,
   },
-  'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
+  -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
   { 'luukvbaal/stabilize.nvim', config = misc 'stabilize' },
   { 'kyazdani42/nvim-web-devicons', config = misc 'devicons' },
