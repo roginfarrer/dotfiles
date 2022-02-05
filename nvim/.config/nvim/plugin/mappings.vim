@@ -70,7 +70,7 @@ tnoremap <C-l> <C-\><C-n><C-W>l
 
 " Open URL under cursor in browser
 " Note that this only works on Macs
-nmap <silent> gx <cmd>!open <cfile><cr>
+" nmap <silent> gx <cmd>!open <cfile><cr>
 
 " Quickfix and Location List
 nnoremap [q :cp<CR>
