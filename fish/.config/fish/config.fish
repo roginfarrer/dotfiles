@@ -61,18 +61,11 @@ abbr gitlogchange "git log --oneline -p" # actual changes
 abbr gitlogstat "git log --oneline --stat" # number of lines changed
 abbr gitloggraph "git log --oneline --graph" # graph view of branches
 abbr gcp "git cherry-pick"
-abbr ls exa
-abbr ll exa -1
 abbr sshpi "ssh -t pi@192.168.0.194 'export TERM=linux; fish'"
+abbr themes "kitty +kitten themes"
 
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-function fgb
-    git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)' | fzf
-end
-
-alias fcb="fgb | xargs git checkout"
 
 bind \cg\cb fgb
 

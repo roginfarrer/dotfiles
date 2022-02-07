@@ -62,7 +62,7 @@ nmap <leader>yf :let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>
 
 " " To map <Esc> to exit terminal-mode:
 tnoremap <Leader><Esc> <C-\><C-n>
-" tnoremap <Leader>j <C-\><C-n>
+tnoremap jk <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-W>h
 tnoremap <C-j> <C-\><C-n><C-W>j
 tnoremap <C-k> <C-\><C-n><C-W>k
@@ -88,3 +88,9 @@ nmap <C-W><C-W> <cmd>WinShift<CR>
 
 nnoremap $ g$
 nnoremap 0 g^
+
+" searches for the text that was just replaced, jumps to the next match
+" and replace that with the new inserted text. Can be chained with . to
+" repeat it on the next match, just like how you repeat cgn.
+" https://www.reddit.com/r/neovim/comments/sf0hmc/im_really_proud_of_this_mapping_i_came_up_with/
+nnoremap g. /\V\C<C-r>"<CR>cgn<C-a><Esc>

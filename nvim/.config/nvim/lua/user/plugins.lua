@@ -67,6 +67,7 @@ return {
     config = config 'harpoon',
     module_patterns = 'harpoon',
   },
+  'AckslD/nvim-neoclip.lua',
   -- {
   --   'Julian/vim-textobj-variable-segment',
   --   requires = 'kana/vim-textobj-user',
@@ -109,6 +110,7 @@ return {
   },
   { 'folke/zen-mode.nvim', config = config 'zen', cmd = 'ZenMode' },
   -- { 'akinsho/bufferline.nvim', config = config 'bufferline' },
+  { 'sindrets/winshift.nvim', config = config 'winshift' },
 
   -- -- -- -- -- -- -- -- -- -- --
   --   Extended Functionality   --
@@ -193,7 +195,11 @@ return {
     },
     config = config 'lir',
   },
-  { 'kyazdani42/nvim-tree.lua', config = config 'tree', cmd = 'NvimTreeToggle' },
+  {
+    'kyazdani42/nvim-tree.lua',
+    config = config 'tree',
+    cmd = 'NvimTreeToggle',
+  },
   {
     'nvim-telescope/telescope.nvim',
     config = config 'telescope',

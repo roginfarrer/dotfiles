@@ -25,13 +25,13 @@ require('telescope').setup {
     mappings = {
       -- insert mode
       i = {
-        ['<esc>'] = actions.close,
+        -- ['<esc>'] = actions.close,
         ['?'] = action_layout.toggle_preview,
       },
       -- normal mode
-      n = {
-        ['<esc>'] = actions.close,
-      },
+      -- n = {
+      --   ['<esc>'] = actions.close,
+      -- },
     },
     color_devicons = true,
     set_env = { ['COLORTERM'] = 'truecolor' },
@@ -55,3 +55,6 @@ require('telescope').load_extension 'node_modules'
 require('telescope').load_extension 'packer'
 -- https://github.com/nvim-telescope/telescope-fzf-native.nvim
 require('telescope').load_extension 'fzf'
+-- https://github.com/AckslD/nvim-neoclip.lua
+require('neoclip').setup()
+require('telescope').load_extension 'neoclip'

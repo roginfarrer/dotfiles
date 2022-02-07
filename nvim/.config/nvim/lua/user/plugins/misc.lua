@@ -57,4 +57,8 @@ M.dirbuf = function()
   }
 end
 
+M.neoclip = function()
+  require('neoclip').setup {}
+end
+
 return M
