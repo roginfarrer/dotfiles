@@ -103,7 +103,7 @@ local function on_attach(client, bufnr)
   local leader = {
     l = {
       name = 'LSP',
-      a = { ':CodeActionMenu<CR>', 'Code Action' },
+      a = { ':LspCodeAction<CR>', 'Code Action' },
       r = { '<cmd>LspRenameSymbol<CR>', 'Rename Symbol' },
       f = { ':Format<CR>', 'Format Document' },
       x = { ':TroubleToggle<CR>', 'Trouble' },
@@ -120,7 +120,7 @@ local function on_attach(client, bufnr)
   local visual = {
     l = {
       name = 'LSP',
-      a = { ':CodeActionMenu<CR>', 'Code Action' },
+      a = { ':LspRangeCodeAction<CR>', 'Code Action' },
     },
   }
 

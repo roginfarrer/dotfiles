@@ -10,16 +10,16 @@ return {
   'wbthomason/packer.nvim',
   'nvim-lua/plenary.nvim',
   { 'lewis6991/impatient.nvim', rocks = 'mpack' },
-  {
-    -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
-    'antoinemadec/FixCursorHold.nvim',
-    setup = function()
-      vim.g.cursorhold_updatetime = 250
-    end,
-  },
+  -- {
+  --   -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+  --   'antoinemadec/FixCursorHold.nvim',
+  --   setup = function()
+  --     vim.g.cursorhold_updatetime = 250
+  --   end,
+  -- },
   -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
-  { 'luukvbaal/stabilize.nvim', config = misc 'stabilize' },
+  -- { 'luukvbaal/stabilize.nvim', config = misc 'stabilize' },
   { 'kyazdani42/nvim-web-devicons', config = misc 'devicons' },
   { 'ggandor/lightspeed.nvim', setup = config 'lightspeed' },
 
@@ -27,7 +27,7 @@ return {
   --  Language Server Protocol (LSP)  --
   -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
+  -- { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
   { 'williamboman/nvim-lsp-installer', config = config 'lsp' },
   'folke/lua-dev.nvim',
   'jose-elias-alvarez/null-ls.nvim',
@@ -49,6 +49,7 @@ return {
     },
   },
   { 'L3MON4D3/LuaSnip', config = config 'luasnip' },
+  'rafamadriz/friendly-snippets',
   { 'onsails/lspkind-nvim', config = misc 'lspkind' },
   { 'windwp/nvim-autopairs', config = config 'autopairs' },
 
@@ -56,16 +57,15 @@ return {
   --   Editing   --
   -- -- -- -- -- --
 
-  { 'duggiefresh/vim-easydir', event = 'CmdLineEnter' },
+  { 'duggiefresh/vim-easydir', event = 'CmdwinEnter' },
   { 'echasnovski/mini.nvim', config = misc 'mini' },
-  { 'tpope/vim-eunuch', event = 'CmdLineEnter' },
-  { 'tpope/vim-abolish', event = 'CmdlineEnter' },
+  { 'tpope/vim-eunuch', event = 'CmdwinEnter' },
+  { 'tpope/vim-abolish', event = 'CmdwinEnter' },
   { 'wellle/targets.vim', event = 'CursorMoved' },
   { 'numToStr/Comment.nvim', config = config 'comment' },
   {
     'ThePrimeagen/harpoon',
-    config = config 'harpoon',
-    module_patterns = 'harpoon',
+    module_pattern = 'harpoon*',
   },
   'AckslD/nvim-neoclip.lua',
   -- {
@@ -110,7 +110,7 @@ return {
   },
   { 'folke/zen-mode.nvim', config = config 'zen', cmd = 'ZenMode' },
   -- { 'akinsho/bufferline.nvim', config = config 'bufferline' },
-  { 'sindrets/winshift.nvim', config = config 'winshift' },
+  { 'sindrets/winshift.nvim', config = config 'winshift', cmd = 'WinShift' },
 
   -- -- -- -- -- -- -- -- -- -- --
   --   Extended Functionality   --
@@ -163,7 +163,7 @@ return {
   {
     'ruifm/gitlinker.nvim',
     cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
-    module_patterns = 'gitlinker*',
+    module_pattern = 'gitlinker*',
     config = config 'gitlinker',
   },
   {
@@ -206,7 +206,6 @@ return {
     requires = {
       -- 'ahmedkhalf/project.nvim',
       'nvim-telescope/telescope-node-modules.nvim',
-      -- 'nvim-telescope/telescope-packer.nvim',
       { 'roginfarrer/telescope-packer.nvim', branch = 'patch-1' },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
@@ -267,8 +266,9 @@ return {
       'UltestSummary',
     },
   },
-  'Matt-A-Bennett/vim-surround-funk',
+  -- 'Matt-A-Bennett/vim-surround-funk',
   -- { 'elihunter173/dirbuf.nvim', config = misc 'dirbuf' },
-  'stevearc/dressing.nvim',
+  { 'stevearc/dressing.nvim', event = 'WinEnter' },
   { 'moll/vim-bbye', cmd = 'Bdelete' },
+  { 'SidOfc/mkdx', ft = 'markdown' },
 }

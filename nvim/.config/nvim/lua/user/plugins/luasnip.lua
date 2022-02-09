@@ -1,6 +1,6 @@
 local ls = require 'luasnip'
 
-require('luasnip/loaders/from_vscode').load()
+require('luasnip.loaders.from_vscode').load()
 
 local text = ls.text_node
 local insert = ls.insert_node
@@ -47,7 +47,7 @@ ls.snippets = {
   typescript = jsSnips,
   lua = {
     snip({
-      trig = 'lfunc',
+      trig = 'lf',
       name = 'Local Function',
       dscr = 'Skeleton of a local function',
     }, {

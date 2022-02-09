@@ -275,3 +275,31 @@ wk.register {
   ['[M'] = 'Go to end of previous function',
   ['[]'] = 'Go to end of previous class',
 }
+
+wk.register({
+  h = {
+    a = { ':lua require("harpoon.mark").add_file()<CR>', 'Harpoon Add File' },
+    h = {
+      ':lua require("harpoon.ui").toggle_quick_menu()<CR>',
+      'Harpoon Open Menu',
+    },
+    u = {
+      ':lua require("harpoon.ui").nav_file(1)<CR>',
+      'Harpoon 1',
+    },
+    i = {
+      ':lua require("harpoon.ui").nav_file(2)<CR>',
+      'Harpoon 2',
+    },
+    o = {
+      ':lua require("harpoon.ui").nav_file(3)<CR>',
+      'Harpoon 3',
+    },
+    p = {
+      ':lua require("harpoon.ui").nav_file(4)<CR>',
+      'Harpoon 4',
+    },
+  },
+}, {
+  prefix = '<leader>',
+})
