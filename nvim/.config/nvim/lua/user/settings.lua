@@ -33,6 +33,7 @@ o.splitright = true
 o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
+o.guifont = 'MonoLisa Nerd Font:h16'
 o.timeoutlen = 500
 o.undofile = true
 o.updatetime = 250

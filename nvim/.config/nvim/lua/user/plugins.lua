@@ -51,7 +51,11 @@ return {
   { 'L3MON4D3/LuaSnip', config = config 'luasnip' },
   'rafamadriz/friendly-snippets',
   { 'onsails/lspkind-nvim', config = misc 'lspkind' },
-  { 'windwp/nvim-autopairs', config = config 'autopairs' },
+  -- { 'windwp/nvim-autopairs', config = config 'autopairs' },
+  {
+    'ZhiyuanLck/smart-pairs',
+    config = config 'smart-pairs',
+  },
 
   -- -- -- -- -- --
   --   Editing   --

@@ -3,7 +3,7 @@
 
 [Editor]
 ## Makes the application window frameless.
-# BorderlessWindow = false
+BorderlessWindow = false
 
 ## Editor minimum window width (>= 400)
 Width = 1600
@@ -35,7 +35,7 @@ Gap = 0
 ## is that the default value on the Neovim side is 0, which will be overwritten by the Neovim setting.
 ## Of course, these settings can also be changed by setting the guifont and linespace on the Neovim side.
 ## Fontfamily is
-## In MacOS, 
+## In MacOS,
 # FontFamily = "MonoLisa"
 ## In Linux
 # FontFamily = "Consolas"
@@ -192,8 +192,8 @@ SmoothScroll = false
 ## Configure externalized tabline UI.
 [Tabline]
 ## Whether or not to display the external tabline
-# Visible = true
-# ShowIcon = true
+Visible = true
+ShowIcon = true
 
 
 ## Configure externalized popupmenu UI.
@@ -206,19 +206,19 @@ SmoothScroll = false
 ## The following options specify whether to display a dedicated column in the popupmenu
 ## to display the long text displayed in the `info` part.
 # ShowDetail = true
- 
+
 ## total number to display item
 # Total = 20
- 
+
 ## width of `menu` column
 # MenuWidth = 400
- 
+
 ## width of `info` column
 # InfoWidth = 1
- 
+
 ## width of `detail` column
 # DetailWidth = 250
- 
+
 ## Show digit number which can select item for popupmenu
 # ShowDigit = true
 
@@ -243,7 +243,7 @@ SmoothScroll = false
 
 ## Configure the markdown preview feature
 [Markdown]
-# Disable = false
+Disable = false
 
 ## Specifying code highlighting styles
 # CodeHlStyle = "github"
