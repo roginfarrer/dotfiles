@@ -2,6 +2,41 @@
   "title": "Change caps_lock key",
   "rules": [
     {
+      "description": "(macbook pro) Change caps_lock to control if pressed with other keys, to escape if pressed alone.",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "type": "device_if",
+              "identifiers": [
+                {
+                  "vendor_id": 1452,
+                  "product_id": 636
+                }
+              ]
+            }
+          ],
+          "from": {
+            "key_code": "caps_lock",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "left_control"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "escape"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    },
+    {
       "description": "Change caps_lock key to command+control+option+shift. (Post escape key when pressed alone)",
       "manipulators": [
         {
@@ -9,19 +44,13 @@
           "from": {
             "key_code": "caps_lock",
             "modifiers": {
-              "optional": [
-                "any"
-              ]
+              "optional": ["any"]
             }
           },
           "to": [
             {
               "key_code": "left_shift",
-              "modifiers": [
-                "left_command",
-                "left_control",
-                "left_option"
-              ]
+              "modifiers": ["left_command", "left_control", "left_option"]
             }
           ],
           "to_if_alone": [
@@ -40,12 +69,8 @@
           "from": {
             "key_code": "caps_lock",
             "modifiers": {
-              "mandatory": [
-                "shift"
-              ],
-              "optional": [
-                "caps_lock"
-              ]
+              "mandatory": ["shift"],
+              "optional": ["caps_lock"]
             }
           },
           "to": [
@@ -59,19 +84,13 @@
           "from": {
             "key_code": "caps_lock",
             "modifiers": {
-              "optional": [
-                "any"
-              ]
+              "optional": ["any"]
             }
           },
           "to": [
             {
               "key_code": "left_shift",
-              "modifiers": [
-                "left_command",
-                "left_control",
-                "left_option"
-              ]
+              "modifiers": ["left_command", "left_control", "left_option"]
             }
           ]
         }
@@ -85,9 +104,7 @@
           "from": {
             "key_code": "caps_lock",
             "modifiers": {
-              "optional": [
-                "any"
-              ]
+              "optional": ["any"]
             }
           },
           "to": [

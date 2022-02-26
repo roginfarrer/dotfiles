@@ -6,7 +6,7 @@ local function misc(name)
   return require('user.plugins.misc')[name]
 end
 
-return {
+local plugins = {
   'wbthomason/packer.nvim',
   'nvim-lua/plenary.nvim',
   { 'lewis6991/impatient.nvim', rocks = 'mpack' },
@@ -224,7 +224,7 @@ return {
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
   { 'catppuccin/nvim', as = 'catppuccin' },
-  'p00f/nvim-ts-rainbow',
+  -- 'p00f/nvim-ts-rainbow',
   -- 'EdenEast/nightfox.nvim',
 
   -- -- -- -- -- -- --
@@ -276,3 +276,5 @@ return {
   { 'moll/vim-bbye', cmd = 'Bdelete' },
   { 'SidOfc/mkdx', ft = 'markdown' },
 }
+
+require('user.packerInit').setup(plugins)

@@ -17,14 +17,8 @@ local border = {
   { '▏', 'FloatBorder' },
 }
 
-local popup_opts = {
-  border = border,
-  focusable = false,
-  max_width = 80,
-  close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
-}
+local popup_opts = { border = border }
 
--- require('user.plugins.lsp.fancy_rename').setup()
 handlers['textDocument/hover'] = lsp.with(handlers.hover, popup_opts)
 handlers['textDocument/signatureHelp'] = lsp.with(
   handlers.signature_help,
@@ -32,7 +26,7 @@ handlers['textDocument/signatureHelp'] = lsp.with(
 )
 vim.diagnostic.config {
   virtual_text = false,
-  float = mergetable(popup_opts, {
+  float = {
     format = function(diagnostic)
       if diagnostic.source == 'eslint' then
         return string.format(
@@ -46,7 +40,7 @@ vim.diagnostic.config {
     end,
     severity_sort = true,
     close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
-  }),
+  },
 }
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
@@ -74,14 +68,6 @@ local function on_attach(client, bufnr)
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
   end
-
-  -- require('lsp_signature').on_attach({
-  --   bind = true, -- This is mandatory, otherwise border config won't get registered.
-  --   hint_prefix = '● ',
-  --   handler_opts = {
-  --     border = popup_opts.border,
-  --   },
-  -- }, bufnr)
 
   vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
@@ -147,6 +133,7 @@ local function on_attach(client, bufnr)
   bufmap('n', '[g', ':LspPrevDiagnostic<CR>')
   bufmap('n', ']g', ':LspNextDiagnostic<CR>')
   bufmap('n', 'K', showDocs)
+  -- bufmap('n', 'K', ':lua vim.lsp.buf.hover()<CR>')
 
   bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
 
@@ -160,39 +147,7 @@ local function setup(server)
   }
 
   if server.name == 'sumneko_lua' then
-    opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {}, {
-      settings = {
-        Lua = {
-          diagnostics = {
-            globals = {
-              -- Mapx.nvim globals
-              'map',
-              'nmap',
-              'vmap',
-              'xmap',
-              'smap',
-              'omap',
-              'imap',
-              'lmap',
-              'cmap',
-              'tmap',
-              'noremap',
-              'nnoremap',
-              'vnoremap',
-              'xnoremap',
-              'snoremap',
-              'onoremap',
-              'inoremap',
-              'lnoremap',
-              'cnoremap',
-              'tnoremap',
-              'mapbang',
-              'noremapbang',
-            },
-          },
-        },
-      },
-    })
+    opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
   elseif server.name == 'tsserver' then
     local tsserver_settings = require 'user.plugins.lsp.tsserver'
     opts = vim.tbl_deep_extend('force', opts, tsserver_settings)

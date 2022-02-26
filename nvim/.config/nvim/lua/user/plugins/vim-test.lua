@@ -88,7 +88,7 @@ vim.cmd [[
   augroup test
     autocmd!
     autocmd BufEnter * lua _G.setJestCmd()
-    " autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua _G.setJestCmd()
+    autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua _G.setJestCmd()
     autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
   augroup END
 ]]
