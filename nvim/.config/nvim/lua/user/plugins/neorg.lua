@@ -10,6 +10,11 @@ require('neorg').setup {
         },
       },
     },
+    ['core.gtd.base'] = {
+      config = {
+        workspace = 'my_workspace',
+      },
+    },
     ['core.norg.completion'] = {
       config = {
         engine = 'nvim-cmp',

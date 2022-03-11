@@ -6,7 +6,7 @@ local function misc(name)
   return require('user.plugins.misc')[name]
 end
 
-local plugins = {
+return {
   'wbthomason/packer.nvim',
   'nvim-lua/plenary.nvim',
   { 'lewis6991/impatient.nvim', rocks = 'mpack' },
@@ -61,10 +61,10 @@ local plugins = {
   --   Editing   --
   -- -- -- -- -- --
 
-  { 'duggiefresh/vim-easydir', event = 'CmdwinEnter' },
+  { 'duggiefresh/vim-easydir', event = 'CmdlineEnter' },
   { 'echasnovski/mini.nvim', config = misc 'mini' },
-  { 'tpope/vim-eunuch', event = 'CmdwinEnter' },
-  { 'tpope/vim-abolish', event = 'CmdwinEnter' },
+  { 'tpope/vim-eunuch', event = 'CmdlineEnter' },
+  { 'tpope/vim-abolish', event = 'CmdlineEnter' },
   { 'wellle/targets.vim', event = 'CursorMoved' },
   { 'numToStr/Comment.nvim', config = config 'comment' },
   {
@@ -224,7 +224,7 @@ local plugins = {
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
   { 'catppuccin/nvim', as = 'catppuccin' },
-  -- 'p00f/nvim-ts-rainbow',
+  'p00f/nvim-ts-rainbow',
   -- 'EdenEast/nightfox.nvim',
 
   -- -- -- -- -- -- --
@@ -235,12 +235,11 @@ local plugins = {
     'mickael-menu/zk-nvim',
     config = config 'zk',
   },
-  -- {
-  --   'nvim-neorg/neorg',
-  --   after = 'nvim-treesitter',
-  --   config = config 'neorg',
-  --   disable = true,
-  -- },
+  {
+    'nvim-neorg/neorg',
+    after = 'nvim-treesitter',
+    config = config 'neorg',
+  },
   -- {
   --   'renerocksai/telekasten.nvim',
   --   config = config 'telekasten',
@@ -276,5 +275,3 @@ local plugins = {
   { 'moll/vim-bbye', cmd = 'Bdelete' },
   { 'SidOfc/mkdx', ft = 'markdown' },
 }
-
-require('user.packerInit').setup(plugins)

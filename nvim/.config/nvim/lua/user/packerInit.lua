@@ -30,20 +30,14 @@ vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
 
 packer.init { max_jobs = 16 }
 
-local M = {}
+return packer.startup(function(use)
+  for _, plugin in ipairs(require 'user.plugins') do
+    use(plugin)
+  end
 
-M.setup = function(plugins)
-  packer.startup(function(use)
-    for _, plugin in ipairs(plugins) do
-      use(plugin)
-    end
-
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if PACKER_BOOTSTRAP then
-      require('packer').sync()
-    end
-  end)
-end
-
-return M
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if PACKER_BOOTSTRAP then
+    require('packer').sync()
+  end
+end)
