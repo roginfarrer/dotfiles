@@ -10,13 +10,13 @@ return {
   'wbthomason/packer.nvim',
   'nvim-lua/plenary.nvim',
   { 'lewis6991/impatient.nvim', rocks = 'mpack' },
-  -- {
-  --   -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
-  --   'antoinemadec/FixCursorHold.nvim',
-  --   setup = function()
-  --     vim.g.cursorhold_updatetime = 250
-  --   end,
-  -- },
+  {
+    -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+    'antoinemadec/FixCursorHold.nvim',
+    setup = function()
+      vim.g.cursorhold_updatetime = 250
+    end,
+  },
   -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
   -- { 'luukvbaal/stabilize.nvim', config = misc 'stabilize' },
@@ -27,7 +27,6 @@ return {
   --  Language Server Protocol (LSP)  --
   -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  -- { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
   { 'williamboman/nvim-lsp-installer', config = config 'lsp' },
   'folke/lua-dev.nvim',
   'jose-elias-alvarez/null-ls.nvim',
@@ -51,11 +50,7 @@ return {
   { 'L3MON4D3/LuaSnip', config = config 'luasnip' },
   'rafamadriz/friendly-snippets',
   { 'onsails/lspkind-nvim', config = misc 'lspkind' },
-  -- { 'windwp/nvim-autopairs', config = config 'autopairs' },
-  {
-    'ZhiyuanLck/smart-pairs',
-    config = config 'smart-pairs',
-  },
+  { 'windwp/nvim-autopairs', config = config 'autopairs' },
 
   -- -- -- -- -- --
   --   Editing   --
@@ -94,18 +89,6 @@ return {
   'windwp/nvim-ts-autotag',
   { 'norcalli/nvim-colorizer.lua', config = misc 'colorizer' },
   { 'folke/which-key.nvim', config = config 'which-key' },
-  -- {
-  --   'simeji/winresizer',
-  --   cmd = {
-  --     'WinResizerStartResize',
-  --     'WinResizerStartMove',
-  --     'WinResizerStartFocus',
-  --   },
-  --   setup = function()
-  --     vim.g.winresizer_start_key = '<C-w>e'
-  --   end,
-  -- },
-  -- { 'sindrets/winshift.nvim', cmd = 'WinShift' },
   { 'kevinhwang91/nvim-bqf', ft = 'qf' },
   {
     'karb94/neoscroll.nvim',
@@ -123,6 +106,7 @@ return {
   {
     'vim-test/vim-test',
     cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
+    ft = { 'javascript', 'typescript', 'typescriptreact', 'javascriptreact' },
     setup = config 'vim-test',
   },
   -- {
@@ -225,7 +209,6 @@ return {
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
   { 'catppuccin/nvim', as = 'catppuccin' },
   'p00f/nvim-ts-rainbow',
-  -- 'EdenEast/nightfox.nvim',
 
   -- -- -- -- -- -- --
   --  Zettelkasten  --

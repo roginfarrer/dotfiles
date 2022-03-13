@@ -42,6 +42,12 @@ M.setup = function(on_attach)
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       if client.resolved_capabilities.document_formatting then
+        -- autocmd('BufWritePre', {
+        --   buffer = 0,
+        --   callback = function()
+        --     vim.lsp.buf.formatting_sync()
+        --   end,
+        -- }, 'LspFormatting')
         vim.cmd [[
             augroup LspFormatting
               autocmd! * <buffer>

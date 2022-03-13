@@ -25,14 +25,6 @@ _G.reloadConfig = function(args)
   dofile(vim.env.MYVIMRC)
 end
 
-_G.mergetable = function(tableA, tableB)
-  local tbl = tableA
-  for k, v in pairs(tableB) do
-    tbl[k] = v
-  end
-  return tbl
-end
-
 _G.map = function(mode, lhs, rhs, opts)
   vim.keymap.set(
     mode,
@@ -43,6 +35,18 @@ _G.map = function(mode, lhs, rhs, opts)
 end
 
 _G.is_gui = vim.fn.has 'gui_vimr'
+
+_G.augroup = vim.api.nvim_create_augroup
+_G.autocmd = vim.api.nvim_create_autocmd
+-- _G.autocmd = function(event, opts, augroupName)
+--   if augroupName then
+--     vim.api.nvim_create_augroup(augroupName, { clear = true })
+--   end
+--   vim.api.nvim_create_autocmd(
+--     event,
+--     vim.tbl_extend('keep', opts, { group = augroupName })
+--   )
+-- end
 
 local M = {}
 
