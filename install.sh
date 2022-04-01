@@ -33,7 +33,7 @@ brew cleanup
 ###
 # INITIALIZE DOTFILES
 ###
-stow /*
+stow */
 
 ###
 # INITIALIZE FISH
