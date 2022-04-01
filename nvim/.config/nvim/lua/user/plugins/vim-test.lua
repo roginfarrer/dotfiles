@@ -80,7 +80,7 @@ local function setJestCmd()
   vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
 end
 
-local augroup = augroup('Test', {})
+local group = augroup('Test', {})
 autocmd('FileType', {
   pattern = {
     'javascript',
@@ -89,13 +89,13 @@ autocmd('FileType', {
     'typescriptreact',
   },
   callback = setJestCmd,
-  group = augroup,
+  group = 'Test',
 })
 
 autocmd('BufRead', {
   pattern = '*/cypress/*',
   command = 'let g:test#javascript#runner = "cypress"',
-  group = augroup,
+  group = 'Test',
 })
 
 -- autocmd('FileType', {

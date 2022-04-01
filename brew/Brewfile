@@ -3,6 +3,9 @@ tap "homebrew/cask"
 tap "homebrew/cask-drivers"
 tap "homebrew/core"
 
+# set arguments for all 'brew install --cask' commands
+cask_args appdir: "~/Applications", require_sha: true
+
 brew "antibody"
 brew "bash"
 brew "bat"
@@ -44,21 +47,28 @@ cask "font-jetbrains-mono"
 cask "1password"
 cask "alfred"
 cask "brave"
+cask "google-chrome"
 cask "discord"
+cask "docker"
 cask "fantastical"
-cask "finicky"
 cask "firefox"
 cask "firefox-developer-edition"
 cask "google-drive"
+cask "hand-mirror"
 cask "karabiner-elements"
 cask "kitty"
+cask "maestral"
+cask "raycast"
+cask "rocket"
 cask "slack"
 cask "spotify"
+cask "via"
 cask "visual-studio-code"
 
 mas "Cardhop", id: 1290358394
-mas "Deliveries: a package tracker", id: 290986013
 mas "Todoist: To-Do List & Tasks", id: 585829637
 mas "ToothFairy", id: 1191449274
 mas "WhatsApp", id: 1147396723
 mas "Xcode", id: 497799835
+mas "Spark", id: 1176895641
+mas "Magnet", id: 441258766

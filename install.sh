@@ -1,18 +1,30 @@
 #!/bin/bash
 
+# exit when any command fails
+set -e
+
+###
+# XCODE
+###
+echo "Installing xcode-stuff"
+xcode-select --install
+
 ###
 # HOMEBREW
 ###
-if ! command -v brew >/dev/null 2>&1; then
-	echo "Installing homebrew"
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+if test ! $(which brew); then
+	echo "Installing homebrew..."
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 brew analytics off
 
-if [ -f "$HOME/Brewfile" ]; then
-	echo "Updating homebrew bundle"
-	brew bundle --global
+if [ -f "$HOME/dotfiles/brew/Brewfile" ]; then
+	echo "Updating homebrew bundle..."
+	brew bundle --file="$HOME/dotfiles/brew/Brewfile"
+else
+	echo "ERROR! Brewfile not found. Exiting..."
+	exit
 fi
 
 brew upgrade
@@ -21,7 +33,7 @@ brew cleanup
 ###
 # INITIALIZE DOTFILES
 ###
-stow *
+stow /*
 
 ###
 # INITIALIZE FISH

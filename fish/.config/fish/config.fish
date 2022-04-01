@@ -67,7 +67,7 @@ abbr themes "kitty +kitten themes"
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-bind \cg\cb fgb
+bind -M insert \cB fgb
 
 if test -e $HOME/.config/fish/local-config.fish
     source $HOME/.config/fish/local-config.fish

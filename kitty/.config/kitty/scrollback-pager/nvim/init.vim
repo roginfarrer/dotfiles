@@ -21,10 +21,19 @@ nnoremap <silent><expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 
 autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="Substitute", timeout=250}
 
 packadd lightspeed.nvim
-packadd nightfox.nvim
+packadd catppuccin
+packadd neoscroll.nvim
 
 lua << EOF
-  if pcall(require, 'nightfox') then
-    require("nightfox").load()
+  local present, catppuccin = pcall(require, 'catppuccin')
+  print(present)
+  if present then
+    catppuccin.setup{
+      integrations = {
+        lightspeed = true
+      }
+    }
   end
 EOF
+
+colorscheme catppuccin

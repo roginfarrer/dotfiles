@@ -207,6 +207,7 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
+  { 'fladson/vim-kitty', ft = 'kitty' },
   { 'catppuccin/nvim', as = 'catppuccin' },
   'p00f/nvim-ts-rainbow',
 

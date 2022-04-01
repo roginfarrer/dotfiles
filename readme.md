@@ -12,6 +12,11 @@ cd dotfiles
 bash install.sh
 ```
 
+Then there's a few things that need to be installed that can't be automated:
+
+- [Cleanshot X](https://licenses.maketheweb.io/download/cleanshotx)
+- MonoLisa Font (Find the download link in your email)
+
 Then everything should work! I don't know, I haven't tried to run this on a new machine!
 
 ## Updating dotfiles
