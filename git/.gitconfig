@@ -15,8 +15,10 @@
 	excludesfile = /Users/rfarrer/.gitignore_global
 	editor = nvim
 	symlinks = true
-  pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
+	pager = delta
 
+[delta]
+	navigate = true # use n and N to move between diff sections
 [log]
 	decorate = short
 [http]
@@ -47,8 +49,10 @@
 	trustExitCode = true
   prompt = false
 [merge]
+	conflictStyle = diff3
 	tool = diffconflicts
 [diff]
+	colorMoved = default
   tool = diffview
 [difftool "diffview"]
   cmd = nvim -c DiffviewOpen
