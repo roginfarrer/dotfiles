@@ -20,10 +20,6 @@ M.devicons = function()
   }
 end
 
-M.lspkind = function()
-  require('lspkind').init { preset = 'codicons' }
-end
-
 M.mini = function()
   require('mini.surround').setup {}
 end

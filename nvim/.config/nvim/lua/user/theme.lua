@@ -4,6 +4,13 @@
 
 local cat = require 'catppuccin'
 cat.setup {
+  styles = {
+    comments = 'NONE',
+    functions = 'NONE',
+    keywords = 'NONE',
+    strings = 'NONE',
+    variables = 'NONE',
+  },
   integrations = {
     treesitter = true,
     native_lsp = {
