@@ -59,6 +59,7 @@ PATH="$HOME/.rbenv/bin:$PATH"
 PATH="$PATH:`yarn global bin`"
 PATH="${WORKLOCATION}wf:$PATH"
 PATH="$HOME/.composer/vendor/bin:$PATH"
+PATH=/opt/homebrew/bin
 
 # PHP at Wayfair
 export PATH="/usr/local/opt/php@7.2/bin:$PATH"

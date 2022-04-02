@@ -6,15 +6,15 @@ set -e
 ###
 # XCODE
 ###
-echo "Installing xcode-stuff"
-xcode-select --install
+# echo "Installing xcode-stuff"
+# xcode-select --install
 
 ###
 # HOMEBREW
 ###
 if test ! $(which brew); then
 	echo "Installing homebrew..."
-	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 brew analytics off

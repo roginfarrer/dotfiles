@@ -28,12 +28,9 @@ fi
 
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!node_modules" -g "!.git"'
 
-# export PATH="/Users/rfarrer/.nvm/versions/node/v8.9.4/bin:/Users/rfarrer/.local/bin:”/Users/rfarrer/platform-tools/bin:/usr/local/opt/php@7.2/sbin:/usr/local/opt/php@7.2/bin:/Users/rfarrer/.composer/vendor/bin:/Users/rfarrer/Wayfair/wf:/Users/rfarrer/.rbenv/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/rfarrer/bin:/usr/local/bin”:/Users/rfarrer/bin:/usr/local/opt/fzf/bin:/Users/rfarrer/.vimpkg/bin"
-
 eval $(thefuck --alias)
 # fnm
 eval "$(fnm env)"
-
 
 export NNN_PLUG='f:fzcd;o:fzopen;'
 
