@@ -1,8 +1,6 @@
 local ls = require 'luasnip'
 local types = require 'luasnip.util.types'
 
-require('luasnip.loaders.from_vscode').lazy_load()
-
 local t = ls.text_node
 local rep = require('luasnip.extras').rep
 local c = ls.choice_node
@@ -19,6 +17,7 @@ ls.config.set_config {
   -- Updates dynamic snippets as you type
   updateevents = 'TextChanged,TextChangedI',
   enable_autosnippets = true,
+  store_selection_keys = '<Tab>',
   ext_ops = {
     [types.choiceNode] = {
       active = {
