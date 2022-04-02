@@ -20,10 +20,6 @@ M.devicons = function()
   }
 end
 
-M.mini = function()
-  require('mini.surround').setup {}
-end
-
 M.colorizer = function()
   vim.o.termguicolors = true
   require('colorizer').setup({}, {

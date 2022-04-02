@@ -55,7 +55,7 @@ return {
   -- -- -- -- -- --
 
   { 'duggiefresh/vim-easydir', event = 'CmdlineEnter' },
-  { 'echasnovski/mini.nvim', config = misc 'mini' },
+  { 'echasnovski/mini.nvim', config = config 'mini' },
   { 'tpope/vim-eunuch', event = 'CmdlineEnter' },
   { 'tpope/vim-abolish', event = 'CmdlineEnter' },
   { 'wellle/targets.vim', event = 'CursorMoved' },
@@ -76,7 +76,7 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
-  { 'goolord/alpha-nvim', config = config 'alpha' },
+  -- { 'goolord/alpha-nvim', config = config 'alpha' },
   {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
