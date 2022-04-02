@@ -117,7 +117,7 @@ local leader = {
     l = {
       name = 'Local files',
       f = {
-        '<cmd> e $HOME/.config/fish/local-config.fish',
+        '<cmd> e $HOME/.config/fish/local-config.fish<CR>',
         'Fish',
       },
       n = {

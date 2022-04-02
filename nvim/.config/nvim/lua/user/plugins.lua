@@ -76,7 +76,6 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
-  -- { 'goolord/alpha-nvim', config = config 'alpha' },
   {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
