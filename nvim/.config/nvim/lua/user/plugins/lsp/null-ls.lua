@@ -3,9 +3,23 @@ local b = null_ls.builtins
 
 local M = {}
 
+local formatting_callback = function(client)
+  local params = vim.lsp.util.make_formatting_params {}
+  local bufnr = vim.api.nvim_get_current_buf()
+  local result, err = client.request_sync(
+    'textDocument/formatting',
+    params,
+    10000,
+    bufnr
+  )
+  if result and result.result then
+    vim.lsp.util.apply_text_edits(result.result, bufnr)
+  end
+end
+
 M.setup = function(on_attach)
   null_ls.setup {
-    debug = true,
+    debug = false,
     autostart = true,
     sources = {
       b.formatting.prettierd.with {
@@ -41,19 +55,12 @@ M.setup = function(on_attach)
     },
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
+
       if client.resolved_capabilities.document_formatting then
-        -- autocmd('BufWritePre', {
-        --   buffer = 0,
-        --   callback = function()
-        --     vim.lsp.buf.formatting_sync()
-        --   end,
-        -- }, 'LspFormatting')
-        vim.cmd [[
-            augroup LspFormatting
-              autocmd! * <buffer>
-              autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-            augroup END
-          ]]
+        autocmd('BufWritePre', {
+          buffer = bufnr,
+          callback = vim.lsp.buf.formatting_sync,
+        })
       end
     end,
   }

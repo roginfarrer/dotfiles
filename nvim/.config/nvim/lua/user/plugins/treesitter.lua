@@ -32,8 +32,6 @@ require('nvim-treesitter.configs').setup {
     'php',
     'graphql',
     'vim',
-    'swift',
-    'kotlin',
     'svelte',
     'vue',
     'scss',

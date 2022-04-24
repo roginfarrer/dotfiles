@@ -6,6 +6,7 @@ M.on_attach = function(client, bufnr)
   local ts_utils = require 'nvim-lsp-ts-utils'
 
   ts_utils.setup {
+    auto_inlay_hints = false,
     enable_import_on_completion = true,
     always_organize_imports = false,
     update_imports_on_move = true,

@@ -17,11 +17,11 @@ return {
       vim.g.cursorhold_updatetime = 250
     end,
   },
-  -- 'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
+  'nathom/filetype.nvim', -- faster replacement for filetype.vim (detecting filetypes)
   { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
-  -- { 'luukvbaal/stabilize.nvim', config = misc 'stabilize' },
+  { 'luukvbaal/stabilize.nvim', config = misc 'stabilize' },
   { 'kyazdani42/nvim-web-devicons', config = misc 'devicons' },
-  { 'ggandor/lightspeed.nvim', setup = config 'lightspeed' },
+  { 'ggandor/leap.nvim', config = misc 'leap' },
 
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
@@ -89,11 +89,10 @@ return {
   { 'kevinhwang91/nvim-bqf', ft = 'qf' },
   {
     'karb94/neoscroll.nvim',
-    event = 'WinScrolled',
     config = misc 'neoscroll',
   },
   { 'folke/zen-mode.nvim', config = config 'zen', cmd = 'ZenMode' },
-  -- { 'akinsho/bufferline.nvim', config = config 'bufferline' },
+  { 'akinsho/bufferline.nvim', config = config 'bufferline' },
   { 'sindrets/winshift.nvim', config = config 'winshift', cmd = 'WinShift' },
 
   -- -- -- -- -- -- -- -- -- -- --
@@ -102,8 +101,8 @@ return {
 
   {
     'vim-test/vim-test',
-    cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
-    ft = { 'javascript', 'typescript', 'typescriptreact', 'javascriptreact' },
+    -- cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
+    -- ft = { 'javascript', 'typescript', 'typescriptreact', 'javascriptreact' },
     setup = config 'vim-test',
   },
   -- {
@@ -167,6 +166,13 @@ return {
     config = config 'gitsigns',
   },
   { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
+  {
+    'lambdalisue/suda.vim',
+    cmd = { 'SudaRead', 'SudaWrite' },
+    setup = function()
+      vim.g.suda_smart_edit = 1
+    end,
+  },
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
@@ -237,22 +243,23 @@ return {
     requires = { 'vim-test/vim-test' },
     run = ':UpdateRemotePlugins',
     config = config 'ultest',
-    cmd = {
-      'Ultest',
-      'UltestNearest',
-      'UltestLast',
-      'UltestDebug',
-      'UltestDebugNearest',
-      'UltestOutput',
-      'UltestAttach',
-      'UltestStop',
-      'UltestStopNearest',
-      'UltestSummary',
-    },
+    -- cmd = {
+    --   'Ultest',
+    --   'UltestNearest',
+    --   'UltestLast',
+    --   'UltestDebug',
+    --   'UltestDebugNearest',
+    --   'UltestOutput',
+    --   'UltestAttach',
+    --   'UltestStop',
+    --   'UltestStopNearest',
+    --   'UltestSummary',
+    -- },
   },
   -- 'Matt-A-Bennett/vim-surround-funk',
   -- { 'elihunter173/dirbuf.nvim', config = misc 'dirbuf' },
   { 'stevearc/dressing.nvim', event = 'WinEnter' },
   { 'moll/vim-bbye', cmd = 'Bdelete' },
   { 'SidOfc/mkdx', ft = 'markdown' },
+  { 'mrjones2014/smart-splits.nvim' },
 }

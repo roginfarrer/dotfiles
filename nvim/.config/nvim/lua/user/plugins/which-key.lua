@@ -8,20 +8,6 @@ wk.setup {
     },
   },
   key_labels = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
-  -- operators = {
-  --   d = 'Delete',
-  --   c = 'Change',
-  --   y = 'Yank',
-  --   ['g~'] = 'Toggle case',
-  --   ['gu'] = 'Lowercase',
-  --   ['gU'] = 'Uppercase',
-  --   v = 'Visual Character Mode',
-  --   gc = 'Comment',
-  --   gb = 'Line Comment',
-  --   sa = 'Sandwich Add',
-  --   sd = 'Sandwich Delete',
-  --   sr = 'Sandwich Replace',
-  -- },
 }
 
 local function searchDotfiles()
@@ -81,30 +67,20 @@ local leader = {
   },
   t = {
     name = 'Test',
-    -- n = {
-    --   function()
-    --     require('jester').run {
-    --       cmd = vim.g['test#javascript#jest#executable']
-    --         .. " -t '$result' -- $file",
-    --     }
-    --   end,
-    --   'Test Nearest',
-    -- },
-    -- j = {
-    --   function()
-    --     require('jester').debug {
-    --       path_to_jest = './node_modules/jest/bin/jest.js',
-    --     }
-    --   end,
-    --   'Test File',
-    -- },
-    -- -- l = { require('jester').run_last, 'Test Nearest' },
     n = { '<cmd>TestNearest<CR>', 'Test Nearest' },
     f = { '<cmd>TestFile<CR>', 'Test File' },
     s = { '<cmd>TestSuite<CR>', 'Test Suite' },
     l = { '<cmd>TestLast<CR>', 'Test Last' },
-    g = { '<cmd>TestVisit<CR>', 'Test Visit' },
-    -- e = { '<cmd>vs<CR>:terminal fish<CR>', 'New Terminal' },
+    N = {
+      ':TestNearest -strategy=tterm_close<CR>',
+      'Test Nearest (and close)',
+    },
+    F = { ':TestFile<CR> -strategy=tterm_close', 'Test File (and close)' },
+    S = {
+      '<cmd>TestSuite<CR> -strategy=tterm_close',
+      'Test Suite (and close)',
+    },
+    L = { '<cmd>TestLast<CR> -strategy=tterm_close', 'Test Last (and close)' },
   },
   d = {
     name = 'Configuration',
@@ -206,10 +182,10 @@ local leader = {
 }
 
 wk.register(leader, { prefix = '<leader>' })
-map('n', '<S-Left>', '<cmd>vertical resize -5<CR>')
-map('n', '<S-Up>', '<cmd>resize +5<CR>')
-map('n', '<S-Down>', '<cmd>resize -5<CR>')
-map('n', '<S-Right>', '<cmd>vertical resize +5<CR>')
+map('n', '<S-Left>', ':SmartResizeLeft<CR>')
+map('n', '<S-Up>', ':SmartResizeUp<CR>')
+map('n', '<S-Down>', ':SmartResizeDown<CR>')
+map('n', '<S-Right>', ':SmartResizeRight<CR>')
 
 local visual = {
   y = 'which_key_ignore',

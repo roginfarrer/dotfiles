@@ -1,0 +1,8 @@
+gui:
+  authorColors:
+    "Rogin Farrer": "#ff0000"
+
+git:
+  paging:
+    colorArg: never
+    pager: delta --dark --paging=never

@@ -3,7 +3,6 @@ local wk = require 'which-key'
 
 local lsp = vim.lsp
 local handlers = lsp.handlers
-local cmd = vim.cmd
 
 -- local border = 'rounded'
 local border = {
@@ -71,20 +70,27 @@ local function on_attach(client, bufnr)
 
   vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-  cmd 'command! LspGoToDefinition lua vim.lsp.buf.definition()'
-  cmd 'command! LspGoToDeclaration lua vim.lsp.buf.declaration()'
-  cmd 'command! LspHover lua vim.lsp.buf.hover()'
-  cmd 'command! LspImplementations lua vim.lsp.buf.implementation()'
-  cmd 'command! LspSignatureHelp lua vim.lsp.buf.signature_help()'
-  cmd 'command! LspTypeDefinition lua vim.lsp.buf.type_definition()'
-  cmd 'command! LspRenameSymbol lua vim.lsp.buf.rename()'
-  cmd 'command! LspCodeAction lua vim.lsp.buf.code_action()'
-  cmd 'command! LspRangeCodeAction lua vim.lsp.buf.range_code_action()'
-  cmd 'command! LspReferences lua vim.lsp.buf.references()'
-  cmd 'command! LspPrevDiagnostic lua vim.diagnostic.goto_prev()'
-  cmd 'command! LspNextDiagnostic lua vim.diagnostic.goto_next()'
-  cmd 'command! Format lua vim.lsp.buf.formatting()'
-  cmd 'command! FormatSync lua vim.lsp.buf.formatting_sync()'
+  local function lsp_cmd(name, func)
+    vim.api.nvim_buf_create_user_command(
+      bufnr,
+      name,
+      'lua ' .. func .. '()',
+      { force = true }
+    )
+  end
+
+  lsp_cmd('LspGoToDefinition', 'vim.lsp.buf.definition')
+  lsp_cmd('LspGoToDeclaration', 'vim.lsp.buf.declaration')
+  lsp_cmd('LspHover', 'vim.lsp.buf.hover')
+  lsp_cmd('LspImplementations', 'vim.lsp.buf.implementation')
+  lsp_cmd('LspSignatureHelp', 'vim.lsp.buf.signature_help')
+  lsp_cmd('LspTypeDefinition', 'vim.lsp.buf.type_definition')
+  lsp_cmd('LspRenameSymbol', 'vim.lsp.buf.rename')
+  lsp_cmd('LspCodeAction', 'vim.lsp.buf.code_action')
+  lsp_cmd('LspRangeCodeAction', 'vim.lsp.buf.range_code_action')
+  lsp_cmd('LspReferences', 'vim.lsp.buf.references')
+  lsp_cmd('LspPrevDiagnostic', 'vim.diagnostic.goto_prev')
+  lsp_cmd('LspNextDiagnostic', 'vim.diagnostic.goto_next')
 
   local leader = {
     l = {
@@ -121,23 +127,30 @@ local function on_attach(client, bufnr)
     end
   end
 
+  local function luaDocs()
+    if
+      vim.bo.filetype == 'lua'
+      or vim.bo.filetype == 'help'
+      or vim.bo.filetype == 'lua'
+    then
+      vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+    end
+  end
+
   local function bufmap(mode, lhs, rhs)
     map(mode, lhs, rhs, { buffer = true })
   end
 
   bufmap('n', 'gd', ':LspGoToDefinition<CR>')
-  -- bufmap('gi', ':LspImplementations<CR>')
   bufmap('n', 'gr', ':LspReferences<CR>')
   bufmap('n', 'gs', ':LspSignatureHelp<CR>')
   bufmap('n', 'gy', ':LspTypeDefinition<CR>')
   bufmap('n', '[g', ':LspPrevDiagnostic<CR>')
   bufmap('n', ']g', ':LspNextDiagnostic<CR>')
   bufmap('n', 'K', showDocs)
-  -- bufmap('n', 'K', ':lua vim.lsp.buf.hover()<CR>')
+  bufmap('n', 'gK', luaDocs)
 
   bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
-
-  -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(0, {scope = 'cursor'})]]
 end
 
 local function setup(server)

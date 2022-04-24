@@ -29,10 +29,10 @@ vnoremap c "_c
 vnoremap C "_C
 
 " Easier window movement
-nmap <C-j> <C-W>j
-nmap <C-k> <C-W>k
-nmap <C-h> <C-W>h
-nmap <C-l> <C-W>l
+" nmap <C-j> <C-W>j
+" nmap <C-k> <C-W>k
+" nmap <C-h> <C-W>h
+" nmap <C-l> <C-W>l
 
 " newline without insert
 nmap <CR> o<Esc>"_cc<Esc>
@@ -84,7 +84,6 @@ nnoremap ]L :llast<CR>
 
 " nnoremap - <cmd>NvimTreeToggle<CR>
 nmap <C-W><C-W> <cmd>WinShift<CR>
-" nmap <C-W>e <cmd>WinResizerStartResize<CR>
 
 nnoremap $ g$
 nnoremap 0 g^

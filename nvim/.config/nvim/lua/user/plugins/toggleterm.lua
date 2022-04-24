@@ -16,8 +16,7 @@ require('toggleterm').setup {
 local lazygit = Terminal:new {
   cmd = 'lazygit',
   hidden = true,
-  direction = 'window',
-  shell = 'bash',
+  direction = 'float',
 }
 
 local function toggleLazyGit()

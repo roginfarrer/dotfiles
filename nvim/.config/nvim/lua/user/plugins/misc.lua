@@ -53,4 +53,8 @@ M.neoclip = function()
   require('neoclip').setup {}
 end
 
+M.leap = function()
+  require('leap').set_default_keymaps()
+end
+
 return M

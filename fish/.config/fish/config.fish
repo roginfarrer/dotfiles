@@ -51,7 +51,7 @@ abbr fetch "git fetch"
 abbr renameBranch "git branch -m"
 abbr uncommit "git reset --soft HEAD~1"
 abbr unstage "git reset HEAD"
-abbr discard "git checkout -- ."
+abbr discard "git clean -df && git checkout -- ."
 abbr delete_remote deleteRemoteBranch
 abbr delete_local deleteBranch
 abbr merge "git merge"
@@ -63,6 +63,7 @@ abbr gitloggraph "git log --oneline --graph" # graph view of branches
 abbr gcp "git cherry-pick"
 abbr sshpi "ssh -t pi@192.168.0.194 'export TERM=linux; fish'"
 abbr themes "kitty +kitten themes"
+abbr p pnpm
 
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -76,3 +77,5 @@ end
 set -g FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
 set -g FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -Ux ZK_NOTEBOOK_DIR $HOME/Dropbox\ \(Maestral\)/Obsidian
+
+thefuck --alias | source

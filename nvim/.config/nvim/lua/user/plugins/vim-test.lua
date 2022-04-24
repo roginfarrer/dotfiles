@@ -1,21 +1,30 @@
 local lsputil = require 'lspconfig.util'
-local path = lsputil.path
+local p = lsputil.path
 
 -- Our default command
 local jestCmd = 'jest'
 local cypressCmd = 'cypress'
 
 vim.g['test#javascript#runner'] = 'jest'
+vim.g['test#custom_runners'] = { javascript = { 'vitest' } }
 
-vim.cmd [[
-  function! ToggleTermStrategy(cmd) abort
-    call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
-  endfunction
+local tt = require 'toggleterm'
+local ttt = require 'toggleterm.terminal'
 
-  let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
-]]
+vim.g['test#custom_strategies'] = {
+  tterm = function(cmd)
+    tt.exec(cmd)
+  end,
 
-vim.g['test#strategy'] = 'toggleterm'
+  tterm_close = function(cmd)
+    local term_id = 0
+    tt.exec(cmd, term_id)
+    print(ttt.get_or_create_term)
+    ttt.get_or_create_term(term_id):close()
+  end,
+}
+
+vim.g['test#strategy'] = 'tterm_close'
 
 local yarn_lock_name = 'yarn.lock'
 local npm_lock_name = 'package-lock.json'
@@ -35,7 +44,7 @@ local function getJestTestCmd()
     vim.b.cypress_test_cmd = cypressCmd
   end
 
-  local pkgJsonPath = path.join(cwd, pkgJsonParentDir, 'package.json')
+  local pkgJsonPath = p.join(cwd, pkgJsonParentDir, 'package.json')
 
   local file = io.open(pkgJsonPath, 'r')
 
@@ -44,18 +53,18 @@ local function getJestTestCmd()
     -- also contains a yarn/npm lock file. This is a janky way of determining
     -- whether or not the workspace is a monorepo
     -- (which means we need to adjust the command accordingly)
-    local pathHasLockFile = path.exists(
-      path.join(cwd, pkgJsonParentDir, yarn_lock_name)
-    ) or path.exists(path.join(cwd, pkgJsonParentDir, npm_lock_name)) or path.exists(
-      path.join(cwd, pkgJsonParentDir, pnpm_lock_name)
+    local pathHasLockFile = p.exists(
+      p.join(cwd, pkgJsonParentDir, yarn_lock_name)
+    ) or p.exists(p.join(cwd, pkgJsonParentDir, npm_lock_name)) or p.exists(
+      p.join(cwd, pkgJsonParentDir, pnpm_lock_name)
     )
     local isMonorepo = not pathHasLockFile
 
     local cmd_root
 
-    if path.is_file(path.join(path, 'yarn.lock')) then
+    if p.is_file(p.join(cwd, 'yarn.lock')) then
       cmd_root = isMonorepo and 'yarn --cwd ' .. pkgJsonParentDir or 'yarn'
-    elseif path.is_file(path.join(path, 'pnpm-lock.yaml')) then
+    elseif p.is_file(p.join(cwd, 'pnpm-lock.yaml')) then
       cmd_root = isMonorepo and 'pnpm ' .. pkgJsonParentDir or 'pnpm'
     else
       cmd_root = isMonorepo and 'npm --cwd ' .. pkgJsonParentDir or 'npm'
@@ -72,7 +81,7 @@ end
 
 _G.getJestTestCmd = getJestTestCmd
 
-local function setJestCmd()
+_G.setJestCmd = function()
   if vim.b.jest_test_cmd == nil then
     getJestTestCmd()
   end
@@ -80,46 +89,32 @@ local function setJestCmd()
   vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
 end
 
-local group = augroup('Test', {})
-autocmd('FileType', {
-  pattern = {
-    'javascript',
-    'javascriptreact',
-    'typescript',
-    'typescriptreact',
-  },
-  callback = setJestCmd,
-  group = 'Test',
-})
+-- autocmd({ 'BufRead' }, {
+--   pattern = '*/rainbow-sprinkles/*',
+--   callback = function()
+--     vim.b.jest_test_cmd = 'pnpm test'
+--     vim.g['test#javascript#jest#executable'] = 'pnpm test'
+--   end,
+--   group = 'local-config',
+-- })
+
+-- autocmd('BufEnter', {
+--   pattern = {
+--     '*.js',
+--     '*.jsx',
+--     '*.ts',
+--     '*.tsx',
+--   },
+--   callback = function()
+--     setJestCmd()
+--   end,
+--   group = 'get_jest_cmd',
+-- })
 
 autocmd('BufRead', {
   pattern = '*/cypress/*',
   command = 'let g:test#javascript#runner = "cypress"',
-  group = 'Test',
+  group = 'set_cypress_cmd',
 })
 
--- autocmd('FileType', {
---   pattern = {
---     'javascript',
---     'javascriptreact',
---     'typescript',
---     'typescriptreact',
---   },
---   callback = function()
---     print 'called'
---     vim.schedule(_G.setJestCmd)
---   end,
--- }, 'test')
--- autocmd('BufRead', {
---   pattern = '*/cypress/*',
---   command = 'let g:test#javascript#runner = "cypress"',
--- }, 'test')
-
--- vim.cmd [[
---   augroup test
---     autocmd!
---     autocmd BufEnter * lua _G.setJestCmd()
---     autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua _G.setJestCmd()
---     autocmd BufRead */cypress/* let g:test#javascript#runner = 'cypress'
---   augroup END
--- ]]
+return { setJestCmd = _G.setJestCmd }

@@ -12,6 +12,7 @@ o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
 o.inccommand = 'nosplit'
+o.laststatus = 3
 o.lazyredraw = true
 o.linebreak = true
 o.mouse = 'a'
@@ -44,8 +45,8 @@ if vim.fn.executable 'rg' then
   o.grepformat = '%f:%l:%c:%m'
 end
 
-vim.g.python3_host_prog = '/usr/local/bin/python3'
-vim.g.python_host_prog = '/usr/bin/python'
+-- vim.g.python3_host_prog = '/usr/local/bin/python3'
+-- vim.g.python_host_prog = '/usr/bin/python'
 
 -- https://github.com/mhinz/neovim-remote
 if vim.fn.executable 'nvr' then

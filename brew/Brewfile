@@ -27,6 +27,7 @@ brew "luajit", args: ["HEAD"]
 brew "luarocks"
 brew "mas"
 brew "neovim", args: ["HEAD"]
+brew "pnpm"
 brew "ripgrep"
 brew "sd"
 brew "shfmt"
@@ -51,6 +52,7 @@ cask "hand-mirror"
 cask "karabiner-elements"
 cask "kitty"
 cask "maestral"
+cask "monitorcontrol"
 cask "raycast"
 cask "rocket"
 cask "slack"
@@ -64,3 +66,4 @@ mas "ToothFairy", id: 1191449274
 mas "Xcode", id: 497799835
 mas "Spark", id: 1176895641
 mas "Magnet", id: 441258766
+mas "Hand Mirror", id: 1502839586
