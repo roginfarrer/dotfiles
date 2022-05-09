@@ -65,23 +65,6 @@ local leader = {
       'Undo Stage Hunk',
     },
   },
-  t = {
-    name = 'Test',
-    n = { '<cmd>TestNearest<CR>', 'Test Nearest' },
-    f = { '<cmd>TestFile<CR>', 'Test File' },
-    s = { '<cmd>TestSuite<CR>', 'Test Suite' },
-    l = { '<cmd>TestLast<CR>', 'Test Last' },
-    N = {
-      ':TestNearest -strategy=tterm_close<CR>',
-      'Test Nearest (and close)',
-    },
-    F = { ':TestFile<CR> -strategy=tterm_close', 'Test File (and close)' },
-    S = {
-      '<cmd>TestSuite<CR> -strategy=tterm_close',
-      'Test Suite (and close)',
-    },
-    L = { '<cmd>TestLast<CR> -strategy=tterm_close', 'Test Last (and close)' },
-  },
   d = {
     name = 'Configuration',
     d = { findDotfiles, 'Find Dotfiles' },
@@ -200,11 +183,11 @@ local visual = {
 wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
 wk.register({
-  ['<C-n>'] = { ':TestNearest<CR>', 'Run nearest test' },
-  ['<C-f>'] = { ':TestFile<CR>', 'Test file' },
-  ['<C-s>'] = { ':TestSuite<CR>', 'Test suite' },
-  ['<C-l>'] = { ':TestLast<CR>', 'Run last test' },
-  ['<C-g>'] = { ':TestVisit<CR>' },
+  ['<C-n>'] = { ':UltestNearest<CR>', 'Nearest Test' },
+  ['<C-f>'] = { ':Ultest<CR>', 'Test File' },
+  ['<C-l>'] = { ':UltestLast<CR>', 'Last Test' },
+  ['<C-s>'] = { ':UltestSummary<CR>', 'Test Summary' },
+  ['<C-c>'] = { ':UltestClear<CR>', 'Clear Results' },
 }, {
   prefix = 't',
 })
@@ -279,3 +262,7 @@ wk.register({
 }, {
   prefix = '<leader>',
 })
+
+if packer_plugins['neo-tree.nvim'] then
+  map('n', '-', ':Neotree filesystem reveal current<CR>')
+end

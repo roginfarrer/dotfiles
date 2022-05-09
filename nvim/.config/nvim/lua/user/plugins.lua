@@ -45,6 +45,7 @@ return {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
     },
   },
   { 'L3MON4D3/LuaSnip', config = config 'luasnip' },
@@ -75,6 +76,7 @@ return {
   --   User Interface  --
   -- -- -- -- -- -- -- --
 
+  { 'goolord/alpha-nvim', config = config 'alpha' },
   { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
   {
     'nvim-treesitter/nvim-treesitter',
@@ -124,26 +126,6 @@ return {
   --  Git  --
   -- -- -- --
 
-  -- {
-  --   'tpope/vim-fugitive',
-  --   cmd = {
-  --     'G',
-  --     'Git',
-  --     'Grep',
-  --     'Gsplit',
-  --     'Gedit',
-  --     'Gvsplit',
-  --     'Gread',
-  --     'Gwrite',
-  --     'Gdiffsplit',
-  --     'Gvdiffsplit',
-  --     'GMove',
-  --     'GRename',
-  --     'GDelete',
-  --     'GRemove',
-  --     'GBrowse',
-  --   },
-  -- },
   {
     'ruifm/gitlinker.nvim',
     cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
@@ -165,12 +147,22 @@ return {
     'lewis6991/gitsigns.nvim',
     config = config 'gitsigns',
   },
-  { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
+  -- { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
   {
     'lambdalisue/suda.vim',
     cmd = { 'SudaRead', 'SudaWrite' },
     setup = function()
       vim.g.suda_smart_edit = 1
+    end,
+  },
+  {
+    'akinsho/git-conflict.nvim',
+    config = misc 'git-conflict',
+  },
+  {
+    'lewis6991/spellsitter.nvim',
+    config = function()
+      require('spellsitter').setup()
     end,
   },
 
@@ -179,18 +171,26 @@ return {
   -- -- -- -- -- -- -- --
 
   {
-    'tamago324/lir.nvim',
-    keys = '-',
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v2.x',
     requires = {
-      'tamago324/lir-git-status.nvim',
+      'MunifTanjim/nui.nvim',
     },
-    config = config 'lir',
+    config = config 'neotree',
   },
-  {
-    'kyazdani42/nvim-tree.lua',
-    config = config 'tree',
-    cmd = 'NvimTreeToggle',
-  },
+  -- {
+  --   'tamago324/lir.nvim',
+  --   keys = '-',
+  --   requires = {
+  --     'tamago324/lir-git-status.nvim',
+  --   },
+  --   config = config 'lir',
+  -- },
+  -- {
+  --   'kyazdani42/nvim-tree.lua',
+  --   config = config 'tree',
+  --   cmd = 'NvimTreeToggle',
+  -- },
   {
     'nvim-telescope/telescope.nvim',
     config = config 'telescope',
@@ -227,13 +227,6 @@ return {
     after = 'nvim-treesitter',
     config = config 'neorg',
   },
-  -- {
-  --   'renerocksai/telekasten.nvim',
-  --   config = config 'telekasten',
-  --   requires = {
-  --     { 'renerocksai/calendar-vim', after = 'telekasten.nvim' },
-  --   },
-  -- },
 
   -- -- -- -- -- -- -- --
   --  New For Testing  --
@@ -243,23 +236,16 @@ return {
     requires = { 'vim-test/vim-test' },
     run = ':UpdateRemotePlugins',
     config = config 'ultest',
-    -- cmd = {
-    --   'Ultest',
-    --   'UltestNearest',
-    --   'UltestLast',
-    --   'UltestDebug',
-    --   'UltestDebugNearest',
-    --   'UltestOutput',
-    --   'UltestAttach',
-    --   'UltestStop',
-    --   'UltestStopNearest',
-    --   'UltestSummary',
-    -- },
   },
   -- 'Matt-A-Bennett/vim-surround-funk',
   -- { 'elihunter173/dirbuf.nvim', config = misc 'dirbuf' },
   { 'stevearc/dressing.nvim', event = 'WinEnter' },
   { 'moll/vim-bbye', cmd = 'Bdelete' },
-  { 'SidOfc/mkdx', ft = 'markdown' },
+  -- { 'SidOfc/mkdx', ft = 'markdown' },
   { 'mrjones2014/smart-splits.nvim' },
+  {
+    'rmagatti/auto-session',
+    config = misc 'auto_session',
+    requires = { 'rmagatti/session-lens' },
+  },
 }

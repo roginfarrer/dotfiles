@@ -20,6 +20,8 @@ o.number = true
 o.pumblend = 10
 o.scrolloff = 10
 o.shell = 'zsh'
+o.sessionoptions =
+  'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
 o.shiftwidth = 2
 o.showbreak = '↳ '
 o.showcmd = false
@@ -45,11 +47,10 @@ if vim.fn.executable 'rg' then
   o.grepformat = '%f:%l:%c:%m'
 end
 
--- vim.g.python3_host_prog = '/usr/local/bin/python3'
--- vim.g.python_host_prog = '/usr/bin/python'
-
--- https://github.com/mhinz/neovim-remote
-if vim.fn.executable 'nvr' then
-  vim.cmd [[ let $GIT_EDITOR = 'nvr -cc split --remote-wait' ]]
-  vim.cmd [[autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete]]
+if require('jit').arch == 'arm64' then
+  vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+  vim.g.python_host_prog = '/opt/homebrew/bin/python'
+else
+  vim.g.python3_host_prog = '/usr/local/bin/python3'
+  vim.g.python_host_prog = '/usr/bin/python'
 end

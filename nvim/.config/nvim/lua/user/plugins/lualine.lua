@@ -80,3 +80,5 @@ local config = {
 }
 
 require('lualine').setup(config)
+
+vim.o.laststatus = 3

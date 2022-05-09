@@ -3,20 +3,6 @@ local b = null_ls.builtins
 
 local M = {}
 
-local formatting_callback = function(client)
-  local params = vim.lsp.util.make_formatting_params {}
-  local bufnr = vim.api.nvim_get_current_buf()
-  local result, err = client.request_sync(
-    'textDocument/formatting',
-    params,
-    10000,
-    bufnr
-  )
-  if result and result.result then
-    vim.lsp.util.apply_text_edits(result.result, bufnr)
-  end
-end
-
 M.setup = function(on_attach)
   null_ls.setup {
     debug = false,
@@ -53,16 +39,7 @@ M.setup = function(on_attach)
       },
       b.code_actions.gitsigns,
     },
-    on_attach = function(client, bufnr)
-      on_attach(client, bufnr)
-
-      if client.resolved_capabilities.document_formatting then
-        autocmd('BufWritePre', {
-          buffer = bufnr,
-          callback = vim.lsp.buf.formatting_sync,
-        })
-      end
-    end,
+    on_attach = on_attach,
   }
 end
 

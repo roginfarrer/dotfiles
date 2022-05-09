@@ -1,4 +1,4 @@
-local lspinstaller = require 'nvim-lsp-installer'
+local lspconfig = require 'lspconfig'
 local wk = require 'which-key'
 
 local lsp = vim.lsp
@@ -39,6 +39,7 @@ vim.diagnostic.config {
     end,
     severity_sort = true,
     close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+    max_width = 80,
   },
 }
 
@@ -61,11 +62,25 @@ lspSymbol('Hint', '')
 lspSymbol('Info', '')
 lspSymbol('Warn', '')
 
+local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+
 local function on_attach(client, bufnr)
-  -- All formatting handled by null-ls
-  if client.name ~= 'null-ls' then
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+  if client.supports_method 'textDocument/formatting' then
+    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format {
+          filter = function(clients)
+            return vim.tbl_filter(function(client)
+              return client.name == 'null-ls'
+            end, clients)
+          end,
+          bufnr = bufnr,
+        }
+      end,
+    })
   end
 
   vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
@@ -153,29 +168,62 @@ local function on_attach(client, bufnr)
   bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
 end
 
-local function setup(server)
-  local opts = {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
+require('nvim-lsp-installer').setup {
+  ensure_installed = {
+    'tsserver',
+    'sumneko_lua',
+    'jsonls',
+    'eslint',
+    'bashls',
+    'cssls',
+  },
+}
 
-  if server.name == 'sumneko_lua' then
-    opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
-  elseif server.name == 'tsserver' then
-    local tsserver_settings = require 'user.plugins.lsp.tsserver'
-    opts = vim.tbl_deep_extend('force', opts, tsserver_settings)
-    opts.on_attach = function(client, bufnr)
-      on_attach(client, bufnr)
-      tsserver_settings.on_attach(client, bufnr)
-    end
-  elseif server.name == 'jsonls' then
-    opts = vim.tbl_deep_extend('force', opts, require 'user.plugins.lsp.json')
-  end
+local opts = { on_attach = on_attach, capabilities = capabilities }
 
-  server:setup(opts)
-  vim.cmd [[ do User LspAttachBuffers ]]
+lspconfig.tsserver.setup {
+  capabilities = capabilities,
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    require('user.plugins.lsp.tsserver').on_attach(client, bufnr)
+  end,
+}
+
+lspconfig.sumneko_lua.setup(
+  vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
+)
+
+lspconfig.jsonls.setup(
+  vim.tbl_deep_extend('force', opts, require 'user.plugins.lsp.json')
+)
+
+for _, ls in ipairs { 'eslint', 'bashls', 'cssls', 'astro' } do
+  lspconfig[ls].setup(opts)
 end
 
 require('user.plugins.lsp.null-ls').setup(on_attach)
 
-lspinstaller.on_server_ready(setup)
+-- local function setup(server)
+--   local opts = {
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--   }
+
+--   if server.name == 'sumneko_lua' then
+--     opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
+--   elseif server.name == 'tsserver' then
+--     local tsserver_settings = require 'user.plugins.lsp.tsserver'
+--     opts = vim.tbl_deep_extend('force', opts, tsserver_settings)
+--     opts.on_attach = function(client, bufnr)
+--       on_attach(client, bufnr)
+--       tsserver_settings.on_attach(client, bufnr)
+--     end
+--   elseif server.name == 'jsonls' then
+--     opts = vim.tbl_deep_extend('force', opts, require 'user.plugins.lsp.json')
+--   end
+
+--   server:setup(opts)
+--   vim.cmd [[ do User LspAttachBuffers ]]
+-- end
+
+-- lspinstaller.on_server_ready(setup)

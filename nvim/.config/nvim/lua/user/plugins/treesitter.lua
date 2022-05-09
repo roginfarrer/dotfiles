@@ -37,6 +37,7 @@ require('nvim-treesitter.configs').setup {
     'scss',
     'fish',
     'norg',
+    'astro',
   },
   indent = { enable = true },
   highlight = {
@@ -61,6 +62,7 @@ require('nvim-treesitter.configs').setup {
   autotag = {
     enable = true,
     filetypes = {
+      'astro',
       'html',
       'javascript',
       'javascriptreact',
@@ -124,6 +126,9 @@ require('nvim-treesitter.configs').setup {
         ['[]'] = '@class.outer',
       },
     },
+  },
+  spellsitter = {
+    enable = true,
   },
 }
 

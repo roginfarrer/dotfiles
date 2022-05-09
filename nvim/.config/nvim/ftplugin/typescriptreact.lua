@@ -6,13 +6,11 @@ local function toBlockComment()
   dump(lineContent)
   local newContent = string.gsub(lineContent, '//', '*')
 
-  vim.api.nvim_buf_set_lines(
-    0,
-    row - 1,
-    row + 2,
-    true,
-    { '/**', newContent, '*/' }
-  )
+  vim.api.nvim_buf_set_lines(0, row, row + 1, true, {
+    '/**',
+    newContent,
+    '*/',
+  })
 end
 
 _G.toBlockComment = toBlockComment

@@ -123,6 +123,7 @@ cmp.setup {
   },
   sources = cmp.config.sources({
     { name = 'luasnip' },
+    { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lsp' },
     { name = 'npm' },
     { name = 'cmp_git' },
@@ -134,7 +135,7 @@ cmp.setup {
   }),
   experimental = {
     -- native_menu = false,
-    ghost_text = true,
+    -- ghost_text = true,
   },
 }
 

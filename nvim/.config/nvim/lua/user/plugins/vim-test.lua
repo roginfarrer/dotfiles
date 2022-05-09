@@ -6,6 +6,7 @@ local jestCmd = 'jest'
 local cypressCmd = 'cypress'
 
 vim.g['test#javascript#runner'] = 'jest'
+vim.g['test#javascript#jest#options'] = '--color=always'
 vim.g['test#custom_runners'] = { javascript = { 'vitest' } }
 
 local tt = require 'toggleterm'

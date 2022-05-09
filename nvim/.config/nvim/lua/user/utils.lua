@@ -34,7 +34,7 @@ _G.map = function(mode, lhs, rhs, opts)
   )
 end
 
-_G.is_gui = vim.fn.has 'gui_vimr'
+_G.is_m1 = require('jit').arch == 'arm64'
 
 _G.augroup = vim.api.nvim_create_augroup
 _G.autocmd = function(event, opts)
