@@ -78,6 +78,7 @@ return {
 
   { 'goolord/alpha-nvim', config = config 'alpha' },
   { 'nvim-lualine/lualine.nvim', config = config 'lualine' },
+  { 'b0o/incline.nvim', config = config 'incline' },
   {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -160,6 +161,17 @@ return {
     config = misc 'git-conflict',
   },
   {
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = function()
+      require('octo').setup()
+    end,
+  },
+  {
     'lewis6991/spellsitter.nvim',
     config = function()
       require('spellsitter').setup()
@@ -170,22 +182,22 @@ return {
   --   File Browsing   --
   -- -- -- -- -- -- -- --
 
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    requires = {
-      'MunifTanjim/nui.nvim',
-    },
-    config = config 'neotree',
-  },
   -- {
-  --   'tamago324/lir.nvim',
-  --   keys = '-',
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = 'v2.x',
   --   requires = {
-  --     'tamago324/lir-git-status.nvim',
+  --     'MunifTanjim/nui.nvim',
   --   },
-  --   config = config 'lir',
+  --   config = config 'neotree',
   -- },
+  {
+    'tamago324/lir.nvim',
+    keys = '-',
+    requires = {
+      'tamago324/lir-git-status.nvim',
+    },
+    config = config 'lir',
+  },
   -- {
   --   'kyazdani42/nvim-tree.lua',
   --   config = config 'tree',
@@ -213,6 +225,7 @@ return {
   { 'fladson/vim-kitty', ft = 'kitty' },
   { 'catppuccin/nvim', as = 'catppuccin' },
   'p00f/nvim-ts-rainbow',
+  'EdenEast/nightfox.nvim',
 
   -- -- -- -- -- -- --
   --  Zettelkasten  --
@@ -243,9 +256,9 @@ return {
   { 'moll/vim-bbye', cmd = 'Bdelete' },
   -- { 'SidOfc/mkdx', ft = 'markdown' },
   { 'mrjones2014/smart-splits.nvim' },
-  {
-    'rmagatti/auto-session',
-    config = misc 'auto_session',
-    requires = { 'rmagatti/session-lens' },
-  },
+  -- {
+  --   'rmagatti/auto-session',
+  --   config = misc 'auto_session',
+  --   requires = { 'rmagatti/session-lens' },
+  -- },
 }

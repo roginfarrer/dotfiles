@@ -57,4 +57,29 @@ cat.setup {
     telekasten = false,
   },
 }
+local cp = require('catppuccin.api.colors').get_colors()
+local util = require 'catppuccin.utils.util'
+cat.remap {
+  VertSplit = { fg = cp.black4 },
+  -- aka horizontal split
+  StatusLineNC = { fg = cp.black4 },
+  InclineNormal = {
+    fg = util.darken(cp.lavender, 0.3),
+    bg = util.darken(cp.lavender, 0.8),
+  },
+  InclineNormalNC = {
+    fg = util.darken(cp.lavender, 0.3),
+    bg = util.darken(cp.lavender, 0.8),
+  },
+  DiffAdd = {
+    bg = util.darken(cp.green, 0.2),
+  },
+  DiffDelete = {
+    bg = util.darken(cp.red, 0.2),
+  },
+  DiffText = { --[[ fg = cp.yellow, ]]
+    bg = util.darken(cp.yellow, 0.3),
+  },
+}
 vim.cmd [[colorscheme catppuccin]]
+-- vim.cmd [[colorscheme nightfox]]

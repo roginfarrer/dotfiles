@@ -57,18 +57,18 @@ M.leap = function()
   require('leap').set_default_keymaps { force = true }
 end
 
-M.auto_session = function()
-  local HOME = vim.fn.expand '$HOME'
-  require('auto-session').setup {
-    -- auto_sesion_enable_last_session = true,
-    auto_session_use_git_branch = true,
-    auto_session_enable_last_session = false,
-    auto_save_enabled = true,
-    auto_restore_enabled = false,
-    auto_session_suppress_dirs = { '/etc', '/tmp', HOME, HOME .. '/projects' },
-  }
-  require('session-lens').setup {}
-end
+-- M.auto_session = function()
+--   local HOME = vim.fn.expand '$HOME'
+--   require('auto-session').setup {
+--     -- auto_sesion_enable_last_session = true,
+--     auto_session_use_git_branch = true,
+--     auto_session_enable_last_session = false,
+--     auto_save_enabled = true,
+--     auto_restore_enabled = false,
+--     auto_session_suppress_dirs = { '/etc', '/tmp', HOME, HOME .. '/projects' },
+--   }
+--   require('session-lens').setup {}
+-- end
 
 M['git-conflict'] = function()
   require('git-conflict').setup()
