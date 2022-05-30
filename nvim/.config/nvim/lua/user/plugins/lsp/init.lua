@@ -72,10 +72,8 @@ local function on_attach(client, bufnr)
       buffer = bufnr,
       callback = function()
         vim.lsp.buf.format {
-          filter = function(clients)
-            return vim.tbl_filter(function(client)
-              return client.name == 'null-ls'
-            end, clients)
+          filter = function(client)
+            return client.name == 'null-ls'
           end,
           bufnr = bufnr,
         }

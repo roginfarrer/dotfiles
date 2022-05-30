@@ -58,8 +58,28 @@ local icons = {
   },
 }
 
----@diagnostic disable-next-line: redundant-parameter
+local function border(hl_name)
+  return {
+    { '╭', hl_name },
+    { '─', hl_name },
+    { '╮', hl_name },
+    { '│', hl_name },
+    { '╯', hl_name },
+    { '─', hl_name },
+    { '╰', hl_name },
+    { '│', hl_name },
+  }
+end
+
 cmp.setup {
+  window = {
+    completion = {
+      border = border 'CmpBorder',
+    },
+    documentation = {
+      border = border 'CmpDocBorder',
+    },
+  },
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
@@ -130,6 +150,7 @@ cmp.setup {
     { name = 'nvim_lua' },
     { name = 'neorg' },
     { name = 'path' },
+    { name = 'fish' },
   }, {
     { name = 'buffer', keyword_length = 4 },
   }),

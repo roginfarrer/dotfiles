@@ -48,6 +48,7 @@ return {
       'hrsh7th/cmp-nvim-lsp-signature-help',
     },
   },
+  { 'mtoohey31/cmp-fish', ft = 'fish' },
   { 'L3MON4D3/LuaSnip', config = config 'luasnip' },
   { 'windwp/nvim-autopairs', config = config 'autopairs' },
 
@@ -104,9 +105,13 @@ return {
 
   {
     'vim-test/vim-test',
-    -- cmd = { 'TestFile', 'TestSuite', 'TestNearest', 'TestVisit', 'TestLast' },
-    -- ft = { 'javascript', 'typescript', 'typescriptreact', 'javascriptreact' },
     setup = config 'vim-test',
+  },
+  {
+    'rcarriga/vim-ultest',
+    requires = { 'vim-test/vim-test' },
+    run = ':UpdateRemotePlugins',
+    config = config 'ultest',
   },
   -- {
   --   'mfussenegger/nvim-dap',
@@ -148,7 +153,6 @@ return {
     'lewis6991/gitsigns.nvim',
     config = config 'gitsigns',
   },
-  -- { 'whiteinge/diffconflicts', cmd = 'DiffConflicts' },
   {
     'lambdalisue/suda.vim',
     cmd = { 'SudaRead', 'SudaWrite' },
@@ -198,22 +202,17 @@ return {
     },
     config = config 'lir',
   },
-  -- {
-  --   'kyazdani42/nvim-tree.lua',
-  --   config = config 'tree',
-  --   cmd = 'NvimTreeToggle',
-  -- },
   {
     'nvim-telescope/telescope.nvim',
     config = config 'telescope',
     requires = {
-      -- 'ahmedkhalf/project.nvim',
       'nvim-telescope/telescope-node-modules.nvim',
       { 'roginfarrer/telescope-packer.nvim', branch = 'patch-1' },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make',
       },
+      'nvim-telescope/telescope-file-browser.nvim',
     },
   },
 
@@ -224,6 +223,11 @@ return {
   { 'jxnblk/vim-mdx-js', ft = { 'mdx', 'markdown.mdx' } },
   { 'fladson/vim-kitty', ft = 'kitty' },
   { 'catppuccin/nvim', as = 'catppuccin' },
+  -- {
+  --   'catppuccin/nvim',
+  --   as = 'catppuccin',
+  --   commit = 'f6df99ec79849ae2f76ccefacfd93967fbc1d0a1',
+  -- },
   'p00f/nvim-ts-rainbow',
   'EdenEast/nightfox.nvim',
 
@@ -244,21 +248,9 @@ return {
   -- -- -- -- -- -- -- --
   --  New For Testing  --
   -- -- -- -- -- -- -- --
-  {
-    'rcarriga/vim-ultest',
-    requires = { 'vim-test/vim-test' },
-    run = ':UpdateRemotePlugins',
-    config = config 'ultest',
-  },
   -- 'Matt-A-Bennett/vim-surround-funk',
-  -- { 'elihunter173/dirbuf.nvim', config = misc 'dirbuf' },
   { 'stevearc/dressing.nvim', event = 'WinEnter' },
   { 'moll/vim-bbye', cmd = 'Bdelete' },
-  -- { 'SidOfc/mkdx', ft = 'markdown' },
   { 'mrjones2014/smart-splits.nvim' },
-  -- {
-  --   'rmagatti/auto-session',
-  --   config = misc 'auto_session',
-  --   requires = { 'rmagatti/session-lens' },
-  -- },
+  { 'Shatur/neovim-session-manager', config = config 'sessions' },
 }

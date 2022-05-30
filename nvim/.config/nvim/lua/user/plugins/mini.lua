@@ -1,5 +1,8 @@
 require('mini.surround').setup {}
 
+-- require('mini.sessions').setup {
+--   directory = '~/.local/share/nvim/sessions',
+-- }
 -- local starter = require 'mini.starter'
 -- starter.setup {
 --   evaluate_single = true,
@@ -23,7 +26,7 @@ require('mini.surround').setup {}
 --       section = 'Actions',
 --     },
 --     -- Use this if you set up 'mini.sessions'
---     -- starter.sections.sessions(5, true)
+--     starter.sections.sessions(5, true),
 --   },
 --   content_hooks = {
 --     starter.gen_hook.adding_bullet(),
