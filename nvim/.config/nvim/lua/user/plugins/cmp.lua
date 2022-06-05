@@ -142,7 +142,7 @@ cmp.setup {
     end,
   },
   sources = cmp.config.sources({
-    { name = 'luasnip' },
+    { name = 'luasnip', keyword_length = 1 },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lsp' },
     { name = 'npm' },

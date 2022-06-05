@@ -67,11 +67,11 @@ return {
     module_pattern = 'harpoon*',
   },
   'AckslD/nvim-neoclip.lua',
-  -- {
-  --   'Julian/vim-textobj-variable-segment',
-  --   requires = 'kana/vim-textobj-user',
-  --   event = 'CursorMoved',
-  -- },
+  {
+    'Julian/vim-textobj-variable-segment',
+    requires = 'kana/vim-textobj-user',
+    event = 'CursorMoved',
+  },
 
   -- -- -- -- -- -- -- --
   --   User Interface  --
@@ -85,17 +85,23 @@ return {
     run = ':TSUpdate',
     config = config 'treesitter',
   },
+  {
+    'lewis6991/spellsitter.nvim',
+    config = function()
+      require('spellsitter').setup()
+    end,
+  },
   { 'nvim-treesitter/nvim-treesitter-textobjects', event = 'BufRead' },
   'JoosepAlviste/nvim-ts-context-commentstring',
   'windwp/nvim-ts-autotag',
-  { 'norcalli/nvim-colorizer.lua', config = misc 'colorizer' },
+  -- { 'norcalli/nvim-colorizer.lua', config = misc 'colorizer' },
   { 'folke/which-key.nvim', config = config 'which-key' },
   { 'kevinhwang91/nvim-bqf', ft = 'qf' },
-  {
-    'karb94/neoscroll.nvim',
-    config = misc 'neoscroll',
-  },
-  { 'folke/zen-mode.nvim', config = config 'zen', cmd = 'ZenMode' },
+  -- {
+  --   'karb94/neoscroll.nvim',
+  --   config = misc 'neoscroll',
+  -- },
+  -- { 'folke/zen-mode.nvim', config = config 'zen', cmd = 'ZenMode' },
   { 'akinsho/bufferline.nvim', config = config 'bufferline' },
   { 'sindrets/winshift.nvim', config = config 'winshift', cmd = 'WinShift' },
 
@@ -106,23 +112,15 @@ return {
   {
     'vim-test/vim-test',
     setup = config 'vim-test',
+    cmd = { 'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' },
   },
   {
     'rcarriga/vim-ultest',
-    requires = { 'vim-test/vim-test' },
+    wants = { 'vim-test/vim-test' },
     run = ':UpdateRemotePlugins',
     config = config 'ultest',
+    cmd = { 'Ultest', 'UltestNearest', 'UltestSummary' },
   },
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   run = ':helptags ALL',
-  --   requires = {
-  --     'David-Kunz/jester',
-  --     'theHamsta/nvim-dap-virtual-text',
-  --     'rcarriga/nvim-dap-ui',
-  --   },
-  --   config = config 'dap',
-  -- },
   {
     'akinsho/toggleterm.nvim',
     config = config 'toggleterm',
@@ -153,13 +151,13 @@ return {
     'lewis6991/gitsigns.nvim',
     config = config 'gitsigns',
   },
-  {
-    'lambdalisue/suda.vim',
-    cmd = { 'SudaRead', 'SudaWrite' },
-    setup = function()
-      vim.g.suda_smart_edit = 1
-    end,
-  },
+  -- {
+  --   'lambdalisue/suda.vim',
+  --   cmd = { 'SudaRead', 'SudaWrite' },
+  --   setup = function()
+  --     vim.g.suda_smart_edit = 1
+  --   end,
+  -- },
   {
     'akinsho/git-conflict.nvim',
     config = misc 'git-conflict',
@@ -175,12 +173,7 @@ return {
       require('octo').setup()
     end,
   },
-  {
-    'lewis6991/spellsitter.nvim',
-    config = function()
-      require('spellsitter').setup()
-    end,
-  },
+  { 'ThePrimeagen/git-worktree.nvim' },
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
@@ -235,15 +228,15 @@ return {
   --  Zettelkasten  --
   -- -- -- -- -- -- --
 
-  {
-    'mickael-menu/zk-nvim',
-    config = config 'zk',
-  },
-  {
-    'nvim-neorg/neorg',
-    after = 'nvim-treesitter',
-    config = config 'neorg',
-  },
+  -- {
+  --   'mickael-menu/zk-nvim',
+  --   config = config 'zk',
+  -- },
+  -- {
+  --   'nvim-neorg/neorg',
+  --   after = 'nvim-treesitter',
+  --   config = config 'neorg',
+  -- },
 
   -- -- -- -- -- -- -- --
   --  New For Testing  --
