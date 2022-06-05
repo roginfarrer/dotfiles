@@ -249,7 +249,7 @@ return {
   --  New For Testing  --
   -- -- -- -- -- -- -- --
   -- 'Matt-A-Bennett/vim-surround-funk',
-  { 'stevearc/dressing.nvim', event = 'WinEnter' },
+  { 'stevearc/dressing.nvim' },
   { 'moll/vim-bbye', cmd = 'Bdelete' },
   { 'mrjones2014/smart-splits.nvim' },
   { 'Shatur/neovim-session-manager', config = config 'sessions' },
