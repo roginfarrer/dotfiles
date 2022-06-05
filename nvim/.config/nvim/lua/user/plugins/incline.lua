@@ -1,4 +1,9 @@
 require('incline').setup {
+  hide = {
+    cursorline = true,
+    focused_win = true,
+    only_win = true,
+  },
   window = {
     width = 'fit',
     placement = { horizontal = 'right', vertical = 'top' },

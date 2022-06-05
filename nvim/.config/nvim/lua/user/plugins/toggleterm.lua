@@ -2,8 +2,8 @@ local Terminal = require('toggleterm.terminal').Terminal
 
 require('toggleterm').setup {
   shell = 'fish',
-  open_mapping = [[<C-t>]],
-  direction = 'vertical',
+  open_mapping = [[<C-\>]],
+  direction = 'float',
   size = function(term)
     if term.direction == 'horizontal' then
       return 15
@@ -28,6 +28,5 @@ local function toggleLazyGit()
 end
 
 require('which-key').register {
-  ['<C-t>'] = '<cmd>ToggleTerm<CR>',
   ['<leader>gt'] = { toggleLazyGit, 'lazygit' },
 }

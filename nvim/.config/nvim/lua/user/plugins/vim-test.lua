@@ -90,28 +90,6 @@ _G.setJestCmd = function()
   vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
 end
 
--- autocmd({ 'BufRead' }, {
---   pattern = '*/rainbow-sprinkles/*',
---   callback = function()
---     vim.b.jest_test_cmd = 'pnpm test'
---     vim.g['test#javascript#jest#executable'] = 'pnpm test'
---   end,
---   group = 'local-config',
--- })
-
--- autocmd('BufEnter', {
---   pattern = {
---     '*.js',
---     '*.jsx',
---     '*.ts',
---     '*.tsx',
---   },
---   callback = function()
---     setJestCmd()
---   end,
---   group = 'get_jest_cmd',
--- })
-
 autocmd('BufRead', {
   pattern = '*/cypress/*',
   command = 'let g:test#javascript#runner = "cypress"',

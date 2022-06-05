@@ -107,7 +107,7 @@ local leader = {
   },
   f = {
     name = 'Find',
-    t = { ':Telescope<Space>', 'Telescope' },
+    t = { ':Telescope builtin include_extensions=true<CR>', 'Telescope' },
     p = { project_files, 'Git Files' },
     P = { '<cmd>Telescope projects<CR>', 'Change Project' },
     b = { '<cmd>Telescope buffers<CR>', 'Buffers' },

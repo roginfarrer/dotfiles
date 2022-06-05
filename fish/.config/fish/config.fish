@@ -80,5 +80,6 @@ end
 set -g FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
 set -g FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -Ux ZK_NOTEBOOK_DIR $HOME/Dropbox\ \(Maestral\)/Obsidian
+set -x STARSHIP_LOG error
 
 thefuck --alias | source
