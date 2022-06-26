@@ -43,7 +43,6 @@ local plugins = {
       'petertriho/cmp-git',
       'David-Kunz/cmp-npm',
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lua',
@@ -53,7 +52,6 @@ local plugins = {
   ['mtoohey31/cmp-fish'] = { ft = 'fish' },
   ['L3MON4D3/LuaSnip'] = { config = config 'luasnip' },
   ['windwp/nvim-autopairs'] = { config = config 'autopairs' },
-  -- 'github/copilot.vim',
   ['zbirenbaum/copilot.lua'] = {
     event = 'InsertEnter',
     config = function()
@@ -120,12 +118,6 @@ local plugins = {
   --  Git  --
   -- -- -- --
 
-  -- {
-  --   'ruifm/gitlinker.nvim',
-  --   cmd = { 'GitCopyToClipboard', 'GitOpenInBrowser' },
-  --   module_pattern = 'gitlinker*',
-  --   config = config 'gitlinker',
-  -- },
   ['tpope/vim-fugitive'] = {
     cmd = {
       'Git',
