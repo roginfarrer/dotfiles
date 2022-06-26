@@ -183,7 +183,7 @@ lspconfig.tsserver.setup {
   capabilities = capabilities,
   on_attach = function(client, bufnr)
     on_attach(client, bufnr)
-    require('user.plugins.lsp.tsserver').on_attach(client, bufnr)
+    require('plugins.configs.lsp.tsserver').on_attach(client, bufnr)
   end,
 }
 
@@ -192,14 +192,14 @@ lspconfig.sumneko_lua.setup(
 )
 
 lspconfig.jsonls.setup(
-  vim.tbl_deep_extend('force', opts, require 'user.plugins.lsp.json')
+  vim.tbl_deep_extend('force', opts, require 'plugins.configs.lsp.json')
 )
 
 for _, ls in ipairs { 'eslint', 'bashls', 'cssls', 'astro' } do
   lspconfig[ls].setup(opts)
 end
 
-require('user.plugins.lsp.null-ls').setup(on_attach)
+require('plugins.configs.lsp.null-ls').setup(on_attach)
 
 -- local function setup(server)
 --   local opts = {

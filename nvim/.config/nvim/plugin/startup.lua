@@ -47,8 +47,7 @@ local startup_time = startup_time_file
 local result = ''
 if startup_time_file and startup_time then
   -- replace the message `{}` placeholder with the startup time
-  local template_message = type(message) == 'function'
-      and message(startup_time)
+  local template_message = type(message) == 'function' and message(startup_time)
     or message
   result = template_message:gsub('{}', startup_time .. ' ms')
 elseif startup_time_file and not startup_time then

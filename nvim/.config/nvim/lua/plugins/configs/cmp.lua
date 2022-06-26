@@ -1,63 +1,6 @@
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 
-local icons = {
-  kind = {
-    Text = '',
-    Method = '',
-    Function = '',
-    Constructor = '',
-    Field = '',
-    Variable = '',
-    Class = 'ﴯ',
-    Interface = '',
-    Module = '',
-    Property = 'ﰠ',
-    Unit = '',
-    Value = '',
-    Enum = '',
-    Keyword = '',
-    Snippet = '',
-    Color = '',
-    File = '',
-    Reference = '',
-    Folder = '',
-    EnumMember = '',
-    Constant = '',
-    Struct = '',
-    Event = '',
-    Operator = '',
-    TypeParameter = '',
-  },
-  codicons = {
-    Text = '  ',
-    Method = '  ',
-    Function = '  ',
-    Constructor = '  ',
-    Field = '  ',
-    Variable = '  ',
-    Class = '  ',
-    Interface = '  ',
-    Module = '  ',
-    Property = '  ',
-    Unit = '  ',
-    Value = '  ',
-    Enum = '  ',
-    Keyword = '  ',
-    Snippet = '  ',
-    Color = '  ',
-    File = '  ',
-    Reference = '  ',
-    Folder = '  ',
-    EnumMember = '  ',
-    Constant = '  ',
-    Struct = '  ',
-    Event = '  ',
-    Operator = '  ',
-    TypeParameter = '  ',
-  },
-}
-
 local function border(hl_name)
   return {
     { '╭', hl_name },
@@ -71,10 +14,20 @@ local function border(hl_name)
   }
 end
 
+local cmp_window = require 'cmp.utils.window'
+
+cmp_window.info_ = cmp_window.info
+cmp_window.info = function(self)
+  local info = self:info_()
+  info.scrollable = false
+  return info
+end
+
 cmp.setup {
   window = {
     completion = {
       border = border 'CmpBorder',
+      winhighlight = 'Normal:CmpPmenu,CursorLine:PmenuSel,Search:None',
     },
     documentation = {
       border = border 'CmpDocBorder',
@@ -90,7 +43,7 @@ cmp.setup {
       -- Kind icons
       vim_item.kind = string.format(
         '%s %s',
-        icons.kind[vim_item.kind],
+        require('ui.icons').lspkind[vim_item.kind],
         vim_item.kind
       ) -- This concatonates the icons with the name of the item kind
       -- Source
@@ -100,6 +53,7 @@ cmp.setup {
         luasnip = '[LuaSnip]',
         nvim_lua = '[Lua]',
         latex_symbols = '[LaTeX]',
+        copilot = '[Copilot]',
       })[entry.source.name]
       return vim_item
     end,
@@ -117,10 +71,6 @@ cmp.setup {
     ['<C-e>'] = cmp.mapping {
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
-    },
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
     },
     ['<c-y>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Insert,
@@ -143,6 +93,7 @@ cmp.setup {
   },
   sources = cmp.config.sources({
     { name = 'luasnip', keyword_length = 1 },
+    { name = 'copilot' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lsp' },
     { name = 'npm' },

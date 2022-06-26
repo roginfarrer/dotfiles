@@ -2,6 +2,7 @@ local o = vim.o
 
 o.breakindent = true
 o.breakindentopt = 'shift:2'
+-- o.cmdheight = 0
 o.completeopt = 'menuone,noselect,noinsert'
 o.expandtab = true
 o.foldexpr = [[nvim_treesitter#foldexpr()]]
@@ -53,4 +54,42 @@ if require('jit').arch == 'arm64' then
 else
   vim.g.python3_host_prog = '/usr/local/bin/python3'
   vim.g.python_host_prog = '/usr/bin/python'
+end
+
+local default_plugins = {
+  '2html_plugin',
+  'getscript',
+  'getscriptPlugin',
+  'gzip',
+  'logipat',
+  'netrw',
+  'netrwPlugin',
+  'netrwSettings',
+  'netrwFileHandlers',
+  'matchit',
+  'tar',
+  'tarPlugin',
+  'rrhelper',
+  'spellfile_plugin',
+  'vimball',
+  'vimballPlugin',
+  'zip',
+  'zipPlugin',
+  -- "python3_provider",
+  -- "python_provider",
+  -- "node_provider",
+  'ruby_provider',
+  'perl_provider',
+  'tutor',
+  'rplugin',
+  'syntax',
+  'synmenu',
+  'optwin',
+  'compiler',
+  'bugreport',
+  'ftplugin',
+}
+
+for _, plugin in pairs(default_plugins) do
+  vim.g['loaded_' .. plugin] = 1
 end

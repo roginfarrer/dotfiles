@@ -56,10 +56,15 @@ local function lsp_client_names()
   return msg
 end
 
+local separators = {
+  angled = { right = '', left = '' },
+  round = { left = '', right = '' },
+}
+
 local config = {
   options = {
     theme = 'auto',
-    section_separators = { left = '', right = '' },
+    section_separators = separators.angled,
     component_separators = { left = '', right = '' },
     icons_enabled = true,
   },

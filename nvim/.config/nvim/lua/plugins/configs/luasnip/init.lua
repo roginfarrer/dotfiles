@@ -27,8 +27,19 @@ ls.config.set_config {
   },
 }
 
-require 'user.plugins.luasnip.js'
-require 'user.plugins.luasnip.lua'
+vim.api.nvim_create_autocmd('InsertLeave', {
+  callback = function()
+    if
+      ls.session.current_nodes[vim.api.nvim_get_current_buf()]
+      and not ls.session.jump_active
+    then
+      ls.unlink_current()
+    end
+  end,
+})
+
+require 'plugins.configs.luasnip.js'
+require 'plugins.configs.luasnip.lua'
 
 map({ 'i', 's' }, '<c-k>', function()
   if ls.expand_or_jumpable() then

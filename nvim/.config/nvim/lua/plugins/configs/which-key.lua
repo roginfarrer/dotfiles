@@ -23,12 +23,19 @@ local function findDotfiles()
   }
 end
 local function project_files()
-  local opts = {} -- define here if you want to define something
-  local ok = pcall(require('telescope.builtin').git_files, opts)
-  if not ok then
-    require('telescope.builtin').find_files(opts)
+  local result = require('telescope.utils').get_os_command_output {
+    'git',
+    'rev-parse',
+    '--is-inside-work-tree',
+  }
+  if result[1] == 'false' then
+    require('telescope.builtin').find_files()
+  else
+    require('telescope.builtin').git_files()
   end
 end
+
+_G.project_files = project_files
 
 local leader = {
   [';'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
@@ -45,8 +52,8 @@ local leader = {
   g = {
     name = 'Git',
     g = { '<cmd>Neogit<CR>', 'NeoGit' },
-    c = { ':GitCopyToClipboard<CR>', 'Copy GitHub URL to Clipboard' },
-    o = { ':GitOpenInBrowser<CR>', 'Open File in Browser' },
+    c = { ':GBrowse!<CR>', 'Copy GitHub URL to Clipboard' },
+    o = { ':GBrowse<CR>', 'Open File in Browser' },
     b = { '<Cmd>Telescope git_branches<CR>', 'Checkout Branch' },
     C = {
       '<cmd>Telescope git_bcommits<cr>',
@@ -175,8 +182,8 @@ local visual = {
   Y = 'which_key_ignore',
   g = {
     name = 'Git',
-    c = { [[:'<,'>GitCopyToClipboard<CR>]], 'Copy GitHub URL to Clipboard' },
-    o = { [[:'<,'>GitOpenInBrowser<CR>]], 'Open In Browser' },
+    c = { [[:'<,'>GBrowse!<CR>]], 'Copy GitHub URL to Clipboard' },
+    o = { [[:'<,'>GBrowse<CR>]], 'Open In Browser' },
   },
 }
 
@@ -266,3 +273,13 @@ wk.register({
 if packer_plugins['neo-tree.nvim'] then
   map('n', '-', ':Neotree filesystem reveal current<CR>')
 end
+
+local function browse(opts)
+  require('plenary.job'):new({ 'open', opts.args }):start()
+end
+
+vim.api.nvim_create_user_command(
+  'Browse',
+  browse,
+  { bang = true, range = true, nargs = 1 }
+)

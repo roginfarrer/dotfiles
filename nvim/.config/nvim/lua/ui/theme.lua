@@ -1,8 +1,7 @@
--- local nightfox = require 'nightfox'
--- nightfox.setup { fox = 'dayfox' }
--- -- nightfox.load()
-
 local cat = require 'catppuccin'
+local cp = require('catppuccin.api.colors').get_colors()
+local util = require 'catppuccin.utils.util'
+
 cat.setup {
   styles = {
     comments = 'NONE',
@@ -57,8 +56,6 @@ cat.setup {
     telekasten = false,
   },
 }
-local cp = require('catppuccin.api.colors').get_colors()
-local util = require 'catppuccin.utils.util'
 cat.remap {
   VertSplit = { fg = cp.black4 },
   -- aka horizontal split
@@ -81,10 +78,10 @@ cat.remap {
   TelescopePromptBorder = { bg = cp.crust, fg = cp.crust },
   TelescopeResultsBorder = { bg = cp.mantle, fg = cp.crust },
   TelescopePreviewBorder = { bg = cp.crust, fg = cp.crust },
-  TelescopePromptTitle = { fg = cp.crust },
-  TelescopeResultsTitle = { fg = cp.text },
-  TelescopePreviewTitle = { fg = cp.crust },
+  TelescopePromptTitle = { fg = cp.crust, bg = cp.lavender },
+  TelescopeResultsTitle = { fg = cp.crust },
+  TelescopePreviewTitle = { fg = cp.crust, bg = cp.lavender },
 }
+
 vim.g.catppuccin_flavour = 'mocha'
 vim.cmd [[colorscheme catppuccin]]
--- vim.cmd [[colorscheme nightfox]]
