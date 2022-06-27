@@ -1,35 +1,11 @@
 local lsputil = require 'lspconfig.util'
 local p = lsputil.path
 
--- Our default command
-local jestCmd = 'jest'
-local cypressCmd = 'cypress'
-
-vim.g['test#javascript#runner'] = 'jest'
-vim.g['test#javascript#jest#options'] = '--color=always'
-vim.g['test#custom_runners'] = { javascript = { 'vitest' } }
-
-local tt = require 'toggleterm'
-local ttt = require 'toggleterm.terminal'
-
-vim.g['test#custom_strategies'] = {
-  tterm = function(cmd)
-    tt.exec(cmd)
-  end,
-
-  tterm_close = function(cmd)
-    local term_id = 0
-    tt.exec(cmd, term_id)
-    print(ttt.get_or_create_term)
-    ttt.get_or_create_term(term_id):close()
-  end,
-}
-
-vim.g['test#strategy'] = 'tterm_close'
-
 local yarn_lock_name = 'yarn.lock'
 local npm_lock_name = 'package-lock.json'
 local pnpm_lock_name = 'pnpm-lock.yaml'
+
+local jestCmd = 'jest'
 
 local function getJestTestCmd()
   local cwd = vim.loop.cwd()
@@ -42,7 +18,6 @@ local function getJestTestCmd()
 
   if not pkgJsonParentDir then
     vim.b.jest_test_cmd = jestCmd
-    vim.b.cypress_test_cmd = cypressCmd
   end
 
   local pkgJsonPath = p.join(cwd, pkgJsonParentDir, 'package.json')
@@ -74,30 +49,51 @@ local function getJestTestCmd()
     jestCmd = cmd_root .. ' jest' or ' jest'
 
     vim.b.jest_test_cmd = jestCmd
-    vim.b.cypress_test_cmd = cmd_root .. ' run ' .. cypressCmd
 
     io.close(file)
   end
 end
 
+-- _G.getJestTestCmd = getJestTestCmd
+
 local setJestCmd = function()
   if vim.b.jest_test_cmd == nil then
     getJestTestCmd()
   end
-  vim.g['test#javascript#jest#executable'] = vim.b.jest_test_cmd
-  vim.g['test#javascript#cypress#executable'] = vim.b.cypress_test_cmd
+  vim.g.neotest_jest_cmd = vim.b.jest_test_cmd
 end
 
--- autocmd('BufRead', {
---   pattern = '*/cypress/*',
---   command = 'let g:test#javascript#runner = "cypress"',
---   group = 'set_cypress_cmd',
--- })
+autocmd('BufRead', {
+  pattern = '*.test.*',
+  callback = function()
+    setJestCmd()
+  end,
+  group = 'set_jest_cmd',
+})
 
--- autocmd('BufRead', {
---   pattern = '*.test.js,*.test.ts,*.test.tsx',
---   callback = function()
---     setJestCmd()
---   end,
---   -- group = 'set_jest_cmd',
--- })
+require('neotest').setup {
+  icons = {
+    -- passed = '',
+    -- failed = '',
+    -- running = '',
+    -- skipped = '',
+    -- unknown = '?',
+    -- failed = '',
+    failed = '',
+    passed = '',
+    running = '',
+    skipped = '',
+    unknown = '?',
+  },
+  adapters = {
+    require 'neotest-jest' {},
+    -- require 'neotest-vim-test' {
+    --   allow_file_types = {
+    --     'javascript',
+    --     'javascriptreact',
+    --     'typescript',
+    --     'typescriptreact',
+    --   },
+    -- },
+  },
+}

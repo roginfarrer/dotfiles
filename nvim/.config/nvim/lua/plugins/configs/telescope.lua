@@ -63,3 +63,32 @@ require('neoclip').setup()
 require('telescope').load_extension 'neoclip'
 require('telescope').load_extension 'file_browser'
 require('telescope').load_extension 'git_worktree'
+
+local M = {}
+
+M.searchDotfiles = function()
+  require('telescope.builtin').live_grep {
+    cwd = '~/dotfiles',
+    prompt_title = '~ Dotfiles ~',
+  }
+end
+M.findDotfiles = function()
+  require('telescope.builtin').git_files {
+    cwd = '~/dotfiles',
+    prompt_title = '~ Dotfiles ~',
+  }
+end
+M.project_files = function()
+  local result = require('telescope.utils').get_os_command_output {
+    'git',
+    'rev-parse',
+    '--is-inside-work-tree',
+  }
+  if result[1] == 'false' then
+    require('telescope.builtin').find_files()
+  else
+    require('telescope.builtin').git_files()
+  end
+end
+
+return M

@@ -51,7 +51,11 @@ options.header = {
 options.buttons = {
   type = 'group',
   val = {
-    btn('p', '  Find file', ':lua _G.project_files()<CR>'),
+    btn(
+      'p',
+      '  Find file',
+      ':lua require("plugins.configs.telescope").project_files()<CR>'
+    ),
     btn('h', '  Recently opened files', ':Telescope old_files<CR>'),
     btn(
       'w',

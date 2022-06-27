@@ -47,6 +47,46 @@ _G.autocmd = function(event, opts)
   )
 end
 
-local M = {}
+-- // recurse through dirs stopping if next to a package.json
+-- const getPackageContext = (dir) => {
+--   try {
+--     return {
+--       packageJson: require(path.join(dir, 'package.json')),
+--       packageDir: dir,
+--     };
+--   } catch (e) {
+--     const parent = path.dirname(dir);
+--     if (parent === dir) {
+--       throw new Error('package.json does not exist');
+--     }
 
-return M
+--     return getPackageContext(parent);
+--   }
+-- };
+
+-- local lsputil = require 'lspconfig.util'
+-- local p = lsputil.path
+
+-- local function getPackageContext(dir)
+--   local packageJson = p.join(dir, 'package.json')
+--   local found = vim.fn.filereadable(packageJson)
+--   if found then
+--     return {
+--       packageJson = require(packageJson),
+--       packageDir = dir,
+--     }
+--   end
+
+--   local parent = p.dirname(dir)
+--   if parent == dir then
+--     print 'package.json does not exist'
+--   end
+
+--   return getPackageContext(parent)
+-- end
+
+-- _G.resolveBin = function() end
+
+-- local M = {}
+
+-- return M

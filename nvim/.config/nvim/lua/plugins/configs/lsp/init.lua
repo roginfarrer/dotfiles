@@ -108,10 +108,8 @@ local function on_attach(client, bufnr)
   local leader = {
     l = {
       name = 'LSP',
-      a = { ':LspCodeAction<CR>', 'Code Action' },
-      r = { '<cmd>LspRenameSymbol<CR>', 'Rename Symbol' },
-      f = { ':Format<CR>', 'Format Document' },
-      x = { ':TroubleToggle<CR>', 'Trouble' },
+      a = { '<cmd>Lspsaga code_action<CR>', 'Code Action' },
+      r = { '<cmd>Lspsaga rename<CR>', 'Rename Symbol' },
       q = { '<cmd>lua vim.diagnostic.setloclist()<cr>', 'Quickfix' },
       R = { '<cmd>Telescope lsp_references<cr>', 'References' },
       s = { '<cmd>Telescope lsp_document_symbols<cr>', 'Document Symbols' },
@@ -125,7 +123,7 @@ local function on_attach(client, bufnr)
   local visual = {
     l = {
       name = 'LSP',
-      a = { ':LspRangeCodeAction<CR>', 'Code Action' },
+      a = { ':<c-u>Lspsaga range_code_action<CR>', 'Code Action' },
     },
   }
 
@@ -136,7 +134,7 @@ local function on_attach(client, bufnr)
     if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
       vim.fn.execute('h ' .. vim.fn.expand '<cword>')
     else
-      vim.fn.execute 'LspHover'
+      vim.fn.execute 'Lspsaga hover_doc'
     end
   end
 
@@ -154,16 +152,18 @@ local function on_attach(client, bufnr)
     map(mode, lhs, rhs, { buffer = true })
   end
 
-  bufmap('n', 'gd', ':LspGoToDefinition<CR>')
+  bufmap('n', 'gD', ':LspGoToDefinition<CR>')
+  bufmap('n', 'gd', '<cmd>Lspsaga preview_definition<CR>')
+  bufmap('n', 'gh', '<cmd>Lspsaga lsp_finder<CR>')
   bufmap('n', 'gr', ':LspReferences<CR>')
-  bufmap('n', 'gs', ':LspSignatureHelp<CR>')
+  bufmap('n', 'gs', '<cmd>Lspsaga signature_help<CR>')
   bufmap('n', 'gy', ':LspTypeDefinition<CR>')
-  bufmap('n', '[g', ':LspPrevDiagnostic<CR>')
-  bufmap('n', ']g', ':LspNextDiagnostic<CR>')
+  bufmap('n', '[g', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
+  bufmap('n', ']g', '<cmd>Lspsaga diagnostic_jump_next<CR>')
   bufmap('n', 'K', showDocs)
   bufmap('n', 'gK', luaDocs)
 
-  bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
+  -- bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
 end
 
 require('nvim-lsp-installer').setup {

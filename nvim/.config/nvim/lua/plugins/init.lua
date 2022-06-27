@@ -36,6 +36,7 @@ local plugins = {
   ['jose-elias-alvarez/nvim-lsp-ts-utils'] = {},
   ['neovim/nvim-lspconfig'] = {},
   ['j-hui/fidget.nvim'] = { config = misc 'fidget' },
+  ['glepnir/lspsaga.nvim'] = {},
   ['hrsh7th/nvim-cmp'] = {
     config = config 'cmp',
     requires = {
@@ -74,7 +75,7 @@ local plugins = {
   ['tpope/vim-abolish'] = { event = 'CmdlineEnter' },
   ['wellle/targets.vim'] = { event = 'CursorMoved' },
   ['numToStr/Comment.nvim'] = { config = config 'comment' },
-  ['ThePrimeagen/harpoon'] = { module_pattern = 'harpoon*' },
+  -- ['ThePrimeagen/harpoon'] = { module_pattern = 'harpoon*' },
   ['AckslD/nvim-neoclip.lua'] = {},
   ['Julian/vim-textobj-variable-segment'] = {
     requires = 'kana/vim-textobj-user',
@@ -222,6 +223,11 @@ local plugins = {
   ['moll/vim-bbye'] = { cmd = 'Bdelete' },
   ['mrjones2014/smart-splits.nvim'] = {},
   ['Shatur/neovim-session-manager'] = { config = config 'sessions' },
+  ['nvim-neotest/neotest'] = {
+    requires = { '~/projects/neotest-jest', 'nvim-neotest/neotest-vim-test' },
+    config = config 'neotest',
+  },
+  ['vim-test/vim-test'] = { config = config 'vim-test' },
 }
 
 require('core.packer').run(plugins)

@@ -1,5 +1,8 @@
 local o = vim.o
 
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 o.breakindent = true
 o.breakindentopt = 'shift:2'
 -- o.cmdheight = 0
