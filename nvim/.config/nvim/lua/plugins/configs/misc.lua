@@ -74,4 +74,11 @@ M['git-conflict'] = function()
   require('git-conflict').setup()
 end
 
+M.tabline = function()
+  require('tabline').setup {
+    enable = false,
+    options = { show_filename_only = true },
+  }
+end
+
 return M

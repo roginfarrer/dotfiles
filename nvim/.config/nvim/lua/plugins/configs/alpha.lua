@@ -71,7 +71,7 @@ options.buttons = {
     btn(
       'v',
       'Open Neovim Plugins',
-      '<cmd>e ~/dotfiles/nvim/.config/nvim/lua/user/plugins.lua<CR>'
+      '<cmd>e ~/dotfiles/nvim/.config/nvim/lua/plugins/init.lua<CR>'
     ),
     btn(
       'k',

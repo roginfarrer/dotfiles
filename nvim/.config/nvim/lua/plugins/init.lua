@@ -104,7 +104,8 @@ local plugins = {
   ['nvim-treesitter/nvim-treesitter-context'] = {},
   ['folke/which-key.nvim'] = { config = config 'which-key' },
   ['kevinhwang91/nvim-bqf'] = { ft = 'qf' },
-  ['akinsho/bufferline.nvim'] = { config = config 'bufferline' },
+  -- ['akinsho/bufferline.nvim'] = { config = config 'bufferline' },
+  ['kdheepak/tabline.nvim'] = { config = misc 'tabline' },
   ['sindrets/winshift.nvim'] = {
     config = config 'winshift',
     cmd = 'WinShift',
@@ -210,7 +211,8 @@ local plugins = {
 
   ['jxnblk/vim-mdx-js'] = { ft = { 'mdx', 'markdown.mdx' } },
   ['fladson/vim-kitty'] = { ft = 'kitty' },
-  ['catppuccin/nvim'] = { as = 'catppuccin' },
+  -- ['catppuccin/nvim'] = { as = 'catppuccin' },
+  ['~/projects/catppuccin-nvim'] = { as = 'catppuccin' },
   ['p00f/nvim-ts-rainbow'] = {},
   ['EdenEast/nightfox.nvim'] = {},
 
@@ -219,7 +221,7 @@ local plugins = {
   -- -- -- -- -- -- -- --
 
   -- 'Matt-A-Bennett/vim-surround-funk',
-  ['stevearc/dressing.nvim'] = {},
+  -- ['stevearc/dressing.nvim'] = {},
   ['moll/vim-bbye'] = { cmd = 'Bdelete' },
   ['mrjones2014/smart-splits.nvim'] = {},
   ['Shatur/neovim-session-manager'] = { config = config 'sessions' },

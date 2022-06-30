@@ -71,9 +71,13 @@ local function on_attach(client, bufnr)
       group = augroup,
       buffer = bufnr,
       callback = function()
+        if client.name == 'tsserver' then
+          vim.fn.execute 'TSLspImportAllSync'
+          vim.fn.execute 'TSLspOrganizeSync'
+        end
         vim.lsp.buf.format {
-          filter = function(client)
-            return client.name == 'null-ls'
+          filter = function(c)
+            return c.name == 'null-ls'
           end,
           bufnr = bufnr,
         }

@@ -50,12 +50,14 @@ cat.setup {
     bufferline = true,
     markdown = true,
     lightspeed = false,
+    leap = true,
     ts_rainbow = true,
     hop = false,
     notify = true,
     telekasten = false,
   },
 }
+
 cat.remap {
   VertSplit = { fg = cp.black4 },
   -- aka horizontal split
