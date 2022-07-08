@@ -72,7 +72,6 @@ local function on_attach(client, bufnr)
       buffer = bufnr,
       callback = function()
         if client.name == 'tsserver' then
-          vim.fn.execute 'TSLspImportAllSync'
           vim.fn.execute 'TSLspOrganizeSync'
         end
         vim.lsp.buf.format {

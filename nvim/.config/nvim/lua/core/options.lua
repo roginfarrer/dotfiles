@@ -9,6 +9,7 @@ o.breakindentopt = 'shift:2'
 o.completeopt = 'menuone,noselect,noinsert'
 o.expandtab = true
 o.foldexpr = [[nvim_treesitter#foldexpr()]]
+-- o.foldcolumn = '1'
 o.foldlevel = 99
 o.foldmethod = 'expr'
 o.foldnestmax = 10

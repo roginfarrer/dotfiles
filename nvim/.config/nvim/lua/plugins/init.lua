@@ -110,6 +110,11 @@ local plugins = {
     config = config 'winshift',
     cmd = 'WinShift',
   },
+  ['kevinhwang91/nvim-ufo'] = {
+    requires = 'kevinhwang91/promise-async',
+    after = 'nvim-treesitter',
+    config = config 'ufo',
+  },
 
   ['akinsho/toggleterm.nvim'] = {
     tag = 'v1.*',
@@ -134,6 +139,9 @@ local plugins = {
       'Gedit',
     },
     requires = { 'tpope/vim-rhubarb' },
+  },
+  ['sindrets/diffview.nvim'] = {
+    cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
   },
   -- {
   --   'TimUntersberger/neogit',
