@@ -13,6 +13,8 @@ local package_root = join_paths(temp_dir, 'nvim', 'site', 'pack')
 local install_path = join_paths(package_root, 'packer', 'start', 'packer.nvim')
 local compile_path = join_paths(install_path, 'plugin', 'packer_compiled.lua')
 
+vim.o.cmdheight = 0
+
 local function load_plugins()
   local is_ok, packer = pcall(require, 'packer')
   if not is_ok then
@@ -23,6 +25,7 @@ local function load_plugins()
     {
       'wbthomason/packer.nvim',
       'neovim/nvim-lspconfig',
+      'nvim-lualine/lualine.nvim',
     },
     config = {
       package_root = package_root,
@@ -32,6 +35,8 @@ local function load_plugins()
 end
 
 _G.load_config = function()
+  require('lualine').setup {}
+  vim.o.laststatus = 3
   local lsp = vim.lsp
   local handlers = lsp.handlers
 
@@ -45,10 +50,8 @@ _G.load_config = function()
 
   local opts = { border = 'rounded' }
   handlers['textDocument/hover'] = lsp.with(handlers.hover, opts)
-  handlers['textDocument/signatureHelp'] = lsp.with(
-    handlers.signature_help,
-    opts
-  )
+  handlers['textDocument/signatureHelp'] =
+    lsp.with(handlers.signature_help, opts)
   vim.diagnostic.config {
     virtual_text = false,
     float = {

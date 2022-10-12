@@ -1,4 +1,4 @@
-require('mini.surround').setup {}
+-- require('mini.surround').setup {}
 
 -- require('mini.sessions').setup {
 --   directory = '~/.local/share/nvim/sessions',

@@ -4,10 +4,6 @@ M.fidget = function()
   require('fidget').setup {}
 end
 
-M.stabilize = function()
-  require('stabilize').setup()
-end
-
 M.devicons = function()
   require('nvim-web-devicons').setup {
     override = {
@@ -26,12 +22,6 @@ M.colorizer = function()
     css = true,
     css_fn = true,
   })
-end
-
-M.neoscroll = function()
-  -- if not has_gui then
-  --   require('neoscroll').setup()
-  -- end
 end
 
 M.dirbuf = function()
@@ -54,7 +44,7 @@ M.neoclip = function()
 end
 
 M.leap = function()
-  require('leap').set_default_keymaps { force = true }
+  require('leap').set_default_keymaps {}
 end
 
 -- M.auto_session = function()
@@ -78,6 +68,28 @@ M.tabline = function()
   require('tabline').setup {
     enable = false,
     options = { show_filename_only = true },
+  }
+end
+
+M.jabs = function()
+  require('jabs').setup {
+    position = 'center',
+    offset = {
+      bottom = 2,
+    },
+    preview_position = 'bottom',
+  }
+end
+
+M.template_string = function()
+  require('template-string').setup { remove_template_string = true }
+end
+
+M['live-command'] = function()
+  require('live-command').setup {
+    commands = {
+      Norm = { cmd = 'norm' },
+    },
   }
 end
 

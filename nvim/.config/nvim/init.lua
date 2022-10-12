@@ -13,5 +13,4 @@ _G.global = {}
 require('core.packer').bootstrap()
 require 'plugins'
 require 'ui.theme'
-
--- require 'local-config'
+require 'local-config'

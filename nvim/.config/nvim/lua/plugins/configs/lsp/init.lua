@@ -19,10 +19,8 @@ local border = {
 local popup_opts = { border = border }
 
 handlers['textDocument/hover'] = lsp.with(handlers.hover, popup_opts)
-handlers['textDocument/signatureHelp'] = lsp.with(
-  handlers.signature_help,
-  popup_opts
-)
+handlers['textDocument/signatureHelp'] =
+  lsp.with(handlers.signature_help, popup_opts)
 vim.diagnostic.config {
   virtual_text = false,
   float = {
@@ -71,9 +69,6 @@ local function on_attach(client, bufnr)
       group = augroup,
       buffer = bufnr,
       callback = function()
-        if client.name == 'tsserver' then
-          vim.fn.execute 'TSLspOrganizeSync'
-        end
         vim.lsp.buf.format {
           filter = function(c)
             return c.name == 'null-ls'
@@ -137,7 +132,9 @@ local function on_attach(client, bufnr)
     if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
       vim.fn.execute('h ' .. vim.fn.expand '<cword>')
     else
+      -- if client.supports_method 'textDocument/hover' then
       vim.fn.execute 'Lspsaga hover_doc'
+      -- end
     end
   end
 
@@ -161,23 +158,37 @@ local function on_attach(client, bufnr)
   bufmap('n', 'gr', ':LspReferences<CR>')
   bufmap('n', 'gs', '<cmd>Lspsaga signature_help<CR>')
   bufmap('n', 'gy', ':LspTypeDefinition<CR>')
-  bufmap('n', '[g', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
-  bufmap('n', ']g', '<cmd>Lspsaga diagnostic_jump_next<CR>')
+  -- bufmap('n', '[g', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
+  -- bufmap('n', ']g', '<cmd>Lspsaga diagnostic_jump_next<CR>')
+  bufmap('n', '[g', '<cmd>LspPrevDiagnostic<CR>')
+  bufmap('n', ']g', '<cmd>LspNextDiagnostic<CR>')
   bufmap('n', 'K', showDocs)
   bufmap('n', 'gK', luaDocs)
 
   -- bufmap('i', '<c-x><c-x>', '<cmd> LspSignatureHelp<CR>')
 end
 
-require('nvim-lsp-installer').setup {
+require('mason').setup {}
+require('mason-tool-installer').setup {
   ensure_installed = {
-    'tsserver',
-    'sumneko_lua',
-    'jsonls',
-    'eslint',
-    'bashls',
-    'cssls',
+    -- language servers
+    'typescript-language-server',
+    'lua-language-server',
+    'json-lsp',
+    'eslint-lsp',
+    'bash-language-server',
+    'css-lsp',
+    'stylelint-lsp',
+    'marksman',
+    'yaml-language-server',
+    -- Formatters
+    'prettierd',
+    'stylua',
+    'shfmt',
+    -- Linters
+    'vint',
   },
+  -- automatic_installation = true,
 }
 
 local opts = { on_attach = on_attach, capabilities = capabilities }
@@ -198,33 +209,20 @@ lspconfig.jsonls.setup(
   vim.tbl_deep_extend('force', opts, require 'plugins.configs.lsp.json')
 )
 
-for _, ls in ipairs { 'eslint', 'bashls', 'cssls', 'astro' } do
+lspconfig.stylelint_lsp.setup {
+  filetypes = { 'css', 'less', 'scss' },
+}
+
+for _, ls in ipairs {
+  'eslint',
+  'bashls',
+  'cssls',
+  'astro',
+  'marksman',
+  'yamlls',
+  'html',
+} do
   lspconfig[ls].setup(opts)
 end
 
 require('plugins.configs.lsp.null-ls').setup(on_attach)
-
--- local function setup(server)
---   local opts = {
---     on_attach = on_attach,
---     capabilities = capabilities,
---   }
-
---   if server.name == 'sumneko_lua' then
---     opts = vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
---   elseif server.name == 'tsserver' then
---     local tsserver_settings = require 'user.plugins.lsp.tsserver'
---     opts = vim.tbl_deep_extend('force', opts, tsserver_settings)
---     opts.on_attach = function(client, bufnr)
---       on_attach(client, bufnr)
---       tsserver_settings.on_attach(client, bufnr)
---     end
---   elseif server.name == 'jsonls' then
---     opts = vim.tbl_deep_extend('force', opts, require 'user.plugins.lsp.json')
---   end
-
---   server:setup(opts)
---   vim.cmd [[ do User LspAttachBuffers ]]
--- end
-
--- lspinstaller.on_server_ready(setup)

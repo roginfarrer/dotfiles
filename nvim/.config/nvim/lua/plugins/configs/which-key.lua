@@ -1,5 +1,9 @@
 local wk = require 'which-key'
 
+local function t(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 wk.setup {
   triggers = 'auto',
   plugins = {
@@ -10,49 +14,31 @@ wk.setup {
   key_labels = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
 }
 
--- local function searchDotfiles()
---   require('telescope.builtin').live_grep {
---     cwd = '~/dotfiles',
---     prompt_title = '~ Dotfiles ~',
---   }
--- end
--- local function findDotfiles()
---   require('telescope.builtin').git_files {
---     cwd = '~/dotfiles',
---     prompt_title = '~ Dotfiles ~',
---   }
--- end
--- local function project_files()
---   local result = require('telescope.utils').get_os_command_output {
---     'git',
---     'rev-parse',
---     '--is-inside-work-tree',
---   }
---   if result[1] == 'false' then
---     require('telescope.builtin').find_files()
---   else
---     require('telescope.builtin').git_files()
---   end
--- end
-
--- _G.project_files = project_files
+-- If you like long lines with line wrapping enabled, this solves the problem
+-- that pressing down jumpes your cursor “over” the current line to the next
+-- line. It changes behaviour so that it jumps to the next row in the editor
+-- (much more natural)
+-- Display line movements unless preceded by a count whilst also recording jump points for movements larger than five lines
+map('n', 'j', function()
+  local count = vim.v.count
+  if count > 0 then
+    return count > 5 and t("m'" .. count .. 'j') or t 'j'
+  end
+  return t 'gj'
+end, { expr = true })
+map('n', 'k', function()
+  local count = vim.v.count
+  if count > 0 then
+    return count > 5 and t("m'" .. count .. 'k') or t 'k'
+  end
+  return t 'gk'
+end, { expr = true })
+map('', '<leader>y', '"+y', { silent = false })
+map('', '<leader>Y', '"+Y', { silent = false })
 
 local general = {
   n = {
-
-    -- If you like long lines with line wrapping enabled, this solves the problem
-    -- that pressing down jumpes your cursor “over” the current line to the next
-    -- line. It changes behaviour so that it jumps to the next row in the editor
-    -- (much more natural)
-    -- Display line movements unless preceded by a count whilst also recording jump points for movements larger than five lines
-    ['j'] = {
-      [[ v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj' ]],
-      expr = true,
-    },
-    ['k'] = {
-      [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
-      expr = true,
-    },
+    [' '] = { '<nop>' },
 
     -- When changing, don't save to register
     ['c'] = { '"_c' },
@@ -70,9 +56,19 @@ local general = {
       'Open URL under cursor',
     },
 
-    -- Yank to system clipboard
-    ['<leader>y'] = { '"+y:echo "yanked to clipboard"<cr>' },
-    ['<leader>Y'] = { '"+Y:echo "yanked to clipboard"<cr>' },
+    -- paste from yank register
+    ['yp'] = { '"0p' },
+    ['yP'] = { '"0P' },
+
+    ['dd'] = {
+      function()
+        if vim.api.nvim_get_current_line():match '^%s*$' then
+          return '"_dd'
+        else
+          return 'dd'
+        end
+      end,
+    },
 
     -- Put from system clipboard
     ['<leader>p'] = { '"+p' },
@@ -114,9 +110,9 @@ local general = {
 
   v = {
 
-    -- Yank to system clipboard
-    ['<leader>y'] = { '"+y:echo "yanked to clipboard"<cr>' },
-    ['<leader>Y'] = { '"+Y:echo "yanked to clipboard"<cr>' },
+    -- paste from yank register
+    ['yp'] = { '"0p' },
+    ['yP'] = { '"0P' },
 
     -- Move entire lines up and down
     ['<A-k>'] = { [[:m '>+1<CR>gv=gv]], ' move line up' },
@@ -125,6 +121,10 @@ local general = {
     -- When changing, don't save to register
     ['c'] = { '"_c' },
     ['C'] = { '"_C' },
+  },
+
+  x = {
+    ['<leader>p'] = { '"_dP' },
   },
 
   t = {
@@ -161,23 +161,21 @@ local general = {
 wk.register(general.n, { mode = 'n' })
 wk.register(general.i, { mode = 'i' })
 wk.register(general.v, { mode = 'v' })
+wk.register(general.x, { mode = 'x' })
 wk.register(general.t, { mode = 't' })
 
 local leader = {
-  [';'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
+  [';'] = {
+    '<cmd>Telescope buffers<CR>',
+    'Buffers',
+  },
   q = { ':q<cr>', 'Quit' },
   w = { ':w<CR>', 'Save' },
   x = { ':wq<cr>', 'Save and Quit' },
   -- a = { 'Swap next function paramater' },
   -- A = { 'Swap previous function parameter' },
-  [' '] = 'which_key_ignore',
-  y = 'which_key_ignore',
-  Y = 'which_key_ignore',
-  p = 'which_key_ignore',
-  P = 'which_key_ignore',
   g = {
     name = 'Git',
-    -- g = { '<cmd>Neogit<CR>', 'NeoGit' },
     c = { ':GBrowse!<CR>', 'Copy GitHub URL to Clipboard' },
     o = { ':GBrowse<CR>', 'Open File in Browser' },
     b = { '<Cmd>Telescope git_branches<CR>', 'Checkout Branch' },
@@ -305,8 +303,6 @@ local leader = {
 wk.register(leader, { prefix = '<leader>' })
 
 local visual = {
-  y = 'which_key_ignore',
-  Y = 'which_key_ignore',
   g = {
     name = 'Git',
     c = { [[:'<,'>GBrowse!<CR>]], 'Copy GitHub URL to Clipboard' },
@@ -327,7 +323,10 @@ wk.register({
     ':lua require("neotest").summary.toggle()<CR>',
     'Test Summary',
   },
-  -- ['<C-c>'] = { ':UltestClear<CR>', 'Clear Results' },
+  ['<C-o>'] = {
+    ':lua require("neotest").output.open({enter = true})<CR>',
+    'Test Output',
+  },
 }, {
   prefix = 't',
 })
@@ -384,34 +383,6 @@ wk.register {
     'Go to next failed test',
   },
 }
-
--- wk.register({
---   h = {
---     a = { ':lua require("harpoon.mark").add_file()<CR>', 'Harpoon Add File' },
---     h = {
---       ':lua require("harpoon.ui").toggle_quick_menu()<CR>',
---       'Harpoon Open Menu',
---     },
---     u = {
---       ':lua require("harpoon.ui").nav_file(1)<CR>',
---       'Harpoon 1',
---     },
---     i = {
---       ':lua require("harpoon.ui").nav_file(2)<CR>',
---       'Harpoon 2',
---     },
---     o = {
---       ':lua require("harpoon.ui").nav_file(3)<CR>',
---       'Harpoon 3',
---     },
---     p = {
---       ':lua require("harpoon.ui").nav_file(4)<CR>',
---       'Harpoon 4',
---     },
---   },
--- }, {
---   prefix = '<leader>',
--- })
 
 if packer_plugins['neo-tree.nvim'] then
   map('n', '-', ':Neotree filesystem reveal current<CR>')

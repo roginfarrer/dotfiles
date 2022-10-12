@@ -37,7 +37,7 @@ disabled = true
 disabled = true
 
 [directory]
-truncation_length = 1
+truncation_length = 2
 fish_style_pwd_dir_length = 1
 
 [git_branch]
@@ -45,3 +45,6 @@ fish_style_pwd_dir_length = 1
 
 [character]
 vicmd_symbol = "[V](bold green) "
+
+[sudo]
+disabled = false

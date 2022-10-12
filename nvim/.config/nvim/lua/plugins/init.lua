@@ -11,7 +11,7 @@ end
 local plugins = {
   ['wbthomason/packer.nvim'] = {},
   ['nvim-lua/plenary.nvim'] = {},
-  ['nathom/filetype.nvim'] = {},
+  -- ['nathom/filetype.nvim'] = {},
 
   ['lewis6991/impatient.nvim'] = { rocks = 'mpack' },
 
@@ -26,11 +26,20 @@ local plugins = {
 
   ['ggandor/leap.nvim'] = { config = misc 'leap' },
 
+  ['glacambre/firenvim'] = {
+    run = function()
+      vim.fn['firenvim#install'](0)
+    end,
+  },
+
   -- -- -- -- -- -- -- -- -- -- -- -- --
   --  Language Server Protocol (LSP)  --
   -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  ['williamboman/nvim-lsp-installer'] = { config = config 'lsp' },
+  ['williamboman/mason.nvim'] = {
+    config = config 'lsp',
+    requires = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
+  },
   ['folke/lua-dev.nvim'] = {},
   ['jose-elias-alvarez/null-ls.nvim'] = {},
   ['jose-elias-alvarez/nvim-lsp-ts-utils'] = {},
@@ -53,34 +62,36 @@ local plugins = {
   ['mtoohey31/cmp-fish'] = { ft = 'fish' },
   ['L3MON4D3/LuaSnip'] = { config = config 'luasnip' },
   ['windwp/nvim-autopairs'] = { config = config 'autopairs' },
-  ['zbirenbaum/copilot.lua'] = {
-    event = 'InsertEnter',
-    config = function()
-      vim.schedule(function()
-        require('copilot').setup()
-      end)
-    end,
-  },
-  ['zbirenbaum/copilot-cmp'] = {
-    module = 'copilot_cmp',
-  },
+  -- ['zbirenbaum/copilot.lua'] = {
+  --   event = 'InsertEnter',
+  --   config = function()
+  --     vim.schedule(function()
+  --       require('copilot').setup()
+  --     end)
+  --   end,
+  -- },
+  -- ['zbirenbaum/copilot-cmp'] = {
+  --   module = 'copilot_cmp',
+  -- },
 
   -- -- -- -- -- --
   --   Editing   --
   -- -- -- -- -- --
 
-  ['duggiefresh/vim-easydir'] = { event = 'CmdlineEnter' },
-  ['echasnovski/mini.nvim'] = { config = config 'mini' },
+  ['jghauser/mkdir.nvim'] = { event = 'CmdlineEnter' },
+  -- ['echasnovski/mini.nvim'] = { config = config 'mini' },
+  ['kylechui/nvim-surround'] = { config = config 'surround' },
   ['tpope/vim-eunuch'] = { event = 'CmdlineEnter' },
   ['tpope/vim-abolish'] = { event = 'CmdlineEnter' },
   ['wellle/targets.vim'] = { event = 'CursorMoved' },
   ['numToStr/Comment.nvim'] = { config = config 'comment' },
   -- ['ThePrimeagen/harpoon'] = { module_pattern = 'harpoon*' },
-  ['AckslD/nvim-neoclip.lua'] = {},
+  -- ['AckslD/nvim-neoclip.lua'] = {},
   ['Julian/vim-textobj-variable-segment'] = {
     requires = 'kana/vim-textobj-user',
     event = 'CursorMoved',
   },
+  ['axelvc/template-string.nvim'] = { config = misc 'template_string' },
 
   -- -- -- -- -- -- -- --
   --   User Interface  --
@@ -88,7 +99,7 @@ local plugins = {
 
   ['goolord/alpha-nvim'] = { config = config 'alpha' },
   ['nvim-lualine/lualine.nvim'] = { config = config 'lualine' },
-  ['b0o/incline.nvim'] = { config = config 'incline' },
+  -- ['b0o/incline.nvim'] = { config = config 'incline' },
   ['nvim-treesitter/nvim-treesitter'] = {
     run = ':TSUpdate',
     config = config 'treesitter',
@@ -101,7 +112,6 @@ local plugins = {
   ['nvim-treesitter/nvim-treesitter-textobjects'] = { event = 'BufRead' },
   ['JoosepAlviste/nvim-ts-context-commentstring'] = {},
   ['windwp/nvim-ts-autotag'] = {},
-  ['nvim-treesitter/nvim-treesitter-context'] = {},
   ['folke/which-key.nvim'] = { config = config 'which-key' },
   ['kevinhwang91/nvim-bqf'] = { ft = 'qf' },
   -- ['akinsho/bufferline.nvim'] = { config = config 'bufferline' },
@@ -117,7 +127,7 @@ local plugins = {
   },
 
   ['akinsho/toggleterm.nvim'] = {
-    tag = 'v1.*',
+    tag = 'v2.*',
     config = config 'toggleterm',
   },
 
@@ -140,6 +150,7 @@ local plugins = {
     },
     requires = { 'tpope/vim-rhubarb' },
   },
+  -- ['ruifm/gitlinker.nvim'] = { config = config 'gitlinker' },
   ['sindrets/diffview.nvim'] = {
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
   },
@@ -178,20 +189,12 @@ local plugins = {
     end,
   },
   ['ThePrimeagen/git-worktree.nvim'] = {},
-  ['toppair/reach.nvim'] = { config = "require('reach').setup()" },
+  -- ['matbme/JABS.nvim'] = { config = misc 'jabs' },
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
   -- -- -- -- -- -- -- --
 
-  -- {
-  --   'nvim-neo-tree/neo-tree.nvim',
-  --   branch = 'v2.x',
-  --   requires = {
-  --     'MunifTanjim/nui.nvim',
-  --   },
-  --   config = config 'neotree',
-  -- },
   ['tamago324/lir.nvim'] = {
     keys = '-',
     requires = {
@@ -211,7 +214,7 @@ local plugins = {
       'nvim-telescope/telescope-file-browser.nvim',
     },
   },
-  ['ahmedkhalf/project.nvim'] = {},
+  -- ['ahmedkhalf/project.nvim'] = {},
 
   -- -- -- -- -- -- -- --
   --  Themes & Syntax  --
@@ -219,10 +222,12 @@ local plugins = {
 
   ['jxnblk/vim-mdx-js'] = { ft = { 'mdx', 'markdown.mdx' } },
   ['fladson/vim-kitty'] = { ft = 'kitty' },
-  -- ['catppuccin/nvim'] = { as = 'catppuccin' },
-  ['~/projects/catppuccin-nvim'] = { as = 'catppuccin' },
+  ['catppuccin/nvim'] = { as = 'catppuccin', run = 'CatppuccinCompile' },
+  -- ['B4mbus/oxocarbon-lua.nvim'] = {},
+  -- ['~/projects/catppuccin-nvim'] = { as = 'catppuccin' },
   ['p00f/nvim-ts-rainbow'] = {},
-  ['EdenEast/nightfox.nvim'] = {},
+  ['ellisonleao/glow.nvim'] = {},
+  -- ['EdenEast/nightfox.nvim'] = {},
 
   -- -- -- -- -- -- -- --
   --  New For Testing  --
@@ -232,12 +237,58 @@ local plugins = {
   -- ['stevearc/dressing.nvim'] = {},
   ['moll/vim-bbye'] = { cmd = 'Bdelete' },
   ['mrjones2014/smart-splits.nvim'] = {},
+  ['anuvyklack/windows.nvim'] = {
+    requires = {
+      'anuvyklack/middleclass',
+      'anuvyklack/animation.nvim',
+    },
+    config = function()
+      -- vim.o.winwidth = 10
+      -- vim.o.winminwidth = 10
+      -- vim.o.equalalways = false
+      -- require('windows').setup()
+    end,
+  },
   ['Shatur/neovim-session-manager'] = { config = config 'sessions' },
   ['nvim-neotest/neotest'] = {
     requires = { '~/projects/neotest-jest', 'nvim-neotest/neotest-vim-test' },
     config = config 'neotest',
   },
   ['vim-test/vim-test'] = { config = config 'vim-test' },
+
+  ['ziontee113/syntax-tree-surfer'] = {
+    config = function()
+      require('syntax-tree-surfer').setup {}
+
+      vim.keymap.set('n', 'vU', function()
+        vim.opt.opfunc = 'v:lua.STSSwapUpNormal_Dot'
+        return 'g@l'
+      end, { silent = true, expr = true })
+      vim.keymap.set('n', 'vD', function()
+        vim.opt.opfunc = 'v:lua.STSSwapDownNormal_Dot'
+        return 'g@l'
+      end, { silent = true, expr = true })
+
+      -- Swap Current Node at the Cursor with it's siblings, Dot Repeatable
+      vim.keymap.set('n', 'vd', function()
+        vim.opt.opfunc = 'v:lua.STSSwapCurrentNodeNextNormal_Dot'
+        return 'g@l'
+      end, { silent = true, expr = true })
+      vim.keymap.set('n', 'vu', function()
+        vim.opt.opfunc = 'v:lua.STSSwapCurrentNodePrevNormal_Dot'
+        return 'g@l'
+      end, { silent = true, expr = true })
+
+      -- map('n', 'vd', '<cmd>STSSwapCurrentNodeNextNormal<cr>')
+      -- map('n', 'vu', '<cmd>STSSwapCurrentNodePrevNormal<cr>')
+      -- map('n', 'vD', '<cmd>STSSwapDownNormal<cr>')
+      -- map('n', 'vU', '<cmd>STSSwapUpNormal<cr>')
+    end,
+  },
+  ['smjonas/live-command.nvim'] = {
+    tag = '1.*',
+    config = misc 'live-command',
+  },
 }
 
 require('core.packer').run(plugins)

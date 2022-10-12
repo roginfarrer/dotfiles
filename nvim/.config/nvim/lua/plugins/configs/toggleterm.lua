@@ -15,7 +15,6 @@ require('toggleterm').setup {
 
 local lazygit = Terminal:new {
   cmd = 'lazygit',
-  hidden = true,
   direction = 'float',
 }
 

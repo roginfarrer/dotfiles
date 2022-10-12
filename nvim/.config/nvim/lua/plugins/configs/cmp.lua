@@ -24,6 +24,10 @@ cmp_window.info = function(self)
 end
 
 cmp.setup {
+  completion = {
+    -- Fix autocompletion breaking when using '$'
+    keyword_pattern = [[\k\+]],
+  },
   window = {
     completion = {
       border = border 'CmpBorder',
@@ -93,7 +97,7 @@ cmp.setup {
   },
   sources = cmp.config.sources({
     { name = 'luasnip', keyword_length = 1 },
-    { name = 'copilot' },
+    -- { name = 'copilot' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lsp' },
     { name = 'npm' },

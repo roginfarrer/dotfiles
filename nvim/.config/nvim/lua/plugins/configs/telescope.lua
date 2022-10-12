@@ -1,4 +1,3 @@
-local actions = require 'telescope.actions'
 local action_layout = require 'telescope.actions.layout'
 
 require('telescope').setup {
@@ -49,8 +48,8 @@ require('telescope').setup {
   borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
 }
 
-require('project_nvim').setup()
-require('telescope').load_extension 'projects'
+-- require('project_nvim').setup()
+-- require('telescope').load_extension 'projects'
 
 -- https://github.com/nvim-telescope/telescope-node-modules.nvim
 require('telescope').load_extension 'node_modules'
@@ -59,8 +58,8 @@ require('telescope').load_extension 'packer'
 -- https://github.com/nvim-telescope/telescope-fzf-native.nvim
 require('telescope').load_extension 'fzf'
 -- https://github.com/AckslD/nvim-neoclip.lua
-require('neoclip').setup()
-require('telescope').load_extension 'neoclip'
+-- require('neoclip').setup()
+-- require('telescope').load_extension 'neoclip'
 require('telescope').load_extension 'file_browser'
 require('telescope').load_extension 'git_worktree'
 

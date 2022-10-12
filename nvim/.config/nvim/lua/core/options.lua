@@ -18,12 +18,13 @@ o.hlsearch = false
 o.ignorecase = true
 o.inccommand = 'nosplit'
 o.laststatus = 3
-o.lazyredraw = true
+-- o.lazyredraw = true
 o.linebreak = true
 o.mouse = 'a'
 o.number = true
 o.pumblend = 10
-o.scrolloff = 10
+o.relativenumber = true
+o.scrolloff = 5
 o.shell = 'zsh'
 o.sessionoptions =
   'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
@@ -37,11 +38,12 @@ o.signcolumn = 'yes'
 o.smartcase = true
 o.smartindent = true
 o.splitbelow = true
+o.splitkeep = 'screen'
 o.splitright = true
 o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
-o.guifont = 'MonoLisa Nerd Font:h16'
+o.guifont = 'MonoLisa:h16'
 o.timeoutlen = 500
 o.undofile = true
 o.updatetime = 250
@@ -59,6 +61,15 @@ else
   vim.g.python3_host_prog = '/usr/local/bin/python3'
   vim.g.python_host_prog = '/usr/bin/python'
 end
+
+if vim.g.started_by_firenvim then
+  o.guifont = 'Monolisa Nerd Font:h13'
+  o.laststatus = 0
+  map('n', 'K', function() end)
+end
+
+vim.g.neovide_cursor_animation_length = 0.08
+vim.g.neovide_cursor_trail_size = 0.5
 
 local default_plugins = {
   '2html_plugin',
