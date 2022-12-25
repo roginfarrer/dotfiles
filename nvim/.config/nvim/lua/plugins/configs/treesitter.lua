@@ -74,6 +74,9 @@ require('nvim-treesitter.configs').setup {
       'mdx',
     },
   },
+  context = {
+    enable = true,
+  },
   textobjects = {
     -- swap = {
     --   enable = true,
@@ -135,4 +138,9 @@ require('nvim-treesitter.configs').setup {
 local autoTagPresent, autotag = pcall(require, 'nvim-ts-autotag')
 if autoTagPresent then
   autotag.setup()
+end
+
+local contextPresent, context = pcall(require, 'treesitter-context')
+if contextPresent then
+  context.setup {}
 end

@@ -38,8 +38,6 @@ map('', '<leader>Y', '"+Y', { silent = false })
 
 local general = {
   n = {
-    [' '] = { '<nop>' },
-
     -- When changing, don't save to register
     ['c'] = { '"_c' },
     ['C'] = { '"_C' },
@@ -59,16 +57,6 @@ local general = {
     -- paste from yank register
     ['yp'] = { '"0p' },
     ['yP'] = { '"0P' },
-
-    ['dd'] = {
-      function()
-        if vim.api.nvim_get_current_line():match '^%s*$' then
-          return '"_dd'
-        else
-          return 'dd'
-        end
-      end,
-    },
 
     -- Put from system clipboard
     ['<leader>p'] = { '"+p' },
@@ -272,7 +260,13 @@ local leader = {
       function()
         require('telescope.builtin').live_grep { cwd = vim.fn.expand '%:p:h' }
       end,
-      'Live Grep',
+      'Live Grep (in dir)',
+    },
+    q = {
+      function()
+        require('plugins.configs.telescope').filesContaining()
+      end,
+      'Live Grep (files containing)',
     },
   },
   ['<tab>'] = {
@@ -354,8 +348,10 @@ wk.register(textobjs, { mode = 'o' })
 wk.register(textobjs, { mode = 'x' })
 
 wk.register {
-  -- ['[g'] = 'Diagnostic Previous',
-  -- [']g'] = 'Diagnostic Next',
+  ['[g'] = ':GrappleJumpBackward<CR>',
+  'Grapple Backward',
+  [']g'] = ':GrappleJumpForward<CR>',
+  'Grapple Forward',
   ['[d'] = 'Diagnostic Previous',
   [']d'] = 'Diagnostic Next',
   ['[q'] = 'Quickfix Previous',
@@ -384,10 +380,6 @@ wk.register {
   },
 }
 
-if packer_plugins['neo-tree.nvim'] then
-  map('n', '-', ':Neotree filesystem reveal current<CR>')
-end
-
 local function browse(opts)
   require('plenary.job'):new({ 'open', opts.args }):start()
 end
@@ -397,3 +389,11 @@ vim.api.nvim_create_user_command(
   browse,
   { bang = true, range = true, nargs = 1 }
 )
+
+map('n', 'dd', function()
+  if vim.api.nvim_get_current_line():match '^%s*$' then
+    return '"_dd'
+  else
+    return 'dd'
+  end
+end, { expr = true })

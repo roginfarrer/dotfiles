@@ -5,7 +5,7 @@ vim.g.maplocalleader = ' '
 
 o.breakindent = true
 o.breakindentopt = 'shift:2'
--- o.cmdheight = 0
+o.cmdheight = 0
 o.completeopt = 'menuone,noselect,noinsert'
 o.expandtab = true
 o.foldexpr = [[nvim_treesitter#foldexpr()]]
@@ -105,6 +105,6 @@ local default_plugins = {
   'ftplugin',
 }
 
-for _, plugin in pairs(default_plugins) do
-  vim.g['loaded_' .. plugin] = 1
-end
+-- for _, plugin in pairs(default_plugins) do
+--   vim.g['loaded_' .. plugin] = 1
+-- end

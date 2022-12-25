@@ -12,9 +12,8 @@ local function getJestTestCmd()
   -- path of the current buffer, relative to the cwd
   local currentBufferFilePath = vim.fn.expand '%:~:.'
 
-  local pkgJsonParentDir = lsputil.find_package_json_ancestor(
-    currentBufferFilePath
-  )
+  local pkgJsonParentDir =
+    lsputil.find_package_json_ancestor(currentBufferFilePath)
 
   if not pkgJsonParentDir then
     vim.b.jest_test_cmd = jestCmd
@@ -63,13 +62,13 @@ local setJestCmd = function()
   vim.g.neotest_jest_cmd = vim.b.jest_test_cmd
 end
 
-autocmd('BufRead', {
-  pattern = '*.test.*',
-  callback = function()
-    setJestCmd()
-  end,
-  group = 'set_jest_cmd',
-})
+-- autocmd('BufRead', {
+--   pattern = '*.test.*',
+--   callback = function()
+--     setJestCmd()
+--   end,
+--   group = 'set_jest_cmd',
+-- })
 
 require('neotest').setup {
   icons = {
@@ -86,14 +85,12 @@ require('neotest').setup {
     unknown = '?',
   },
   adapters = {
-    require 'neotest-jest' {},
-    -- require 'neotest-vim-test' {
-    --   allow_file_types = {
-    --     'javascript',
-    --     'javascriptreact',
-    --     'typescript',
-    --     'typescriptreact',
-    --   },
-    -- },
+    require 'neotest-jest' {
+      cwd = function(path)
+        local cwd =
+          require('neotest-jest.util').find_package_json_ancestor(path)
+        return cwd
+      end,
+    },
   },
 }

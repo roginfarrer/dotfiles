@@ -1,25 +1,26 @@
-vim.cmd 'packadd packer.nvim'
-
 local function config(name)
-  return string.format("require('plugins.configs.%s')", name)
+  local path = string.format('plugins.configs.%s', name)
+  return function()
+    require(path)
+  end
 end
 
 local function misc(name)
-  return require('plugins.configs.misc')[name]
+  return function()
+    require('plugins.configs.misc')[name]()
+  end
 end
 
 local plugins = {
-  ['wbthomason/packer.nvim'] = {},
   ['nvim-lua/plenary.nvim'] = {},
-
-  ['lewis6991/impatient.nvim'] = { rocks = 'mpack' },
 
   ['kyazdani42/nvim-web-devicons'] = { config = misc 'devicons' },
 
-  ['ggandor/leap.nvim'] = { config = misc 'leap' },
+  ['ggandor/leap.nvim'] = { config = misc 'leap', event = 'VeryLazy' },
 
   ['glacambre/firenvim'] = {
-    run = function()
+    lazy = false,
+    build = function()
       vim.fn['firenvim#install'](0)
     end,
   },
@@ -30,7 +31,7 @@ local plugins = {
 
   ['williamboman/mason.nvim'] = {
     config = config 'lsp',
-    requires = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
+    dependencies = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
   },
   ['folke/neodev.nvim'] = {},
   ['jose-elias-alvarez/null-ls.nvim'] = {},
@@ -39,7 +40,8 @@ local plugins = {
   ['glepnir/lspsaga.nvim'] = {},
   ['hrsh7th/nvim-cmp'] = {
     config = config 'cmp',
-    requires = {
+    event = 'InsertEnter',
+    dependencies = {
       'saadparwaiz1/cmp_luasnip',
       'petertriho/cmp-git',
       'David-Kunz/cmp-npm',
@@ -52,8 +54,11 @@ local plugins = {
       'mtoohey31/cmp-fish',
     },
   },
-  ['L3MON4D3/LuaSnip'] = { config = config 'luasnip' },
-  ['windwp/nvim-autopairs'] = { config = config 'autopairs' },
+  ['L3MON4D3/LuaSnip'] = { config = config 'luasnip', event = 'InsertEnter' },
+  ['windwp/nvim-autopairs'] = {
+    config = config 'autopairs',
+    event = 'InsertEnter',
+  },
   -- ['zbirenbaum/copilot.lua'] = {
   --   event = 'InsertEnter',
   --   config = function()
@@ -72,53 +77,75 @@ local plugins = {
 
   ['jghauser/mkdir.nvim'] = { event = 'CmdlineEnter' },
   -- ['echasnovski/mini.nvim'] = { config = config 'mini' },
-  ['kylechui/nvim-surround'] = { config = config 'surround' },
+  ['kylechui/nvim-surround'] = {
+    config = config 'surround',
+    event = 'InsertEnter',
+  },
   ['tpope/vim-eunuch'] = { event = 'CmdlineEnter' },
   ['tpope/vim-abolish'] = { event = 'CmdlineEnter' },
   ['wellle/targets.vim'] = { event = 'CursorMoved' },
-  ['numToStr/Comment.nvim'] = { config = config 'comment' },
+  ['numToStr/Comment.nvim'] = {
+    config = config 'comment',
+    event = 'VeryLazy',
+  },
   ['Julian/vim-textobj-variable-segment'] = {
-    requires = 'kana/vim-textobj-user',
-    event = 'CursorMoved',
+    dependencies = 'kana/vim-textobj-user',
+    event = 'VeryLazy',
     branch = 'main',
   },
-  ['axelvc/template-string.nvim'] = { config = misc 'template_string' },
+  ['axelvc/template-string.nvim'] = {
+    config = misc 'template_string',
+    event = 'InsertEnter',
+  },
 
   -- -- -- -- -- -- -- --
   --   User Interface  --
   -- -- -- -- -- -- -- --
 
   ['goolord/alpha-nvim'] = { config = config 'alpha' },
-  ['nvim-lualine/lualine.nvim'] = { config = config 'lualine' },
+  ['nvim-lualine/lualine.nvim'] = {
+    config = config 'lualine',
+    event = 'VeryLazy',
+  },
   ['nvim-treesitter/nvim-treesitter'] = {
-    run = ':TSUpdate',
+    build = ':TSUpdate',
     config = config 'treesitter',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-context',
+      { 'lewis6991/spellsitter.nvim', config = true },
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      'p00f/nvim-ts-rainbow',
+    },
   },
-  ['nvim-treesitter/nvim-treesitter-context'] = {},
-  ['lewis6991/spellsitter.nvim'] = {
-    config = function()
-      require('spellsitter').setup()
-    end,
-  },
-  ['nvim-treesitter/nvim-treesitter-textobjects'] = { event = 'BufRead' },
-  ['JoosepAlviste/nvim-ts-context-commentstring'] = {},
-  ['windwp/nvim-ts-autotag'] = {},
+  -- ['nvim-treesitter/nvim-treesitter-context'] = {},
+  -- ['lewis6991/spellsitter.nvim'] = {
+  --   config = function()
+  --     require('spellsitter').setup()
+  --   end,
+  -- },
+  -- ['nvim-treesitter/nvim-treesitter-textobjects'] = { event = 'BufRead' },
+  -- ['JoosepAlviste/nvim-ts-context-commentstring'] = {},
   ['folke/which-key.nvim'] = { config = config 'which-key' },
   ['kevinhwang91/nvim-bqf'] = { ft = 'qf' },
-  ['kdheepak/tabline.nvim'] = { config = misc 'tabline' },
+  ['kdheepak/tabline.nvim'] = { config = misc 'tabline', event = 'BufReadPre' },
   ['sindrets/winshift.nvim'] = {
     config = config 'winshift',
     cmd = 'WinShift',
   },
   ['kevinhwang91/nvim-ufo'] = {
-    requires = 'kevinhwang91/promise-async',
-    after = 'nvim-treesitter',
+    event = 'BufReadPost',
+    dependencies = {
+      'kevinhwang91/promise-async',
+    },
     config = config 'ufo',
   },
 
   ['akinsho/toggleterm.nvim'] = {
-    tag = 'v2.*',
+    version = 'v2.*',
     config = config 'toggleterm',
+    event = 'VeryLazy',
   },
 
   -- -- -- --
@@ -138,19 +165,21 @@ local plugins = {
       'Gvdiffsplit',
       'Gedit',
     },
-    requires = { 'tpope/vim-rhubarb' },
+    dependencies = { 'tpope/vim-rhubarb' },
   },
   ['sindrets/diffview.nvim'] = {
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
   },
   ['lewis6991/gitsigns.nvim'] = {
     config = config 'gitsigns',
+    event = 'VeryLazy',
   },
   ['akinsho/git-conflict.nvim'] = {
     config = misc 'git-conflict',
+    event = 'VeryLazy',
   },
   ['pwntester/octo.nvim'] = {
-    requires = {
+    dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
       'kyazdani42/nvim-web-devicons',
@@ -166,22 +195,22 @@ local plugins = {
     end,
   },
   -- ['anuvyklack/hydra.nvim'] = { config = config 'hydra' },
-  ['ThePrimeagen/git-worktree.nvim'] = {},
+  -- ['ThePrimeagen/git-worktree.nvim'] = {},
 
   -- -- -- -- -- -- -- --
   --   File Browsing   --
   -- -- -- -- -- -- -- --
 
   ['tamago324/lir.nvim'] = {
-    -- keys = '-',
-    requires = {
+    keys = '-',
+    dependencies = {
       'tamago324/lir-git-status.nvim',
     },
     config = config 'lir',
   },
   -- ['nvim-neo-tree/neo-tree.nvim'] = {
   --   branch = 'v2.x',
-  --   requires = {
+  --   dependencies = {
   --     'nvim-lua/plenary.nvim',
   --     'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
   --     'MunifTanjim/nui.nvim',
@@ -192,12 +221,12 @@ local plugins = {
   -- ['tpope/vim-vinegar'] = {},
   ['nvim-telescope/telescope.nvim'] = {
     config = config 'telescope',
-    requires = {
+    cmd = 'Telescope',
+    dependencies = {
       'nvim-telescope/telescope-node-modules.nvim',
-      { 'roginfarrer/telescope-packer.nvim', branch = 'patch-1' },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
-        run = 'make',
+        build = 'make',
       },
       'nvim-telescope/telescope-file-browser.nvim',
     },
@@ -210,8 +239,8 @@ local plugins = {
 
   ['jxnblk/vim-mdx-js'] = { ft = { 'mdx', 'markdown.mdx' } },
   ['fladson/vim-kitty'] = { ft = 'kitty' },
-  ['catppuccin/nvim'] = { as = 'catppuccin', run = 'CatppuccinCompile' },
-  ['p00f/nvim-ts-rainbow'] = {},
+  ['catppuccin/nvim'] = { name = 'catppuccin' },
+  -- ['p00f/nvim-ts-rainbow'] = {},
   ['ellisonleao/glow.nvim'] = {
     cmd = { 'Glow' },
   },
@@ -221,55 +250,62 @@ local plugins = {
   -- -- -- -- -- -- -- --
 
   ['moll/vim-bbye'] = { cmd = 'Bdelete' },
-  ['mrjones2014/smart-splits.nvim'] = {},
+  ['mrjones2014/smart-splits.nvim'] = { event = 'BufReadPost' },
   ['anuvyklack/windows.nvim'] = {
-    requires = {
+    dependencies = {
       'anuvyklack/middleclass',
       'anuvyklack/animation.nvim',
     },
+    event = 'BufReadPost',
   },
-  ['Shatur/neovim-session-manager'] = { config = config 'sessions' },
+  ['Shatur/neovim-session-manager'] = {
+    config = config 'sessions',
+    event = 'VeryLazy',
+  },
   ['nvim-neotest/neotest'] = {
-    requires = { '~/projects/neotest-jest' },
+    dependencies = { 'haydenmeade/neotest-jest', dev = true },
     config = config 'neotest',
+    lazy = true,
   },
 
-  ['ziontee113/syntax-tree-surfer'] = {
-    config = function()
-      require('syntax-tree-surfer').setup {}
+  -- ['ziontee113/syntax-tree-surfer'] = {
+  --   config = function()
+  --     require('syntax-tree-surfer').setup {}
 
-      vim.keymap.set('n', 'vU', function()
-        vim.opt.opfunc = 'v:lua.STSSwapUpNormal_Dot'
-        return 'g@l'
-      end, { silent = true, expr = true })
-      vim.keymap.set('n', 'vD', function()
-        vim.opt.opfunc = 'v:lua.STSSwapDownNormal_Dot'
-        return 'g@l'
-      end, { silent = true, expr = true })
+  --     vim.keymap.set('n', 'vU', function()
+  --       vim.opt.opfunc = 'v:lua.STSSwapUpNormal_Dot'
+  --       return 'g@l'
+  --     end, { silent = true, expr = true })
+  --     vim.keymap.set('n', 'vD', function()
+  --       vim.opt.opfunc = 'v:lua.STSSwapDownNormal_Dot'
+  --       return 'g@l'
+  --     end, { silent = true, expr = true })
 
-      -- Swap Current Node at the Cursor with it's siblings, Dot Repeatable
-      vim.keymap.set('n', 'vd', function()
-        vim.opt.opfunc = 'v:lua.STSSwapCurrentNodeNextNormal_Dot'
-        return 'g@l'
-      end, { silent = true, expr = true })
-      vim.keymap.set('n', 'vu', function()
-        vim.opt.opfunc = 'v:lua.STSSwapCurrentNodePrevNormal_Dot'
-        return 'g@l'
-      end, { silent = true, expr = true })
+  --     -- Swap Current Node at the Cursor with it's siblings, Dot Repeatable
+  --     vim.keymap.set('n', 'vd', function()
+  --       vim.opt.opfunc = 'v:lua.STSSwapCurrentNodeNextNormal_Dot'
+  --       return 'g@l'
+  --     end, { silent = true, expr = true })
+  --     vim.keymap.set('n', 'vu', function()
+  --       vim.opt.opfunc = 'v:lua.STSSwapCurrentNodePrevNormal_Dot'
+  --       return 'g@l'
+  --     end, { silent = true, expr = true })
 
-      -- map('n', 'vd', '<cmd>STSSwapCurrentNodeNextNormal<cr>')
-      -- map('n', 'vu', '<cmd>STSSwapCurrentNodePrevNormal<cr>')
-      -- map('n', 'vD', '<cmd>STSSwapDownNormal<cr>')
-      -- map('n', 'vU', '<cmd>STSSwapUpNormal<cr>')
-    end,
-  },
+  --     -- map('n', 'vd', '<cmd>STSSwapCurrentNodeNextNormal<cr>')
+  --     -- map('n', 'vu', '<cmd>STSSwapCurrentNodePrevNormal<cr>')
+  --     -- map('n', 'vD', '<cmd>STSSwapDownNormal<cr>')
+  --     -- map('n', 'vU', '<cmd>STSSwapUpNormal<cr>')
+  --   end,
+  -- },
   ['smjonas/live-command.nvim'] = {
-    tag = '1.*',
+    version = '1.*',
     config = misc 'live-command',
+    event = 'CmdlineEnter',
   },
   ['folke/noice.nvim'] = {
+    event = 'VeryLazy',
     config = config 'noice',
-    requires = {
+    dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       'MunifTanjim/nui.nvim',
       -- OPTIONAL:
@@ -278,7 +314,7 @@ local plugins = {
       -- 'rcarriga/nvim-notify',
     },
   },
-  ['gbprod/yanky.nvim'] = { config = misc 'yanky' },
+  ['gbprod/yanky.nvim'] = { config = misc 'yanky', event = 'VeryLazy' },
 }
 
-require('core.packer').run(plugins)
+require('core.lazy').run(plugins)

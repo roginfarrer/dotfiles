@@ -3,9 +3,6 @@ local cp = require('catppuccin.palettes').get_palette()
 local util = require 'catppuccin.utils.colors'
 
 cat.setup {
-  compile = {
-    enabled = true,
-  },
   integrations = {
     treesitter = true,
     native_lsp = {
@@ -64,36 +61,40 @@ cat.setup {
     telekasten = false,
     symbols_outline = false,
     mini = false,
+    mason = true,
+    neotest = true,
+    noice = true,
+    treesitter_context = true,
   },
-  custom_highlights = {
-    VertSplit = { fg = cp.black4 },
-    -- aka horizontal split
-    StatusLineNC = { fg = cp.black4 },
-    InclineNormal = {
-      fg = util.darken(cp.lavender, 0.3),
-      bg = util.darken(cp.lavender, 0.8),
-    },
-    InclineNormalNC = {
-      fg = util.darken(cp.lavender, 0.3),
-      bg = util.darken(cp.lavender, 0.8),
-    },
-    DiffAdd = { bg = util.darken(cp.green, 0.2) },
-    DiffDelete = { bg = util.darken(cp.red, 0.2) },
-    DiffText = { bg = util.darken(cp.yellow, 0.3) },
-    TelescopePromptPrefix = { bg = cp.crust },
-    TelescopePromptNormal = { bg = cp.crust },
-    TelescopeResultsNormal = { bg = cp.mantle },
-    TelescopePreviewNormal = { bg = cp.crust },
-    TelescopePromptBorder = { bg = cp.crust, fg = cp.crust },
-    TelescopeResultsBorder = { bg = cp.mantle, fg = cp.crust },
-    TelescopePreviewBorder = { bg = cp.crust, fg = cp.crust },
-    TelescopePromptTitle = { fg = cp.crust, bg = cp.lavender },
-    TelescopeResultsTitle = { fg = cp.crust },
-    TelescopePreviewTitle = { fg = cp.crust, bg = cp.lavender },
-  },
+  -- custom_highlights = {
+  --   VertSplit = { fg = cp.black4 },
+  --   -- aka horizontal split
+  --   StatusLineNC = { fg = cp.black4 },
+  --   InclineNormal = {
+  --     fg = util.darken(cp.lavender, 0.3),
+  --     bg = util.darken(cp.lavender, 0.8),
+  --   },
+  --   InclineNormalNC = {
+  --     fg = util.darken(cp.lavender, 0.3),
+  --     bg = util.darken(cp.lavender, 0.8),
+  --   },
+  --   DiffAdd = { bg = util.darken(cp.green, 0.2) },
+  --   DiffDelete = { bg = util.darken(cp.red, 0.2) },
+  --   DiffText = { bg = util.darken(cp.yellow, 0.3) },
+  --   TelescopePromptPrefix = { bg = cp.crust },
+  --   TelescopePromptNormal = { bg = cp.crust },
+  --   TelescopeResultsNormal = { bg = cp.mantle },
+  --   TelescopePreviewNormal = { bg = cp.crust },
+  --   TelescopePromptBorder = { bg = cp.crust, fg = cp.crust },
+  --   TelescopeResultsBorder = { bg = cp.mantle, fg = cp.crust },
+  --   TelescopePreviewBorder = { bg = cp.crust, fg = cp.crust },
+  --   TelescopePromptTitle = { fg = cp.crust, bg = cp.lavender },
+  --   TelescopeResultsTitle = { fg = cp.crust },
+  --   TelescopePreviewTitle = { fg = cp.crust, bg = cp.lavender },
+  -- },
 }
 
 vim.g.catppuccin_flavour = 'mocha'
-vim.cmd [[colorscheme catppuccin]]
+vim.cmd.colorscheme 'catppuccin'
 -- vim.cmd [[ colorscheme oxocarbon-lua]]
 -- vim.cmd [[colorscheme nordfox]]

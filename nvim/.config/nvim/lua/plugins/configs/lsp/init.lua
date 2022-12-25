@@ -42,8 +42,7 @@ vim.diagnostic.config {
 }
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- replace the default lsp diagnostic symbols
@@ -91,6 +90,13 @@ local function on_attach(client, bufnr)
   end
 
   lsp_cmd('LspGoToDefinition', 'vim.lsp.buf.definition')
+  vim.api.nvim_buf_create_user_command(bufnr, 'LspGoToDefinition', function()
+    if client.name == 'tsserver' then
+      vim.fn.execute 'TypescriptGoToSourceDefinition'
+    else
+      vim.lsp.buf.definition()
+    end
+  end, { force = true })
   lsp_cmd('LspGoToDeclaration', 'vim.lsp.buf.declaration')
   lsp_cmd('LspHover', 'vim.lsp.buf.hover')
   lsp_cmd('LspImplementations', 'vim.lsp.buf.implementation')
@@ -133,7 +139,7 @@ local function on_attach(client, bufnr)
       vim.fn.execute('h ' .. vim.fn.expand '<cword>')
     else
       -- if client.supports_method 'textDocument/hover' then
-      vim.fn.execute 'Lspsaga hover_doc'
+      vim.fn.execute 'LspHover'
       -- end
     end
   end
@@ -153,15 +159,15 @@ local function on_attach(client, bufnr)
   end
 
   bufmap('n', 'gD', ':LspGoToDefinition<CR>')
-  bufmap('n', 'gd', '<cmd>Lspsaga preview_definition<CR>')
+  bufmap('n', 'gd', '<cmd>Lspsaga peek_definition<CR>')
   bufmap('n', 'gh', '<cmd>Lspsaga lsp_finder<CR>')
   bufmap('n', 'gr', ':LspReferences<CR>')
-  bufmap('n', 'gs', '<cmd>Lspsaga signature_help<CR>')
+  bufmap('n', 'gs', '<cmd>LspSignatureHelp<CR>')
   bufmap('n', 'gy', ':LspTypeDefinition<CR>')
-  -- bufmap('n', '[g', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
-  -- bufmap('n', ']g', '<cmd>Lspsaga diagnostic_jump_next<CR>')
-  bufmap('n', '[g', '<cmd>LspPrevDiagnostic<CR>')
-  bufmap('n', ']g', '<cmd>LspNextDiagnostic<CR>')
+  -- bufmap('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
+  -- bufmap('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<CR>')
+  bufmap('n', '[d', '<cmd>LspPrevDiagnostic<CR>')
+  bufmap('n', ']d', '<cmd>LspNextDiagnostic<CR>')
   bufmap('n', 'K', showDocs)
   bufmap('n', 'gK', luaDocs)
 
@@ -193,17 +199,14 @@ require('mason-tool-installer').setup {
 
 local opts = { on_attach = on_attach, capabilities = capabilities }
 
-lspconfig.tsserver.setup {
-  capabilities = capabilities,
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-    require('plugins.configs.lsp.tsserver').on_attach(client, bufnr)
-  end,
+require('typescript').setup {
+  go_to_source_definition = {
+    fallback = true, -- fall back to standard LSP definition on failure
+  },
+  server = opts,
 }
 
-lspconfig.sumneko_lua.setup(
-  vim.tbl_deep_extend('force', opts, require('lua-dev').setup {})
-)
+require('neodev').setup {}
 
 lspconfig.jsonls.setup(
   vim.tbl_deep_extend('force', opts, require 'plugins.configs.lsp.json')
@@ -214,12 +217,13 @@ lspconfig.stylelint_lsp.setup {
 }
 
 for _, ls in ipairs {
+  'sumneko_lua',
   'eslint',
   'bashls',
   'cssls',
   'astro',
   'marksman',
-  'yamlls',
+  -- 'yamlls',
   'html',
 } do
   lspconfig[ls].setup(opts)

@@ -47,6 +47,11 @@ _G.autocmd = function(event, opts)
   )
 end
 
+-- The function is called `t` for `termcodes`.
+_G.t = function(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 -- // recurse through dirs stopping if next to a package.json
 -- const getPackageContext = (dir) => {
 --   try {

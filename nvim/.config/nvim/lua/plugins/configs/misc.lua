@@ -93,4 +93,34 @@ M['live-command'] = function()
   }
 end
 
+M.grapple = function()
+  local grapple = require 'grapple'
+  grapple.setup()
+  map('n', '<leader>fk', function()
+    grapple.select {}
+  end, { desc = 'Select a mark' })
+
+  map('n', '<leader>k', function()
+    grapple.toggle {}
+  end, { desc = 'Toggle a mark' })
+
+  map('n', ']g', ':GrappleJumpForward')
+  map('n', '[g', ':GrappleJumpBackward')
+end
+
+M.yanky = function()
+  require('yanky').setup {
+    preserve_cursor_position = {
+      enabled = true,
+    },
+  }
+  vim.keymap.set({ 'n', 'x' }, 'p', '<Plug>(YankyPutAfter)')
+  vim.keymap.set({ 'n', 'x' }, 'P', '<Plug>(YankyPutBefore)')
+  vim.keymap.set({ 'n', 'x' }, 'gp', '<Plug>(YankyGPutAfter)')
+  vim.keymap.set({ 'n', 'x' }, 'gP', '<Plug>(YankyGPutBefore)')
+  vim.keymap.set('n', '<c-n>', '<Plug>(YankyCycleForward)')
+  vim.keymap.set('n', '<c-p>', '<Plug>(YankyCycleBackward)')
+  require('telescope').load_extension 'yank_history'
+end
+
 return M

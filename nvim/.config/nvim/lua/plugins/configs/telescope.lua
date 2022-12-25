@@ -43,6 +43,9 @@ require('telescope').setup {
       ignore_current_buffer = true,
       sort_mru = true,
     },
+    builtin = {
+      include_extensions = true,
+    },
   },
   border = {},
   borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
@@ -54,14 +57,11 @@ require('telescope').setup {
 -- https://github.com/nvim-telescope/telescope-node-modules.nvim
 require('telescope').load_extension 'node_modules'
 -- https://github.com/nvim-telescope/telescope-packer.nvim
-require('telescope').load_extension 'packer'
+-- require('telescope').load_extension 'packer'
 -- https://github.com/nvim-telescope/telescope-fzf-native.nvim
 require('telescope').load_extension 'fzf'
--- https://github.com/AckslD/nvim-neoclip.lua
--- require('neoclip').setup()
--- require('telescope').load_extension 'neoclip'
 require('telescope').load_extension 'file_browser'
-require('telescope').load_extension 'git_worktree'
+-- require('telescope').load_extension 'git_worktree'
 
 local M = {}
 
@@ -83,11 +83,17 @@ M.project_files = function()
     'rev-parse',
     '--is-inside-work-tree',
   }
-  if result[1] == 'false' then
+  if not result[1] then
     require('telescope.builtin').find_files()
   else
     require('telescope.builtin').git_files()
   end
+end
+M.filesContaining = function()
+  require('telescope.builtin').live_grep {
+    prompt_title = 'Find Files Containing',
+    additional_args = { '--files-with-matches' },
+  }
 end
 
 return M

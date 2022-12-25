@@ -8,7 +8,7 @@ M.setup = function(on_attach)
     debug = false,
     autostart = true,
     sources = {
-      b.formatting.prettierd.with {
+      b.formatting.prettier.with {
         filetypes = {
           'javascript',
           'javascriptreact',

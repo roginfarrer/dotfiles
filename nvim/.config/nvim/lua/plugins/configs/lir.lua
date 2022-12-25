@@ -92,20 +92,25 @@ lir.setup {
   mappings = {
     ['<CR>'] = actions.edit,
     ['l'] = actions.edit,
+    ['.'] = function() -- pre-populate current item into command line
+      local ctx = lir.get_context()
+      local path = ctx.dir .. ctx:current_value()
+      local name = vim.fn.fnamemodify(path, ':p:.')
+      vim.fn.feedkeys(': ' .. name .. t '<C-b>')
+    end,
     ['<C-s>'] = actions.split,
     ['<C-v>'] = actions.vsplit,
     ['<C-t>'] = actions.tabedit,
     ['h'] = actions.up,
     ['-'] = actions.up,
     ['q'] = actions.quit,
-    -- ['I'] = actions.mkdir,
-    -- ['i'] = actions.newfile,
     ['a'] = input_newfile,
     ['r'] = actions.rename,
     ['@'] = actions.cd,
     ['yf'] = actions.yank_path,
-    ['.'] = actions.toggle_show_hidden,
-    ['d'] = actions.delete,
+    ['H'] = actions.toggle_show_hidden,
+    ['D'] = actions.delete,
+    ['d'] = actions.wipeout,
     ['<Tab>'] = function()
       mark_actions.toggle_mark()
     end,
@@ -127,9 +132,6 @@ lir.setup {
       ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
       { noremap = true, silent = true }
     )
-
-    -- echo cwd
-    -- vim.api.nvim_echo({ { vim.fn.expand '%:p', 'Normal' } }, false, {})
   end,
 }
 
