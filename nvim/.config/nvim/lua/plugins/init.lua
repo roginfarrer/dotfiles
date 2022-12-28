@@ -121,7 +121,8 @@ return {
     },
     cmd = { 'Octo' },
     config = {
-      github_hostname = 'github.csnzoo.com',
+      ---@diagnostic disable-next-line: undefined-field
+      github_hostname = _G.work_github_url,
     },
   },
 
