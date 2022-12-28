@@ -1,16 +1,25 @@
--- Disable statusline in dashboard
--- autocmd('FileType', {
---   pattern = 'alpha',
---   callback = function()
---     vim.opt.laststatus = 0
---   end,
--- })
--- autocmd('BufUnload', {
---   buffer = 0,
---   callback = function()
---     vim.opt.laststatus = 3
---   end,
--- })
+autocmd('BufEnter', {
+  pattern = '*',
+  callback = function()
+    if vim.bo.filetype == 'alpha' then
+      local isOnlyWindow = vim.fn.winnr '$' == vim.fn.winnr()
+      if isOnlyWindow then
+        -- Disable statusline in dashboard
+        vim.opt.laststatus = 0
+      end
+    end
+  end,
+})
+-- Init lualine and statusline
+-- if not in Alpha dashboard
+autocmd('BufLeave', {
+  pattern = '*',
+  callback = function()
+    if vim.bo.filetype == 'alpha' then
+      vim.o.laststatus = 3
+    end
+  end,
+})
 
 local reloaded_id = nil
 autocmd('BufWritePost', {
