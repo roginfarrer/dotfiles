@@ -1,8 +1,9 @@
 return {
   'nvim-neorg/neorg',
-  enabled = false,
-  run = ':Neorg sync-parsers', -- This is the important bit!
-  config = {
+  -- enabled = false,
+  ft = 'norg',
+  build = ':Neorg sync-parsers', -- This is the important bit!
+  opts = {
     -- Tell Neorg what modules to load
     load = {
       ['core.defaults'] = {}, -- Load all the default modules
@@ -14,11 +15,11 @@ return {
           },
         },
       },
-      ['core.gtd.base'] = {
-        config = {
-          workspace = 'my_workspace',
-        },
-      },
+      -- ['core.gtd.base'] = {
+      --   config = {
+      --     workspace = '~/neorg/gtd',
+      --   },
+      -- },
       ['core.norg.completion'] = {
         config = {
           engine = 'nvim-cmp',

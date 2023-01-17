@@ -1,7 +1,7 @@
 local M = {
   'nvim-lualine/lualine.nvim',
-  -- event = 'VeryLazy',
-  lazy = true,
+  event = 'VeryLazy',
+  -- lazy = true,
 }
 
 vim.cmd 'au User LspProgressUpdate let &ro = &ro'

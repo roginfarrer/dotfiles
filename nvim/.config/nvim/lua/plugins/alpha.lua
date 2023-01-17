@@ -1,5 +1,6 @@
 local M = {
   'goolord/alpha-nvim',
+  event = 'VimEnter',
 }
 
 function M.config()
@@ -67,11 +68,7 @@ function M.config()
       --   '  Load git worktree',
       --   ':Telescope git_worktree git_worktrees<CR>'
       -- ),
-      btn(
-        's',
-        '  Restore last session',
-        ':SessionManager load_last_session<CR>'
-      ),
+      btn('s', '  Restore last session', ':SessionLoad<CR>'),
       btn('u', '  Plugins', ':Lazy<CR>'),
       btn(
         'v',

@@ -1,5 +1,6 @@
 return {
   'Shatur/neovim-session-manager',
+  enabled = false,
   event = 'BufReadPre',
   config = function()
     require('session_manager').setup {

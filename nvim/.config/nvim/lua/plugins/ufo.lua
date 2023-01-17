@@ -4,25 +4,25 @@ return {
   dependencies = {
     'kevinhwang91/promise-async',
   },
-  config = function()
-    require('which-key').register {
-      zR = {
-        function()
-          require('ufo').openAllFolds()
-        end,
-        'Open all folds (UFO)',
-      },
-      zM = {
-        function()
-          require('ufo').closeAllFolds()
-        end,
-        'Close all folds (UFO)',
-      },
-    }
-    require('ufo').setup {
-      provider_selector = function(bufnr, filetype)
-        return { 'treesitter', 'indent' }
+  keys = {
+    {
+      'zR',
+      function()
+        require('ufo').openAllFolds()
       end,
-    }
-  end,
+      desc = 'Open all folds (UFO)',
+    },
+    {
+      'zM',
+      function()
+        require('ufo').closeAllFolds()
+      end,
+      desc = 'Close all folds (UFO)',
+    },
+  },
+  opts = {
+    provider_selector = function()
+      return { 'treesitter', 'indent' }
+    end,
+  },
 }

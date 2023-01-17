@@ -1,7 +1,20 @@
 return {
   'ggandor/leap.nvim',
-  event = 'VeryLazy',
-  config = function()
-    require('leap').set_default_keymaps {}
-  end,
+  keys = {
+    { 's', '<Plug>(leap-forward-to)', desc = 'Leap forward' },
+    { 'S', '<Plug>(leap-backward-to)', desc = 'Leap backward' },
+    {
+      'x',
+      '<Plug>(leap-forward-to)',
+      desc = 'Leap forward',
+      mode = { 'x', 'o' },
+    },
+    {
+      'X',
+      '<Plug>(leap-forward-to)',
+      desc = 'Leap backward',
+      mode = { 'x', 'o' },
+    },
+    { 'gs', '<Plug>(leap-cross-window)', desc = 'Leap cross window' },
+  },
 }

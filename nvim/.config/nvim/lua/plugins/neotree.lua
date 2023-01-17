@@ -9,7 +9,7 @@ return {
   keys = {
     { '<leader>ft', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
   },
-  config = {
+  opts = {
     filesystem = {
       follow_current_file = true,
       filtered_items = {

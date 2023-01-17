@@ -1,4 +1,4 @@
-local M = { 'akinsho/toggleterm.nvim', version = 'v2.*', event = 'VeryLazy' }
+local M = { 'akinsho/toggleterm.nvim', version = 'v2.*', keys = { [[<C-\>]] } }
 
 function M.config()
   local Terminal = require('toggleterm.terminal').Terminal

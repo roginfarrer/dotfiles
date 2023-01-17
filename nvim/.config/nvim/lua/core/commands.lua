@@ -1,25 +1,25 @@
-autocmd('BufEnter', {
-  pattern = '*',
-  callback = function()
-    if vim.bo.filetype == 'alpha' then
-      local isOnlyWindow = vim.fn.winnr '$' == vim.fn.winnr()
-      if isOnlyWindow then
-        -- Disable statusline in dashboard
-        vim.opt.laststatus = 0
-      end
-    end
-  end,
-})
--- Init lualine and statusline
--- if not in Alpha dashboard
-autocmd('BufLeave', {
-  pattern = '*',
-  callback = function()
-    if vim.bo.filetype == 'alpha' then
-      vim.o.laststatus = 3
-    end
-  end,
-})
+-- autocmd('BufEnter', {
+--   pattern = '*',
+--   callback = function()
+--     if vim.bo.filetype == 'alpha' then
+--       local isOnlyWindow = vim.fn.winnr '$' == vim.fn.winnr()
+--       if isOnlyWindow then
+--         -- Disable statusline in dashboard
+--         vim.opt.laststatus = 0
+--       end
+--     end
+--   end,
+-- })
+-- -- Init lualine and statusline
+-- -- if not in Alpha dashboard
+-- autocmd('BufLeave', {
+--   pattern = '*',
+--   callback = function()
+--     if vim.bo.filetype == 'alpha' then
+--       vim.o.laststatus = 3
+--     end
+--   end,
+-- })
 
 local reloaded_id = nil
 autocmd('BufWritePost', {
@@ -42,18 +42,18 @@ autocmd('BufWritePost', {
   end,
 })
 
-autocmd('InsertEnter', {
-  pattern = '*',
-  callback = function()
-    vim.o.cul = true
-  end,
-})
-autocmd('InsertLeave', {
-  pattern = '*',
-  callback = function()
-    vim.o.cul = false
-  end,
-})
+-- autocmd('InsertEnter', {
+--   pattern = '*',
+--   callback = function()
+--     vim.o.cul = true
+--   end,
+-- })
+-- autocmd('InsertLeave', {
+--   pattern = '*',
+--   callback = function()
+--     vim.o.cul = false
+--   end,
+-- })
 
 autocmd('TextYankPost', {
   pattern = '*',
@@ -63,12 +63,12 @@ autocmd('TextYankPost', {
   end,
 })
 
-autocmd('VimResized', {
-  pattern = '*',
-  callback = function()
-    vim.cmd [[:wincmd =]]
-  end,
-})
+-- autocmd('VimResized', {
+--   pattern = '*',
+--   callback = function()
+--     vim.cmd [[:wincmd =]]
+--   end,
+-- })
 
 autocmd('BufReadPost', {
   pattern = '*rc',

@@ -3,7 +3,7 @@ return {
   'folke/which-key.nvim',
   {
     'kyazdani42/nvim-web-devicons',
-    config = {
+    opts = {
       override = {
         lir_folder_icon = {
           icon = '',
@@ -16,6 +16,7 @@ return {
   {
     'glacambre/firenvim',
     lazy = false,
+    enabled = false,
     build = function()
       vim.fn['firenvim#install'](0)
     end,
@@ -28,22 +29,22 @@ return {
   { 'jghauser/mkdir.nvim', event = 'CmdlineEnter' },
   { 'tpope/vim-eunuch', event = 'CmdlineEnter' },
   { 'tpope/vim-abolish', event = 'CmdlineEnter' },
-  { 'wellle/targets.vim', event = 'VeryLazy' },
+  -- { 'wellle/targets.vim', event = 'VeryLazy' },
   {
     'smjonas/inc-rename.nvim',
     lazy = true,
     config = true,
   },
 
-  {
-    'Julian/vim-textobj-variable-segment',
-    dependencies = 'kana/vim-textobj-user',
-    event = 'VeryLazy',
-    branch = 'main',
-  },
+  -- {
+  --   'Julian/vim-textobj-variable-segment',
+  --   dependencies = 'kana/vim-textobj-user',
+  --   event = 'VeryLazy',
+  --   branch = 'main',
+  -- },
   {
     'axelvc/template-string.nvim',
-    config = { remove_template_string = true },
+    opts = { remove_template_string = true },
     event = 'InsertEnter',
   },
 
@@ -53,25 +54,20 @@ return {
 
   { 'kevinhwang91/nvim-bqf', ft = 'qf' },
   {
-    'kdheepak/tabline.nvim',
-    config = {
-      enable = false,
-      options = { show_filename_only = true },
+    'sindrets/winshift.nvim',
+    config = true,
+    keys = {
+      { '<C-A-H>', '<cmd>WinShift left<CR>' },
+      { '<C-A-J>', '<cmd>WinShift down<CR>' },
+      { '<C-A-K>', '<cmd>WinShift up<CR>' },
+      { '<C-A-L>', '<cmd>WinShift right<CR>' },
     },
-    event = 'BufReadPre',
   },
-  { 'sindrets/winshift.nvim', config = true, cmd = 'WinShift' },
   {
     'stevearc/dressing.nvim',
-    config = {
+    lazy = true,
+    opts = {
       win_options = { winblend = 0 },
-      -- input = {
-      --   override = function(conf)
-      --     conf.col = -1
-      --     conf.row = 0
-      --     return conf
-      --   end,
-      -- },
     },
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
@@ -93,6 +89,7 @@ return {
 
   {
     'tpope/vim-fugitive',
+    enabled = false,
     cmd = {
       'Git',
       'GBrowse',
@@ -110,6 +107,9 @@ return {
   {
     'sindrets/diffview.nvim',
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+    keys = {
+      { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
+    },
   },
   { 'akinsho/git-conflict.nvim', config = true, event = 'VeryLazy' },
   {
@@ -120,7 +120,7 @@ return {
       'kyazdani42/nvim-web-devicons',
     },
     cmd = { 'Octo' },
-    config = {
+    opts = {
       ---@diagnostic disable-next-line: undefined-field
       github_hostname = _G.work_github_url,
     },
@@ -128,7 +128,7 @@ return {
 
   { 'jxnblk/vim-mdx-js', ft = 'mdx' },
   { 'fladson/vim-kitty', ft = 'kitty' },
-  { 'catppuccin/nvim', name = 'catppuccin', lazy = true, priority = 1000 },
+  { 'catppuccin/nvim', name = 'catppuccin', lazy = false, priority = 1000 },
   { 'folke/tokyonight.nvim', branch = 'main', lazy = true, priority = 1000 },
   { 'ellisonleao/glow.nvim', cmd = { 'Glow' } },
 
@@ -137,24 +137,35 @@ return {
   -- -- -- -- -- -- -- --
 
   { 'moll/vim-bbye', cmd = 'Bdelete' },
-  { 'mrjones2014/smart-splits.nvim', event = 'BufReadPost' },
   {
     'anuvyklack/windows.nvim',
     dependencies = {
       'anuvyklack/middleclass',
-      'anuvyklack/animation.nvim',
+      -- 'anuvyklack/animation.nvim',
     },
-    event = 'BufReadPost',
+    event = 'BufAdd',
+    init = function()
+      vim.o.winwidth = 10
+      vim.o.winminwidth = 10
+      vim.o.equalalways = false
+    end,
+    config = {
+      animation = {
+        fps = 40,
+        duration = 200,
+      },
+    },
   },
-
   {
     'smjonas/live-command.nvim',
     version = '1.*',
     event = 'CmdlineEnter',
-    config = {
+    opts = {
       commands = {
         Norm = { cmd = 'norm' },
       },
     },
   },
+
+  { 'shortcuts/no-neck-pain.nvim', version = '*', cmd = 'NoNeckPain' },
 }

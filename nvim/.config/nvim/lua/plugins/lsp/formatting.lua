@@ -1,12 +1,18 @@
 local M = {}
 
 function M.setup(client, bufnr)
-  local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
+    vim.lsp.buf.format {
+      filter = function(c)
+        return c.name == 'null-ls'
+      end,
+      bufnr = bufnr,
+    }
+  end, {})
 
   if client.supports_method 'textDocument/formatting' then
-    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
     vim.api.nvim_create_autocmd('BufWritePre', {
-      group = augroup,
+      group = vim.api.nvim_create_augroup('LspFormatting.' .. bufnr, {}),
       buffer = bufnr,
       callback = function()
         vim.lsp.buf.format {

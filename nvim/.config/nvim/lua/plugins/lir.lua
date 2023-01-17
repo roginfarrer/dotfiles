@@ -1,5 +1,6 @@
 local M = {
   'tamago324/lir.nvim',
+  enabled = false,
   dependencies = {
     'tamago324/lir-git-status.nvim',
   },

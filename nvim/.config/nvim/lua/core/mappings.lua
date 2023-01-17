@@ -42,10 +42,6 @@ local general = {
     ['c'] = { '"_c' },
     ['C'] = { '"_C' },
 
-    ['<C-h>'] = { ':SmartCursorMoveLeft<CR>', ' window left' },
-    ['<C-l>'] = { ':SmartCursorMoveRight<CR>', ' window right' },
-    ['<C-j>'] = { ':SmartCursorMoveDown<CR>', ' window down' },
-    ['<C-k>'] = { ':SmartCursorMoveUp<CR>', ' window up' },
     ['gx'] = {
       function()
         local path = vim.fn.expand '<cfile>'
@@ -76,11 +72,6 @@ local general = {
     -- Move entire lines up and down
     ['<A-k>'] = { ':m .-2<CR>==', ' move line up' },
     ['<A-j>'] = { ':m .+1<CR>==', ' move line up' },
-
-    ['<S-Left>'] = { ':SmartResizeLeft<CR>', 'resize window left' },
-    ['<S-Up>'] = { ':SmartResizeUp<CR>', 'resize window up' },
-    ['<S-Down>'] = { ':SmartResizeDown<CR>', 'resize window down' },
-    ['<S-Right>'] = { ':SmartResizeRight<CR>', 'resize window right' },
   },
 
   i = {
@@ -116,33 +107,8 @@ local general = {
   },
 
   t = {
-
     ['<leader><esc>'] = { [[<C-\><C-n>]], 'esc' },
     ['jk'] = { [[<C-\><C-n>]], 'esc' },
-    ['<C-h>'] = {
-      function()
-        require('smart-splits').move_cursor_left()
-      end,
-      ' window left',
-    },
-    ['<C-l>'] = {
-      function()
-        require('smart-splits').move_cursor_right()
-      end,
-      ' window right',
-    },
-    ['<C-j>'] = {
-      function()
-        require('smart-splits').move_cursor_down()
-      end,
-      ' window down',
-    },
-    ['<C-k>'] = {
-      function()
-        require('smart-splits').move_cursor_up()
-      end,
-      ' window up',
-    },
   },
 }
 
@@ -152,83 +118,24 @@ wk.register(general.v, { mode = 'v' })
 wk.register(general.x, { mode = 'x' })
 wk.register(general.t, { mode = 't' })
 
-local searchDotfiles = function()
-  require('telescope.builtin').live_grep {
-    cwd = '~/dotfiles',
-    prompt_title = '~ Dotfiles ~',
-  }
-end
-local findDotfiles = function()
-  require('telescope.builtin').git_files {
-    cwd = '~/dotfiles',
-    prompt_title = '~ Dotfiles ~',
-  }
-end
-local project_files = function()
-  local result = require('telescope.utils').get_os_command_output {
-    'git',
-    'rev-parse',
-    '--is-inside-work-tree',
-  }
-  if not result[1] then
-    require('telescope.builtin').find_files()
-  else
-    require('telescope.builtin').git_files()
-  end
-end
-local filesContaining = function()
-  require('telescope.builtin').live_grep {
-    prompt_title = 'Find Files Containing',
-    additional_args = { '--files-with-matches' },
-  }
-end
-
 local leader = {
-  [';'] = {
-    '<cmd>Telescope buffers<CR>',
-    'Buffers',
-  },
+  y = 'Yank to clipboard',
+  Y = 'Yank to clipboard',
+  p = 'Paste from clipboard',
+  P = 'Paste from clipboard',
   q = { ':q<cr>', 'Quit' },
   w = { ':w<CR>', 'Save' },
   x = { ':wq<cr>', 'Save and Quit' },
-  -- a = { 'Swap next function paramater' },
-  -- A = { 'Swap previous function parameter' },
   g = {
     name = 'Git',
-    c = { ':GBrowse!<CR>', 'Copy GitHub URL to Clipboard' },
-    o = { ':GBrowse<CR>', 'Open File in Browser' },
-    b = { '<Cmd>Telescope git_branches<CR>', 'Checkout Branch' },
-    C = {
-      '<cmd>Telescope git_bcommits<cr>',
-      'Checkout commit(for current file)',
-    },
-    d = { '<cmd>DiffviewOpen<cr>', 'DiffView' },
-    j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", 'Next Hunk' },
-    k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", 'Prev Hunk' },
-    l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", 'Blame' },
-    p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", 'Preview Hunk' },
-    r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", 'Reset Hunk' },
-    R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", 'Reset Buffer' },
-    s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", 'Stage Hunk' },
-    u = {
-      "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-      'Undo Stage Hunk',
-    },
   },
   d = {
     name = 'Configuration',
-    d = {
-      findDotfiles,
-      'Find Dotfiles',
-    },
-    g = {
-      searchDotfiles,
-      'Search Dotfiles',
-    },
     n = {
       ':e $MYVIMRC<CR>',
       'Open Neovim Config',
     },
+    o = { '<cmd>Lazy<cr>', 'Open lazy ui' },
     l = {
       name = 'Local files',
       f = {
@@ -248,55 +155,9 @@ local leader = {
       ':e ~/dotfiles/fish/.config/fish/config.fish<CR>',
       'Open Fish Config',
     },
-    r = { reloadConfig, 'Reload Configuration' },
-    p = {
-      name = 'Plugins',
-      p = { '<cmd>PackerSync<cr>', 'Sync' },
-      s = { '<cmd>PackerStatus<cr>', 'Status' },
-      i = { '<cmd>PackerInstall<cr>', 'Install' },
-      c = { '<cmd>PackerCompile<cr>', 'Compile' },
-      C = { '<cmd>PackerClean<cr>', 'Clean' },
-      l = { '<cmd>PackerLoad<cr>', 'Load' },
-      u = { '<cmd>PackerUpdate<cr>', 'Update' },
-      P = { '<cmd>PackerProfile<cr>', 'Profile' },
-    },
   },
   f = {
     name = 'Find',
-    t = { ':Telescope builtin include_extensions=true<CR>', 'Telescope' },
-    p = {
-      project_files,
-      'Git Files',
-    },
-    P = { '<cmd>Telescope projects<CR>', 'Change Project' },
-    b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
-    f = { '<cmd>Telescope find_files<CR>', 'All Files' },
-    ['.'] = {
-      function()
-        require('telescope.builtin').find_files {
-          cwd = vim.fn.expand '%:p:h',
-          prompt_title = vim.fn.expand '%:~:.:p:h',
-        }
-      end,
-      'Find in current directory',
-    },
-    d = {
-      findDotfiles,
-      'Dotfiles',
-    },
-    h = { '<cmd>Telescope oldfiles<CR>', 'Old Files' },
-    H = { '<cmd>Telescope help_tags<CR>', 'Help tags' },
-    g = { '<cmd>Telescope live_grep<CR>', 'Live Grep' },
-    G = {
-      function()
-        require('telescope.builtin').live_grep { cwd = vim.fn.expand '%:p:h' }
-      end,
-      'Live Grep (in dir)',
-    },
-    q = {
-      filesContaining,
-      'Live Grep (files containing)',
-    },
   },
   ['<tab>'] = {
     name = 'Workspace',
@@ -311,76 +172,37 @@ local leader = {
   },
   H = {
     name = 'Help',
-    t = { '<cmd>Telescope builtin<cr>', 'Telescope' },
-    c = { '<cmd>Telescope commands<cr>', 'Commands' },
-    h = { '<cmd>Telescope help_tags<cr>', 'Help Pages' },
-    m = { '<cmd>Telescope man_pages<cr>', 'Man Pages' },
-    k = { '<cmd>Telescope keymaps<cr>', 'Key Maps' },
-    s = { '<cmd>Telescope highlights<cr>', 'Search Highlight Groups' },
-    f = { '<cmd>Telescope filetypes<cr>', 'File Types' },
-    o = { '<cmd>Telescope vim_options<cr>', 'Options' },
-    a = { '<cmd>Telescope autocommands<cr>', 'Auto Commands' },
+  },
+  n = {
+    name = 'Noice',
   },
 }
 
 wk.register(leader, { prefix = '<leader>' })
 
-local visual = {
-  g = {
-    name = 'Git',
-    c = { [[:'<,'>GBrowse!<CR>]], 'Copy GitHub URL to Clipboard' },
-    o = { [[:'<,'>GBrowse<CR>]], 'Open In Browser' },
-  },
-}
-
-wk.register(visual, { prefix = '<leader>', mode = 'x' })
-
-wk.register({
-  ['<C-n>'] = { ':lua require("neotest").run.run()<CR>', 'Nearest Test' },
-  ['<C-f>'] = {
-    ':lua require("neotest").run.run(vim.fn.expand("%"))<CR>',
-    'Test File',
-  },
-  ['<C-l>'] = { ':lua require("neotest").run.run_last()<CR>', 'Last Test' },
-  ['<C-s>'] = {
-    ':lua require("neotest").summary.toggle()<CR>',
-    'Test Summary',
-  },
-  ['<C-o>'] = {
-    ':lua require("neotest").output.open({enter = true})<CR>',
-    'Test Output',
-  },
-}, {
-  prefix = 't',
-})
-
-local textobjs = {
-  a = {
-    b = 'a code block (treesitter)',
-    f = 'a function block (treesitter)',
-    C = 'a conditional block (treesitter)',
-    c = 'a comment block (treesitter)',
-    s = 'a statement block (treesitter)',
-    m = 'a call block (treesitter)',
-  },
-  i = {
-    b = 'inside code block (treesitter)',
-    f = 'inside function block (treesitter)',
-    C = 'inside conditional block (treesitter)',
-    c = 'inside comment block (treesitter)',
-    s = 'inside statement block (treesitter)',
-    m = 'inside call block (treesitter)',
-  },
-}
-
-wk.register(textobjs, { mode = 'o' })
-wk.register(textobjs, { mode = 'x' })
+-- local textobjs = {
+--   a = {
+--     b = 'a code block (treesitter)',
+--     f = 'a function block (treesitter)',
+--     C = 'a conditional block (treesitter)',
+--     c = 'a comment block (treesitter)',
+--     s = 'a statement block (treesitter)',
+--     m = 'a call block (treesitter)',
+--   },
+--   i = {
+--     b = 'inside code block (treesitter)',
+--     f = 'inside function block (treesitter)',
+--     C = 'inside conditional block (treesitter)',
+--     c = 'inside comment block (treesitter)',
+--     s = 'inside statement block (treesitter)',
+--     m = 'inside call block (treesitter)',
+--   },
+-- }
+--
+-- wk.register(textobjs, { mode = 'o' })
+-- wk.register(textobjs, { mode = 'x' })
 
 wk.register {
-  ['[g'] = ':GrappleJumpBackward<CR>',
-  'Grapple Backward',
-  [']g'] = ':GrappleJumpForward<CR>',
-  'Grapple Forward',
   ['[d'] = 'Diagnostic Previous',
   [']d'] = 'Diagnostic Next',
   ['[q'] = 'Quickfix Previous',
@@ -399,25 +221,13 @@ wk.register {
   ['[['] = 'Go to end of previous class',
   ['[M'] = 'Go to end of previous function',
   ['[]'] = 'Go to end of previous class',
-  ['[t'] = {
-    '<cmd>lua require("neotest").jump.prev({ status = "failed" })<CR>',
-    'Go to previous failed test',
-  },
-  [']t'] = {
-    '<cmd>lua require("neotest").jump.next({ status = "failed" })<CR>',
-    'Go to next failed test',
-  },
 }
 
 local function browse(opts)
   require('plenary.job'):new({ 'open', opts.args }):start()
 end
 
-vim.api.nvim_create_user_command(
-  'Browse',
-  browse,
-  { bang = true, range = true, nargs = 1 }
-)
+vim.api.nvim_create_user_command('Browse', browse, { bang = true, range = true, nargs = 1 })
 
 map('n', 'dd', function()
   if vim.api.nvim_get_current_line():match '^%s*$' then
@@ -426,8 +236,3 @@ map('n', 'dd', function()
     return 'dd'
   end
 end, { expr = true })
-
-map('n', '<C-A-H>', '<Cmd>WinShift left<CR>')
-map('n', '<C-A-J>', '<Cmd>WinShift down<CR>')
-map('n', '<C-A-K>', '<Cmd>WinShift up<CR>')
-map('n', '<C-A-L>', '<Cmd>WinShift right<CR>')

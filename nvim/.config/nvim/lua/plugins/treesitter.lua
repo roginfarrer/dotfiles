@@ -3,11 +3,12 @@ local M = {
   build = ':TSUpdate',
   event = 'VeryLazy',
   dependencies = {
-    'nvim-treesitter/nvim-treesitter-context',
+    { 'nvim-treesitter/nvim-treesitter-context', config = true },
     { 'lewis6991/spellsitter.nvim', config = true },
-    'nvim-treesitter/nvim-treesitter-textobjects',
+    -- 'nvim-treesitter/nvim-treesitter-textobjects',
     'JoosepAlviste/nvim-ts-context-commentstring',
     'p00f/nvim-ts-rainbow',
+    { 'windwp/nvim-ts-autotag', config = true },
   },
 }
 
@@ -56,10 +57,10 @@ function M.config()
     indent = { enable = true },
     highlight = {
       enable = true,
-      use_languagetree = true,
-      additional_vim_regex_highlighting = {
-        'markdown',
-      },
+      -- use_languagetree = true,
+      -- additional_vim_regex_highlighting = {
+      --   'markdown',
+      -- },
     },
     context_commentstring = { enable = true, enable_autocmd = false },
     autopairs = {
@@ -91,73 +92,73 @@ function M.config()
     context = {
       enable = true,
     },
-    textobjects = {
-      -- swap = {
-      --   enable = true,
-      --   swap_next = {
-      --     ['<leader>fa'] = '@parameter.inner',
-      --   },
-      --   swap_previous = {
-      --     ['<leader>fA'] = '@parameter.inner',
-      --   },
-      -- },
-      select = {
-        enable = true,
-        lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-        keymaps = {
-          -- You can use the capture groups defined in textobjects.scm
-          ['ab'] = '@block.outer',
-          ['af'] = '@function.outer',
-          ['aC'] = '@conditional.outer',
-          ['ac'] = '@comment.outer',
-          ['as'] = '@statement.outer',
-          ['am'] = '@call.outer',
-          ['aP'] = '@parameter.outer',
+    -- textobjects = {
+    --   -- swap = {
+    --   --   enable = true,
+    --   --   swap_next = {
+    --   --     ['<leader>fa'] = '@parameter.inner',
+    --   --   },
+    --   --   swap_previous = {
+    --   --     ['<leader>fA'] = '@parameter.inner',
+    --   --   },
+    --   -- },
+    --   select = {
+    --     enable = true,
+    --     lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+    --     keymaps = {
+    --       -- You can use the capture groups defined in textobjects.scm
+    --       ['ab'] = '@block.outer',
+    --       ['af'] = '@function.outer',
+    --       ['aC'] = '@conditional.outer',
+    --       ['ac'] = '@comment.outer',
+    --       ['as'] = '@statement.outer',
+    --       ['am'] = '@call.outer',
+    --       ['aP'] = '@parameter.outer',
 
-          ['ib'] = '@block.inner',
-          ['if'] = '@function.inner',
-          ['iC'] = '@conditional.inner',
-          ['ic'] = '@comment.inner',
-          ['is'] = '@statement.inner',
-          ['im'] = '@call.inner',
-          ['iP'] = '@parameter.inner',
-        },
-      },
-      move = {
-        enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
-        goto_next_start = {
-          [']m'] = '@function.outer',
-          [']]'] = '@class.outer',
-        },
-        goto_next_end = {
-          [']M'] = '@function.outer',
-          [']['] = '@class.outer',
-        },
-        goto_previous_start = {
-          ['[m'] = '@function.outer',
-          ['[['] = '@class.outer',
-        },
-        goto_previous_end = {
-          ['[M'] = '@function.outer',
-          ['[]'] = '@class.outer',
-        },
-      },
-    },
+    --       ['ib'] = '@block.inner',
+    --       ['if'] = '@function.inner',
+    --       ['iC'] = '@conditional.inner',
+    --       ['ic'] = '@comment.inner',
+    --       ['is'] = '@statement.inner',
+    --       ['im'] = '@call.inner',
+    --       ['iP'] = '@parameter.inner',
+    --     },
+    --   },
+    --   move = {
+    --     enable = true,
+    --     set_jumps = true, -- whether to set jumps in the jumplist
+    --     goto_next_start = {
+    --       [']m'] = '@function.outer',
+    --       [']]'] = '@class.outer',
+    --     },
+    --     goto_next_end = {
+    --       [']M'] = '@function.outer',
+    --       [']['] = '@class.outer',
+    --     },
+    --     goto_previous_start = {
+    --       ['[m'] = '@function.outer',
+    --       ['[['] = '@class.outer',
+    --     },
+    --     goto_previous_end = {
+    --       ['[M'] = '@function.outer',
+    --       ['[]'] = '@class.outer',
+    --     },
+    --   },
+    -- },
     spellsitter = {
       enable = true,
     },
   }
 
-  local autoTagPresent, autotag = pcall(require, 'nvim-ts-autotag')
-  if autoTagPresent then
-    autotag.setup()
-  end
+  -- local autoTagPresent, autotag = pcall(require, 'nvim-ts-autotag')
+  -- if autoTagPresent then
+  --   autotag.setup()
+  -- end
 
-  local contextPresent, context = pcall(require, 'treesitter-context')
-  if contextPresent then
-    context.setup {}
-  end
+  -- local contextPresent, context = pcall(require, 'treesitter-context')
+  -- if contextPresent then
+  --   context.setup {}
+  -- end
 end
 
 return M

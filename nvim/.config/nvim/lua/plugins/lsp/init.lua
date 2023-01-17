@@ -15,9 +15,8 @@ function M.config()
   vim.diagnostic.config {
     underline = true,
     update_in_insert = false,
-    virtual_text = { spacing = 4, prefix = '●' },
     severity_sort = true,
-    -- virtual_text = false,
+    virtual_text = false,
     float = {
       border = 'rounded',
       format = function(diagnostic)
@@ -69,6 +68,7 @@ function M.config()
 
   local servers = {
     sumneko_lua = {},
+    tsserver = {},
     eslint = {},
     bashls = {},
     cssls = {},
@@ -81,13 +81,6 @@ function M.config()
     },
   }
 
-  -- Precede LSP init
-  require('typescript').setup {
-    go_to_source_definition = {
-      fallback = true, -- fall back to standard LSP definition on failure
-    },
-    server = options,
-  }
   require('neodev').setup {}
 
   for server, opts in pairs(servers) do

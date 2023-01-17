@@ -97,12 +97,48 @@ return {
       adapters = {
         require 'neotest-jest' {
           cwd = function(path)
-            local cwd =
-              require('neotest-jest.util').find_package_json_ancestor(path)
+            local cwd = require('neotest-jest.util').find_package_json_ancestor(path)
             return cwd
           end,
         },
       },
     }
   end,
+  keys = {
+    {
+      't<C-n>',
+      ':lua require("neotest").run.run()<CR>',
+      desc = 'Nearest Test',
+    },
+    {
+      't<C-f>',
+      ':lua require("neotest").run.run(vim.fn.expand("%"))<CR>',
+      desc = 'Test File',
+    },
+    {
+      't<C-l>',
+      ':lua require("neotest").run.run_last()<CR>',
+      desc = 'Last Test',
+    },
+    {
+      't<C-s>',
+      ':lua require("neotest").summary.toggle()<CR>',
+      desc = 'Test Summary',
+    },
+    {
+      't<C-o>',
+      ':lua require("neotest").output.open({enter = true})<CR>',
+      desc = 'Test Output',
+    },
+    {
+      '[t',
+      '<cmd>lua require("neotest").jump.prev({ status = "failed" })<CR>',
+      desc = 'Go to previous failed test',
+    },
+    {
+      ']t',
+      '<cmd>lua require("neotest").jump.next({ status = "failed" })<CR>',
+      desc = 'Go to next failed test',
+    },
+  },
 }
