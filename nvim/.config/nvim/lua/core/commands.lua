@@ -33,11 +33,7 @@ autocmd('BufWritePost', {
     end
     if mod then
       package.loaded[mod] = nil
-      reloaded_id = vim.notify(
-        'Reloaded ' .. mod,
-        vim.log.levels.INFO,
-        { title = 'nvim', replace = reloaded_id }
-      )
+      reloaded_id = vim.notify('Reloaded ' .. mod, vim.log.levels.INFO, { title = 'nvim', replace = reloaded_id })
     end
   end,
 })
@@ -95,8 +91,7 @@ autocmd('BufReadPre', {
 
 vim.api.nvim_create_user_command('Dupe', function()
   local filepath = vim.fn.expand '%'
-  local buffer_content =
-    vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, false)
+  local buffer_content = vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, false)
   local name = vim.fn.input('New name: ', filepath, 'file')
   vim.fn.execute(string.format('edit %s', name))
 
@@ -106,3 +101,20 @@ vim.api.nvim_create_user_command('Dupe', function()
 
   vim.fn.execute(string.format('echomsg "Created and editing %s"', name))
 end, {})
+
+-- local function getWindowCount()
+--   return #vim.api.nvim_tabpage_list_wins(0)
+-- end
+
+-- autocmd('BufReadPost', {
+--   pattern = '*',
+--   callback = function()
+--     local count = getWindowCount(--[[  ]])
+--     print('window count is ' .. count)
+--     if count == 1 then
+--       require('no-neck-pain').enable()
+--     else
+--       require('no-neck-pain').disable()
+--     end
+--   end,
+-- })

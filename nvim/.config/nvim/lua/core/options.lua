@@ -24,8 +24,7 @@ o.pumblend = 10
 o.relativenumber = true
 o.scrolloff = 5
 o.shell = 'zsh'
-o.sessionoptions =
-  'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
+o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
 o.shiftwidth = 2
 o.showbreak = '↳ '
 o.showcmd = false

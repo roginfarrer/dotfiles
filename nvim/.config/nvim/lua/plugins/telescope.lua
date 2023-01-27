@@ -3,15 +3,12 @@ local M = {
   cmd = 'Telescope',
   dependencies = {
     'nvim-telescope/telescope-node-modules.nvim',
-    {
-      'nvim-telescope/telescope-fzf-native.nvim',
-      build = 'make',
-    },
-    'nvim-telescope/telescope-file-browser.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   },
+  version = false,
 }
 
-function M.config()
+function M.opts()
   local action_layout = require 'telescope.actions.layout'
 
   require('telescope').setup {
@@ -65,17 +62,8 @@ function M.config()
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
   }
 
-  -- require('project_nvim').setup()
-  -- require('telescope').load_extension 'projects'
-
-  -- https://github.com/nvim-telescope/telescope-node-modules.nvim
   require('telescope').load_extension 'node_modules'
-  -- https://github.com/nvim-telescope/telescope-packer.nvim
-  -- require('telescope').load_extension 'packer'
-  -- https://github.com/nvim-telescope/telescope-fzf-native.nvim
   require('telescope').load_extension 'fzf'
-  require('telescope').load_extension 'file_browser'
-  -- require('telescope').load_extension 'git_worktree'
   require('telescope').load_extension 'yank_history'
 end
 
@@ -116,12 +104,12 @@ local cmd = function(rhs)
 end
 
 M.keys = {
-  { '<leader>ft', cmd 'Telescope builtin include_extensions=true<CR>', desc = 'Telescope' },
+  { '<leader>ft', cmd 'Telescope builtin include_extensions=true', desc = 'Telescope' },
   { '<leader>fp', project_files, desc = 'Git files' },
   { '<leader>;', cmd 'Telescope buffers', desc = 'Buffers' },
   { '<leader>fb', cmd 'Telescope buffers', desc = 'Buffers' },
   { '<leader>ff', cmd 'Telescope find_files', desc = 'All files' },
-  { '<leader>fg', cmd 'Telesope live_grep', desc = 'Live grep' },
+  { '<leader>fg', cmd 'Telescope live_grep', desc = 'Live grep' },
   { '<leader>fG', filesContaining, desc = 'Live grep (files containing)' },
   { '<leader>fd', findDotfiles, desc = 'Find in dotfiles' },
   { '<leader>fD', searchDotfiles, desc = 'Grep in dotfiles' },
