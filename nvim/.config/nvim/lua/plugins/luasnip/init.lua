@@ -68,9 +68,11 @@ local M = {
   },
 }
 
-function M.config()
+function M.config(_, opts)
   local ls = require 'luasnip'
   local types = require 'luasnip.util.types'
+
+  ls.setup(opts)
 
   local t = ls.text_node
   local rep = require('luasnip.extras').rep

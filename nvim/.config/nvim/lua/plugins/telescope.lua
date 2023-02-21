@@ -4,6 +4,7 @@ local M = {
   dependencies = {
     'nvim-telescope/telescope-node-modules.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    'tsakirist/telescope-lazy.nvim',
   },
   version = false,
 }
@@ -11,21 +12,21 @@ local M = {
 function M.opts()
   local action_layout = require 'telescope.actions.layout'
 
-  require('telescope').setup {
+  return {
     defaults = {
-      vimgrep_arguments = {
-        'rg',
-        '--hidden',
-        '--color=never',
-        '--no-heading',
-        '--with-filename',
-        '--line-number',
-        '--column',
-        '--trim',
-        '--smart-case',
-        '-g',
-        '!.git',
-      },
+      -- vimgrep_arguments = {
+      --   'rg',
+      --   '--hidden',
+      --   '--color=never',
+      --   '--no-heading',
+      --   '--with-filename',
+      --   '--line-number',
+      --   '--column',
+      --   '--trim',
+      --   '--smart-case',
+      --   '-g',
+      --   '!.git',
+      -- },
       layout_config = {
         horizontal = {
           prompt_position = 'top',
@@ -33,15 +34,9 @@ function M.opts()
       },
       sorting_strategy = 'ascending',
       mappings = {
-        -- insert mode
         i = {
-          -- ['<esc>'] = actions.close,
           ['?'] = action_layout.toggle_preview,
         },
-        -- normal mode
-        -- n = {
-        --   ['<esc>'] = actions.close,
-        -- },
       },
       color_devicons = true,
       set_env = { ['COLORTERM'] = 'truecolor' },
@@ -61,24 +56,30 @@ function M.opts()
     border = {},
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
   }
+end
 
+M.config = function(_, opts)
+  require('telescope').setup(opts)
   require('telescope').load_extension 'node_modules'
   require('telescope').load_extension 'fzf'
   require('telescope').load_extension 'yank_history'
+  require('telescope').load_extension 'lazy'
 end
 
-local searchDotfiles = function()
+local grepDotfiles = function()
   require('telescope.builtin').live_grep {
     cwd = '~/dotfiles',
     prompt_title = '~ Dotfiles ~',
   }
 end
+
 local findDotfiles = function()
   require('telescope.builtin').git_files {
     cwd = '~/dotfiles',
     prompt_title = '~ Dotfiles ~',
   }
 end
+
 local project_files = function()
   local opts = {}
   if vim.loop.fs_stat '.git' then
@@ -92,6 +93,7 @@ local project_files = function()
     require('telescope.builtin').find_files(opts)
   end
 end
+
 local filesContaining = function()
   require('telescope.builtin').live_grep {
     prompt_title = 'Find Files Containing',
@@ -99,43 +101,56 @@ local filesContaining = function()
   }
 end
 
+local function getDirectoryPath()
+  if vim.bo.filetype == 'oil' then
+    return require('oil').get_current_dir()
+  end
+  return vim.fn.expand '%:p:h'
+end
+
+local grepInCurrentDirectory = function()
+  local p = getDirectoryPath()
+  require('telescope.builtin').live_grep {
+    cwd = p,
+    prompt_title = p,
+  }
+end
+
+local function findCWord()
+  require('telescope.builtin').find_files { search_file = vim.fn.expand '<cword>' }
+end
+
 local cmd = function(rhs)
-  return '<cmd>' .. rhs .. '<cr>'
+  return '<cmd>Telescope ' .. rhs .. '<cr>'
 end
 
 M.keys = {
-  { '<leader>ft', cmd 'Telescope builtin include_extensions=true', desc = 'Telescope' },
-  { '<leader>fp', project_files, desc = 'Git files' },
-  { '<leader>;', cmd 'Telescope buffers', desc = 'Buffers' },
-  { '<leader>fb', cmd 'Telescope buffers', desc = 'Buffers' },
-  { '<leader>ff', cmd 'Telescope find_files', desc = 'All files' },
-  { '<leader>fg', cmd 'Telescope live_grep', desc = 'Live grep' },
-  { '<leader>fG', filesContaining, desc = 'Live grep (files containing)' },
-  { '<leader>fd', findDotfiles, desc = 'Find in dotfiles' },
-  { '<leader>fD', searchDotfiles, desc = 'Grep in dotfiles' },
-  { '<leader>fh', cmd 'Telescope oldfiles', desc = 'Old files' },
-  { '<leader>fH', cmd 'Telescope help_tags', desc = 'Help tags' },
-  {
-    '<leader>f.',
-    function()
-      require('telescope.builtin').find_files {
-        cwd = vim.fn.expand '%:p:h',
-        prompt_title = vim.fn.expand '%:~:.:p:h',
-      }
-    end,
-    desc = 'Find in current directory',
-  },
-  { '<leader>Ht', cmd 'Telescope builtin', desc = 'Telescope' },
-  { '<leader>Hc', cmd 'Telescope commands', desc = 'Commands' },
-  { '<leader>Hh', cmd 'Telescope help_tags', desc = 'Help Pages' },
-  { '<leader>Hm', cmd 'Telescope man_pages', desc = 'Man Pages' },
-  { '<leader>Hk', cmd 'Telescope keymaps', desc = 'Key Maps' },
-  { '<leader>Hs', cmd 'Telescope highlights', desc = 'Search Highlight Groups' },
-  { '<leader>Hf', cmd 'Telescope filetypes', desc = 'File Types' },
-  { '<leader>Ho', cmd 'Telescope vim_options', desc = 'Options' },
-  { '<leader>Ha', cmd 'Telescope autocommands', desc = 'Auto Commands' },
-  { '<leader>gb', cmd 'Telescope git_branches', desc = 'Checkout branch' },
-  { '<leader>gC', cmd 'Telescope git_bcommits', desc = 'Checkout commit (for current file)' },
+  { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
+  { '<leader>fp', project_files, desc = 'git files' },
+  { '<leader>;', cmd 'buffers', desc = 'buffers' },
+  { '<leader>fb', cmd 'buffers', desc = 'buffers' },
+  { '<leader>ff', cmd 'find_files', desc = 'all files' },
+  { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
+  { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
+  { '<leader>fd', findDotfiles, desc = 'find in dotfiles' },
+  { '<leader>fD', grepDotfiles, desc = 'grep in dotfiles' },
+  { '<leader>fh', cmd 'oldfiles', desc = 'old files' },
+  { '<leader>fH', cmd 'help_tags', desc = 'help tags' },
+  { '<leader>fl', cmd 'lazy', desc = 'lazy plugins' },
+  { '<leader>fc', findCWord, desc = 'Search word under cursor' },
+  { '<leader>fC', cmd 'grep_string', desc = 'Grep word under cursor' },
+  { '<leader>f.', grepInCurrentDirectory, desc = 'find in current directory' },
+  { '<leader>Ht', cmd 'builtin', desc = 'telescope' },
+  { '<leader>Hc', cmd 'commands', desc = 'commands' },
+  { '<leader>Hh', cmd 'help_tags', desc = 'help pages' },
+  { '<leader>Hm', cmd 'man_pages', desc = 'man pages' },
+  { '<leader>Hk', cmd 'keymaps', desc = 'key maps' },
+  { '<leader>Hs', cmd 'highlights', desc = 'search highlight groups' },
+  { '<leader>Hf', cmd 'filetypes', desc = 'file types' },
+  { '<leader>Ho', cmd 'vim_options', desc = 'options' },
+  { '<leader>Ha', cmd 'autocommands', desc = 'auto commands' },
+  { '<leader>gb', cmd 'git_branches', desc = 'checkout branch' },
+  { '<leader>gC', cmd 'git_bcommits', desc = 'checkout commit (for current file)' },
 }
 
 return M

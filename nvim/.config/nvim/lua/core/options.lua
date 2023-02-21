@@ -7,11 +7,12 @@ o.breakindent = true
 o.breakindentopt = 'shift:2'
 o.cmdheight = 0
 o.completeopt = 'menuone,noselect,noinsert'
+o.cursorline = true
 o.expandtab = true
-o.foldexpr = [[nvim_treesitter#foldexpr()]]
-o.foldlevel = 99
-o.foldmethod = 'expr'
-o.foldnestmax = 10
+-- o.foldexpr = [[nvim_treesitter#foldexpr()]]
+-- o.foldlevel = 99
+-- o.foldmethod = 'expr'
+-- o.foldnestmax = 10
 o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
@@ -67,41 +68,3 @@ end
 
 vim.g.neovide_cursor_animation_length = 0.08
 vim.g.neovide_cursor_trail_size = 0.5
-
-local default_plugins = {
-  '2html_plugin',
-  'getscript',
-  'getscriptPlugin',
-  'gzip',
-  'logipat',
-  'netrw',
-  'netrwPlugin',
-  'netrwSettings',
-  'netrwFileHandlers',
-  'matchit',
-  'tar',
-  'tarPlugin',
-  'rrhelper',
-  'spellfile_plugin',
-  'vimball',
-  'vimballPlugin',
-  'zip',
-  'zipPlugin',
-  -- "python3_provider",
-  -- "python_provider",
-  -- "node_provider",
-  'ruby_provider',
-  'perl_provider',
-  'tutor',
-  'rplugin',
-  'syntax',
-  'synmenu',
-  'optwin',
-  'compiler',
-  'bugreport',
-  'ftplugin',
-}
-
--- for _, plugin in pairs(default_plugins) do
---   vim.g['loaded_' .. plugin] = 1
--- end

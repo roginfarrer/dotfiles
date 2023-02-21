@@ -95,7 +95,7 @@ return {
         integrations = { diffview = true },
       },
       keys = {
-        { '<leader>gg', '<cmd>Neogit kind=floating<cr>', desc = 'Neogit' },
+        { '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' },
       },
     },
   },

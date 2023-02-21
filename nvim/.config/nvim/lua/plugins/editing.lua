@@ -1,15 +1,38 @@
+local oil_select = function(direction)
+  local oil = require 'oil'
+  if direction == 'vertical' then
+    oil.select { vertical = true }
+  else
+    oil.select()
+  end
+  vim.cmd.wincmd { args = { 'p' } }
+  oil.close()
+  vim.cmd.wincmd { args = { 'p' } }
+end
+
 return {
   -- Better netrw
   {
     'stevearc/oil.nvim',
     opts = {
+      skip_confirm_for_simple_edits = true,
       view_options = {
         show_hidden = true,
       },
       keymaps = {
         ['q'] = 'actions.close',
-        ['<C-v>'] = 'actions.select_vsplit',
-        ['<C-s>'] = 'actions.select_split',
+        ['<C-v>'] = {
+          desc = 'open in a vertical split',
+          callback = function()
+            oil_select 'vertical'
+          end,
+        },
+        ['<C-s>'] = {
+          desc = 'open in a horizontal split',
+          callback = function()
+            oil_select 'horizontal'
+          end,
+        },
         ['<C-l>'] = false,
         ['<C-h>'] = false,
       },
@@ -25,10 +48,10 @@ return {
     'sindrets/winshift.nvim',
     config = true,
     keys = {
-      { '<C-A-H>', '<cmd>WinShift left<CR>' },
-      { '<C-A-J>', '<cmd>WinShift down<CR>' },
-      { '<C-A-K>', '<cmd>WinShift up<CR>' },
-      { '<C-A-L>', '<cmd>WinShift right<CR>' },
+      { '<C-A-H>', '<cmd>WinShift left<CR>', desc = 'winshift left' },
+      { '<C-A-J>', '<cmd>WinShift down<CR>', desc = 'winshift down' },
+      { '<C-A-K>', '<cmd>WinShift up<CR>', desc = 'winshift up' },
+      { '<C-A-L>', '<cmd>WinShift right<CR>', desc = 'winshift right' },
     },
   },
 
@@ -79,6 +102,15 @@ return {
     cmd = { 'SessionLoad', 'SessionStop', 'SessionLoadLatest' },
     opts = {
       use_git_branch = true,
+    },
+  },
+
+  {
+    'windwp/nvim-spectre',
+    lazy = true,
+    -- stylua: ignore
+    keys = {
+      { '<leader>fr', function() require('spectre').open() end, desc = 'Replace in files (Spectre)', },
     },
   },
 }

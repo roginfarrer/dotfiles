@@ -1,7 +1,6 @@
 return {
   {
     'williamboman/mason.nvim',
-    cmd = 'Mason',
     dependencies = {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       opts = {
@@ -91,14 +90,47 @@ return {
       lspSymbol('Warn', '')
 
       -- vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
+      -- print('_G.astro_server is ' .. _G.astro_server)
+
+      local util = require 'lspconfig.util'
+
+      local function get_typescript_server_path(root_dir)
+        local git_root = util.find_git_ancestor(root_dir)
+
+        local function seek(start)
+          local project_root = util.find_node_modules_ancestor(start)
+          local maybeFound = util.path.join(project_root, 'node_modules', 'typescript', 'lib', 'tsserverlibrary.js')
+
+          if maybeFound then
+            return maybeFound
+          end
+
+          if git_root ~= project_root then
+            seek(util.path.basename(project_root))
+          end
+        end
+
+        return seek(root_dir) or ''
+      end
 
       local servers = {
-        sumneko_lua = {},
+        lua_ls = {},
         tsserver = {},
         eslint = {},
         bashls = {},
         cssls = {},
-        astro = {},
+        astro = {
+          root_dir = util.root_pattern '.git',
+          -- on_new_config = function(new_config, new_root_dir)
+          --   if
+          --     new_config.init_options
+          --     and new_config.init_options.typescript
+          --     and new_config.init_options.typescript.serverPath == ''
+          --   then
+          --     new_config.init_options.typescript.serverPath = get_typescript_server_path(new_root_dir)
+          --   end
+          -- end,
+        },
         marksman = {},
         html = {},
         jsonls = require 'plugins.lsp.json',
@@ -107,7 +139,9 @@ return {
         },
       }
 
-      require('neodev').setup {}
+      require('neodev').setup {
+        library = { plugins = { 'neotest' }, types = true },
+      }
 
       for server, opts in pairs(servers) do
         opts = vim.tbl_deep_extend('force', {}, options, opts or {})

@@ -1,11 +1,7 @@
 local wk = require 'which-key'
 
 local function luaDocs()
-  if
-    vim.bo.filetype == 'lua'
-    or vim.bo.filetype == 'help'
-    or vim.bo.filetype == 'lua'
-  then
+  if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
     vim.fn.execute('h ' .. vim.fn.expand '<cword>')
   end
 end
@@ -19,12 +15,7 @@ local M = {}
 function M.setup(client, bufnr)
   local cap = client.server_capabilities
   local function lsp_cmd(name, func)
-    vim.api.nvim_buf_create_user_command(
-      bufnr,
-      name,
-      'lua ' .. func .. '()',
-      { force = true }
-    )
+    vim.api.nvim_buf_create_user_command(bufnr, name, 'lua ' .. func .. '()', { force = true })
   end
 
   lsp_cmd('LspGoToDefinition', 'vim.lsp.buf.definition')
@@ -82,12 +73,15 @@ function M.setup(client, bufnr)
   wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
   local function showDocs()
-    if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
-      vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-    else
-      -- if client.supports_method 'textDocument/hover' then
-      vim.fn.execute 'LspHover'
-      -- end
+    local winid = require('ufo').peekFoldedLinesUnderCursor()
+    if not winid then
+      if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
+        vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+      else
+        -- if client.supports_method 'textDocument/hover' then
+        vim.fn.execute 'LspHover'
+        -- end
+      end
     end
   end
 

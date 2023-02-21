@@ -23,7 +23,11 @@ M.setup = function(on_attach)
           'yaml',
           'markdown',
           'markdown.mdx',
+          'astro',
         },
+        -- For astro
+        -- https://docs.astro.build/en/editor-setup/#prettier
+        extra_args = { '--plugin-search-dir=.' },
       },
       b.formatting.stylua,
       b.formatting.fish_indent,

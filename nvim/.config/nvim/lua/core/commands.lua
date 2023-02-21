@@ -1,26 +1,3 @@
--- autocmd('BufEnter', {
---   pattern = '*',
---   callback = function()
---     if vim.bo.filetype == 'alpha' then
---       local isOnlyWindow = vim.fn.winnr '$' == vim.fn.winnr()
---       if isOnlyWindow then
---         -- Disable statusline in dashboard
---         vim.opt.laststatus = 0
---       end
---     end
---   end,
--- })
--- -- Init lualine and statusline
--- -- if not in Alpha dashboard
--- autocmd('BufLeave', {
---   pattern = '*',
---   callback = function()
---     if vim.bo.filetype == 'alpha' then
---       vim.o.laststatus = 3
---     end
---   end,
--- })
-
 local reloaded_id = nil
 autocmd('BufWritePost', {
   pattern = '*.lua',
@@ -38,35 +15,37 @@ autocmd('BufWritePost', {
   end,
 })
 
--- autocmd('InsertEnter', {
---   pattern = '*',
---   callback = function()
---     vim.o.cul = true
---   end,
--- })
--- autocmd('InsertLeave', {
---   pattern = '*',
---   callback = function()
---     vim.o.cul = false
---   end,
--- })
-
 autocmd('TextYankPost', {
   pattern = '*',
   callback = function()
-    vim.highlight.on_yank {--[[  higroup = 'Substitute', timeout = 250  ]]
-    }
+    vim.highlight.on_yank()
   end,
 })
 
--- autocmd('VimResized', {
---   pattern = '*',
---   callback = function()
---     vim.cmd [[:wincmd =]]
---   end,
--- })
+-- go to last loc when opening a buffer
+autocmd('BufReadPost', {
+  group = 'last_loc',
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
+-- wrap and check for spell in text filetypes
+autocmd('FileType', {
+  group = 'wrap_spell',
+  pattern = { 'gitcommit', 'markdown' },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+  end,
+})
 
 autocmd('BufReadPost', {
+  group = 'rc_ft',
   pattern = '*rc',
   callback = function()
     if vim.bo.filetype == '' then
@@ -75,17 +54,33 @@ autocmd('BufReadPost', {
   end,
 })
 
--- go to last loc when opening a buffer
-autocmd('BufReadPre', {
-  pattern = '*',
-  callback = function()
-    autocmd('FileType', {
-      pattern = '<buffer>',
-      once = true,
-      callback = function()
-        vim.cmd [[if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif]]
-      end,
-    })
+autocmd('FileType', {
+  group = 'astro_server',
+  pattern = 'astro',
+  callback = function(event)
+    if _G.astro_server then
+      return
+    end
+
+    local util = require 'lspconfig.util'
+    local file = util.path.join(vim.fn.getcwd(), event.file)
+    local gitAncestor = util.find_git_ancestor(file)
+
+    local function seek(startpath)
+      local rootPath = util.find_node_modules_ancestor(startpath)
+      local maybeFile = util.path.join(rootPath, 'node_modules/typescript/lib/tsserverlibrary.js')
+      if util.path.exists(maybeFile) then
+        return maybeFile
+      end
+
+      if rootPath ~= gitAncestor then
+        return seek(util.path.dirname(rootPath))
+      end
+    end
+
+    local foundFile = seek(util.path.dirname(file))
+    _G.astro_server = foundFile
+    print(foundFile)
   end,
 })
 
@@ -101,20 +96,3 @@ vim.api.nvim_create_user_command('Dupe', function()
 
   vim.fn.execute(string.format('echomsg "Created and editing %s"', name))
 end, {})
-
--- local function getWindowCount()
---   return #vim.api.nvim_tabpage_list_wins(0)
--- end
-
--- autocmd('BufReadPost', {
---   pattern = '*',
---   callback = function()
---     local count = getWindowCount(--[[  ]])
---     print('window count is ' .. count)
---     if count == 1 then
---       require('no-neck-pain').enable()
---     else
---       require('no-neck-pain').disable()
---     end
---   end,
--- })

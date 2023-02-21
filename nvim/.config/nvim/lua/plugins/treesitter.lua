@@ -1,37 +1,15 @@
-local M = {
+return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
   event = 'VeryLazy',
   dependencies = {
     { 'nvim-treesitter/nvim-treesitter-context', config = true },
     { 'lewis6991/spellsitter.nvim', config = true },
-    -- 'nvim-treesitter/nvim-treesitter-textobjects',
     'JoosepAlviste/nvim-ts-context-commentstring',
     'p00f/nvim-ts-rainbow',
     { 'windwp/nvim-ts-autotag', config = true },
   },
-}
-
-function M.config()
-  local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-
-  parser_configs.norg_meta = {
-    install_info = {
-      url = 'https://github.com/nvim-neorg/tree-sitter-norg-meta',
-      files = { 'src/parser.c' },
-      branch = 'main',
-    },
-  }
-
-  parser_configs.norg_table = {
-    install_info = {
-      url = 'https://github.com/nvim-neorg/tree-sitter-norg-table',
-      files = { 'src/parser.c' },
-      branch = 'main',
-    },
-  }
-
-  require('nvim-treesitter.configs').setup {
+  opts = {
     ensure_installed = {
       'markdown',
       'javascript',
@@ -148,17 +126,8 @@ function M.config()
     spellsitter = {
       enable = true,
     },
-  }
-
-  -- local autoTagPresent, autotag = pcall(require, 'nvim-ts-autotag')
-  -- if autoTagPresent then
-  --   autotag.setup()
-  -- end
-
-  -- local contextPresent, context = pcall(require, 'treesitter-context')
-  -- if contextPresent then
-  --   context.setup {}
-  -- end
-end
-
-return M
+  },
+  config = function(_, opts)
+    require('nvim-treesitter.configs').setup(opts)
+  end,
+}

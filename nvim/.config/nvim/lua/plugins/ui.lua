@@ -61,7 +61,7 @@ return {
   -- Show buffers as tabs
   {
     'akinsho/bufferline.nvim',
-    event = 'VeryLazy',
+    event = 'BufAdd',
     opts = {
       options = {
         numbers = 'none',
@@ -145,16 +145,35 @@ return {
     'kevinhwang91/nvim-ufo',
     event = 'BufReadPost',
     dependencies = { 'kevinhwang91/promise-async' },
+    init = function()
+      vim.o.foldcolumn = '0' -- '0' is not bad
+      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
     -- stylua: ignore
     keys = {
-      { 'zR', function() require('ufo').openAllFolds() end, desc = 'Open all folds (UFO)', },
-      { 'zM', function() require('ufo').closeAllFolds() end, desc = 'Close all folds (UFO)', },
+      {
+        'zR',
+        function()
+          require('ufo').openAllFolds()
+        end,
+        desc = 'Open all folds (UFO)',
+      },
+      {
+        'zM',
+        function()
+          require('ufo').closeAllFolds()
+        end,
+        desc = 'Close all folds (UFO)',
+      },
     },
-    opts = {
-      provider_selector = function()
-        return { 'treesitter', 'indent' }
-      end,
-    },
+    config = true,
+    -- opts = {
+    --   provider_selector = function()
+    --     return { 'treesitter', 'indent' }
+    --   end,
+    -- },
   },
 
   -- Splash screen
@@ -234,15 +253,60 @@ return {
       --   If not available, we use `mini` as the fallback
       'rcarriga/nvim-notify',
     },
-  -- stylua: ignore
-  keys = {
-    { '<S-Enter>', function() require('noice').redirect(vim.fn.getcmdline()) end, mode = 'c', desc = 'Redirect Cmdline' },
-    { '<leader>snl', function() require('noice').cmd 'last' end, desc = 'Noice Last Message', },
-    { '<leader>snh', function() require('noice').cmd 'history' end, desc = 'Noice History', },
-    { '<leader>sna', function() require('noice').cmd 'all' end, desc = 'Noice All', },
-    { '<c-f>', function() if not require('noice.lsp').scroll(4) then return '<c-f>' end end, silent = true, expr = true, desc = 'Scroll forward', },
-    { '<c-b>', function() if not require('noice.lsp').scroll(-4) then return '<c-b>' end end, silent = true, expr = true, desc = 'Scroll backward', },
-  },
+    -- stylua: ignore
+    keys = {
+      {
+        '<S-Enter>',
+        function()
+          require('noice').redirect(vim.fn.getcmdline())
+        end,
+        mode = 'c',
+        desc = 'Redirect Cmdline',
+      },
+      {
+        '<leader>snl',
+        function()
+          require('noice').cmd 'last'
+        end,
+        desc = 'Noice Last Message',
+      },
+      {
+        '<leader>snh',
+        function()
+          require('noice').cmd 'history'
+        end,
+        desc = 'Noice History',
+      },
+      {
+        '<leader>sna',
+        function()
+          require('noice').cmd 'all'
+        end,
+        desc = 'Noice All',
+      },
+      {
+        '<c-f>',
+        function()
+          if not require('noice.lsp').scroll(4) then
+            return '<c-f>'
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = 'Scroll forward',
+      },
+      {
+        '<c-b>',
+        function()
+          if not require('noice.lsp').scroll(-4) then
+            return '<c-b>'
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = 'Scroll backward',
+      },
+    },
     opts = {
       lsp = {
         override = {
@@ -289,4 +353,11 @@ return {
       },
     },
   },
+
+  -- Easy set-up of Neovim's new statuscolumn feature
+  { 'luukvbaal/statuscol.nvim', event = 'BufReadPost', opts = { setopt = true } },
+
+  -- Show the colorcolumn (to indicate line length) only when
+  -- the column value is exceeded
+  { 'm4xshen/smartcolumn.nvim', event = 'BufReadPost', opts = { colorcolumn = 80 } },
 }

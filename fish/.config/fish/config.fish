@@ -1,16 +1,12 @@
 # Install Fisher if it's not installed
-if not functions -q fisher
-    set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-    curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
-    fish -c fisher
+if not functions -q fisher && status is-interactive
+    curl -sL https://git.io/fisher | source && fisher update || fisher install jorgebucaran/fisher
 end
 
 # Initialize starship prompt
 starship init fish | source
 
-set USER rfarrer
-
-alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
+# alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
 if test -n "$NVIM_LISTEN_ADDRESS"
     alias nvim "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 end
@@ -24,25 +20,16 @@ end
 
 set -gx SUDO_EDITOR $EDITOR
 set -gx MANPAGER "nvim +Man!"
-# https://github.com/catppuccin/fzf
-set -Ux FZF_DEFAULT_OPTS "--color=bg+:#302D41,bg:#1E1E2E,spinner:#F8BD96,hl:#F28FAD --color=fg:#D9E0EE,header:#F28FAD,info:#DDB6F2,pointer:#F8BD96 --color=marker:#F8BD96,fg+:#F2CDCD,prompt:#DDB6F2,hl+:#F28FAD"
 
-
-abbr v nvim
-
-### Git it!
 abbr g git
 abbr gs "git status"
-abbr gd "nvim -c DiffviewOpen"
+# abbr gd "nvim -c DiffviewOpen"
 abbr lg lazygit
 abbr commit "git commit"
-abbr mycommits "git log --author=$USER"
 abbr branch "git for-each-ref --sort=committerdate refs/heads --color --format='%(HEAD)%(color:bold green)%(committerdate:short)|%(color:yellow)%(refname:short)%(color:reset)'|column -ts'|'"
 abbr staged "git diff --staged"
 abbr amend "git commit --amend --no-edit"
 abbr unamend "git reset --soft HEAD@{1}"
-abbr cb getBranch
-# alias frem "git push -f ${cb}"
 abbr co "git checkout"
 abbr gc "git add -A && git commit -m"
 abbr mom "git checkout main && git pull && git checkout - && git merge main"
@@ -51,35 +38,23 @@ abbr push "git push"
 abbr mpull "git checkout main && git pull"
 abbr add "git add -A"
 abbr fetch "git fetch"
-abbr renameBranch "git branch -m"
 abbr uncommit "git reset --soft HEAD~1"
 abbr unstage "git reset HEAD"
 abbr discard "git clean -df && git checkout -- ."
-abbr delete_remote deleteRemoteBranch
-abbr delete_local deleteBranch
 abbr merge "git merge"
 abbr squash "git merge --squash"
 abbr gitlog "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit" # prettifies the log
-abbr gitlogchange "git log --oneline -p" # actual changes
-abbr gitlogstat "git log --oneline --stat" # number of lines changed
-abbr gitloggraph "git log --oneline --graph" # graph view of branches
 abbr gcp "git cherry-pick"
 abbr sshpi "ssh -t pi@192.168.0.194 'export TERM=linux; fish'"
 abbr themes "kitty +kitten themes"
 abbr p pnpm
 
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-bind -M insert \cB fgb
-
 if test -e $HOME/.config/fish/local-config.fish
     source $HOME/.config/fish/local-config.fish
 end
 
-set -g FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
-set -g FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
-set -Ux ZK_NOTEBOOK_DIR $HOME/Dropbox\ \(Maestral\)/Obsidian
-set -x STARSHIP_LOG error
+set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
+set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
-thefuck --alias | source
+# Bun
+set -px --path PATH "/Users/rfarrer/.bun/bin"
