@@ -1,0 +1,24 @@
+env {
+  ZELLIJ 1
+}
+
+theme "catppuccin-mocha"
+
+default_mode "locked"
+default_layout "compact"
+
+keybinds {
+  normal {
+    bind "Ctrl j" { MoveFocus "Down"; }
+  }
+  locked {
+    bind "Alt h" { MoveFocus "Left"; }
+    bind "Alt j" { MoveFocus "Down"; }
+    bind "Alt k" { MoveFocus "Up"; }
+    bind "Alt l" { MoveFocus "Right"; }
+    bind "Ctrl h" { MoveFocus "Left"; }
+    bind "Ctrl j" { MoveFocus "Down"; }
+    bind "Ctrl k" { MoveFocus "Up"; }
+    bind "Ctrl l" { MoveFocus "Right"; }
+  }
+}
