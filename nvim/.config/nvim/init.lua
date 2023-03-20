@@ -6,6 +6,7 @@ require 'core.lazy'
 
 require 'core.commands'
 require 'core.mappings'
+require 'core.context_menu'
 require 'local-config'
 
-vim.cmd.colorscheme 'kanagawa'
+vim.cmd.colorscheme 'catppuccin'

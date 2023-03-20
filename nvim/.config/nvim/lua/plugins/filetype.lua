@@ -1,12 +1,13 @@
 return {
   { 'moll/vim-bbye', cmd = 'Bdelete' },
-  { 'kevinhwang91/nvim-bqf', ft = 'qf' },
+  { 'kevinhwang91/nvim-bqf', ft = 'qf', enabled = false },
   { 'jxnblk/vim-mdx-js', ft = 'mdx' },
   { 'fladson/vim-kitty', ft = 'kitty' },
 
   {
     'nvim-neorg/neorg',
     ft = 'norg',
+    cmd = { 'Neorg' },
     build = ':Neorg sync-parsers', -- This is the important bit!
     opts = {
       -- Tell Neorg what modules to load
@@ -16,8 +17,13 @@ return {
         ['core.norg.dirman'] = { -- Manage your directories with Neorg
           config = {
             workspaces = {
-              my_workspace = '~/neorg',
+              main = '~/Dropbox (Maestral)/neorg',
             },
+          },
+        },
+        ['core.norg.journal'] = {
+          config = {
+            workspace = 'main',
           },
         },
         ['core.norg.completion'] = {
@@ -28,23 +34,27 @@ return {
       },
     },
   },
-  config = function()
-    local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
 
-    parser_configs.norg_meta = {
-      install_info = {
-        url = 'https://github.com/nvim-neorg/tree-sitter-norg-meta',
-        files = { 'src/parser.c' },
-        branch = 'main',
-      },
-    }
-
-    parser_configs.norg_table = {
-      install_info = {
-        url = 'https://github.com/nvim-neorg/tree-sitter-norg-table',
-        files = { 'src/parser.c' },
-        branch = 'main',
-      },
-    }
-  end,
+  {
+    'nvim-orgmode/orgmode',
+    enabled = false,
+    -- ft = 'org',
+    opts = {
+      org_agenda_files = { '~/Dropbox (Maestral)/org/**/*' },
+      org_default_notes_file = '~/Dropbox (Maestral)/org/notes.org',
+    },
+    -- init = function()
+    --   autocmd('BufReadPre', {
+    --     group = 'org_ft',
+    --     pattern = '*.org',
+    --     callback = function()
+    --       vim.cmd 'doautocmd FileType org'
+    --     end,
+    --   })
+    -- end,
+    config = function(_, opts)
+      require('orgmode').setup_ts_grammar()
+      require('orgmode').setup(opts)
+    end,
+  },
 }

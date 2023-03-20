@@ -10,12 +10,40 @@ return {
           name = 'LirFolderNode',
         },
       },
+      override_by_extension = {
+        org = {
+          icon = '',
+          name = 'Org',
+          color = '#77aa99',
+        },
+      },
     },
+  },
+
+  -- Highlight symbols under cursor
+  {
+    'RRethy/vim-illuminate',
+    -- enabled = false,
+    event = 'CursorMoved',
+    config = function()
+      require('illuminate').configure {
+        delay = 100,
+        large_file_cutoff = 1500,
+        filetypes_denylist = {
+          'dirvish',
+          'fugitive',
+          'oil',
+          'lir',
+          'alpha',
+        },
+      }
+    end,
   },
 
   -- Better `vim.notify()`
   {
     'rcarriga/nvim-notify',
+    enabled = false,
     keys = {
       {
         '<leader>nd',
@@ -61,6 +89,7 @@ return {
   -- Show buffers as tabs
   {
     'akinsho/bufferline.nvim',
+    enabled = false,
     event = 'BufAdd',
     opts = {
       options = {
@@ -94,6 +123,19 @@ return {
         fps = 40,
         duration = 200,
       },
+    },
+  },
+
+  {
+    'utilyre/barbecue.nvim',
+    event = 'BufReadPost',
+    name = 'barbecue',
+    version = '*',
+    dependencies = { 'SmiteshP/nvim-navic' },
+    opts = {
+      show_dirname = false,
+      kinds = require('ui.icons').lspkind,
+      -- configurations go here
     },
   },
 
@@ -251,39 +293,14 @@ return {
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      'rcarriga/nvim-notify',
+      -- 'rcarriga/nvim-notify',
     },
     -- stylua: ignore
     keys = {
-      {
-        '<S-Enter>',
-        function()
-          require('noice').redirect(vim.fn.getcmdline())
-        end,
-        mode = 'c',
-        desc = 'Redirect Cmdline',
-      },
-      {
-        '<leader>snl',
-        function()
-          require('noice').cmd 'last'
-        end,
-        desc = 'Noice Last Message',
-      },
-      {
-        '<leader>snh',
-        function()
-          require('noice').cmd 'history'
-        end,
-        desc = 'Noice History',
-      },
-      {
-        '<leader>sna',
-        function()
-          require('noice').cmd 'all'
-        end,
-        desc = 'Noice All',
-      },
+      { '<S-Enter>', function() require('noice').redirect(vim.fn.getcmdline()) end, mode = 'c', desc = 'Redirect Cmdline' },
+      { '<leader>snl', function() require('noice').cmd 'last' end, desc = 'Noice Last Message' },
+      { '<leader>snh', function() require('noice').cmd 'history' end, desc = 'Noice History' },
+      { '<leader>sna', function() require('noice').cmd 'all' end, desc = 'Noice All' },
       {
         '<c-f>',
         function()
@@ -291,9 +308,7 @@ return {
             return '<c-f>'
           end
         end,
-        silent = true,
-        expr = true,
-        desc = 'Scroll forward',
+        silent = true, expr = true, desc = 'Scroll forward'
       },
       {
         '<c-b>',
@@ -302,12 +317,11 @@ return {
             return '<c-b>'
           end
         end,
-        silent = true,
-        expr = true,
-        desc = 'Scroll backward',
+        silent = true, expr = true, desc = 'Scroll backward'
       },
     },
     opts = {
+      messages = { enabled = false },
       lsp = {
         override = {
           -- override the default lsp markdown formatter with Noice
@@ -351,6 +365,7 @@ return {
           opts = { skip = true },
         },
       },
+      -- views = { mini = { win_options = { winblend = 0 } } },
     },
   },
 
@@ -360,4 +375,28 @@ return {
   -- Show the colorcolumn (to indicate line length) only when
   -- the column value is exceeded
   { 'm4xshen/smartcolumn.nvim', event = 'BufReadPost', opts = { colorcolumn = 80 } },
+
+  -- Make the background transparent
+  {
+    'xiyaowong/nvim-transparent',
+    enabled = false,
+    event = 'VeryLazy',
+    opts = {
+      enable = true,
+      extra_groups = {
+        'NormalFloat',
+        'NoiceMini',
+        'MasonNormal',
+        'toggleterm',
+        'BufferLineTabClose',
+        'BufferlineBufferSelected',
+        'BufferLineFill',
+        'BufferLineBackground',
+        'BufferLineSeparator',
+        'BufferLineIndicatorSelected',
+        'FidgetTask',
+        'FidgetTitle',
+      },
+    },
+  },
 }

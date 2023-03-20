@@ -3,6 +3,9 @@ local plugins = {
   { 'AlexvZyl/nordic.nvim' },
   { 'rebelot/kanagawa.nvim' },
   { 'JoosepAlviste/palenightfall.nvim' },
+  { 'EdenEast/nightfox.nvim' },
+  { 'rmehri01/onenord.nvim' },
+  { 'olimorris/onedarkpro.nvim' },
   {
     'catppuccin/nvim',
     name = 'catppuccin',
@@ -28,11 +31,16 @@ local plugins = {
               warnings = { 'undercurl' },
               information = { 'undercurl' },
             },
+            barbecue = {
+              enabled = true,
+              dim_dirname = true,
+            },
           },
+          illuminate = true,
           coc_nvim = false,
           lsp_trouble = false,
           cmp = true,
-          lsp_saga = false,
+          lsp_saga = true,
           gitgutter = false,
           gitsigns = true,
           telescope = true,
@@ -47,8 +55,8 @@ local plugins = {
             transparent_panel = false,
           },
           dap = {
-            enabled = false,
-            enable_ui = false,
+            enabled = true,
+            enable_ui = true,
           },
           which_key = true,
           indent_blankline = {
@@ -74,6 +82,7 @@ local plugins = {
           neotest = true,
           noice = true,
           treesitter_context = true,
+          octo = true,
         },
         custom_highlights = {
           VertSplit = { fg = cp.black4 },

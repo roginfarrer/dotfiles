@@ -12,4 +12,6 @@ hi def link todoCheckbox Conceal
 
 highlight Conceal ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 
+setlocal showbreak=NONE
+
 " setlocal cole=2

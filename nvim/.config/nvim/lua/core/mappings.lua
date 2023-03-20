@@ -64,7 +64,7 @@ local general = {
       'copy file path to clipboard',
     },
 
-    ['<leader><leader>'] = { 'za', 'toggle fold' },
+    ['<tab>'] = { 'za', 'toggle fold' },
     ['<BS>'] = { '<C-^>', 'previous buffer' },
     ['$'] = { 'g$' },
     ['0'] = { 'g^' },
@@ -81,10 +81,10 @@ local general = {
     ['<C-e>'] = { '<End>', '壟 end of line' },
 
     -- navigate within insert mode
-    ['<C-h>'] = { '<Left>', '  move left' },
-    ['<C-l>'] = { '<Right>', ' move right' },
-    ['<C-j>'] = { '<Down>', ' move down' },
-    ['<C-k>'] = { '<Up>', ' move up' },
+    -- ['<C-h>'] = { '<Left>', '  move left' },
+    -- ['<C-l>'] = { '<Right>', ' move right' },
+    -- ['<C-j>'] = { '<Down>', ' move down' },
+    -- ['<C-k>'] = { '<Up>', ' move up' },
   },
 
   v = {
@@ -176,6 +176,9 @@ local leader = {
   n = {
     name = 'Noice',
   },
+  j = {
+    name = 'Join/Split',
+  },
 }
 
 wk.register(leader, { prefix = '<leader>' })
@@ -202,26 +205,26 @@ wk.register(leader, { prefix = '<leader>' })
 -- wk.register(textobjs, { mode = 'o' })
 -- wk.register(textobjs, { mode = 'x' })
 
-wk.register {
-  ['[d'] = 'Diagnostic Previous',
-  [']d'] = 'Diagnostic Next',
-  ['[q'] = 'Quickfix Previous',
-  [']q'] = 'Quickfix Next',
-  ['[Q'] = 'Quickfix First',
-  [']Q'] = 'Quickfix Last',
-  ['[l'] = 'Location List Previous',
-  [']l'] = 'Location List Next',
-  ['[L'] = 'Location List First',
-  [']L'] = 'Location List Last',
-  [']m'] = 'Go to beginning of next function',
-  [']]'] = 'Go to beginning of next class',
-  [']M'] = 'Go to end of next function',
-  [']['] = 'Go to end of next class',
-  ['[m'] = 'Go to beginning of previous function',
-  ['[['] = 'Go to end of previous class',
-  ['[M'] = 'Go to end of previous function',
-  ['[]'] = 'Go to end of previous class',
-}
+-- wk.register {
+--   ['[d'] = 'Diagnostic Previous',
+--   [']d'] = 'Diagnostic Next',
+--   ['[q'] = 'Quickfix Previous',
+--   [']q'] = 'Quickfix Next',
+--   ['[Q'] = 'Quickfix First',
+--   [']Q'] = 'Quickfix Last',
+--   ['[l'] = 'Location List Previous',
+--   [']l'] = 'Location List Next',
+--   ['[L'] = 'Location List First',
+--   [']L'] = 'Location List Last',
+--   [']m'] = 'Go to beginning of next function',
+--   [']]'] = 'Go to beginning of next class',
+--   [']M'] = 'Go to end of next function',
+--   [']['] = 'Go to end of next class',
+--   ['[m'] = 'Go to beginning of previous function',
+--   ['[['] = 'Go to end of previous class',
+--   ['[M'] = 'Go to end of previous function',
+--   ['[]'] = 'Go to end of previous class',
+-- }
 
 local function browse(opts)
   require('plenary.job'):new({ 'open', opts.args }):start()

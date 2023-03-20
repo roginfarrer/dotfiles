@@ -84,6 +84,27 @@ autocmd('FileType', {
   end,
 })
 
+autocmd('BufWritePost', {
+  pattern = 'kitty.conf',
+  callback = function()
+    vim.fn.execute('!kill -SIGUSR1 $(pgrep -a kitty)', 'silent')
+  end,
+})
+
+autocmd('BufWritePost', {
+  pattern = 'yabairc',
+  callback = function()
+    local Job = require 'plenary.job'
+
+    Job:new({
+      command = 'brew',
+      args = { 'services', 'restart', 'yabai' },
+    }):start()
+
+    vim.notify 'Restarting yabai...'
+  end,
+})
+
 vim.api.nvim_create_user_command('Dupe', function()
   local filepath = vim.fn.expand '%'
   local buffer_content = vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, false)
@@ -95,4 +116,22 @@ vim.api.nvim_create_user_command('Dupe', function()
   vim.fn.execute 'write'
 
   vim.fn.execute(string.format('echomsg "Created and editing %s"', name))
+end, {})
+
+vim.api.nvim_create_user_command('CopyPath', function()
+  local options = {
+    vim.fn.expand '%',
+    vim.fn.expand '%:.',
+    vim.fn.expand '%:h',
+    vim.fn.expand '%:t',
+  }
+
+  vim.ui.select(options, {
+    prompt = 'Which format?',
+  }, function(choice)
+    if choice then
+      vim.fn.execute('let @* = "' .. choice .. '"')
+      vim.notify('Put in your clipboard: ' .. choice)
+    end
+  end)
 end, {})

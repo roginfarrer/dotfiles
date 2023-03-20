@@ -1,7 +1,6 @@
 return {
   {
     'tpope/vim-fugitive',
-    enabled = false,
     cmd = {
       'Git',
       'GBrowse',
@@ -15,6 +14,12 @@ return {
       'Gedit',
     },
     dependencies = { 'tpope/vim-rhubarb' },
+    keys = {
+      { '<leader>gc', ':GBrowse!<CR>', desc = 'Copy github url to clipboard' },
+      { '<leader>gc', ":'<,'>GBrowse!<CR>", desc = 'Copy github url to clipboard', mode = { 'v' } },
+      { '<leader>go', ':GBrowse<CR><CR>', desc = 'Open file in browser' },
+      { '<leader>go', ":'<,'>GBrowse<CR><CR>", desc = 'Open file in browser', mode = { 'v' } },
+    },
   },
   {
     'sindrets/diffview.nvim',
@@ -23,7 +28,7 @@ return {
       { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
     },
   },
-  { 'akinsho/git-conflict.nvim', config = true, event = 'VimEnter' },
+  { 'akinsho/git-conflict.nvim', enabled = false, opts = {}, event = 'VimEnter' },
   {
     'pwntester/octo.nvim',
     dependencies = {
@@ -36,67 +41,68 @@ return {
       ---@diagnostic disable-next-line: undefined-field
       github_hostname = _G.work_github_url,
     },
+  },
 
-    {
-      'ruifm/gitlinker.nvim',
-      config = function()
-        require('gitlinker').setup {
-          mappings = nil,
-          callbacks = {
-            [_G.work_github_url] = require('gitlinker.hosts').get_github_type_url,
-          },
-        }
-      end,
-      -- stylua: ignore
-      keys = {
-        { '<leader>gc', function() require('gitlinker').get_buf_range_url 'n' end, desc = 'Copy github url to clipboard', },
-        { '<leader>gc', function() require('gitlinker').get_buf_range_url 'v' end, desc = 'Copy github url to clipboard', mode = { 'v' }, },
-        { '<leader>go', function() require('gitlinker').get_buf_range_url( 'n', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', },
-        { '<leader>go', function() require('gitlinker').get_buf_range_url( 'v', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', mode = { 'v' }, },
-      },
-    },
-
-    {
-      'lewis6991/gitsigns.nvim',
-      event = 'BufReadPre',
-      opts = {
-        signs = {
-          add = { hl = 'GitGutterAdd', text = '▋' },
-          change = { hl = 'GitGutterChange', text = '▋' },
-          delete = { hl = 'GitGutterDelete', text = '▋' },
-          topdelete = { hl = 'GitGutterDeleteChange', text = '▔' },
-          changedelete = { hl = 'GitGutterChange', text = '▎' },
+  {
+    'ruifm/gitlinker.nvim',
+    enabled = false,
+    config = function()
+      require('gitlinker').setup {
+        mappings = nil,
+        callbacks = {
+          [_G.work_github_url] = require('gitlinker.hosts').get_github_type_url,
         },
-        keymaps = {},
-      },
-      keys = {
-        { '<leader>gj', "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = 'Next Hunk' },
-        { '<leader>gk', "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", desc = 'Prev Hunk' },
-        { '<leader>gl', "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = 'Blame' },
-        { '<leader>gp', "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", desc = 'Preview Hunk' },
-        { '<leader>gr', "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = 'Reset Hunk' },
-        { '<leader>gR', "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", desc = 'Reset Buffer' },
-        { '<leader>gs', "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = 'Stage Hunk' },
-        { '<leader>gu', "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>", desc = 'Undo Stage Hunk' },
-      },
-    },
+      }
+    end,
+    -- stylua: ignore
+    -- keys = {
+    --   { '<leader>gc', function() require('gitlinker').get_buf_range_url 'n' end, desc = 'Copy github url to clipboard', },
+    --   { '<leader>gc', function() require('gitlinker').get_buf_range_url 'v' end, desc = 'Copy github url to clipboard', mode = { 'v' }, },
+    --   { '<leader>go', function() require('gitlinker').get_buf_range_url( 'n', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', },
+    --   { '<leader>go', function() require('gitlinker').get_buf_range_url( 'v', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', mode = { 'v' }, },
+    -- },
+  },
 
-    {
-      'TimUntersberger/neogit',
-      cmd = 'Neogit',
-      opts = {
-        kind = 'split',
-        signs = {
-          -- { CLOSED, OPENED }
-          section = { '', '' },
-          item = { '', '' },
-          hunk = { '', '' },
-        },
-        integrations = { diffview = true },
+  {
+    'lewis6991/gitsigns.nvim',
+    event = 'BufReadPre',
+    opts = {
+      signs = {
+        add = { hl = 'GitGutterAdd', text = '▋' },
+        change = { hl = 'GitGutterChange', text = '▋' },
+        delete = { hl = 'GitGutterDelete', text = '▋' },
+        topdelete = { hl = 'GitGutterDeleteChange', text = '▔' },
+        changedelete = { hl = 'GitGutterChange', text = '▎' },
       },
-      keys = {
-        { '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' },
+      keymaps = {},
+    },
+    keys = {
+      { '<leader>gj', "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = 'Next Hunk' },
+      { '<leader>gk', "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", desc = 'Prev Hunk' },
+      { '<leader>gl', "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = 'Blame' },
+      { '<leader>gp', "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", desc = 'Preview Hunk' },
+      { '<leader>gr', "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = 'Reset Hunk' },
+      { '<leader>gR', "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", desc = 'Reset Buffer' },
+      { '<leader>gs', "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = 'Stage Hunk' },
+      { '<leader>gu', "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>", desc = 'Undo Stage Hunk' },
+    },
+  },
+
+  {
+    'TimUntersberger/neogit',
+    cmd = 'Neogit',
+    opts = {
+      kind = 'split',
+      signs = {
+        -- { CLOSED, OPENED }
+        section = { '', '' },
+        item = { '', '' },
+        hunk = { '', '' },
       },
+      integrations = { diffview = true },
+    },
+    keys = {
+      { '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' },
     },
   },
 }

@@ -46,6 +46,7 @@ return {
   -- Visualize moving splits
   {
     'sindrets/winshift.nvim',
+    enabled = false,
     config = true,
     keys = {
       { '<C-A-H>', '<cmd>WinShift left<CR>', desc = 'winshift left' },
@@ -60,6 +61,10 @@ return {
     'mrjones2014/smart-splits.nvim',
     -- stylua: ignore
   keys = {
+    { '<leader><leader>h', function() require('smart-splits').swap_buf_left() end, desc = ' swap buf left', mode = { 'n', 't' } },
+    { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end, desc = ' swap buf right', mode = { 'n', 't' } },
+    { '<leader><leader>j', function() require('smart-splits').swap_buf_down() end, desc = ' swap buf down', mode = { 'n', 't' } },
+    { '<leader><leader>k', function() require('smart-splits').swap_buf_up() end, desc = ' swap buf up', mode = { 'n', 't' } },
     { '<C-h>', function() require('smart-splits').move_cursor_left() end, desc = ' window left', mode = { 'n', 't' } },
     { '<C-l>', function() require('smart-splits').move_cursor_right() end, desc = ' window right', mode = { 'n', 't' } },
     { '<C-j>', function() require('smart-splits').move_cursor_down() end, desc = ' window down', mode = { 'n', 't' } },
@@ -79,7 +84,29 @@ return {
   },
 
   -- Use same keybindings to move between Vim splits and Kitty panes
-  { 'knubie/vim-kitty-navigator', build = 'cp ./*.py ~/.config/kitty/' },
+  {
+    'knubie/vim-kitty-navigator',
+    build = 'cp ./*.py ~/.config/kitty/',
+    cond = function()
+      -- local term = vim.fn.execute('echo $TERM'):gsub('%s+', ''):gsub('\n', '') -- trim spaces and new lines
+      -- return term == 'xterm-kitty'
+      return false
+    end,
+  },
+  {
+    'Lilja/zellij.nvim',
+    cond = function()
+      return vim.env.ZELLIJ_SESSION_NAME ~= nil
+    end,
+    opts = { vimTmuxNavigatorKeybinds = true },
+  },
+  {
+    'aserowy/tmux.nvim',
+    cond = function()
+      return vim.env.TMUX ~= nil
+    end,
+    opts = {},
+  },
 
   -- Jump shortcuts to spots in buffer
   {
@@ -102,6 +129,12 @@ return {
     cmd = { 'SessionLoad', 'SessionStop', 'SessionLoadLatest' },
     opts = {
       use_git_branch = true,
+      should_autosave = function()
+        if vim.bo.filetype == 'noice' then
+          return false
+        end
+        return true
+      end,
     },
   },
 
@@ -112,5 +145,18 @@ return {
     keys = {
       { '<leader>fr', function() require('spectre').open() end, desc = 'Replace in files (Spectre)', },
     },
+  },
+
+  {
+    'Wansmer/treesj',
+    cmd = { 'TSJToggle', 'TSJSplit', 'TSJJoin' },
+    -- stylua: ignore
+    keys = {
+      { '<leader>jm', function() require('treesj').toggle() end, desc = 'toggle treesj' },
+      { '<leader>jj', function() require('treesj').join() end, desc = 'join treesj' },
+      { '<leader>js', function() require('treesj').split() end, desc = 'split treesj' },
+    },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    opts = { use_default_keymaps = false },
   },
 }

@@ -59,6 +59,7 @@ function M.setup(client, bufnr)
         '<cmd>Telescope lsp_dynamic_workspace_symbols<cr>',
         'Workspace Symbols',
       },
+      l = { require('lsp_lines').toggle, 'Toggle lsp_lines' },
     },
   }
 

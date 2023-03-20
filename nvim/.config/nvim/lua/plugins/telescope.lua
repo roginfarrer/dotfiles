@@ -43,7 +43,7 @@ function M.opts()
     },
     pickers = {
       find_files = {
-        find_command = { 'fd', '--type', 'f', '--strip-cwd-prefix' },
+        find_command = { 'fd', '--type', 'f', '--strip-cwd-prefix', '-H' },
       },
       buffers = {
         ignore_current_buffer = true,
@@ -126,7 +126,13 @@ end
 
 M.keys = {
   { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
-  { '<leader>fp', project_files, desc = 'git files' },
+  {
+    '<leader>fp',
+    function()
+      require('telescope.builtin').git_files()
+    end,
+    desc = 'git files',
+  },
   { '<leader>;', cmd 'buffers', desc = 'buffers' },
   { '<leader>fb', cmd 'buffers', desc = 'buffers' },
   { '<leader>ff', cmd 'find_files', desc = 'all files' },

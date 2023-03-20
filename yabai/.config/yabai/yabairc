@@ -43,5 +43,6 @@ yabai -m rule --add app="^Alfred Preferences$" manage=off
 yabai -m rule --add app="Raycast" manage=off
 yabai -m rule --add app="^Music$" manage=off
 yabai -m rule --add app="Cisco AnyConnect" manage=off
+yabai -m rule --add app="Zoom" manage=off
 
 echo "yabai configuration loaded.."

@@ -1,3 +1,4 @@
+local count = 0
 return {
   {
     'williamboman/mason.nvim',
@@ -17,11 +18,14 @@ return {
           'marksman',
           'yaml-language-server',
           -- Formatters
-          'prettierd',
+          -- 'prettierd',
           'stylua',
           'shfmt',
           -- Linters
           'vint',
+          -- DAP
+          'chrome-debug-adapter',
+          'node-debug2-adapter',
         },
       },
     },
@@ -38,6 +42,10 @@ return {
       'folke/neodev.nvim',
       'jose-elias-alvarez/null-ls.nvim',
       'jose-elias-alvarez/typescript.nvim',
+      {
+        'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+        opts = {},
+      },
     },
     config = function()
       vim.diagnostic.config {
@@ -45,6 +53,8 @@ return {
         update_in_insert = false,
         severity_sort = true,
         virtual_text = false,
+        -- For lsp_lines
+        virtual_lines = false,
         float = {
           border = 'rounded',
           format = function(diagnostic)
@@ -137,6 +147,7 @@ return {
         stylelint_lsp = {
           filetypes = { 'css', 'less', 'scss' },
         },
+        rust_analyzer = {},
       }
 
       require('neodev').setup {
@@ -151,6 +162,20 @@ return {
           require('lspconfig')[server].setup(opts)
         end
       end
+
+      local function prefix_bun(cmd)
+        return vim.list_extend({
+          'bun',
+          'run',
+          '--bun',
+        }, cmd)
+      end
+      local node_servers = { 'tsserver', 'jsonls', 'cssls', 'html', 'eslint', 'astro' }
+      util.on_setup = util.add_hook_before(util.on_setup, function(config, user_config)
+        if config.cmd and node_servers[config.name] then
+          config.cmd = prefix_bun(config.cmd)
+        end
+      end)
 
       require('plugins.lsp.null-ls').setup(on_attach)
     end,

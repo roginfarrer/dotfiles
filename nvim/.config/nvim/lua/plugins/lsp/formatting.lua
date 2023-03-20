@@ -4,6 +4,9 @@ function M.setup(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
     vim.lsp.buf.format {
       filter = function(c)
+        if c.name == 'rust_analyzer' then
+          return true
+        end
         return c.name == 'null-ls'
       end,
       bufnr = bufnr,

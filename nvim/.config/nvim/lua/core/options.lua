@@ -24,7 +24,7 @@ o.number = true
 o.pumblend = 10
 o.relativenumber = true
 o.scrolloff = 5
-o.shell = 'zsh'
+o.shell = 'fish'
 o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
 o.shiftwidth = 2
 o.showbreak = '↳ '
@@ -46,6 +46,8 @@ o.timeoutlen = 500
 o.undofile = true
 o.updatetime = 250
 o.wildmode = 'longest,full'
+vim.cmd [[let &t_Cs = "\e[4:3m"]]
+vim.cmd [[ let &t_Ce = "\e[4:0m" ]]
 vim.cmd [[set path+=**]]
 if vim.fn.executable 'rg' then
   o.grepprg = 'rg --vimgrep'

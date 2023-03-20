@@ -114,6 +114,7 @@ return {
           { name = 'cmp_git' },
           { name = 'nvim_lua' },
           { name = 'neorg' },
+          { name = 'orgmode' },
           { name = 'path' },
           { name = 'fish' },
         }, {
@@ -152,6 +153,17 @@ return {
     event = 'InsertEnter',
     config = function(_, opts)
       require('mini.pairs').setup(opts)
+    end,
+  },
+
+  {
+    'echasnovski/mini.bracketed',
+    event = 'BufReadPost',
+    version = false,
+    opts = {},
+    config = function(_, opts)
+      local bracketed = require 'mini.bracketed'
+      bracketed.setup(opts)
     end,
   },
 

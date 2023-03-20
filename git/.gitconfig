@@ -52,17 +52,15 @@
   cmd = nvim -d $LOCAL $REMOTE
 
 [mergetool]
-  tool = gitconflict
+  cmd = fugitive
 	keepBackup = false
-; [mergetool "diffview"]
-;   cmd = nvim \"+DiffviewOpen\"
-;   # trustExitCode = true
-;   prompt = false
+  trustExitCode = true
+  prompt = false
+[mergetool "fugitive"]
+  cmd = nvim -f -c \"Gvdiffsplit\" \"$MERGED\"
+[mergetool "diffview"]
+  cmd = nvim \"+DiffviewOpen\"
 [mergetool "gitconflict"]
 	cmd = nvim \"$MERGED\"
-	trustExitCode = true
-  prompt = false
 [mergetool "diffconflicts"]
 	cmd = nvim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
-	trustExitCode = true
-  prompt = false

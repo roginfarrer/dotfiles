@@ -84,6 +84,14 @@ return {
     end,
   },
 
+  -- Open files from neovim terminals in current neovim instance
+  {
+    'willothy/flatten.nvim',
+    opts = {},
+    lazy = false,
+    priority = 1001,
+  },
+
   -- testing integration
   {
     'nvim-neotest/neotest',
@@ -91,10 +99,10 @@ return {
       'haydenmeade/neotest-jest',
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-      'antoinemadec/FixCursorHold.nvim',
     },
     opts = function()
       return {
+        log_level = 2,
         icons = {
           failed = '',
           passed = '',
@@ -129,5 +137,93 @@ return {
       { '[t', function() require("neotest").jump.prev({ status = "failed" }) end, desc = 'Go to previous failed test' },
       { ']t', function() require("neotest").jump.next({ status = "failed" }) end, desc = 'Go to next failed test' },
     },
+  },
+
+  {
+    'mfussenegger/nvim-dap',
+    lazy = true,
+    dependencies = {
+      {
+        'mxsdev/nvim-dap-vscode-js',
+        opts = {},
+        build = 'npm install --legacy-peer-deps && npm run compile',
+      },
+    },
+    config = function()
+      local dap = require 'dap'
+      for _, language in ipairs { 'typescript', 'javascript' } do
+        require('dap').configurations[language] = {
+          {
+            type = 'pwa-node',
+            request = 'launch',
+            name = 'Debug Jest Tests',
+            -- trace = true, -- include debugger info
+            runtimeExecutable = 'node',
+            runtimeArgs = {
+              './node_modules/jest/bin/jest.js',
+              '--runInBand',
+            },
+            rootPath = '${workspaceFolder}',
+            cwd = '${workspaceFolder}',
+            console = 'integratedTerminal',
+            internalConsoleOptions = 'neverOpen',
+          },
+        }
+      end
+    end,
+    --     dap.adapters.node2 = {
+    --       type = 'executable',
+    --       command = 'node',
+    --       args = { os.getenv 'HOME' .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
+    --     }
+    --     dap.configurations.javascript = {
+    --       {
+    --         name = 'Launch',
+    --         type = 'node2',
+    --         request = 'launch',
+    --         program = '${file}',
+    --         cwd = vim.fn.getcwd(),
+    --         sourceMaps = true,
+    --         protocol = 'inspector',
+    --         console = 'integratedTerminal',
+    --       },
+    --       {
+    --         -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+    --         name = 'Attach to process',
+    --         type = 'node2',
+    --         request = 'attach',
+    --         processId = require('dap.utils').pick_process,
+    --       },
+    --     }
+    --     dap.adapters.chrome = {
+    --       type = 'executable',
+    --       command = 'node',
+    --       args = { os.getenv 'HOME' .. '/path/to/vscode-chrome-debug/out/src/chromeDebug.js' }, -- TODO adjust
+    --     }
+    --     dap.configurations.javascriptreact = { -- change this to javascript if needed
+    --       {
+    --         type = 'chrome',
+    --         request = 'attach',
+    --         program = '${file}',
+    --         cwd = vim.fn.getcwd(),
+    --         sourceMaps = true,
+    --         protocol = 'inspector',
+    --         port = 9222,
+    --         webRoot = '${workspaceFolder}',
+    --       },
+    --     }
+    --     dap.configurations.typescriptreact = { -- change to typescript if needed
+    --       {
+    --         type = 'chrome',
+    --         request = 'attach',
+    --         program = '${file}',
+    --         cwd = vim.fn.getcwd(),
+    --         sourceMaps = true,
+    --         protocol = 'inspector',
+    --         port = 9222,
+    --         webRoot = '${workspaceFolder}',
+    --       },
+    --     }
+    --   end,
   },
 }
