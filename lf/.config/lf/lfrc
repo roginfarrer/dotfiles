@@ -1,0 +1,19 @@
+set shell bash
+
+set hidden true
+set icons true
+
+# Custom Functions
+cmd mkthing ${{
+  printf "Name: "
+  read ans
+  if [[ "$ans" == */ ]]
+  then
+    dir="${ans%/*}"
+    mkdir $dir
+  else
+    touch $ans
+  fi
+}}
+
+map a mkthing

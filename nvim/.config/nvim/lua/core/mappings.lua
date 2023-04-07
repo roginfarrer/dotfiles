@@ -64,14 +64,14 @@ local general = {
       'copy file path to clipboard',
     },
 
-    ['<tab>'] = { 'za', 'toggle fold' },
+    ['<space><space>'] = { 'za', 'toggle fold' },
     ['<BS>'] = { '<C-^>', 'previous buffer' },
     ['$'] = { 'g$' },
     ['0'] = { 'g^' },
 
     -- Move entire lines up and down
-    ['<A-k>'] = { ':m .-2<CR>==', ' move line up' },
-    ['<A-j>'] = { ':m .+1<CR>==', ' move line up' },
+    -- ['<A-k>'] = { ':m .-2<CR>==', ' move line up' },
+    -- ['<A-j>'] = { ':m .+1<CR>==', ' move line up' },
   },
 
   i = {

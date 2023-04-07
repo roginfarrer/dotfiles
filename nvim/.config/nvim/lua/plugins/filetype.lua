@@ -3,7 +3,8 @@ return {
   { 'kevinhwang91/nvim-bqf', ft = 'qf', enabled = false },
   { 'jxnblk/vim-mdx-js', ft = 'mdx' },
   { 'fladson/vim-kitty', ft = 'kitty' },
-
+  { 'Amar1729/skhd-vim-syntax', ft = 'skhd' },
+  { 'camnw/lf-vim', ft = 'lf' },
   {
     'nvim-neorg/neorg',
     ft = 'norg',

@@ -5,6 +5,8 @@ end
 
 # Initialize starship prompt
 starship init fish | source
+zoxide init fish | source
+# status --is-interactive; and source (nodenv init -|psub)
 
 # alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
 if test -n "$NVIM_LISTEN_ADDRESS"
@@ -58,3 +60,8 @@ set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
 # Bun
 set -px --path PATH "/Users/rfarrer/.bun/bin"
+
+# bind \n true
+# bind -M insert \n true
+
+fish_add_path /Users/rfarrer/.spicetify

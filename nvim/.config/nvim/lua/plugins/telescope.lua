@@ -62,7 +62,9 @@ M.config = function(_, opts)
   require('telescope').setup(opts)
   require('telescope').load_extension 'node_modules'
   require('telescope').load_extension 'fzf'
-  require('telescope').load_extension 'yank_history'
+  if pcall(require, 'yanky') then
+    require('telescope').load_extension 'yank_history'
+  end
   require('telescope').load_extension 'lazy'
 end
 

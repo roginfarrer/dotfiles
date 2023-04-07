@@ -1,0 +1,261 @@
+#!/usr/bin/env bash
+
+colorful_echo() {
+	GREEN="\033[0;32m" # default color
+	RED="\033[0;31m"
+	NC="\033[0m" # No Color
+
+	if [ "$#" -eq 1 ]; then
+		echo -e "${GREEN}$1${NC}"
+	elif [ "$2" = "GREEN" ]; then
+		echo -e "${GREEN}$1${NC}"
+	elif [ "$2" = "RED" ]; then
+		echo -e "${RED}$1${NC}"
+	fi
+}
+
+FZF_OPTIONS="--no-preview --height 10% --layout=reverse --border"
+
+_worktree_help() {
+	local PREFIX="wt"
+	echo "Worktree Usage:"
+	echo -e "\t${PREFIX} list: List details of each working tree. Press ESC to exit or select a worktree to move into it"
+	echo -e "\t${PREFIX} prune: Prune working tree information"
+	echo -e "\t${PREFIX} add [new-branch] [remote-branch(optional)]: Create new working tree"
+	echo -e "\t${PREFIX} remove: Remove a working tree"
+	echo -e "\t${PREFIX} clean: Remove all working trees that do not have a corresponding remote branch"
+}
+
+_worktree_list() {
+	local WORKTREE=$(git worktree list | fzf $FZF_OPTIONS)
+
+	# if the use exited fzf without choosing a worktree
+	[ -z "$WORKTREE" ] && return 0
+
+	local WORKTREE_PATH=$(echo $WORKTREE | awk '{print $1;}')
+
+	pushd $WORKTREE_PATH >/dev/null
+
+	_worktree_set_up
+}
+
+_worktree_prune() {
+	git worktree prune
+}
+
+_worktree_remove() {
+	local WORKTREE=$(git worktree list | fzf $FZF_OPTIONS)
+
+	# if the use exited fzf without choosing a worktree
+	[ -z $WORKTREE ] && return 0
+
+	local CURRENT_PATH=$PWD
+	local WORKTREE_PATH=$(echo $WORKTREE | awk '{print $1;}')
+	local WORKTREE_BRANCH=$(basename $WORKTREE_PATH)
+
+	if [ $CURRENT_PATH = $WORKTREE_PATH ]; then
+		colorful_echo "You cannot delete the same Worktree as the one you are currently working on" "RED"
+		return 1
+	fi
+
+	local WORKTREE_REMOVE_OUTPUT=$(git worktree remove $WORKTREE_BRANCH 2>&1)
+
+	# if the worktree was removed successfully => prune and return
+	[ -z $WORKTREE_REMOVE_OUTPUT ] && _worktree_prune && colorful_echo "Worktree named '$WORKTREE_BRANCH' was removed successfully" && return 0
+
+	colorful_echo $WORKTREE_REMOVE_OUTPUT "RED"
+
+	local UNTRACKED_OR_MODIFIED_FILES="fatal: '$WORKTREE_BRANCH' contains modified or untracked files, use --force to delete it"
+
+	if [ $WORKTREE_REMOVE_OUTPUT != $UNTRACKED_OR_MODIFIED_FILES ]; then
+		return 0
+	fi
+
+	read "response?Force delete? [Y/n]"
+	response=${response:l} #tolower
+	if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]; then
+		git worktree remove -f $WORKTREE_BRANCH
+		_worktree_prune
+		return 0
+	fi
+}
+
+_exists_remote_repository() {
+	local BRANCH=$1
+	local WORKTREE_EXISTS=$(eval git ls-remote origin $BRANCH)
+	if [ ! -z $WORKTREE_EXISTS ]; then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+
+_calculate_new_worktree_path() {
+	local NEW_BRANCH=$1
+	local WORKTREE_PATH=$(git rev-parse --show-toplevel)
+	local BASE_PATH=$(dirname $PWD)
+	local NEW_WORKTREE_PATH="$BASE_PATH/$NEW_BRANCH"
+	echo $NEW_WORKTREE_PATH
+}
+
+_worktree_add() {
+	if [[ $# -ne 1 ]]; then
+		colorful_echo "You should pass the new-branch(E.g. git-fzf worktree add new-branch)" "RED"
+		return 1
+	fi
+
+	local HOLD_PATH=$PWD
+	local BRANCH_NAME=$1
+	local REMOTE_BRANCH_NAME=$2
+
+	local WORKTREE_EXISTS=$(_exists_worktree $BRANCH_NAME)
+	if [ $WORKTREE_EXISTS = "true" ]; then
+		colorful_echo "Worktree named '$BRANCH_NAME' already exists" "RED"
+		return 1
+	fi
+
+	_fetch
+
+	if [ $ZSH_GIT_FZF_REMOVE_STALLED_BRANCHES = "true" ]; then
+		_remove_local_that_do_not_exist_on_remote_repository
+	fi
+
+	# remove origin/ prefix from remote branches
+	local REMOTE_BRANCH=$(git branch -r | awk '{print $1}' | sed -e "s/^origin\///" | fzf $FZF_OPTIONS)
+
+	# if the user didn't select a remote branch, we assign the new branch as the remote branch
+	[ -z $REMOTE_BRANCH ] && REMOTE_BRANCH=$BRANCH_NAME
+
+	local NEW_WORKTREE_PATH=$(_calculate_new_worktree_path $BRANCH_NAME)
+
+	if [ $REMOTE_BRANCH = $BRANCH_NAME ]; then
+		local BRANCH_EXISTS=$(_exists_remote_repository $BRANCH_NAME)
+		if [ $BRANCH_EXISTS = "false" ]; then
+			colorful_echo "Branch named '$BRANCH_NAME' does not exist in the remote repository" "RED"
+			return 1
+		fi
+		git worktree add $NEW_WORKTREE_PATH
+		git branch --set-upstream-to=origin/$BRANCH_NAME $BRANCH_NAME
+		pushd $NEW_WORKTREE_PATH >/dev/null
+		git pull
+	else
+		# if the branches are not the same,
+		# we need to check that the new branch does not exist in the remote repository
+		local BRANCH_EXISTS=$(_exists_remote_repository $BRANCH_NAME)
+		if [ $BRANCH_EXISTS = "true" ]; then
+			colorful_echo "Branch named '$BRANCH_NAME' already exists" "RED"
+			return 1
+		fi
+
+		git worktree add --track -b $BRANCH_NAME $NEW_WORKTREE_PATH origin/$REMOTE_BRANCH
+		git push --set-upstream origin $BRANCH_NAME
+	fi
+
+	pushd $NEW_WORKTREE_PATH >/dev/null
+
+	_worktree_set_up
+}
+
+_exists_worktree() {
+	local WORKTREE=$1
+	local COMMAND="git worktree list | awk '{print $3;}' | awk '/[$WORKTREE]/{print $1}'"
+	local WORKTREE_FOUND=$(eval $COMMAND)
+
+	if [ ! -z $WORKTREE_FOUND ]; then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+
+# TODO: is there a better way to implement this??
+_remove_local_that_do_not_exist_on_remote_repository() {
+	git remote update --prune >/dev/null
+	git branch -vv | awk '/: gone]/{print $1}' | awk '!/^(*|+)/' | xargs --no-run-if-empty git branch -d >/dev/null
+}
+
+_fetch() {
+	local REMOTE_ORIGIN_FETCH=$(git config remote.origin.fetch)
+	if [ -z $REMOTE_ORIGIN_FETCH ] || [ $REMOTE_ORIGIN_FETCH != "+refs/heads/*:refs/remotes/origin/*" ]; then
+		git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+	fi
+	git fetch --all --prune >/dev/null
+}
+
+_worktree_clean() {
+	# awk '$3{print $3}!$3{print "(bare)"}' => there is not a 3rd column in bare repo, so we return (bare)
+	# sed 's:^.\(.*\).$:\1:' => remove first and last character(e.g. [master] => master)
+	local BRANCHES_NAMES=$(git worktree list | awk '$3{print $3}!$3{print "(bare)"}' | sed 's:^.\(.*\).$:\1:')
+
+	local BRANCHES=()
+	while read -r branch_name; do
+		BRANCHES+=("$branch_name")
+	done <<<"$BRANCHES_NAMES"
+
+	local BRANCHED_TO_BE_REMOVED=()
+	for branch in $BRANCHES; do
+		[[ $branch = "bare" ]] && continue
+
+		local BRANCH_EXISTS=$(_exists_remote_repository $branch)
+		[ $BRANCH_EXISTS = "true" ] && continue
+
+		BRANCHED_TO_BE_REMOVED+=($branch)
+	done
+
+	[ ${#BRANCHED_TO_BE_REMOVED[@]} -eq 0 ] && colorful_echo "All worktrees have a corresponding remote branch" && return 0
+
+	for branch in $BRANCHED_TO_BE_REMOVED; do
+		local WORKTREE_REMOVE_OUTPUT=$(git worktree remove $branch 2>&1)
+
+		# if the worktree was removed successfully => prune and return
+		[ -z $WORKTREE_REMOVE_OUTPUT ] && colorful_echo "Worktree named '$branch' was removed successfully" && continue
+
+		colorful_echo "Worktree named '$branch' was not removed" "RED"
+		colorful_echo $WORKTREE_REMOVE_OUTPUT "RED"
+	done
+
+	_worktree_prune
+}
+
+_fn_exists() {
+	type $1 >/dev/null 2>&1
+}
+
+_worktree_set_up() {
+	_fn_exists zsh_git_fzf_on_worktree_change
+	if [ $? -eq 0 ]; then
+		zsh_git_fzf_on_worktree_change
+	fi
+}
+
+_worktree() {
+	if ! hash fzf 2>/dev/null; then
+		colorful_echo "You need to install fzf: https://github.com/junegunn/fzf" "RED"
+		return 1
+	fi
+
+	local OPERATION=$1
+	[ -z $OPERATION ] && _worktree_help && return 0
+
+	local IS_GIT_REPOSITORY="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+	if [[ ! $IS_GIT_REPOSITORY ]]; then
+		colorful_echo "You need to be inside a git repository" "RED"
+		return 1
+	fi
+
+	if [ $OPERATION = "list" ]; then
+		_worktree_list
+	elif [ $OPERATION = "prune" ]; then
+		_worktree_prune
+	elif [ $OPERATION = "add" ]; then
+		_worktree_add ${@:2} # pass all arguments except the first one(add)
+	elif [ $OPERATION = "remove" ]; then
+		_worktree_remove
+	elif [ $OPERATION = "clean" ]; then
+		_worktree_clean
+	else
+		_worktree_help
+	fi
+}
+
+_worktree $@

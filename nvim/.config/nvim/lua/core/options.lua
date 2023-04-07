@@ -41,7 +41,7 @@ o.splitright = true
 o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
-o.guifont = 'MonoLisa:h16'
+-- o.guifont = 'MonoLisa:h16'
 o.timeoutlen = 500
 o.undofile = true
 o.updatetime = 250
@@ -62,11 +62,11 @@ else
   vim.g.python_host_prog = '/usr/bin/python'
 end
 
-if vim.g.started_by_firenvim then
-  o.guifont = 'Monolisa Nerd Font:h13'
-  o.laststatus = 0
-  map('n', 'K', function() end)
-end
+-- if vim.g.started_by_firenvim then
+--   o.guifont = 'Monolisa Nerd Font:h13'
+--   o.laststatus = 0
+--   map('n', 'K', function() end)
+-- end
 
 vim.g.neovide_cursor_animation_length = 0.08
 vim.g.neovide_cursor_trail_size = 0.5

@@ -1,0 +1,161 @@
+set FZF_OPTIONS "--height 10% --layout=reverse --border"
+
+function _worktree_help
+    set -l PREFIX wt
+    echo "Worktree Usage:"
+    echo "$PREFIX list: List details of each working tree. Press ESC to exit or select a worktree to move into it"
+    echo "$PREFIX prune: Prune working tree information"
+    echo "$PREFIX add [new-branch] [remote-branch(optional)]: Create new working tree"
+    echo "$PREFIX remove: Remove a working tree"
+    echo "$PREFIX clean: Remove all working trees that do not have a corresponding remote branch"
+end
+
+function _worktree_list
+    set -l WORKTREE (git worktree list | fzf --height 10% --layout=reverse --border)
+
+    if test -z $WORKTREE
+        return 0
+    end
+
+    set -l WORKTREE_PATH (echo $WORKTREE | awk '{print $1;}')
+
+    pushd $WORKTREE_PATH >/dev/null
+end
+
+function _worktree_prune
+    git worktree prune
+end
+
+function _exists_worktree
+    set -l WORKTREE $argv
+    set -l COMMAND "git worktree list | awk '{print \$3;}' | awk '/\[$WORKTREE\]/{print \$1}'"
+    set WORKTREE_FOUND (eval $COMMAND)
+
+    if ! test -z $WORKTREE_FOUND
+        echo true
+    else
+        echo false
+    end
+end
+
+function fetch
+    set -l REMOTE_ORIGIN_FETCH (git config remote.origin.fetch)
+    if test -z $REMOTE_ORIGIN_FETCH || test $REMOTE_ORIGIN_FETCH != "+refs/heads/*:refs/remotes/origin/*"
+        git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    end
+    git fetch --all --prune >/dev/null
+end
+
+function _calculate_new_worktree_path
+    set -l NEW_BRANCH $argv
+    set -l WORKTREE_PATH (dirname (git rev-parse --git-dir))
+    set -l NEW_WORKTREE_PATH "$WORKTREE_PATH/$NEW_BRANCH"
+    echo $NEW_WORKTREE_PATH
+end
+
+function _exists_remote_repository
+    set -l BRANCH $argv[1]
+    set -l WORKTREE_EXISTS (eval git ls-remote origin $BRANCH)
+    if ! test -z $WORKTREE_EXISTS
+        echo true
+    else
+        echo false
+    end
+end
+
+function _worktree_add
+    if test (count $argv) -ne 1
+        echo "You should pass the new-branch(E.g. wt add new-branch)"
+        return 1
+    end
+
+    set -l HOLD_PATH $PWD
+    set -l BRANCH_NAME $argv[1]
+    set -l REMOTE_BRANCH_NAME $argv[2]
+
+    set -l WORKTREE_EXISTS (_exists_worktree $BRANCH_NAME)
+    if test $WORKTREE_EXISTS = true
+        echo "Worktree named '$BRANCH_NAME' already exists"
+        return
+    end
+
+    _fetch
+
+    # remove origin/ prefix from remote branches
+    set -l REMOTE_BRANCH (git branch -r | awk '{print $1}' | sed -e "s/^origin\///" | fzf --height 10% --layout=reverse --border)
+
+
+    # if the user didn't select a remote branch, we assign the new branch as the remote branch
+    if test -z $REMOTE_BRANCH
+        set -l REMOTE_BRANCH $BRANCH_NAME
+    end
+
+    set -l NEW_WORKTREE_PATH (_calculate_new_worktree_path $BRANCH_NAME)
+
+    if test $REMOTE_BRANCH = $BRANCH_NAME
+        set -l BRANCH_EXISTS (_exists_remote_repository $BRANCH_NAME)
+        if test $BRANCH_EXISTS = false
+            echo "Branch named '$BRANCH_NAME' does not exist in the remote repository"
+            return 1
+        end
+        git worktree add $NEW_WORKTREE_PATH
+        git branch --set-upstream-to=origin/$BRANCH_NAME $BRANCH_NAME
+        pushd $NEW_WORKTREE_PATH >/dev/null
+        git pull
+    else
+        # if the branches are not the same,
+        # we need to check that the new branch does not exist in the remote repository
+        set -l BRANCH_EXISTS (_exists_remote_repository $BRANCH_NAME)
+        if test $BRANCH_EXISTS = true
+            echo "Branch named '$BRANCH_NAME' already exists"
+            return 1
+        end
+
+        git worktree add --track -b $BRANCH_NAME $NEW_WORKTREE_PATH origin/$REMOTE_BRANCH
+    end
+
+    pushd $NEW_WORKTREE_PATH >/dev/null
+end
+
+function _fetch
+    set -l REMOTE_ORIGIN_FETCH (git config remote.origin.fetch)
+    if test -z $REMOTE_ORIGIN_FETCH || test $REMOTE_ORIGIN_FETCH != "+refs/heads/*:refs/remotes/origin/*"
+        git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    end
+    git fetch --all --prune >/dev/null
+end
+
+
+function wt
+    if ! type -q fzf
+        echo "You need to install fzf: https://github.com/junegunn/fzf"
+        return 1
+    end
+
+    set OPERATION $argv[1]
+    if test -z $OPERATION
+        _worktree_help
+        return 0
+    end
+
+    set IS_GIT_REPOSITORY (git rev-parse --is-inside-work-tree 2>/dev/null)
+
+    if test -z IS_GIT_REPOSITORY
+        echo "You need to be inside a git repository"
+        return 1
+    end
+
+    if test $OPERATION = list
+        _worktree_list
+    else if test $OPERATION = prune
+        _worktree_prune
+    else if test $OPERATION = add
+        _worktree_add $argv[2] # ${@:2} # pass all arguments except the first one(add)
+    else if test $OPERATION = remove
+        _worktree_remove
+    else if test $OPERATION = clean
+        _worktree_clean
+    else
+        _worktree_help
+    end
+end

@@ -95,6 +95,7 @@ return {
   -- testing integration
   {
     'nvim-neotest/neotest',
+    lazy = true,
     dependencies = {
       'haydenmeade/neotest-jest',
       'nvim-lua/plenary.nvim',

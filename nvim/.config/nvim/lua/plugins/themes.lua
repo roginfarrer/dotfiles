@@ -1,11 +1,82 @@
 local plugins = {
   { 'folke/tokyonight.nvim' },
   { 'AlexvZyl/nordic.nvim' },
-  { 'rebelot/kanagawa.nvim' },
+  {
+    'rebelot/kanagawa.nvim',
+    opts = {
+      compile = true,
+      statementStyle = { bold = false },
+      commentStyle = { italic = false },
+      overrides = function(colors)
+        local theme = colors.theme
+        return {
+          -- NormalFloat = { fg = colors.fg, bg = colors.bg },
+          -- FloatBorder = { fg = colors.fg_border, bg = colors.bg },
+          -- NoiceCmdline = { fg = theme.ui.fg },
+          NoiceCmdlinePopupBorder = { bg = theme.ui.bg },
+          NoiceCmdlineIcon = { link = '@character.special' },
+          SignColumn = { bg = theme.ui.bg },
+          FoldColumn = { bg = theme.ui.bg },
+          CursorLineNr = { bg = theme.ui.bg },
+          LineNr = { bg = theme.ui.bg },
+          IlluminatedWordRead = { link = 'Visual' },
+          IlluminatedWordText = { link = 'Visual' },
+          IlluminatedWordWrite = { link = 'Visual' },
+          -- Block Telescope
+          TelescopeTitle = { fg = theme.ui.special, bold = true },
+          TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+          TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+          TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+          TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+          TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+          TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+        }
+      end,
+    },
+  },
   { 'JoosepAlviste/palenightfall.nvim' },
   { 'EdenEast/nightfox.nvim' },
   { 'rmehri01/onenord.nvim' },
   { 'olimorris/onedarkpro.nvim' },
+  {
+    'ellisonleao/gruvbox.nvim',
+    opts = function()
+      local colors = require('gruvbox.palette').get_base_colors()
+      return {
+        italic = { strings = false, comments = false, keywords = false },
+        bold = false,
+        overrides = {
+          NoiceCmdlinePopupBorder = { link = 'Normal' },
+          NoiceCmdlineIcon = { link = '@character.special' },
+          IlluminatedWordRead = { bg = colors.bg2 },
+          IlluminatedWordText = { bg = colors.bg2 },
+          IlluminatedWordWrite = { bg = colors.bg2 },
+          -- Make more like Zed's Gruvbox Dark
+          ['Identifier'] = { fg = 'NONE', bg = 'NONE' },
+          ['Function'] = { fg = 'NONE', bg = 'NONE' },
+          ['Structure'] = { fg = 'NONE', bg = 'NONE' },
+          ['@constructor'] = { link = 'GruvboxBlue' },
+          ['@punctuation.bracket'] = { link = 'GruvboxGray' },
+          ['@punctuation.special'] = { link = 'GruvboxFg0' },
+          ['@variable'] = { link = 'GruvboxBlue' },
+          ['@field'] = { link = 'GruvboxFg0' },
+          ['@property'] = { link = 'GruvboxFg0' },
+          ['@punctuation.delimiter'] = { link = 'GruvboxFg0' },
+          ['@operator'] = { link = 'GruvboxAqua' },
+          ['@function.call'] = { link = 'GruvboxGreen' },
+          ['@function.builtin'] = { link = 'GruvboxRed' },
+          ['@conditional.ternary'] = { link = 'GruvboxFg0' },
+          ['@type'] = { link = 'GruvboxYellow' },
+        },
+      }
+    end,
+  },
+  {
+    'sainnhe/gruvbox-material',
+    init = function()
+      vim.g.gruvbox_material_background = 'hard'
+    end,
+  },
   {
     'catppuccin/nvim',
     name = 'catppuccin',
@@ -15,6 +86,7 @@ local plugins = {
       local util = require 'catppuccin.utils.colors'
 
       cat.setup {
+        no_italic = true,
         integrations = {
           treesitter = true,
           native_lsp = {
@@ -111,7 +183,6 @@ local plugins = {
           TelescopePreviewTitle = { fg = cp.crust, bg = cp.lavender },
         },
       }
-      vim.g.catppuccin_flavour = 'mocha'
     end,
   },
 }

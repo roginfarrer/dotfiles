@@ -28,7 +28,6 @@ return {
       { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
     },
   },
-  { 'akinsho/git-conflict.nvim', enabled = false, opts = {}, event = 'VimEnter' },
   {
     'pwntester/octo.nvim',
     dependencies = {
@@ -41,26 +40,6 @@ return {
       ---@diagnostic disable-next-line: undefined-field
       github_hostname = _G.work_github_url,
     },
-  },
-
-  {
-    'ruifm/gitlinker.nvim',
-    enabled = false,
-    config = function()
-      require('gitlinker').setup {
-        mappings = nil,
-        callbacks = {
-          [_G.work_github_url] = require('gitlinker.hosts').get_github_type_url,
-        },
-      }
-    end,
-    -- stylua: ignore
-    -- keys = {
-    --   { '<leader>gc', function() require('gitlinker').get_buf_range_url 'n' end, desc = 'Copy github url to clipboard', },
-    --   { '<leader>gc', function() require('gitlinker').get_buf_range_url 'v' end, desc = 'Copy github url to clipboard', mode = { 'v' }, },
-    --   { '<leader>go', function() require('gitlinker').get_buf_range_url( 'n', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', },
-    --   { '<leader>go', function() require('gitlinker').get_buf_range_url( 'v', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', mode = { 'v' }, },
-    -- },
   },
 
   {

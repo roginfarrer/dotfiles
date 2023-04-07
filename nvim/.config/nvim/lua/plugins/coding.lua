@@ -231,14 +231,25 @@ return {
         enabled = true,
       },
     },
-    keys = {
-      { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' } },
-      { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' } },
-      { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' } },
-      { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' } },
-      { '<c-n>', '<Plug>(YankyCycleForward)' },
-      { '<c-p>', '<Plug>(YankyCycleBackward)' },
-    },
+    keys = function()
+      local cmd = function(arg)
+        return function()
+          local ok, tmux = pcall(require, 'tmux.copy')
+          if vim.env.TMUX and ok then
+            tmux.sync_registers()
+          end
+          return arg
+        end
+      end
+      return {
+        { 'p', cmd '<Plug>(YankyPutAfter)', expr = true, mode = { 'n', 'x' } },
+        { 'P', cmd '<Plug>(YankyPutBefore)', expr = true, mode = { 'n', 'x' } },
+        { 'gp', cmd '<Plug>(YankyGPutAfter)', expr = true, mode = { 'n', 'x' } },
+        { 'gP', cmd '<Plug>(YankyGPutBefore)', expr = true, mode = { 'n', 'x' } },
+        { '<c-n>', '<Plug>(YankyCycleForward)' },
+        { '<c-p>', '<Plug>(YankyCycleBackward)' },
+      }
+    end,
   },
 
   -- better increase/descrease

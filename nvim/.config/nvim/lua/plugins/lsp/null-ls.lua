@@ -32,6 +32,8 @@ M.setup = function(on_attach)
       b.formatting.stylua,
       b.formatting.fish_indent,
       b.formatting.shfmt,
+      b.code_actions.shellcheck,
+      b.diagnostics.shellcheck,
       b.diagnostics.vint.with {
         args = { '--enable-neovim', '-s', '-j', '$FILENAME' },
       },
@@ -42,6 +44,7 @@ M.setup = function(on_attach)
         filtetypes = { 'vim' },
       },
       b.code_actions.gitsigns,
+      b.diagnostics.zsh,
     },
     on_attach = on_attach,
   }

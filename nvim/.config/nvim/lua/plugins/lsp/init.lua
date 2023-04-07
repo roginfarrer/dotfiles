@@ -1,4 +1,3 @@
-local count = 0
 return {
   {
     'williamboman/mason.nvim',
@@ -42,10 +41,8 @@ return {
       'folke/neodev.nvim',
       'jose-elias-alvarez/null-ls.nvim',
       'jose-elias-alvarez/typescript.nvim',
-      {
-        'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-        opts = {},
-      },
+      { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
+      { 'dnlhc/glance.nvim', opts = {} },
     },
     config = function()
       vim.diagnostic.config {

@@ -5,7 +5,7 @@ env {
 theme "catppuccin-mocha"
 
 default_mode "locked"
-default_layout "compact"
+/* default_layout "compact" */
 
 keybinds {
   normal {
