@@ -3,22 +3,17 @@ if not functions -q fisher && status is-interactive
     curl -sL https://git.io/fisher | source && fisher update || fisher install jorgebucaran/fisher
 end
 
-# Initialize starship prompt
-starship init fish | source
-zoxide init fish | source
-# status --is-interactive; and source (nodenv init -|psub)
-
 # alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
-if test -n "$NVIM_LISTEN_ADDRESS"
-    alias nvim "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-end
-if test -n "$NVIM_LISTEN_ADDRESS"
-    set -gx VISUAL "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-    set -gx EDITOR "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-else
-    set -gx EDITOR nvim
-    set -gx VISUAL nvim
-end
+# if test -n "$NVIM_LISTEN_ADDRESS"
+#     alias nvim "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+# end
+# if test -n "$NVIM_LISTEN_ADDRESS"
+#     set -gx VISUAL "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+#     set -gx EDITOR "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+# else
+set -gx EDITOR nvim
+set -gx VISUAL nvim
+# end
 
 set -gx SUDO_EDITOR $EDITOR
 set -gx MANPAGER "nvim +Man!"
@@ -61,7 +56,5 @@ set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 # Bun
 set -px --path PATH "/Users/rfarrer/.bun/bin"
 
-# bind \n true
-# bind -M insert \n true
-
-fish_add_path /Users/rfarrer/.spicetify
+# fish_add_path /Users/rfarrer/.spicetify
+source $HOME/.config/fish/themes/rose-pine.fish

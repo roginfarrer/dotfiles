@@ -6,7 +6,7 @@ set -e
 ###
 # HOMEBREW
 ###
-if test ! $(which brew); then
+if command -v brew &> /dev/null then
 	echo "Installing homebrew..."
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
@@ -43,3 +43,11 @@ fish_add_path ~/.cargo/bin
 
 echo 'Installing crates...'
 cargo install stylua
+
+# Link Dash to sh
+# https://scriptingosx.com/2020/06/about-bash-zsh-sh-and-dash-in-macos-catalina-and-beyond/
+if command -v dash &> /dev/null then
+  sudo ln -sf /bin/dash /var/select/sh
+else
+  echo "dash shell not installed. Skipping symlink"
+fi

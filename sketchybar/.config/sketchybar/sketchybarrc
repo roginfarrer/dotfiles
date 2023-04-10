@@ -22,18 +22,18 @@ $HOME/.config/sketchybar/helper/helper $HELPER >/dev/null 2>&1 &
 
 # Setting up the general bar appearance of the bar
 bar=(
-	height=40
+	height=34
 	color=$BAR_COLOR
-	corner_radius=8
-	border_width=2
+	corner_radius=0
+	border_width=0
 	border_color=$BAR_BORDER_COLOR
 	shadow=off
 	position=top
 	sticky=on
 	padding_right=8
 	padding_left=8
-	y_offset=4
-	margin=8
+	y_offset=0
+	margin=0
 	# font_smoothing=true
 	blur_radius=50
 )

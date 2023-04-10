@@ -74,6 +74,7 @@
   "persisted.nvim": { "branch": "main", "commit": "e053ff33488431dc5bf9239b08650e650ec67292" },
   "plenary.nvim": { "branch": "master", "commit": "253d34830709d690f013daf2853a9d21ad7accab" },
   "promise-async": { "branch": "main", "commit": "7fa127fa80e7d4d447e0e2c78e99af4355f4247b" },
+  "rose-pine": { "branch": "main", "commit": "f8e210df52a4f418eae3690eb744b06c13a6c556" },
   "skhd-vim-syntax": { "branch": "main", "commit": "3ce4bd27b4c855ac83bfa90e27ae6c896ac1c403" },
   "smart-splits.nvim": { "branch": "master", "commit": "81809444cbfbfad1814584356b25fa6d571a8722" },
   "smartcolumn.nvim": { "branch": "main", "commit": "0c572e3eae48874f25b74394a486f38cadb5c958" },

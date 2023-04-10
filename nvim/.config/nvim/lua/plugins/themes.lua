@@ -1,4 +1,29 @@
 local plugins = {
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    opts = {
+      variant = 'moon',
+      disable_italics = true,
+      highlight_groups = {
+        TelescopePromptPrefix = { bg = 'surface', fg = 'iris' },
+        TelescopePromptNormal = { bg = 'surface' },
+        TelescopePromptTitle = { fg = 'surface', bg = 'iris' },
+        TelescopePromptBorder = { bg = 'surface', fg = 'surface' },
+        TelescopeResultsNormal = { bg = 'overlay' },
+        TelescopeResultsBorder = { bg = 'overlay', fg = 'overlay' },
+        TelescopeResultsTitle = { fg = 'overlay' },
+        TelescopePreviewBorder = { bg = 'surface', fg = 'surface' },
+        TelescopePreviewTitle = { fg = 'surface', bg = 'surface' },
+        TelescopePreviewNormal = { bg = 'surface' },
+        TelescopeSelection = { fg = 'text', bg = 'base' },
+        TelescopeSelectionCaret = { fg = 'iris', bg = 'iris' },
+        IlluminatedWordRead = { bg = 'highlight_med' },
+        IlluminatedWordText = { bg = 'highlight_med' },
+        IlluminatedWordWrite = { bg = 'highlight_med' },
+      },
+    },
+  },
   { 'folke/tokyonight.nvim' },
   { 'AlexvZyl/nordic.nvim' },
   {
@@ -188,7 +213,7 @@ local plugins = {
 }
 
 for _, plugin in ipairs(plugins) do
-  plugin.lazy = true
+  plugin.lazy = false
   plugin.priority = 1000
 end
 
