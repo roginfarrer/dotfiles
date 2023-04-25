@@ -14,19 +14,19 @@ function M.opts()
 
   return {
     defaults = {
-      -- vimgrep_arguments = {
-      --   'rg',
-      --   '--hidden',
-      --   '--color=never',
-      --   '--no-heading',
-      --   '--with-filename',
-      --   '--line-number',
-      --   '--column',
-      --   '--trim',
-      --   '--smart-case',
-      --   '-g',
-      --   '!.git',
-      -- },
+      vimgrep_arguments = {
+        'rg',
+        '--hidden',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--trim',
+        '--smart-case',
+        '-g',
+        '!.git',
+      },
       layout_config = {
         horizontal = {
           prompt_position = 'top',

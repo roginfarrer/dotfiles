@@ -57,4 +57,4 @@ set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -px --path PATH "/Users/rfarrer/.bun/bin"
 
 # fish_add_path /Users/rfarrer/.spicetify
-source $HOME/.config/fish/themes/rose-pine.fish
+# source $HOME/.config/fish/themes/rose-pine.fish

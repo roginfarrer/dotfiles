@@ -86,7 +86,9 @@ source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/volume.sh"
 
 sketchybar --add alias "Fantastical Helper,Fantastical" right
-sketchybar --set "Fantastical Helper,Fantastical" alias.color=$LABEL_COLOR
+sketchybar --set "Fantastical Helper,Fantastical" \
+	alias.color=$LABEL_COLOR \
+	update_freq=60
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update

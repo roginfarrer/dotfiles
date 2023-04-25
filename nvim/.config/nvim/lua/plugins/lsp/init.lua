@@ -53,7 +53,7 @@ return {
         -- For lsp_lines
         virtual_lines = false,
         float = {
-          border = 'rounded',
+          border = { '🭽', '▔', '🭾', '▕', '🭿', '▁', '🭼', '▏' },
           format = function(diagnostic)
             if diagnostic.source == 'eslint' then
               return string.format(
@@ -127,7 +127,7 @@ return {
         bashls = {},
         cssls = {},
         astro = {
-          root_dir = util.root_pattern '.git',
+          -- root_dir = util.root_pattern '.git',
           -- on_new_config = function(new_config, new_root_dir)
           --   if
           --     new_config.init_options

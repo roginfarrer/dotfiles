@@ -13,4 +13,4 @@ if vim.fn.has 'gui_running' then
   require 'core.gui'
 end
 
-vim.cmd.colorscheme 'rose-pine'
+vim.cmd.colorscheme 'catppuccin'

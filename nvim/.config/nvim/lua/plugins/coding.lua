@@ -39,6 +39,16 @@ return {
       local cmp = require 'cmp'
 
       local function border(hl_name)
+        -- return {
+        --   { ' ', hl_name },
+        --   { '▁', hl_name },
+        --   { ' ', hl_name },
+        --   { '▏', hl_name },
+        --   { ' ', hl_name },
+        --   { '▔', hl_name },
+        --   { ' ', hl_name },
+        --   { '▕', hl_name },
+        -- }
         return {
           { '╭', hl_name },
           { '─', hl_name },

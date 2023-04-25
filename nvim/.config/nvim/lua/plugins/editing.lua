@@ -28,9 +28,9 @@ return {
         --   end,
         -- },
         ['<C-s>'] = {
-          desc = 'open in a horizontal split',
+          desc = 'open in a vertical split',
           callback = function()
-            oil_select 'horizontal'
+            oil_select 'vertical'
           end,
         },
         ['<C-l>'] = false,
@@ -90,8 +90,9 @@ return {
   {
     'mrjones2014/smart-splits.nvim',
     cond = function()
+      return true
       -- tmux.nvim handles most of what this plugin does
-      return vim.env.TERM_PROGRAM == 'WezTerm'
+      -- return vim.env.TERM_PROGRAM == 'WezTerm'
     end,
     -- stylua: ignore
   keys = {
