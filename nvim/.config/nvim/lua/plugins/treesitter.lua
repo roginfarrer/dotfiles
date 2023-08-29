@@ -1,12 +1,11 @@
 return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
-  event = 'VeryLazy',
+  event = { 'BufReadPost', 'BufNewFile' },
+  version = false, -- last release is way too old and doesn't work on Windows
   dependencies = {
-    -- { 'nvim-treesitter/nvim-treesitter-context', config = true },
-    { 'lewis6991/spellsitter.nvim', config = true },
+    -- { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
     'JoosepAlviste/nvim-ts-context-commentstring',
-    'p00f/nvim-ts-rainbow',
     { 'windwp/nvim-ts-autotag', config = true },
   },
   opts = {
@@ -42,14 +41,6 @@ return {
     autopairs = {
       enable = true,
     },
-    rainbow = {
-      enable = false,
-      -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
-      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-      max_file_lines = nil, -- Do not enable for files with more than n lines, int
-      -- colors = {}, -- table of hex strings
-      -- termcolors = {} -- table of colour name strings
-    },
     autotag = {
       enable = true,
       filetypes = {
@@ -66,7 +57,7 @@ return {
       },
     },
     context = {
-      enable = true,
+      enable = false,
     },
     -- textobjects = {
     --   -- swap = {
@@ -121,9 +112,6 @@ return {
     --     },
     --   },
     -- },
-    spellsitter = {
-      enable = true,
-    },
   },
   config = function(_, opts)
     require('nvim-treesitter.configs').setup(opts)

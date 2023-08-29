@@ -1,34 +1,45 @@
 return {
+
+  { 'tomiis4/Hypersonic.nvim', cmd = 'Hypersonic' },
   {
-    'williamboman/mason.nvim',
-    dependencies = {
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-      opts = {
-        automatic_installation = true,
-        ensure_installed = {
-          -- language servers
-          'typescript-language-server',
-          'lua-language-server',
-          'json-lsp',
-          'eslint-lsp',
-          'bash-language-server',
-          'css-lsp',
-          'stylelint-lsp',
-          'marksman',
-          'yaml-language-server',
-          -- Formatters
-          -- 'prettierd',
-          'stylua',
-          'shfmt',
-          -- Linters
-          'vint',
-          -- DAP
-          'chrome-debug-adapter',
-          'node-debug2-adapter',
-        },
+    'bennypowers/nvim-regexplainer',
+    lazy = true,
+    opts = {},
+    cmd = { 'RegexplainerShowSplit', 'RegexplainerShowPopup', 'RegexplainerHide', 'RegexplainerToggle' },
+  },
+
+  {
+    'folke/trouble.nvim',
+    cmd = { 'Trouble', 'TroubleClose', 'TroubleToggle', 'TroubleRefresh' },
+    opts = { use_diagnostic_signs = true },
+    keys = {
+      { '<leader>xx', '<cmd>TroubleToggle document_diagnostics<cr>', desc = 'Document Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>TroubleToggle workspace_diagnostics<cr>', desc = 'Workspace Diagnostics (Trouble)' },
+      { '<leader>xL', '<cmd>TroubleToggle loclist<cr>', desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>TroubleToggle quickfix<cr>', desc = 'Quickfix List (Trouble)' },
+      {
+        '[q',
+        function()
+          if require('trouble').is_open() then
+            require('trouble').previous { skip_groups = true, jump = true }
+          else
+            vim.cmd.cprev()
+          end
+        end,
+        desc = 'Previous trouble/quickfix item',
+      },
+      {
+        ']q',
+        function()
+          if require('trouble').is_open() then
+            require('trouble').next { skip_groups = true, jump = true }
+          else
+            vim.cmd.cnext()
+          end
+        end,
+        desc = 'Next trouble/quickfix item',
       },
     },
-    config = true,
   },
 
   {
@@ -36,13 +47,45 @@ return {
     event = 'BufReadPre',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
-      'folke/which-key.nvim',
-      -- 'glepnir/lspsaga.nvim',
+      -- 'folke/which-key.nvim',
       'folke/neodev.nvim',
       'jose-elias-alvarez/null-ls.nvim',
-      'jose-elias-alvarez/typescript.nvim',
-      { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
-      { 'dnlhc/glance.nvim', opts = {} },
+      -- 'jose-elias-alvarez/typescript.nvim',
+      -- 'yioneko/nvim-vtsls',
+      'pmizio/typescript-tools.nvim',
+      -- { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
+      { 'dnlhc/glance.nvim', opts = { list = { position = 'left' } } },
+      {
+        'williamboman/mason.nvim',
+        dependencies = {
+          'WhoIsSethDaniel/mason-tool-installer.nvim',
+          opts = {
+            automatic_installation = true,
+            ensure_installed = {
+              -- language servers
+              'typescript-language-server',
+              'lua-language-server',
+              'json-lsp',
+              'eslint-lsp',
+              'bash-language-server',
+              'css-lsp',
+              'stylelint-lsp',
+              'marksman',
+              'yaml-language-server',
+              -- Formatters
+              -- 'prettierd',
+              'stylua',
+              'shfmt',
+              -- Linters
+              'vint',
+              -- DAP
+              'chrome-debug-adapter',
+              'node-debug2-adapter',
+            },
+          },
+        },
+        config = true,
+      },
     },
     config = function()
       vim.diagnostic.config {
@@ -101,28 +144,10 @@ return {
 
       local util = require 'lspconfig.util'
 
-      local function get_typescript_server_path(root_dir)
-        local git_root = util.find_git_ancestor(root_dir)
-
-        local function seek(start)
-          local project_root = util.find_node_modules_ancestor(start)
-          local maybeFound = util.path.join(project_root, 'node_modules', 'typescript', 'lib', 'tsserverlibrary.js')
-
-          if maybeFound then
-            return maybeFound
-          end
-
-          if git_root ~= project_root then
-            seek(util.path.basename(project_root))
-          end
-        end
-
-        return seek(root_dir) or ''
-      end
-
       local servers = {
         lua_ls = {},
-        tsserver = {},
+        -- vtsls = {},
+        -- tsserver = {},
         eslint = {},
         bashls = {},
         cssls = {},
@@ -151,13 +176,18 @@ return {
         library = { plugins = { 'neotest' }, types = true },
       }
 
+      if pcall(require, 'vtsls') then
+        require('lspconfig.configs').vtsls = require('vtsls').lspconfig
+      end
+
       for server, opts in pairs(servers) do
         opts = vim.tbl_deep_extend('force', {}, options, opts or {})
-        if server == 'tsserver' then
-          require('typescript').setup { server = opts }
-        else
-          require('lspconfig')[server].setup(opts)
-        end
+        require('lspconfig')[server].setup(opts)
+        -- if server == 'tsserver' then
+        --   require('typescript').setup { server = opts }
+        -- else
+        --   require('lspconfig')[server].setup(opts)
+        -- end
       end
 
       local function prefix_bun(cmd)
@@ -167,12 +197,25 @@ return {
           '--bun',
         }, cmd)
       end
-      local node_servers = { 'tsserver', 'jsonls', 'cssls', 'html', 'eslint', 'astro' }
+      local node_servers = { 'tsserver', 'jsonls', 'cssls', 'html', 'eslint', 'astro', 'vtsls' }
       util.on_setup = util.add_hook_before(util.on_setup, function(config, user_config)
         if config.cmd and node_servers[config.name] then
           config.cmd = prefix_bun(config.cmd)
         end
       end)
+
+      require('typescript-tools').setup {
+        on_attach = function(client, bufnr)
+          on_attach(client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+        end,
+        settings = {
+          expose_as_code_action = { 'fix_all', 'add_missing_imports', 'remove_unused' },
+          tsserver_plugins = { 'styled-components' },
+          complete_function_calls = true,
+        },
+      }
 
       require('plugins.lsp.null-ls').setup(on_attach)
     end,

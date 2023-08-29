@@ -176,7 +176,9 @@ end
 return {
   'ibhagwan/fzf-lua',
   enabled = false,
-  dependencies = { { dir = '~/projects/fzf-lua-lazy', opts = {} } },
+  dependencies = {
+    { dir = '~/projects/fzf-lua-lazy', opts = {}, dependencies = { dir = '~/neovim/open.nvim', opts = {} } },
+  },
   cmd = 'FzfLua',
   -- opts = { 'telescope' },
   opts = {
@@ -192,6 +194,11 @@ return {
     },
     fzf_opts = {
       ['--layout'] = 'reverse',
+    },
+    winopts = {
+      preview = {
+        hidden = vim.fn.winwidth(0) < 125 and 'hidden' or 'nohidden',
+      },
     },
   },
   keys = {

@@ -34,6 +34,7 @@ return {
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-cmdline',
       'mtoohey31/cmp-fish',
+      'lukas-reineke/cmp-under-comparator',
     },
     opts = function()
       local cmp = require 'cmp'
@@ -49,16 +50,16 @@ return {
         --   { ' ', hl_name },
         --   { '▕', hl_name },
         -- }
-        return {
-          { '╭', hl_name },
-          { '─', hl_name },
-          { '╮', hl_name },
-          { '│', hl_name },
-          { '╯', hl_name },
-          { '─', hl_name },
-          { '╰', hl_name },
-          { '│', hl_name },
-        }
+        -- return {
+        --   { '╭', hl_name },
+        --   { '─', hl_name },
+        --   { '╮', hl_name },
+        --   { '│', hl_name },
+        --   { '╯', hl_name },
+        --   { '─', hl_name },
+        --   { '╰', hl_name },
+        --   { '│', hl_name },
+        -- }
       end
 
       return {
@@ -67,12 +68,11 @@ return {
           keyword_pattern = [[\k\+]],
         },
         window = {
-          completion = {
-            border = border 'CmpBorder',
-            winhighlight = 'Normal:CmpPmenu,CursorLine:PmenuSel,Search:None',
+          completion = cmp.config.window.bordered {
+            scrollbar = true,
           },
-          documentation = {
-            border = border 'CmpDocBorder',
+          documentation = cmp.config.window.bordered {
+            scrollbar = true,
           },
         },
         snippet = {
@@ -83,18 +83,28 @@ return {
         formatting = {
           format = function(entry, vim_item)
             -- Kind icons
-            vim_item.kind = string.format('%s %s', require('ui.icons').lspkind[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+            vim_item.kind = string.format('%s %s', require('ui.icons').lazy.kinds[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
             -- Source
             vim_item.menu = ({
-              buffer = '[Buffer]',
-              nvim_lsp = '[LSP]',
-              luasnip = '[LuaSnip]',
-              nvim_lua = '[Lua]',
-              latex_symbols = '[LaTeX]',
+              -- buffer = '[Buffer]',
+              -- nvim_lsp = '[LSP]',
+              -- luasnip = '[LuaSnip]',
+              -- nvim_lua = '[Lua]',
+              -- latex_symbols = '[LaTeX]',
               copilot = '[Copilot]',
             })[entry.source.name]
             return vim_item
           end,
+        },
+        sorting = {
+          comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            require('cmp-under-comparator').under,
+            cmp.config.compare.kind,
+          },
         },
         mapping = {
           ['<C-n>'] = cmp.mapping.select_next_item {
@@ -236,28 +246,57 @@ return {
   -- Better clipboard management
   {
     'gbprod/yanky.nvim',
-    opts = {
-      preserve_cursor_position = {
-        enabled = true,
-      },
-    },
+    dependencies = { { 'kkharji/sqlite.lua', enabled = not jit.os:find 'Windows' }, { 'aserowy/tmux.nvim' } },
+    opts = function()
+      local mapping = require 'yanky.telescope.mapping'
+      local mappings = mapping.get_defaults()
+      mappings.i['<c-p>'] = nil
+      return {
+        highlight = { timer = 200 },
+        ring = { storage = jit.os:find 'Windows' and 'shada' or 'sqlite' },
+        preserve_cursor_position = { enabled = true },
+        picker = {
+          telescope = {
+            use_default_mappings = false,
+            mappings = mappings,
+          },
+        },
+      }
+    end,
     keys = function()
-      local cmd = function(arg)
-        return function()
+      local t = function(tbl)
+        local rhs = tbl[2]
+        local new_rhs = function()
           local ok, tmux = pcall(require, 'tmux.copy')
           if vim.env.TMUX and ok then
             tmux.sync_registers()
           end
-          return arg
+          return rhs
         end
+        tbl[2] = new_rhs
+        tbl.expr = true
+        return tbl
       end
       return {
-        { 'p', cmd '<Plug>(YankyPutAfter)', expr = true, mode = { 'n', 'x' } },
-        { 'P', cmd '<Plug>(YankyPutBefore)', expr = true, mode = { 'n', 'x' } },
-        { 'gp', cmd '<Plug>(YankyGPutAfter)', expr = true, mode = { 'n', 'x' } },
-        { 'gP', cmd '<Plug>(YankyGPutBefore)', expr = true, mode = { 'n', 'x' } },
-        { '<c-n>', '<Plug>(YankyCycleForward)' },
-        { '<c-p>', '<Plug>(YankyCycleBackward)' },
+        -- stylua: ignore
+        { '<leader>p', function() require('telescope').extensions.yank_history.yank_history {} end, desc = 'Open Yank History', },
+        { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
+        { '[y', '<Plug>(YankyCycleForward)', desc = 'Cycle forward through yank history' },
+        { ']y', '<Plug>(YankyCycleBackward)', desc = 'Cycle backward through yank history' },
+        t { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after cursor' },
+        t { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before cursor' },
+        t { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after selection' },
+        t { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before selection' },
+        t { ']p', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
+        t { '[p', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
+        t { ']P', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
+        t { '[P', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
+        t { '>p', '<Plug>(YankyPutIndentAfterShiftRight)', desc = 'Put and indent right' },
+        t { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)', desc = 'Put and indent left' },
+        t { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)', desc = 'Put before and indent right' },
+        t { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put before and indent left' },
+        t { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put after applying a filter' },
+        t { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
       }
     end,
   },

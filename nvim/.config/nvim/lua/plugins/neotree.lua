@@ -8,6 +8,7 @@ return {
   cmd = 'Neotree',
   keys = {
     { '<leader>ft', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
+    { '<C-t>', '<cmd>Neotree toggle reveal<cr>', desc = 'NeoTree' },
   },
   opts = {
     filesystem = {

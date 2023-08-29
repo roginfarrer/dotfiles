@@ -1,16 +1,4 @@
-_G.global = {}
-require 'core.utils'
-require 'core.filetype'
-require 'core.options'
-require 'core.lazy'
+vim.loader.enable()
 
-require 'core.commands'
-require 'core.mappings'
-require 'core.context_menu'
-require 'local-config'
-
-if vim.fn.has 'gui_running' then
-  require 'core.gui'
-end
-
-vim.cmd.colorscheme 'catppuccin'
+pcall(require, 'local-config')
+require 'config.lazy'

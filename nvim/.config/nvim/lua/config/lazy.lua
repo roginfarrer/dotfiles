@@ -11,12 +11,17 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
-require('lazy').setup('plugins', {
-  -- defaults = {
-  --   lazy = true,
-  -- },
+require('lazy').setup {
+  defaults = {
+    version = false,
+    lazy = true,
+  },
+  spec = {
+    { dir = '~/projects/LazyVim', import = 'lazyvim.plugins' },
+    { import = 'plugins' },
+  },
   dev = {
-    path = '~/projects/neovim-dev',
+    path = '~/projects',
   },
   install = {
     missing = true,
@@ -60,4 +65,4 @@ require('lazy').setup('plugins', {
       },
     },
   },
-})
+}

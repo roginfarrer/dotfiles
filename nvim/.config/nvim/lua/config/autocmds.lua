@@ -1,24 +1,16 @@
-local reloaded_id = nil
-autocmd('BufWritePost', {
-  pattern = '*.lua',
-  callback = function(event)
-    ---@type string
-    local file = event.match
-    local mod = file:match '/lua/(.*)%.lua'
-    if mod then
-      mod = mod:gsub('/', '.')
-    end
-    if mod then
-      package.loaded[mod] = nil
-      reloaded_id = vim.notify('Reloaded ' .. mod, vim.log.levels.INFO, { title = 'nvim', replace = reloaded_id })
-    end
-  end,
+local autocmd = require('config.util').autocmd
+
+-- Check if we need to reload the file when it changed
+autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+  group = 'checktime',
+  command = 'checktime',
 })
 
-autocmd('TextYankPost', {
-  pattern = '*',
+-- resize splits if window got resized
+autocmd({ 'VimResized' }, {
+  group = 'resize_splits',
   callback = function()
-    vim.highlight.on_yank()
+    vim.cmd 'tabdo wincmd ='
   end,
 })
 
@@ -26,11 +18,40 @@ autocmd('TextYankPost', {
 autocmd('BufReadPost', {
   group = 'last_loc',
   callback = function()
-    local mark = vim.api.nvim_buf_get_mark(0, '"')
-    local lcount = vim.api.nvim_buf_line_count(0)
+    local exclude = { 'gitcommit' }
+    local buf = vim.api.nvim_get_current_buf()
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
+      return
+    end
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
+  end,
+})
+
+-- close some filetypes with <q>
+autocmd('FileType', {
+  group = 'close_with_q',
+  pattern = {
+    'PlenaryTestPopup',
+    'help',
+    'lspinfo',
+    'man',
+    'notify',
+    'qf',
+    'spectre_panel',
+    'startuptime',
+    'tsplayground',
+    'neotest-output',
+    'checkhealth',
+    'neotest-summary',
+    'neotest-output-panel',
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = event.buf, silent = true })
   end,
 })
 
@@ -41,6 +62,25 @@ autocmd('FileType', {
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
+  end,
+})
+
+-- Auto create dir when saving a file, in case some intermediate directory does not exist
+autocmd({ 'BufWritePre' }, {
+  group = 'auto_create_dir',
+  callback = function(event)
+    if event.match:match '^%w%w+://' then
+      return
+    end
+    local file = vim.loop.fs_realpath(event.match) or event.match
+    vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
+  end,
+})
+
+autocmd('TextYankPost', {
+  group = 'highlight_yank',
+  callback = function()
+    vim.highlight.on_yank()
   end,
 })
 
@@ -81,27 +121,6 @@ autocmd('FileType', {
     local foundFile = seek(util.path.dirname(file))
     _G.astro_server = foundFile
     print(foundFile)
-  end,
-})
-
-autocmd('BufWritePost', {
-  pattern = 'kitty.conf',
-  callback = function()
-    vim.fn.execute('!kill -SIGUSR1 $(pgrep -a kitty)', 'silent')
-  end,
-})
-
-autocmd('BufWritePost', {
-  pattern = 'yabairc',
-  callback = function()
-    local Job = require 'plenary.job'
-
-    Job:new({
-      command = 'brew',
-      args = { 'services', 'restart', 'yabai' },
-    }):start()
-
-    vim.notify 'Restarting yabai...'
   end,
 })
 

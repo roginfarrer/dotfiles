@@ -1,19 +1,20 @@
 local wk = require 'which-key'
 
+local map = require('config.util').map
+
 local function luaDocs()
   if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
     vim.fn.execute('h ' .. vim.fn.expand '<cword>')
   end
 end
 
-local function bufmap(mode, lhs, rhs)
-  map(mode, lhs, rhs, { buffer = true })
+local function bufmap(mode, lhs, rhs, opts)
+  map(mode, lhs, rhs, vim.tbl_deep_extend('keep', { buffer = true }, opts or {}))
 end
 
 local M = {}
 
 function M.setup(client, bufnr)
-  local cap = client.server_capabilities
   local function lsp_cmd(name, func)
     vim.api.nvim_buf_create_user_command(bufnr, name, 'lua ' .. func .. '()', { force = true })
   end
@@ -60,9 +61,12 @@ function M.setup(client, bufnr)
         '<cmd>Telescope lsp_dynamic_workspace_symbols<cr>',
         'Workspace Symbols',
       },
-      l = { require('lsp_lines').toggle, 'Toggle lsp_lines' },
     },
   }
+
+  if pcall(require, 'lsp_lines') then
+    leader.l.l = { require('lsp_lines').toggle, 'Toggle lsp_lines' }
+  end
 
   local visual = {
     l = {
@@ -79,6 +83,15 @@ function M.setup(client, bufnr)
     if not winid then
       if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
         vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+      elseif require('regexplainer.utils.treesitter').get_regexp_pattern_at_cursor() then
+        require('regexplainer').show()
+        require('config.util').autocmd('CursorMoved', {
+          group = 'regexplainer_hover',
+          once = true,
+          callback = function()
+            require('regexplainer').hide()
+          end,
+        })
       else
         -- if client.supports_method 'textDocument/hover' then
         vim.fn.execute 'LspHover'
@@ -87,14 +100,14 @@ function M.setup(client, bufnr)
     end
   end
 
-  bufmap('n', 'gd', ':LspGoToDefinition<CR>')
-  bufmap('n', 'gD', '<cmd>Glance definitions<CR>')
+  bufmap('n', 'gD', vim.lsp.buf.definition, { desc = 'goto definition' })
+  bufmap('n', 'gd', '<cmd>Glance definitions<CR>', { desc = 'preview definitions' })
   -- bufmap('n', 'gh', '<cmd>Lspsaga lsp_finder<CR>')
-  bufmap('n', 'gr', '<cmd>Glance references<CR>')
-  bufmap('n', 'gR', '<cmd>Telescope lsp_references<CR>')
-  bufmap('n', 'gi', '<cmd>Telescope lsp_implementations<CR>')
+  bufmap('n', 'gr', '<cmd>Glance references<CR>', { desc = 'lsp references' })
+  -- bufmap('n', 'gR', '<cmd>Telescope lsp_references<CR>')
+  -- bufmap('n', 'gi', '<cmd>Telescope lsp_implementations<CR>')
   bufmap('n', 'gI', '<cmd>Glance implementations<CR>')
-  bufmap('n', 'gs', '<cmd>LspSignatureHelp<CR>')
+  -- bufmap('n', 'gs', '<cmd>LspSignatureHelp<CR>')
   bufmap('n', 'gy', '<cmd>Glance type_definitions<CR>')
   bufmap('n', 'gY', '<cmd>Telescope lsp_type_definitions<CR>')
   -- bufmap('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<CR>')

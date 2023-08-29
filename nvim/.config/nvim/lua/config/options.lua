@@ -1,14 +1,17 @@
-local o = vim.o
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+local o = vim.o
 
 o.breakindent = true
 o.breakindentopt = 'shift:2'
 o.cmdheight = 0
 o.completeopt = 'menuone,noselect,noinsert'
+o.confirm = true
 o.cursorline = true
+o.exrc = true
 o.expandtab = true
+o.formatoptions = 'jcroqlnt' -- tcqj
 -- o.foldexpr = [[nvim_treesitter#foldexpr()]]
 -- o.foldlevel = 99
 -- o.foldmethod = 'expr'
@@ -17,11 +20,13 @@ o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
 o.inccommand = 'nosplit'
-o.laststatus = 3
+o.laststatus = 0
 o.linebreak = true
+o.list = true
 o.mouse = 'a'
 o.number = true
 o.pumblend = 10
+o.pumheight = 10
 o.relativenumber = true
 o.scrolloff = 5
 o.shell = 'fish'
@@ -70,3 +75,7 @@ end
 
 vim.g.neovide_cursor_animation_length = 0.08
 vim.g.neovide_cursor_trail_size = 0.5
+
+if vim.fn.has 'nvim-0.9.0' == 1 then
+  o.splitkeep = 'screen'
+end

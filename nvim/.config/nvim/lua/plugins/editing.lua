@@ -14,6 +14,7 @@ return {
   -- Better netrw
   {
     'stevearc/oil.nvim',
+    -- enabled = false,
     opts = {
       skip_confirm_for_simple_edits = true,
       view_options = {
@@ -21,12 +22,12 @@ return {
       },
       keymaps = {
         ['q'] = 'actions.close',
-        -- ['<C-v>'] = {
-        --   desc = 'open in a vertical split',
-        --   callback = function()
-        --     oil_select 'vertical'
-        --   end,
-        -- },
+        ['<C-v>'] = {
+          desc = 'open in a vertical split',
+          callback = function()
+            oil_select 'vertical'
+          end,
+        },
         ['<C-s>'] = {
           desc = 'open in a vertical split',
           callback = function()
@@ -43,33 +44,91 @@ return {
     },
   },
 
-  -- Center active split
-  {
-    'shortcuts/no-neck-pain.nvim',
-    version = '*',
-    cmd = 'NoNeckPain',
-  },
+  -- {
+  --   'lmburns/lf.nvim',
+  --   cmd = { 'Lf' },
+  --   opts = {
+  --     border = 'rounded',
+  --     winblend = 0,
+  --     focus_on_open = true,
+  --     height = vim.fn.float2nr(vim.fn.round(0.9 * vim.o.lines)), -- height of the *floating* window
+  --     width = vim.fn.float2nr(vim.fn.round(0.9 * vim.o.columns)), -- width of the *floating* window
+  --     default_file_manager = true,
+  --   },
+  --   config = function(_, opts)
+  --     require('lf').setup(opts)
+  --     require('config.util').autocmd('User', {
+  --       pattern = 'LfTermEnter',
+  --       callback = function()
+  --         -- Fix weirdness of reverting to normal mode when opening
+  --         vim.cmd 'startinsert'
+  --       end,
+  --     })
+  --   end,
+  --   -- stylua: ignore
+  --   keys = {
+  --     { '-', '<cmd>Lf<CR>', desc = 'Open LF', },
+  --   },
+  -- },
+
+  -- {
+  --   'is0n/fm-nvim',
+  --   opts = {
+  --     ui = {
+  --       float = {
+  --         float_hl = 'Float',
+  --         border_hl = 'FloatBorder',
+  --       },
+  --     },
+  --   },
+  --   cmd = { 'Lf' },
+  --   keys = {
+  --     { '-', '<cmd>Lf %<CR>', desc = 'Open LF' },
+  --   },
+  -- },
+
+  -- {
+  --   'echasnovski/mini.files',
+  --   enabled = false,
+  --   version = false,
+  --   opts = {},
+  --   config = function(_, opts)
+  --     require('mini.files').setup(opts)
+  --   end,
+  --   -- stylua: ignore
+  --   keys = {
+  --     { '-', function() require('mini.files').open(vim.api.nvim_buf_get_name(0), true) end, desc = 'Open mini.files', },
+  --   },
+  -- },
+
+  -- -- Center active split
+  -- {
+  --   'shortcuts/no-neck-pain.nvim',
+  --   version = '*',
+  --   cmd = 'NoNeckPain',
+  -- },
 
   -- Use same keybindings to move between Vim splits and Kitty panes
-  {
-    'knubie/vim-kitty-navigator',
-    build = 'cp ./*.py ~/.config/kitty/',
-    cond = function()
-      -- local term = vim.fn.execute('echo $TERM'):gsub('%s+', ''):gsub('\n', '') -- trim spaces and new lines
-      -- return term == 'xterm-kitty'
-      return false
-    end,
-  },
-  {
-    'Lilja/zellij.nvim',
-    cond = function()
-      return vim.env.ZELLIJ_SESSION_NAME ~= nil
-    end,
-    opts = { vimTmuxNavigatorKeybinds = true },
-  },
+  -- {
+  --   'knubie/vim-kitty-navigator',
+  --   enabled = false,
+  --   build = 'cp ./*.py ~/.config/kitty/',
+  --   cond = function()
+  --     -- local term = vim.fn.execute('echo $TERM'):gsub('%s+', ''):gsub('\n', '') -- trim spaces and new lines
+  --     -- return term == 'xterm-kitty'
+  --     return false
+  --   end,
+  -- },
+  -- {
+  --   'Lilja/zellij.nvim',
+  --   cond = function()
+  --     return vim.env.ZELLIJ_SESSION_NAME ~= nil
+  --   end,
+  --   opts = { vimTmuxNavigatorKeybinds = true },
+  -- },
   {
     'aserowy/tmux.nvim',
-    lazy = false,
+    -- event = 'VeryLazy',
     cond = function()
       return vim.env.TERM_PROGRAM == 'tmux'
     end,
@@ -112,16 +171,31 @@ return {
   },
 
   -- Jump shortcuts to spots in buffer
+  -- {
+  --   'ggandor/leap.nvim',
+  --   enabled = false,
+  --   dependencies = { { 'ggandor/flit.nvim', opts = { labeled_modes = 'nv' } } },
+  --   -- stylua: ignore
+  --   keys = {
+  --     { 's', '<Plug>(leap-forward-to)', desc = 'Leap forward' },
+  --     { 'S', '<Plug>(leap-backward-to)', desc = 'Leap backward' },
+  --     { 'x', '<Plug>(leap-forward-to)', desc = 'Leap forward', mode = { 'x', 'o' }, },
+  --     { 'X', '<Plug>(leap-forward-to)', desc = 'Leap backward', mode = { 'x', 'o' }, },
+  --     { 'gs', '<Plug>(leap-cross-window)', desc = 'Leap cross window' },
+  --   },
+  -- },
+
   {
-    'ggandor/leap.nvim',
-    dependencies = { { 'ggandor/flit.nvim', opts = { labeled_modes = 'nv' } } },
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    ---@type Flash.Config
+    opts = {},
     -- stylua: ignore
     keys = {
-      { 's', '<Plug>(leap-forward-to)', desc = 'Leap forward' },
-      { 'S', '<Plug>(leap-backward-to)', desc = 'Leap backward' },
-      { 'x', '<Plug>(leap-forward-to)', desc = 'Leap forward', mode = { 'x', 'o' }, },
-      { 'X', '<Plug>(leap-forward-to)', desc = 'Leap backward', mode = { 'x', 'o' }, },
-      { 'gs', '<Plug>(leap-cross-window)', desc = 'Leap cross window' },
+      -- default options: exact mode, multi window, all directions, with a backdrop
+      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash' },
+      { 'S', mode = { 'n', 'o', 'x' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
+      { 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
     },
   },
 
@@ -163,5 +237,12 @@ return {
     },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = { use_default_keymaps = false },
+  },
+
+  {
+    'danymat/neogen',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    cmd = 'Neogen',
+    opts = { snippet_engine = 'luasnip' },
   },
 }
