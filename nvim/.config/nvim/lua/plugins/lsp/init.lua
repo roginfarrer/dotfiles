@@ -47,9 +47,10 @@ return {
     event = 'BufReadPre',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
+      { 'mattn/efm-langserver', dependencies = { 'creativenull/efmls-configs-nvim' } },
       -- 'folke/which-key.nvim',
       'folke/neodev.nvim',
-      'jose-elias-alvarez/null-ls.nvim',
+      -- 'jose-elias-alvarez/null-ls.nvim',
       -- 'jose-elias-alvarez/typescript.nvim',
       -- 'yioneko/nvim-vtsls',
       'pmizio/typescript-tools.nvim',
@@ -145,6 +146,7 @@ return {
       local util = require 'lspconfig.util'
 
       local servers = {
+        efm = require 'plugins.lsp.efm',
         lua_ls = {},
         -- vtsls = {},
         -- tsserver = {},
@@ -217,7 +219,7 @@ return {
         },
       }
 
-      require('plugins.lsp.null-ls').setup(on_attach)
+      -- require('plugins.lsp.null-ls').setup(on_attach)
     end,
   },
 }

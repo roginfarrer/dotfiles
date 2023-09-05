@@ -36,11 +36,11 @@ local tmux_keys = {
 	-- Create a new tmux window
 	tkey("CMD", "t", "\x63"),
 	-- Break the current tmux pane out of the tmux window
-	tkey("CMD", "t", "\x21"),
+	-- tkey("CMD", "t", "\x21"),
 	-- Kill the current tmux pane (and window if last pane)
 	tkey("CMD", "w", "\x78"),
 	-- Toggle the zoom state of the current tmux pane
 	tkey("CMD", "z", "\x7a"),
 }
 
-return { tmux_keys }
+return tmux_keys

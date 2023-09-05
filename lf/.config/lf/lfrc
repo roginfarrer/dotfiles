@@ -1,7 +1,8 @@
 set shell bash
-
-set hidden true
-set icons true
+set hidden
+set icons
+set ignorecase
+set drawbox
 
 # Custom Functions
 cmd mkthing ${{
@@ -16,4 +17,61 @@ cmd mkthing ${{
   fi
 }}
 
-map a mkthing
+# mkdir command. See wiki if you want it to select created dir
+map a :push %mkdir<space>
+
+cmd z %{{
+	result="$(zoxide query --exclude $PWD $@ | sed 's/\\/\\\\/g;s/"/\\"/g')"
+	lf -remote "send $id cd \"$result\""
+}}
+
+# define a custom 'open' command
+# This command is called when current file is not a directory. You may want to
+# use either file extensions and/or mime types here. Below uses an editor for
+# text files and a file opener for the rest.
+cmd open &{{
+    case $(file --mime-type -Lb $f) in
+        text/*) lf -remote "send $id \$$EDITOR \$fx";;
+        *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;;
+    esac
+}}
+
+cmd zi ${{
+	result="$(zoxide query -i | sed 's/\\/\\\\/g;s/"/\\"/g')"
+	lf -remote "send $id cd \"$result\""
+}}
+
+cmd on-cd &{{
+    # display git repository status in your prompt
+    source /usr/share/git/completion/git-prompt.sh
+    GIT_PS1_SHOWDIRTYSTATE=auto
+    GIT_PS1_SHOWSTASHSTATE=auto
+    GIT_PS1_SHOWUNTRACKEDFILES=auto
+    GIT_PS1_SHOWUPSTREAM=auto
+    GIT_PS1_COMPRESSSPARSESTATE=auto
+    git=$(__git_ps1 " [GIT BRANCH:> %s]") || true
+    fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m$git\033[0m"
+    lf -remote "send $id set promptfmt \"$fmt\""
+}}
+
+cmd trash ${{
+    set -f
+    printf "$fx\n"
+    printf "delete?[y/n]"
+    read ans
+    [ "$ans" = "y" ] && trash $fx
+}}
+
+map D trash
+
+# map a mkthing
+map . set hidden!
+
+cmd copy_to_clipboard %{{
+    if type pbcopy > /dev/null 2>&1; then
+    printf '%s' "$f" | pbcopy
+    elif type xsel > /dev/null 2>&1; then
+    printf '%s' "$f" | xsel -ib
+    fi
+}}
+map <c-c> :copy_to_clipboard

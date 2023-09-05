@@ -12,6 +12,7 @@ return {
     ensure_installed = {
       'markdown',
       'javascript',
+      'tsx',
       'typescript',
       'tsx',
       'css',

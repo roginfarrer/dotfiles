@@ -1,54 +1,6 @@
-if type nvim > /dev/null 2>&1; then
-  alias vim='nvim'
-fi
-
 ### Functions
 # Quickly restart zsh
 restartzsh () { echo "$fg_bold[yellow]Sourcing...$reset_color"; . ~/.zshrc; }
-
-# Delete current branch
-deleteBranch() {
-  git branch -D $1;
-  echo "$fg_bold[red]The local branch '$1' has been deleted.$reset_color";
-}
-
-# delete a remote branch
-deleteRemoteBranch() {
-  git push origin :$1;
-  echo "$fg_bold[red]The remote branch '$1' has been deleted.$reset_color";
-}
-
-getBranch() {
-  git branch --no-color | grep -E '^\*' | awk '{print $2}' \
-    || echo "default_value"
-  # or
-  # git symbolic-ref --short -q HEAD || echo "default_value";
-}
-
-confirm() {
-  read "response?Are you sure ? [Y/n] "
-  response=${response:l} #tolower
-  if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]; then
-    $1
-  else
-    echo 'Aborted!'
-  fi
-}
-
-deleteOldBranchesLoop() {
-  for k in $(git branch | sed /\*/d); do
-    if [[ ! $(git log -1 --since='2 weeks ago' -s $k) ]]; then
-      if [ -n "$1" ]
-        then
-          git branch -D $k
-        else
-          echo $k
-      fi
-    fi
-  done
-}
-
-alias deleteOldBranches="confirm deleteOldBranchesLoop"
 
 fgb() {
   git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)' | fzf

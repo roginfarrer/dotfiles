@@ -7,7 +7,7 @@ function M.setup(client, bufnr)
         if c.name == 'rust_analyzer' then
           return true
         end
-        return c.name == 'null-ls'
+        return c.name == 'efm'
       end,
       bufnr = bufnr,
     }
@@ -20,7 +20,7 @@ function M.setup(client, bufnr)
       callback = function()
         vim.lsp.buf.format {
           filter = function(c)
-            return c.name == 'null-ls'
+            return c.name == 'efm'
           end,
           bufnr = bufnr,
         }

@@ -1,8 +1,16 @@
+tap "1password/tap"
+tap "felixkratz/formulae"
+tap "fsouza/prettierd"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-drivers"
+tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
+tap "homebrew/services"
+tap "koekeishiya/formulae"
+tap "ms-jpq/sad"
+tap "shaunsingh/sfmono-nerd-font-ligaturized"
 
 brew "antibody"
 brew "bash"
@@ -10,6 +18,7 @@ brew "bat"
 brew "python"
 brew "python@3.9"
 brew "cask"
+brew "dash"
 brew "node"
 brew "exa"
 brew "fd"
@@ -22,12 +31,16 @@ brew "git-delta"
 brew "git-lfs"
 brew "git-recent"
 brew "gnu-sed"
+brew "grep"
+brew "jq"
 brew "lazygit"
+brew "lf"
 brew "luajit", args: ["HEAD"]
 brew "luarocks"
 brew "mas"
 brew "neovim", args: ["HEAD"]
 brew "pnpm"
+brew "pyenv"
 brew "ripgrep"
 brew "sd"
 brew "shfmt"
@@ -35,12 +48,18 @@ brew "starship"
 brew "stow"
 brew "thefuck"
 brew "trash"
+brew "tree"
 brew "vim"
 brew "yarn"
 brew "zsh"
+brew "zellij"
+brew "zoxide"
+brew "koekeishiya/formulae/skhd"
+brew "koekeishiya/formulae/yabai"
+brew "ms-jpq/sad/sad"
 
 cask "1password"
-cask "alfred"
+cask "1password-cli"
 cask "brave-browser"
 cask "google-chrome"
 cask "discord"
@@ -48,7 +67,6 @@ cask "docker"
 cask "fantastical"
 cask "firefox"
 cask "firefox-developer-edition"
-cask "hand-mirror"
 cask "karabiner-elements"
 cask "kitty"
 cask "maestral"
@@ -59,11 +77,21 @@ cask "slack"
 cask "spotify"
 cask "via"
 cask "visual-studio-code"
+cask "wezterm-nightly"
+cask "notion"
 
+cask "font-fira-code"
+cask "font-hack-nerd-font"
+cask "font-iosevka"
+cask "font-sf-mono-nerd-font-ligaturized"
+cask "sf-symbols"
+
+mas "TestFlight", id: 899247664
 mas "Cardhop", id: 1290358394
-mas "Todoist: To-Do List & Tasks", id: 585829637
+mas "Todoist", id: 585829637
 mas "ToothFairy", id: 1191449274
 mas "Xcode", id: 497799835
 mas "Spark", id: 1176895641
-mas "Magnet", id: 441258766
 mas "Hand Mirror", id: 1502839586
+mas "Things", id: 904280696
+mas "Velja", id: 1607635845

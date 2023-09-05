@@ -83,15 +83,15 @@ function M.setup(client, bufnr)
     if not winid then
       if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
         vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-      elseif require('regexplainer.utils.treesitter').get_regexp_pattern_at_cursor() then
-        require('regexplainer').show()
-        require('config.util').autocmd('CursorMoved', {
-          group = 'regexplainer_hover',
-          once = true,
-          callback = function()
-            require('regexplainer').hide()
-          end,
-        })
+      -- elseif require('regexplainer.utils.treesitter').get_regexp_pattern_at_cursor() then
+      --   require('regexplainer').show()
+      --   require('config.util').autocmd('CursorMoved', {
+      --     group = 'regexplainer_hover',
+      --     once = true,
+      --     callback = function()
+      --       require('regexplainer').hide()
+      --     end,
+      --   })
       else
         -- if client.supports_method 'textDocument/hover' then
         vim.fn.execute 'LspHover'

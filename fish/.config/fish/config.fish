@@ -3,20 +3,10 @@ if not functions -q fisher && status is-interactive
     curl -sL https://git.io/fisher | source && fisher update || fisher install jorgebucaran/fisher
 end
 
-# alias nvim 'nvim --startuptime /tmp/nvim-startuptime'
-# if test -n "$NVIM_LISTEN_ADDRESS"
-#     alias nvim "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-# end
-# if test -n "$NVIM_LISTEN_ADDRESS"
-#     set -gx VISUAL "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-#     set -gx EDITOR "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-# else
 set -gx EDITOR nvim
 set -gx VISUAL nvim
-# end
-
 set -gx SUDO_EDITOR $EDITOR
-set -gx MANPAGER "nvim +Man!"
+set -x MANPAGER "nvim +Man!"
 
 abbr g git
 abbr gs "git status"
@@ -53,8 +43,9 @@ end
 set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
 set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
-# Bun
-set -px --path PATH "/Users/rfarrer/.bun/bin"
+# bun
+fish_add_path "$HOME/.bun/bin"
 
-# fish_add_path /Users/rfarrer/.spicetify
-# source $HOME/.config/fish/themes/rose-pine.fish
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true

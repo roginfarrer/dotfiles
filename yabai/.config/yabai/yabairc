@@ -10,8 +10,8 @@ yabai -m signal --add event=display_removed action="sleep 1 && $HOME/.config/yab
 yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
 yabai -m signal --add event=window_created action="sketchybar --trigger windows_on_spaces"
 yabai -m signal --add event=window_destroyed action="sketchybar --trigger windows_on_spaces"
-yabai -m signal --add event=window_created action="yabai-count-minimize"
-yabai -m signal --add event=window_destroyed action="yabai-count-minimize"
+# yabai -m signal --add event=window_created action="yabai-count-minimize"
+# yabai -m signal --add event=window_destroyed action="yabai-count-minimize"
 
 # Yabai indicator https://github.com/xiamaz/YabaiIndicator
 yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
@@ -37,10 +37,8 @@ yabai -m config \
 	\
 	window_border_radius 8 \
 	window_border_blur off \
-	window_animation_duration 1 \
+	window_animation_duration 0.3 \
 	active_window_border_color 0xffb7bdf4 \
-	\
-	insert_feedback_color 0x00000000 \
 	split_ratio 0.50 \
 	auto_balance on \
 	mouse_modifier fn \
@@ -55,16 +53,27 @@ yabai -m config \
 	window_gap 10 \
 	normal_window_border_color 0x00ffffff \
 	window_border_hidpi on \
-	external_bar all:34:0 # active_window_border_color 0xffe1e3e4 \
-# insert_feedback_color 0xff9dd274 \
+	external_bar all:30:0
+# insert_feedback_color 0xff9dd274 # 	external_bar all:30:0 # active_window_border_color 0xffe1e3e4 \
 
-# Space labels
-yabai -m space 1 --label "Primary"
-yabai -m space 2 --label "Comms"
-yabai -m space 3 --label "Tools"
-yabai -m space 4 --label "Media"
-yabai -m space 5 --label "Social"
-yabai -m space 6 --label "Float"
+# https://github.com/xiamaz/YabaiIndicator
+yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=display_added action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=display_removed action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_created action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_destroyed action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_focused action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_moved action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_resized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_minimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+yabai -m signal --add event=window_deminimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+
+yabai -m rule --add app="^iTerm2|Warp|Kitty|WezTerm$" space=1
+yabai -m rule --add app="^Google Chrome|Firefox|Safari|Arc$" space=2
+yabai -m rule --add app="^Slack$" space=3
+yabai -m rule --add app="^Mimestream|Beeper|Fantastical$" space=4
+yabai -m rule --add app="^Spotify$" space=5
+yabai -m rule --add app="^Zoom$" space=6
 
 # Exclude problematic apps from being managed:
 yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor)$" manage=off
@@ -84,6 +93,8 @@ yabai -m rule --add app="Raycast" manage=off
 yabai -m rule --add app="^Music$" manage=off
 yabai -m rule --add app="Cisco AnyConnect" manage=off
 yabai -m rule --add app="Zoom" manage=off
+yabai -m rule --add app="Poolsuite" manage=off
+yabai -m rule --add app="^Fantastical Helper$" manage=off border=off
 
 yabai -m config layout bsp
 

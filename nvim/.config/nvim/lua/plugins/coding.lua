@@ -170,10 +170,19 @@ return {
   -- Auto pairs
   {
     'echasnovski/mini.pairs',
+    enabled = false,
     event = 'InsertEnter',
     config = function(_, opts)
       require('mini.pairs').setup(opts)
     end,
+  },
+  {
+    'altermo/ultimate-autopair.nvim',
+    event = { 'InsertEnter', 'CmdlineEnter' },
+    branch = 'v0.6',
+    opts = {
+      --Config goes here
+    },
   },
 
   {
@@ -189,16 +198,40 @@ return {
 
   {
     'echasnovski/mini.surround',
-    keys = { 'ys', 'ds', 'cs' },
+    keys = function(_, keys)
+      -- Populate the keys based on the user's options
+      local plugin = require('lazy.core.config').spec.plugins['mini.surround']
+      local opts = require('lazy.core.plugin').values(plugin, 'opts', false)
+      local mappings = {
+        { opts.mappings.add, desc = 'Add surrounding', mode = { 'n', 'v' } },
+        { opts.mappings.delete, desc = 'Delete surrounding' },
+        { opts.mappings.find, desc = 'Find right surrounding' },
+        { opts.mappings.find_left, desc = 'Find left surrounding' },
+        { opts.mappings.highlight, desc = 'Highlight surrounding' },
+        { opts.mappings.replace, desc = 'Replace surrounding' },
+        { opts.mappings.update_n_lines, desc = 'Update `MiniSurround.config.n_lines`' },
+      }
+      mappings = vim.tbl_filter(function(m)
+        return m[1] and #m[1] > 0
+      end, mappings)
+      return vim.list_extend(mappings, keys)
+    end,
     opts = {
       mappings = {
-        add = 'ys', -- Add surrounding in Normal and Visual modes
-        delete = 'ds', -- Delete surrounding
-        replace = 'cs', -- Replace surrounding
-        find = 'ysf', -- Find surrounding (to the right)
-        find_left = 'ysF', -- Find surrounding (to the left)
-        highlight = 'ysh', -- Highlight surrounding
-        update_n_lines = 'ysn', -- Update `n_lines`
+        add = 'gza', -- Add surrounding in Normal and Visual modes
+        delete = 'gzd', -- Delete surrounding
+        find = 'gzf', -- Find surrounding (to the right)
+        find_left = 'gzF', -- Find surrounding (to the left)
+        highlight = 'gzh', -- Highlight surrounding
+        replace = 'gzr', -- Replace surrounding
+        update_n_lines = 'gzn', -- Update `n_lines`
+        -- add = 'ys', -- Add surrounding in Normal and Visual modes
+        -- delete = 'ds', -- Delete surrounding
+        -- replace = 'cs', -- Replace surrounding
+        -- find = 'ysf', -- Find surrounding (to the right)
+        -- find_left = 'ysF', -- Find surrounding (to the left)
+        -- highlight = 'ysh', -- Highlight surrounding
+        -- update_n_lines = 'ysn', -- Update `n_lines`
       },
     },
     config = function(_, opts)
@@ -325,5 +358,23 @@ return {
         },
       }
     end,
+  },
+
+  {
+    'piersolenski/wtf.nvim',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+    },
+    opts = {},
+    cmd = { 'Wtf', 'WtfSearch' },
+    keys = {
+      {
+        '<leader>da',
+        function()
+          require('wtf').ai()
+        end,
+        desc = 'Debug with WTF',
+      },
+    },
   },
 }
