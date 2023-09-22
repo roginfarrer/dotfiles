@@ -5,37 +5,36 @@ return {
   { 'fladson/vim-kitty', ft = 'kitty' },
   { 'Amar1729/skhd-vim-syntax', ft = 'skhd' },
   { 'camnw/lf-vim', ft = 'lf' },
-  -- {
-  --   'nvim-neorg/neorg',
-  --   enabled = false,
-  --   ft = 'norg',
-  --   cmd = { 'Neorg' },
-  --   build = ':Neorg sync-parsers', -- This is the important bit!
-  --   opts = {
-  --     -- Tell Neorg what modules to load
-  --     load = {
-  --       ['core.defaults'] = {}, -- Load all the default modules
-  --       ['core.norg.concealer'] = {}, -- Allows for use of icons
-  --       ['core.norg.dirman'] = { -- Manage your directories with Neorg
-  --         config = {
-  --           workspaces = {
-  --             main = '~/Dropbox (Maestral)/neorg',
-  --           },
-  --         },
-  --       },
-  --       ['core.norg.journal'] = {
-  --         config = {
-  --           workspace = 'main',
-  --         },
-  --       },
-  --       ['core.norg.completion'] = {
-  --         config = {
-  --           engine = 'nvim-cmp',
-  --         },
-  --       },
-  --     },
-  --   },
-  -- },
+  {
+    'nvim-neorg/neorg',
+    ft = 'norg',
+    cmd = { 'Neorg' },
+    build = ':Neorg sync-parsers', -- This is the important bit!
+    opts = {
+      -- Tell Neorg what modules to load
+      load = {
+        ['core.defaults'] = {}, -- Load all the default modules
+        ['core.concealer'] = {}, -- Allows for use of icons
+        ['core.dirman'] = { -- Manage your directories with Neorg
+          config = {
+            workspaces = {
+              main = '~/Dropbox (Maestral)/neorg',
+            },
+          },
+        },
+        ['core.journal'] = {
+          config = {
+            workspace = 'main',
+          },
+        },
+        ['core.completion'] = {
+          config = {
+            engine = 'nvim-cmp',
+          },
+        },
+      },
+    },
+  },
 
   -- {
   --   'nvim-orgmode/orgmode',

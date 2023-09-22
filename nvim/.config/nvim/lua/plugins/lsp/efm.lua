@@ -17,7 +17,8 @@ local languages = {
   astro = { formatter 'prettier_d' },
   scss = { formatter 'prettier_d', linter 'stylelint' },
   yaml = { formatter 'prettier_d' },
-  json = { formatter 'prettier_d' },
+  json = { formatter 'prettier' },
+  jsonc = { formatter 'prettier' },
   lua = {
     linter 'luacheck',
     formatter 'stylua',

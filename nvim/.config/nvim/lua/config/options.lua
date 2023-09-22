@@ -12,6 +12,7 @@ o.cursorline = true
 o.exrc = true
 o.expandtab = true
 o.formatoptions = 'jcroqlnt' -- tcqj
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 -- o.foldexpr = [[nvim_treesitter#foldexpr()]]
 -- o.foldlevel = 99
 -- o.foldmethod = 'expr'

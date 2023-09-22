@@ -279,6 +279,7 @@ return {
   -- Better clipboard management
   {
     'gbprod/yanky.nvim',
+    enabled = false,
     dependencies = { { 'kkharji/sqlite.lua', enabled = not jit.os:find 'Windows' }, { 'aserowy/tmux.nvim' } },
     opts = function()
       local mapping = require 'yanky.telescope.mapping'
