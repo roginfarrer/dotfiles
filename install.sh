@@ -8,7 +8,10 @@ set -e
 ###
 if [[ $(command -v brew) == "" ]]; then
     echo "Installing Hombrew"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> $HOME/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 else
     echo "Updating Homebrew"
     brew update
