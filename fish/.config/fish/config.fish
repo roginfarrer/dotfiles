@@ -42,6 +42,9 @@ end
 
 set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git --exclude node_modules'
 set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
+set -gx fzf_directory_opts --bind "ctrl-o:execute($EDITOR {} &> /dev/tty)"
+set -gx fzf_fd_opts --hidden --exclude=.git --exclude=node_modules
+fzf_configure_bindings --directory=\cf
 
 # bun
 fish_add_path "$HOME/.bun/bin"
@@ -49,3 +52,15 @@ fish_add_path "$HOME/.bun/bin"
 # tabtab source for packages
 # uninstall by removing these lines
 [ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
+
+fish_vi_key_bindings
+# Emulates vim's cursor shape behavior
+# Set the normal and visual mode cursors to a block
+set fish_cursor_default block
+# Set the insert mode cursor to a line
+set fish_cursor_insert line
+# Set the replace mode cursor to an underscore
+set fish_cursor_replace_one underscore
+# The following variable can be used to configure cursor shape in
+# visual mode, but due to fish_cursor_default, is redundant here
+set fish_cursor_visual block
