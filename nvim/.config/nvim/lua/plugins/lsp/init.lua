@@ -49,7 +49,7 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       { 'mattn/efm-langserver', dependencies = { 'creativenull/efmls-configs-nvim' } },
       -- 'folke/which-key.nvim',
-      'folke/neodev.nvim',
+      { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest' } } } },
       -- 'jose-elias-alvarez/null-ls.nvim',
       -- 'jose-elias-alvarez/typescript.nvim',
       -- 'yioneko/nvim-vtsls',
@@ -172,10 +172,6 @@ return {
           filetypes = { 'css', 'less', 'scss' },
         },
         rust_analyzer = {},
-      }
-
-      require('neodev').setup {
-        library = { plugins = { 'neotest' }, types = true },
       }
 
       if pcall(require, 'vtsls') then

@@ -22,7 +22,6 @@ o.ignorecase = true
 o.inccommand = 'nosplit'
 o.laststatus = 0
 o.linebreak = true
-o.list = true
 o.mouse = 'a'
 o.number = true
 o.pumblend = 10
