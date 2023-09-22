@@ -47,7 +47,7 @@ return {
     event = 'BufReadPre',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
-      { 'mattn/efm-langserver', dependencies = { 'creativenull/efmls-configs-nvim' } },
+      -- { 'mattn/efm-langserver', dependencies = { 'creativenull/efmls-configs-nvim' } },
       -- 'folke/which-key.nvim',
       { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest' } } } },
       -- 'jose-elias-alvarez/null-ls.nvim',
@@ -123,7 +123,7 @@ return {
       }
 
       local function on_attach(client, bufnr)
-        require('plugins.lsp.formatting').setup(client, bufnr)
+        -- require('plugins.lsp.formatting').setup(client, bufnr)
         require('plugins.lsp.mappings').setup(client, bufnr)
       end
 
@@ -146,8 +146,14 @@ return {
       local util = require 'lspconfig.util'
 
       local servers = {
-        efm = require 'plugins.lsp.efm',
-        lua_ls = {},
+        -- efm = require 'plugins.lsp.efm',
+        lua_ls = {
+          Lua = {
+            workspace = { checkThirdParty = false },
+            telemetry = { enable = false },
+            hint = { enable = true },
+          },
+        },
         -- vtsls = {},
         -- tsserver = {},
         eslint = {},
@@ -212,6 +218,15 @@ return {
           expose_as_code_action = { 'fix_all', 'add_missing_imports', 'remove_unused' },
           tsserver_plugins = { 'styled-components' },
           complete_function_calls = true,
+          tsserver_file_preferences = {
+            includeInlayEnumMemberValueHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayParameterNameHints = 'all',
+            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayVariableTypeHints = true,
+          },
         },
       }
 

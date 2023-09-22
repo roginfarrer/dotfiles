@@ -1,0 +1,57 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "foreground": "cyan",
+          "properties": {
+            "style": "agnoster_short",
+            "max_depth": 3
+          },
+          "style": "plain",
+          "template": "{{ .Path }} ",
+          "type": "path"
+        },
+        {
+          "foreground": "magenta",
+          "properties": {
+            "branch_icon": "<b>\ue0a0 </b>",
+            "fetch_status": true,
+            "fetch_stash_count": true
+          },
+          "style": "plain",
+          "template": "<#ffffff>on</> {{ .HEAD }}{{ if or (gt .StashCount 0) (gt .Working.Changed 0)}}[ \ueb4b {{ .StashCount }}]{{ end }} ",
+          "foreground_templates": [""],
+          "type": "git"
+        },
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "green",
+          "template": "<#ffffff>via</>  {{ .Full }}",
+          "properties": {
+            "fetch_package_manager": true
+          }
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "lightGreen",
+          "style": "plain",
+          "template": "\u276f",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": true,
+  "version": 2
+}

@@ -116,6 +116,12 @@ function M.setup(client, bufnr)
   bufmap('n', ']d', '<cmd>LspNextDiagnostic<CR>')
   bufmap('n', 'K', showDocs)
   bufmap('n', 'gK', luaDocs)
+  if vim.lsp.inlay_hint then
+    bufmap('n', '<leader>lh', function()
+      vim.lsp.inlay_hint(0, nil)
+    end, { desc = 'Toggle Inlay Hints' })
+  end
+  bufmap 'n'
 end
 
 return M

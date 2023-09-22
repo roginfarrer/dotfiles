@@ -246,4 +246,63 @@ return {
     cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
   },
+  {
+    'stevearc/conform.nvim',
+    event = 'VeryLazy',
+    keys = {
+      -- stylua: ignore
+      { '=', function() require('conform').format { async = true, lsp_fallback = true } end, mode = '', desc = 'Format buffer' },
+    },
+    opts = function()
+      local prettier = { 'prettierd', 'prettier' }
+      return {
+        formatters_by_ft = {
+          lua = { 'stylua' },
+          -- Use a sub-list to run only the first available formatter
+          javascript = { prettier },
+          javascriptreact = { prettier },
+          typescript = { prettier },
+          typescriptreact = { prettier },
+          css = { prettier },
+          html = { prettier },
+          markdown = { prettier },
+          mdx = { prettier },
+          astro = { prettier },
+          scss = { prettier },
+          yaml = { prettier },
+          json = { prettier },
+          jsonc = { prettier },
+          bash = { 'beautysh' },
+          sh = { 'beautysh' },
+          zsh = { 'beautysh' },
+          fish = { 'fish_indent' },
+        },
+        format_on_save = {
+          lsp_fallback = true,
+          timeout_ms = 500,
+        },
+      }
+    end,
+  },
+  {
+    'mfussenegger/nvim-lint',
+    opts = {
+      linters_by_ft = {
+        css = { 'stylelint' },
+        scss = { 'stylelint' },
+        lua = { 'luacheck' },
+        vim = { 'vint' },
+        bash = { 'shellcheck' },
+        sh = { 'shellcheck' },
+      },
+    },
+    config = function(_, opts)
+      require('lint').setup(opts)
+      require('config.util').autocmd({ 'BufWritePost', 'InsertLeave' }, {
+        callback = function()
+          require('lint').try_lint()
+        end,
+      })
+    end,
+  },
 }
