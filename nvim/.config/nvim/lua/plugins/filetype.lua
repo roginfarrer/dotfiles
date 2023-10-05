@@ -1,7 +1,7 @@
 return {
   -- { 'moll/vim-bbye', cmd = 'Bdelete' },
   -- { 'kevinhwang91/nvim-bqf', ft = 'qf', enabled = false },
-  { 'jxnblk/vim-mdx-js', ft = 'mdx' },
+  { 'jxnblk/vim-mdx-js', enabled = false, ft = 'mdx' },
   { 'fladson/vim-kitty', ft = 'kitty' },
   { 'Amar1729/skhd-vim-syntax', ft = 'skhd' },
   { 'camnw/lf-vim', ft = 'lf' },

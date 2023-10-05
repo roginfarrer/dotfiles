@@ -147,6 +147,7 @@ return {
 
       local servers = {
         -- efm = require 'plugins.lsp.efm',
+        mdx_analyzer = { filetypes = { 'markdown.mdx', 'mdx' } },
         lua_ls = {
           Lua = {
             workspace = { checkThirdParty = false },

@@ -172,10 +172,10 @@ return {
             { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
             { 'filename', symbols = { modified = '', readonly = '', unnamed = '', newfile = '' } },
             -- stylua: ignore
-            {
-              function() return require("nvim-navic").get_location() end,
-              cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
-            },
+            -- {
+            --   function() return require("nvim-navic").get_location() end,
+            --   cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
+            -- },
           },
           lualine_x = {
              -- stylua: ignore
@@ -381,6 +381,7 @@ return {
     },
     opts = {
       messages = { enabled = false },
+      cmdline = { view = 'cmdline' },
       lsp = {
         override = {
           -- override the default lsp markdown formatter with Noice
