@@ -1,31 +1,64 @@
-#!/bin/bash
+#!/bin/sh
 
-source "$HOME/.config/sketchybar/icons.sh"
 source "$HOME/.config/sketchybar/colors.sh"
+source "$HOME/.config/sketchybar/icons.sh"
 
-BATTERY_INFO="$(pmset -g batt)"
-PERCENTAGE=$(echo "$BATTERY_INFO" | grep -Eo "\d+%" | cut -d% -f1)
-CHARGING=$(echo "$BATTERY_INFO" | grep 'AC Power')
+PERCENTAGE=$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)
+CHARGING=$(pmset -g batt | grep 'AC Power')
+POPUP_CLICK_SCRIPT="sketchybar --set \$NAME popup.drawing=toggle"
 
-if [ $PERCENTAGE = "" ]; then
-  exit 0
+batt() {
+    if [ $PERCENTAGE = "" ]; then
+        exit 0
+    fi
+
+    case ${PERCENTAGE} in
+        9[0-9] | 100)
+            ICON="$BATTERY"
+            ;;
+        [6-8][0-9])
+            ICON="$BATTERY_75"
+            ;;
+        [3-5][0-9])
+            ICON="$BATTERY_50"
+            ;;
+        [1-2][0-9])
+            ICON="$BATTERY_25"
+            ;;
+        *) ICON="$BATTERY_0" ;;
+    esac
+
+    if [[ $CHARGING != "" ]]; then
+        ICON="$BATTERY_LOADING"
+    fi
+
+    sketchybar --set $NAME icon="$ICON"
+}
+
+if [ "$(pmset -g batt | grep "Battery")" != "" ]; then
+    batt
+else
+    sketchybar --remove battery
+    exit 0
 fi
 
-COLOR=$WHITE
-case ${PERCENTAGE} in
-  9[0-9]|100) ICON=$BATTERY_100;
-  ;;
-  [6-8][0-9]) ICON=$BATTERY_75;
-  ;;
-  [3-5][0-9]) ICON=$BATTERY_50
-  ;;
-  [1-2][0-9]) ICON=$BATTERY_25; COLOR=$ORANGE
-  ;;
-  *) ICON=$BATTERY_0; COLOR=$RED
-esac
+battery_popup=(
+    icon=$ICON
+    icon.padding_left=10
+    label="$PERCENTAGE %"
+    label.y_offset=0
+    label.padding_left=10
+    label.padding_right=10
+    label.font="SF Pro:Bold:12.0"
+    height=10
+    blur_radius=100
+)
 
-if [[ $CHARGING != "" ]]; then
-  ICON=$BATTERY_CHARGING
-fi
+safe_add() {
+    sketchybar --query $1 &> /dev/null
+    [[ $? -ne 0 ]] && sketchybar --add item $1
+}
 
-sketchybar --set $NAME icon="$ICON" icon.color=$COLOR
+safe_add "battery.popup popup.battery"
+
+sketchybar --set battery.popup "${battery_popup[@]}"
