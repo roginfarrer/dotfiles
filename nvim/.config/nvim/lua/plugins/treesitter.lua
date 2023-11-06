@@ -11,8 +11,8 @@ return {
   opts = {
     ensure_installed = {
       'markdown',
+      'markdown_inline',
       'javascript',
-      'tsx',
       'typescript',
       'tsx',
       'css',
@@ -31,6 +31,13 @@ return {
       'fish',
       'astro',
       'org',
+      'diff',
+      'git_config',
+      'gitignore',
+    },
+    query_linter = {
+      enable = true,
+      lint_events = { 'BufWrite', 'CursorHold' },
     },
     indent = { enable = true },
     highlight = {

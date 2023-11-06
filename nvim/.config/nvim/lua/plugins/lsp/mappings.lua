@@ -121,7 +121,6 @@ function M.setup(client, bufnr)
       vim.lsp.inlay_hint(0, nil)
     end, { desc = 'Toggle Inlay Hints' })
   end
-  bufmap 'n'
 end
 
 return M

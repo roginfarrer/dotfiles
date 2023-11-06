@@ -186,6 +186,11 @@ return {
   -- },
 
   {
+    'DreamMaoMao/yazi.nvim',
+    cmd = { 'Yazi' },
+  },
+
+  {
     'folke/flash.nvim',
     event = 'VeryLazy',
     ---@type Flash.Config
@@ -204,6 +209,7 @@ return {
   {
     'olimorris/persisted.nvim',
     lazy = false,
+    priority = 1000,
     -- event = 'BufReadPre',
     -- cmd = { 'SessionLoad', 'SessionStop', 'SessionLoadLatest' },
     opts = {
