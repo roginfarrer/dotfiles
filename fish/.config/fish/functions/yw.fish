@@ -1,5 +1,12 @@
 function yw
     set tmpDir (string join '' "$TMPDIR" "yarn-workspace")
+
+    if test "$argv" = --clear-cache
+        rm -r $tmpDir
+        echo "Cache deleted."
+        return 1
+    end
+
     if not test -d $tmpDir
         mkdir $tmpDir
     end
@@ -15,7 +22,8 @@ function yw
         if string length -q "$isYarnV1"
             set list (yarn workspaces --silent info --json | jq -r '[keys][0] []')
         else
-            set list (yarn workspaces list --json | jq '.name' -r)
+            set workspaces (yarn workspaces list --json)
+            set list (jq '.name' -r workspaces)
         end
         set list (string join "\n" $list)
         echo -e $list >>$cache
@@ -25,12 +33,24 @@ function yw
     if not string length -q "$workspace"
         return
     end
-    if string length -q "$argv"
-        commandline "yarn workspace $workspace $argv"
-        # yarn workspace $workspace $argv
-    else
-        commandline "yarn workspace $workspace "
+    function stripQuotes
+        sed 's/"//g' $argv
     end
+    set manifest "$(printf '%s\n' $workspaces | rg \"$workspace\" | jq '.location' | stripQuotes)/package.json"
+    set cmd (jq -r '.scripts | keys | .[]' $manifest | fzf)
+    if not string length -q "$cmd"
+        commandline "yarn workspace $workspace "
+        return
+    end
+
+    commandline "yarn workspace $workspace $cmd"
+    commandline -f execute
+    # if string length -q "$argv"
+    #     commandline "yarn workspace $workspace $argv"
+    #     # yarn workspace $workspace $argv
+    # else
+    #     commandline "yarn workspace $workspace "
+    # end
     # set_color --dim
     # echo "yarn workspace $workspace $argv"
     # set_color normal
