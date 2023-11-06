@@ -1,46 +1,50 @@
-#!/bin/bash
+#!/bin/sh
 
-# General Icons
-LOADING=􀖇
-APPLE=􀣺
-PREFERENCES=􀺽
-ACTIVITY=􀒓
-LOCK=􀒳
-BELL=􀋚
-BELL_DOT=􀝗
-
-# Git Icons
-GIT_ISSUE=􀍷
-GIT_DISCUSSION=􀒤
-GIT_PULL_REQUEST=􀙡
-GIT_COMMIT=􀡚
-GIT_INDICATOR=􀂓
-
-# Spotify Icons
-SPOTIFY_BACK=􀊎
-SPOTIFY_PLAY_PAUSE=􀊈
-SPOTIFY_NEXT=􀊐
-SPOTIFY_SHUFFLE=􀊝
-SPOTIFY_REPEAT=􀊞
-
-# Yabai Icons
-YABAI_STACK=􀏭
-YABAI_FULLSCREEN_ZOOM=􀏜
-YABAI_PARENT_ZOOM=􀥃
-YABAI_FLOAT=􀢌
-YABAI_GRID=􀧍
-
-# Battery Icons
-BATTERY_100=􀛨
-BATTERY_75=􀺸
-BATTERY_50=􀺶
-BATTERY_25=􀛩
-BATTERY_0=􀛪
-BATTERY_CHARGING=􀢋
-
-# Volume Icons
-VOLUME_100=􀊩
-VOLUME_66=􀊧
-VOLUME_33=􀊥
-VOLUME_10=􀊡
-VOLUME_0=􀊣
+export WIFI=􀙇
+export WIFI_NO_INTERNET=􀙥
+export WIFI_OFF=􀙈
+export HOTSPOT=􀉤
+export BATTERY=􀛨
+export BATTERY_75=􀺸
+export BATTERY_50=􀺶
+export BATTERY_25=􀛩
+export BATTERY_0=􀛪
+export BATTERY_LOADING=􀢋
+export WEATHER=􀇗
+export VOLUME=􀊩
+export VOLUME_66=􀊧
+export VOLUME_33=􀊥
+export VOLUME_10=􀊡
+export VOLUME_0=􀊣
+export NETWORK=􀤆
+export SPEED=􀍾
+export IP=􀅴
+export APPLE=􀣺
+export TIME=􀐫
+export DOT=􁹧
+export PACMAN=󰮯
+export GHOST=󰊠
+export WORK=􁹛
+export BROWSER=􀤆
+export MUSIC=􀑪
+export UNI=􀫓
+export MISSING=􁌴
+export LOCK=􀢵
+export BREW=􀼷
+export PREFERENCES=􁊇
+export ACTIVITY=􀽇
+export RESTART=􂅟
+export OFF=􁎒
+export SPOTIFY=󰓇
+export PLAY=􀊃
+export PAUSE=􀊅
+export BACKWARD=􀊉
+export FORWARD=􀊋
+export SHUFFLE=􀊝
+export REPEAT=􀊞
+export CPU=􀫥
+export RAM=􀫦
+export MAIL=􀍕
+export MAIL_UNREAD=􀍛
+export GENERAL=􀣋
+export CALENDAR=󱨰
