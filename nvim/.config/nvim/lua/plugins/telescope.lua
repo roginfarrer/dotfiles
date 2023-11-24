@@ -147,6 +147,7 @@ M.keys = {
   -- Git
   { '<leader>gb', cmd 'git_branches', desc = 'checkout branch' },
   { '<leader>gC', cmd 'git_bcommits', desc = 'checkout commit (for current file)' },
+  { '<leader>r', cmd 'resume', desc = 'Telescope resume' },
 }
 
 return M

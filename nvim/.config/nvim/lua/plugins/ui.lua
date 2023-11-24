@@ -105,34 +105,12 @@ return {
     },
   },
 
-  -- lsp symbol navigation for lualine
-  {
-    'SmiteshP/nvim-navic',
-    lazy = true,
-    init = function()
-      vim.g.navic_silence = true
-      require('lazyvim.util').on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then
-          require('nvim-navic').attach(client, buffer)
-        end
-      end)
-    end,
-    opts = function()
-      return {
-        separator = ' ',
-        highlight = true,
-        depth_limit = 5,
-        icons = require('lazyvim.config').icons.kinds,
-      }
-    end,
-  },
-
   -- Status line
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
     opts = function()
-      local Util = require 'lazyvim.util'
+      -- local Util = require 'lazyvim.util'
       local icons = require('ui.icons').lazy
 
       local function lsp_client_names()
@@ -182,21 +160,24 @@ return {
             {
               function() return require("noice").api.status.command.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = Util.fg("Statement"),
+              -- color = Util.ui.fg("Statement"),
             },
             -- stylua: ignore
             {
               function() return require("noice").api.status.mode.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              color = Util.fg("Constant"),
+              -- color = Util.ui.fg("Constant"),
             },
             -- stylua: ignore
             {
               function() return "  " .. require("dap").status() end,
               cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-              color = Util.fg("Debug"),
+              -- color = Util.ui.fg("Debug"),
             },
-            { require('lazy.status').updates, cond = require('lazy.status').has_updates, color = Util.fg 'Special' },
+            {
+              require('lazy.status').updates,
+              cond = require('lazy.status').has_updates, --[[ color = Util.ui.fg 'Special' ]]
+            },
           },
           lualine_y = {
             {
@@ -389,6 +370,11 @@ return {
     end,
   },
 
+  {
+    'j-hui/fidget.nvim',
+    opts = {},
+  },
+
   -- Better `vim.notify()`
   {
     'rcarriga/nvim-notify',
@@ -404,12 +390,12 @@ return {
     },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require 'lazyvim.util'
-      if not Util.has 'noice.nvim' then
-        Util.on_very_lazy(function()
-          vim.notify = require 'notify'
-        end)
-      end
+      -- local Util = require 'lazyvim.util'
+      -- if not Util.has 'noice.nvim' then
+      --   Util.on_very_lazy(function()
+      --     vim.notify = require 'notify'
+      --   end)
+      -- end
     end,
     keys = {
       {
@@ -426,7 +412,7 @@ return {
   {
     'folke/which-key.nvim',
     opts = function(_, opts)
-      if require('lazyvim.util').has 'noice.nvim' then
+      if require('util').has 'noice.nvim' then
         opts.defaults['<leader>sn'] = { name = '+noice' }
       end
     end,

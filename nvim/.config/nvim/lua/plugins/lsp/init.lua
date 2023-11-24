@@ -53,11 +53,12 @@ return {
       -- 'jose-elias-alvarez/null-ls.nvim',
       -- 'jose-elias-alvarez/typescript.nvim',
       -- 'yioneko/nvim-vtsls',
-      'pmizio/typescript-tools.nvim',
+      { 'pmizio/typescript-tools.nvim', enabled = true },
       -- { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
       { 'dnlhc/glance.nvim', opts = { list = { position = 'left' } } },
       {
         'williamboman/mason.nvim',
+        cmd = { 'Mason' },
         dependencies = {
           'WhoIsSethDaniel/mason-tool-installer.nvim',
           opts = {
@@ -149,14 +150,22 @@ return {
         -- efm = require 'plugins.lsp.efm',
         mdx_analyzer = { filetypes = { 'markdown.mdx', 'mdx' } },
         lua_ls = {
-          Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-            hint = { enable = true },
+          settings = {
+            Lua = {
+              workspace = { checkThirdParty = false },
+              telemetry = { enable = false },
+              hint = { enable = true },
+            },
           },
         },
         -- vtsls = {},
-        -- tsserver = {},
+        -- tsserver = {
+        --   settings = {
+        --     completions = {
+        --       completeFunctionCalls = true,
+        --     },
+        --   },
+        -- },
         eslint = {},
         bashls = {},
         cssls = {},
@@ -179,6 +188,7 @@ return {
           filetypes = { 'css', 'less', 'scss' },
         },
         rust_analyzer = {},
+        emmet_language_server = {},
       }
 
       if pcall(require, 'vtsls') then

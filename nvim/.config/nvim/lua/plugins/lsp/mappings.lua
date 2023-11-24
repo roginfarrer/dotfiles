@@ -1,6 +1,6 @@
 local wk = require 'which-key'
 
-local map = require('config.util').map
+local map = require('util').map
 
 local function luaDocs()
   if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then

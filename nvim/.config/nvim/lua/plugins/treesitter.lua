@@ -5,7 +5,7 @@ return {
   version = false, -- last release is way too old and doesn't work on Windows
   dependencies = {
     -- { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
-    'JoosepAlviste/nvim-ts-context-commentstring',
+    { 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } },
     { 'windwp/nvim-ts-autotag', config = true },
   },
   opts = {
@@ -45,12 +45,12 @@ return {
       -- use_languagetree = true,
       additional_vim_regex_highlighting = { 'org' },
     },
-    context_commentstring = { enable = true, enable_autocmd = false },
     autopairs = {
       enable = true,
     },
     autotag = {
       enable = true,
+      enable_close_on_slash = false,
       filetypes = {
         'astro',
         'html',

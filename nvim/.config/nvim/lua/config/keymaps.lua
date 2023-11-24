@@ -1,6 +1,4 @@
-local Util = require 'config.util'
-
-local map = Util.map
+local map = require('util').map
 
 -- If you like long lines with line wrapping enabled, this solves the problem
 -- that pressing down jumpes your cursor “over” the current line to the next

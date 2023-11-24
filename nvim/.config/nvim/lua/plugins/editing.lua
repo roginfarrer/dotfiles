@@ -14,7 +14,6 @@ return {
   -- Better netrw
   {
     'stevearc/oil.nvim',
-    -- enabled = false,
     opts = {
       skip_confirm_for_simple_edits = true,
       view_options = {
@@ -87,19 +86,18 @@ return {
   --   },
   -- },
 
-  -- {
-  --   'echasnovski/mini.files',
-  --   enabled = false,
-  --   version = false,
-  --   opts = {},
-  --   config = function(_, opts)
-  --     require('mini.files').setup(opts)
-  --   end,
-  --   -- stylua: ignore
-  --   keys = {
-  --     { '-', function() require('mini.files').open(vim.api.nvim_buf_get_name(0), true) end, desc = 'Open mini.files', },
-  --   },
-  -- },
+  {
+    'echasnovski/mini.files',
+    enabled = false,
+    opts = {},
+    config = function(_, opts)
+      require('mini.files').setup(opts)
+    end,
+    -- stylua: ignore
+    keys = {
+      { '-', function() require('mini.files').open(vim.api.nvim_buf_get_name(0), true) end, desc = 'Open mini.files', },
+    },
+  },
 
   -- -- Center active split
   -- {
@@ -169,21 +167,6 @@ return {
     { '<S-Right>', function() require('smart-splits').resize_right() end, desc = 'resize window right', mode = { 'n', 't' } },
   },
   },
-
-  -- Jump shortcuts to spots in buffer
-  -- {
-  --   'ggandor/leap.nvim',
-  --   enabled = false,
-  --   dependencies = { { 'ggandor/flit.nvim', opts = { labeled_modes = 'nv' } } },
-  --   -- stylua: ignore
-  --   keys = {
-  --     { 's', '<Plug>(leap-forward-to)', desc = 'Leap forward' },
-  --     { 'S', '<Plug>(leap-backward-to)', desc = 'Leap backward' },
-  --     { 'x', '<Plug>(leap-forward-to)', desc = 'Leap forward', mode = { 'x', 'o' }, },
-  --     { 'X', '<Plug>(leap-forward-to)', desc = 'Leap backward', mode = { 'x', 'o' }, },
-  --     { 'gs', '<Plug>(leap-cross-window)', desc = 'Leap cross window' },
-  --   },
-  -- },
 
   {
     'DreamMaoMao/yazi.nvim',
@@ -304,7 +287,7 @@ return {
     },
     config = function(_, opts)
       require('lint').setup(opts)
-      require('config.util').autocmd({ 'BufWritePost', 'InsertLeave' }, {
+      require('util').autocmd({ 'BufWritePost', 'InsertLeave' }, {
         callback = function()
           require('lint').try_lint()
         end,
