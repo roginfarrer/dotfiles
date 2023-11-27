@@ -3,7 +3,9 @@
 lalt - 1 : set DISPLAY (yabai -m query --displays --display | jq '.index'); yabai -m space --focus (math "1+4*($DISPLAY - 1)")
 lalt - 2 : set DISPLAY (yabai -m query --displays --display | jq '.index'); yabai -m space --focus (math "2+4*($DISPLAY - 1)")
 lalt - 3 : set DISPLAY (yabai -m query --displays --display | jq '.index'); yabai -m space --focus (math "3+4*($DISPLAY - 1)")
-lalt - 4 : set DISPLAY (yabai -m query --displays --display | jq '.index'); yabai -m space --focus ((4+4*(Dmath "SPLAY - 1)")
+lalt - 4 : set DISPLAY (yabai -m query --displays --display | jq '.index'); yabai -m space --focus (math "4+4*($DISPLAY - 1)")
+lalt - 5 : set DISPLAY (yabai -m query --displays --display | jq '.index'); yabai -m space --focus (math "5+4*($DISPLAY - 1)")
+lalt - 6 : set DISPLAY (yabai -m query --displays --display | jq '.index'); yabai -m space --focus (math "6+4*($DISPLAY - 1)")
 
 # Window Navigation (through display borders): lalt - {j, k, l, ö}
 lalt - h : yabai -m window --focus west  || yabai -m display --focus west
