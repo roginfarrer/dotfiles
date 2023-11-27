@@ -45,7 +45,7 @@ sketchybar --default "${defaults[@]}"
 time=(
     update_freq=1
     # script="$PLUGIN_DIR/time.sh"
-    script="sketchybar --set \$NAME label=\"\$(date '+%H:%M')\""
+    script="sketchybar --set \$NAME label=\"\$(date '+%I:%M %p')\""
     click_script="$POPUP_CLICK_SCRIPT"
     label.padding_left=20
     label.padding_right=15

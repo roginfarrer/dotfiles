@@ -3,12 +3,12 @@
 source "$HOME/.config/sketchybar/colors.sh"
 source "$HOME/.config/sketchybar/icons.sh"
 
-sketchybar --set $NAME label="$(date '+%H:%M')"
+sketchybar --set $NAME label="$(date '+%I:%M %p')"
 
 time_popup=(
     icon=$TIME
     icon.padding_left=10
-    label="$(date '+%H:%M:%S')"
+    label="$(date '+%I:%M %p')"
     label.padding_left=10
     label.padding_right=10
     label.font="SF Pro:Bold:12.0"
