@@ -10,3 +10,9 @@
  (html_block) @injection.content
  (#set! injection.language "tsx")
 )
+
+(
+ (paragraph) @injection.content
+ (#lua-match? @injection.content "^<.*/>")
+ (#set! injection.language "tsx")
+)

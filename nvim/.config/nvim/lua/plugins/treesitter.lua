@@ -5,14 +5,14 @@ return {
   version = false, -- last release is way too old and doesn't work on Windows
   dependencies = {
     -- { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
-    'JoosepAlviste/nvim-ts-context-commentstring',
+    { 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } },
     { 'windwp/nvim-ts-autotag', config = true },
   },
   opts = {
     ensure_installed = {
       'markdown',
+      'markdown_inline',
       'javascript',
-      'tsx',
       'typescript',
       'tsx',
       'css',
@@ -31,6 +31,13 @@ return {
       'fish',
       'astro',
       'org',
+      'diff',
+      'git_config',
+      'gitignore',
+    },
+    query_linter = {
+      enable = true,
+      lint_events = { 'BufWrite', 'CursorHold' },
     },
     indent = { enable = true },
     highlight = {
@@ -38,12 +45,12 @@ return {
       -- use_languagetree = true,
       additional_vim_regex_highlighting = { 'org' },
     },
-    context_commentstring = { enable = true, enable_autocmd = false },
     autopairs = {
       enable = true,
     },
     autotag = {
       enable = true,
+      enable_close_on_slash = false,
       filetypes = {
         'astro',
         'html',

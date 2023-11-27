@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 BAR_HEIGHT=32
 BG_HEIGHT=$(($BAR_HEIGHT - 4))
 INSET_BG_HEIGHT=$(($BG_HEIGHT - 14))
 
+source "$HOME/.config/sketchybar/notch.sh"
 source "$HOME/.config/sketchybar/colors.sh"
 source "$HOME/.config/sketchybar/icons.sh"
 
@@ -122,6 +123,7 @@ sketchybar --add item date right \
 
 fantastical=(
     update_freq=30
+    alias.color=$WHITE
     background.color=$TEMPUS
     background.height=$BG_HEIGHT
     background.corner_radius=8
@@ -231,8 +233,11 @@ spotify=(
     update_freq=5
 )
 
+SPOTIFY_LOC="center"
+[ "$HAS_NOTCH" = "true" ] && SPOTIFY_LOC="q"
+
 sketchybar --add event spotify_change $SPOTIFY_EVENT \
-    --add item spotify q \
+    --add item spotify $SPOTIFY_LOC \
     --set spotify "${spotify[@]}" \
     --subscribe spotify mouse.entered mouse.exited \
     mouse.exited.global
@@ -246,12 +251,13 @@ spotify_label=(
     update_freq=5
 )
 
-sketchybar --add item spotify_label q \
+sketchybar --add item spotify_label $SPOTIFY_LOC \
     --set spotify_label "${spotify_label[@]}"
 
 notch_spacer=(
     width=8
     script="$PLUGIN_DIR/notch_spacer.sh"
+    drawing=!$HAS_NOTCH
 )
 
 sketchybar --add item notch_spacer q \
@@ -303,6 +309,7 @@ sketchybar --add item apple left \
 
 space=(
     script="$PLUGIN_DIR/spaces.sh"
+    click_script="$HOME/.config/sketchybar/space_click.sh"
     label.drawing=off
     icon.padding_left=6
     icon.padding_right=6
@@ -368,7 +375,7 @@ brackets=(
 sketchybar --add bracket status time date wifi battery volume_icon right \
     --set status "${brackets[@]}"
 
-sketchybar --add bracket music spotify spotify_label q \
+sketchybar --add bracket music spotify spotify_label $SPOTIFY_LOC \
     --set music "${brackets[@]}"
 
 sketchybar --add bracket control apple "${spacesArray[@]}" center \

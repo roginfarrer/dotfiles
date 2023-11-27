@@ -1,11 +1,11 @@
 #!/bin/sh
 
-HAS_NOTCH=false
+export HAS_NOTCH=false
 
 MODEL="$(system_profiler SPHardwareDataType | grep 'Model Identifier' | awk '{print $3}')"
 
 if [ "$MODEL" = 'MacBookAir10,1' ]; then
-    HAS_NOTCH=true
+    return
 else
     # This is used to determine if a monitor is used
     # Since the notch is -only- on the laptop, if a monitor isn't used,
@@ -14,4 +14,3 @@ else
     [ "$MAIN_DISPLAY" = 'Built-in' ] && HAS_NOTCH=true
 fi
 
-sketchybar --set notch_spacer drawing=!$HAS_NOTCH

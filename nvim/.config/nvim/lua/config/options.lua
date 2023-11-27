@@ -43,6 +43,7 @@ o.smartindent = true
 o.splitbelow = true
 o.splitkeep = 'screen'
 o.splitright = true
+-- o.suffixesadd = o.suffixesadd .. '.js,.ts,.tsx,.jsx'
 o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true

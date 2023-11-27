@@ -26,6 +26,8 @@ M.autocmd = function(event, opts)
   end
 end
 
-M.has = require('lazyvim.util').has
+M.has = function(plugin)
+  return require('lazy.core.config').spec.plugins[plugin] ~= nil
+end
 
 return M

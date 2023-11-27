@@ -1,6 +1,6 @@
 local wk = require 'which-key'
 
-local map = require('config.util').map
+local map = require('util').map
 
 local function luaDocs()
   if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
@@ -121,7 +121,6 @@ function M.setup(client, bufnr)
       vim.lsp.inlay_hint(0, nil)
     end, { desc = 'Toggle Inlay Hints' })
   end
-  bufmap 'n'
 end
 
 return M
