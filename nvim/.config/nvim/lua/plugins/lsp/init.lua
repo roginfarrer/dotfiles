@@ -166,7 +166,11 @@ return {
         --     },
         --   },
         -- },
-        eslint = {},
+        eslint = {
+          settings = {
+            workingDirectories = { mode = 'auto' },
+          },
+        },
         bashls = {},
         cssls = {},
         astro = {
