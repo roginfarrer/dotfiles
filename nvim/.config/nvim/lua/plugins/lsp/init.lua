@@ -171,7 +171,7 @@ return {
             workingDirectories = { mode = 'auto' },
           },
         },
-        bashls = {},
+        bashls = { settings = { includeAllWorkspaceSymbols = true } },
         cssls = {},
         astro = {
           -- root_dir = util.root_pattern '.git',

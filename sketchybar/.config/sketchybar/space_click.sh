@@ -16,8 +16,7 @@ mouse_clicked() {
         yabai -m space --destroy $SID
         sketchybar --trigger windows_on_spaces --trigger space_change
     else
-        yabai -m space --focus $SID 2>/dev/null
-        [ $? -ne 0 ] && osascript -e "tell application \"System Events\" to key code ${window_codes[$SID]} using control down"
+        yabai -m space --focus $SID || osascript -e "tell application \"System Events\" to key code ${window_codes[$SID]} using control down"
     fi
 }
 
