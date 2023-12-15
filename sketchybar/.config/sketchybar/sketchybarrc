@@ -1,15 +1,15 @@
 #!/bin/bash
 
-source "$XDG_CONFIG_HOME/sketchybar/notch.sh"
-source "$XDG_CONFIG_HOME/sketchybar/colors.sh"
-source "$XDG_CONFIG_HOME/sketchybar/icons.sh"
+source "$HOME/.config/sketchybar/notch.sh"
+source "$HOME/.config/sketchybar/colors.sh"
+source "$HOME/.config/sketchybar/icons.sh"
 
 BAR_HEIGHT=32
 BG_HEIGHT=$((BAR_HEIGHT - 4))
 FONT="SF Pro"
 
-PLUGIN_DIR="$XDG_CONFIG_HOME/sketchybar/plugins"
-ITEM_DIR="$XDG_CONFIG_HOME/sketchybar/items"
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+ITEM_DIR="$HOME/.config/sketchybar/items"
 export POPUP_CLICK_SCRIPT="sketchybar --set \$NAME popup.drawing=toggle"
 
 bar=(

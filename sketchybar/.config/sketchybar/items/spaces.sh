@@ -1,9 +1,9 @@
 #!/bin/bash
 
-source "$XDG_CONFIG_HOME/sketchybar/icons.sh"
+source "$HOME/.config/sketchybar/icons.sh"
 
 sid=0
-declare -a spacesArray=()
+export spacesArray=()
 for sid in {1..10}
 do
 

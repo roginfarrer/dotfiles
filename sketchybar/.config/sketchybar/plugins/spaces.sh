@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source "$XDG_CONFIG_HOME/sketchybar/colors.sh"
-source "$XDG_CONFIG_HOME/sketchybar/icons.sh"
+source "$HOME/.config/sketchybar/colors.sh"
+source "$HOME/.config/sketchybar/icons.sh"
 
 active_space=(
     icon=$PACMAN
