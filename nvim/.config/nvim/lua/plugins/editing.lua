@@ -279,7 +279,7 @@ return {
           html = { prettier },
           markdown = { prettier },
           mdx = { prettier },
-          astro = { prettier },
+          astro = { 'prettier' },
           scss = { prettier },
           yaml = { prettier },
           json = { prettier },
@@ -293,6 +293,16 @@ return {
           lsp_fallback = true,
           timeout_ms = 500,
         },
+        -- formatters = {
+        --   prettier = {
+        --     args = function(ctx)
+        --       if vim.endswith(ctx.filename, '.astro') then
+        --         return { '--stdin-filepath', '$FILENAME', '--plugin', 'prettier-plugin-astro' }
+        --       end
+        --       return { '--stdin-filepath', '$FILENAME' }
+        --     end,
+        --   },
+        -- },
       }
     end,
   },
