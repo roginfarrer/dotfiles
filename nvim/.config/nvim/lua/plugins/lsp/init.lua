@@ -171,7 +171,7 @@ return {
             workingDirectories = { mode = 'auto' },
           },
         },
-        bashls = {},
+        bashls = { settings = { includeAllWorkspaceSymbols = true } },
         cssls = {},
         astro = {
           -- root_dir = util.root_pattern '.git',
@@ -216,7 +216,7 @@ return {
           '--bun',
         }, cmd)
       end
-      local node_servers = { 'tsserver', 'jsonls', 'cssls', 'html', 'eslint', 'astro', 'vtsls' }
+      local node_servers = { 'tsserver', 'jsonls', 'cssls', 'html', 'eslint', 'vtsls' }
       util.on_setup = util.add_hook_before(util.on_setup, function(config, user_config)
         if config.cmd and node_servers[config.name] then
           config.cmd = prefix_bun(config.cmd)

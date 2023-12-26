@@ -1,47 +1,57 @@
-#!/bin/sh
+#!/bin/bash
 
 source "$HOME/.config/sketchybar/colors.sh"
 source "$HOME/.config/sketchybar/icons.sh"
 
-SPACE_ICONS=("$GHOST" "$GHOST" "$GHOST" "$GHOST" "$GHOST" "$GHOST" "$GHOST" "$GHOST")
-CURRENT_SPACE_ICONS=("$WORK" "$BROWSER" "$MUSIC" "$UNI" "$MAIL" "$GENERAL" "$GENERAL" "$GENERAL" "$GENERAL")
-ACTIVE_SPACE=$(yabai -m query --spaces --space | jq '.index')
-CURRENT_APP_IN_SPACE=$(osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true')
-
-space_bg=(
-    background.color=$SPACEBG
-    background.height=22
-    background.corner_radius=6
+active_space=(
+    icon=$PACMAN
+    icon.color=$ACTIVE_SPACE_COLOR
 )
 
-space_popup=(
-    icon.padding_left=10
-    label.font="SF Pro:Bold:18.0"
-    label.padding_left=10
-    label.padding_right=10
-    blur_radius=100
+reset_space=(
+    icon=$GHOST
+    icon.color=$ICON_COLOR
 )
 
-if [[ -z $(sketchybar --query space.popup) ]]; then
-    sketchybar --add item space.popup popup.current_space \
-        --set space.popup "${space_popup[@]}"
-fi
-
-sid=0
-spaces=()
-for i in "${!SPACE_ICONS[@]}"; do
-    sid=$(($i + 1))
-
-    if [[ $sid -eq $ACTIVE_SPACE ]]; then
-        CURRENT_ICON=$PACMAN
-        sketchybar --set space.$sid "${space_bg[@]}"
+update() {
+    if [ "$SELECTED" = "true" ]; then
+        sketchybar --set $NAME "${active_space[@]}"
     else
-        CURRENT_ICON=${SPACE_ICONS["$i"]}
-        sketchybar --set space.$sid background.color=$TRANSPARENT
+        sketchybar --set $NAME "${reset_space[@]}"
     fi
+}
 
-    sketchybar --set space.$sid icon="$CURRENT_ICON"
-    sketchybar --set current_space icon=${CURRENT_SPACE_ICONS[$(($ACTIVE_SPACE - 1))]}
-    sketchybar --set space.popup label="$CURRENT_APP_IN_SPACE" \
-        icon=${CURRENT_SPACE_ICONS[$(($ACTIVE_SPACE - 1))]}
-done
+# declare -A window_codes
+window_codes['1']=18
+window_codes['2']=19
+window_codes['3']=20
+window_codes['4']=21
+window_codes['5']=23
+window_codes['6']=22
+window_codes['7']=27
+window_codes['8']=28
+window_codes['9']=25
+
+mouse_clicked() {
+    if [ "$BUTTON" = "right" ]; then
+        yabai -m space --destroy $SID
+        sketchybar --trigger windows_on_spaces --trigger space_change
+    else
+        yabai -m space --focus $SID || osascript -e "tell application \"System Events\" to key code ${window_codes[$SID]} using control down"
+    fi
+}
+
+case "$SENDER" in
+    "mouse.entered")
+        mouse_entered
+        ;;
+    "mouse.exited")
+        mouse_exited
+        ;;
+    "mouse.clicked")
+        mouse_clicked
+        ;;
+    *)
+        update
+        ;;
+esac

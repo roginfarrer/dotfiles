@@ -1,86 +1,147 @@
-#!/bin/sh
+#!/bin/bash
 
-source "$HOME/.config/sketchybar/colors.sh"
-source "$HOME/.config/sketchybar/icons.sh"
-
-CURRENT_SONG=$(osascript -e 'tell application "Spotify" to return name of current track')
-CURRENT_ARTIST=$(osascript -e 'tell application "Spotify" to return artist of current track')
-CURRENT_ALBUM=$(osascript -e 'tell application "Spotify" to return album of current track')
-CURRENT_COVER=$(osascript -e 'tell application "Spotify" to return artwork url of current track')
-DURATION_MS=$(osascript -e 'tell application "Spotify" to get duration of current track')
-DURATION=$((DURATION_MS / 1000))
-FLOAT="$(osascript -e 'tell application "Spotify" to get player position')"
-TIME=${FLOAT%.*}
-
-curl -s --max-time 20 "$CURRENT_COVER" -o /tmp/cover.jpg
-
-detail_on() {
-    sketchybar --animate tanh 30 --set spotify_label slider.width=$WIDTH
+next ()
+{
+    osascript -e 'tell application "Spotify" to play next track'
 }
 
-detail_off() {
-    sketchybar --animate tanh 30 --set spotify_label slider.width=0
+back ()
+{
+    osascript -e 'tell application "Spotify" to play previous track'
 }
 
-spotify_cover=(
-    label.drawing=off
-    icon.drawing=off
-    padding_left=12
-    padding_right=10
-    background.image.scale=0.13
-    background.image.drawing=on
-    background.drawing=on
-    background.image="/tmp/cover.jpg"
-)
-
-safe_add() {
-    sketchybar --query $1 &> /dev/null
-    [[ $? -ne 0 ]] && sketchybar --add item $1
+play ()
+{
+    osascript -e 'tell application "Spotify" to playpause'
 }
 
-safe_add "spotify.cover popup.spotify"
-safe_add "spotify.title popup.spotify"
-safe_add "spotify.artist popup.spotify"
-safe_add "spotify.album popup.spotify"
+repeat ()
+{
+    REPEAT=$(osascript -e 'tell application "Spotify" to get repeating')
+    if [ "$REPEAT" = "false" ]; then
+        sketchybar -m --set spotify.repeat icon.highlight=on
+        osascript -e 'tell application "Spotify" to set repeating to true'
+    else
+        sketchybar -m --set spotify.repeat icon.highlight=off
+        osascript -e 'tell application "Spotify" to set repeating to false'
+    fi
+}
 
-sketchybar --set spotify.cover "${spotify_cover[@]}"
+shuffle ()
+{
+    SHUFFLE=$(osascript -e 'tell application "Spotify" to get shuffling')
+    if [ "$SHUFFLE" = "false" ]; then
+        sketchybar -m --set spotify.shuffle icon.highlight=on
+        osascript -e 'tell application "Spotify" to set shuffling to true'
+    else
+        sketchybar -m --set spotify.shuffle icon.highlight=off
+        osascript -e 'tell application "Spotify" to set shuffling to false'
+    fi
+}
 
-spotify_title=(
-    label.font="SF Pro:Bold:15.0"
-    label="$CURRENT_SONG"
-    icon.drawing=off
-    padding_left=0
-    padding_right=0
-    width=0
-    label.font="SF Pro:Bold:15.0"
-    y_offset=30
-)
+update ()
+{
+    PLAYING=1
+    if [ "$(echo "$INFO" | jq -r '.["Player State"]')" = "Playing" ]; then
+        PLAYING=0
+        TRACK="$(echo "$INFO" | jq -r .Name | sed 's/\(.\{20\}\).*/\1.../')"
+        ARTIST="$(echo "$INFO" | jq -r .Artist | sed 's/\(.\{20\}\).*/\1.../')"
+        ALBUM="$(echo "$INFO" | jq -r .Album | sed 's/\(.\{25\}\).*/\1.../')"
+        SHUFFLE=$(osascript -e 'tell application "Spotify" to get shuffling')
+        REPEAT=$(osascript -e 'tell application "Spotify" to get repeating')
+        COVER=$(osascript -e 'tell application "Spotify" to get artwork url of current track')
+    fi
 
-sketchybar --set spotify.title "${spotify_title[@]}"
+    args=()
+    if [ $PLAYING -eq 0 ]; then
+        curl -s --max-time 20 "$COVER" -o /tmp/cover.jpg
+        if [ "$ARTIST" == "" ]; then
+            args+=(--set spotify.title label="$TRACK"
+                --set spotify.album label="Podcast"
+            --set spotify.artist label="$ALBUM"  )
+        else
+            args+=(--set spotify.title label="$TRACK"
+                --set spotify.album label="$ALBUM"
+            --set spotify.artist label="$ARTIST")
+        fi
+        args+=(--set spotify.play icon=􀊆
+            --set spotify.shuffle icon.highlight=$SHUFFLE
+            --set spotify.repeat icon.highlight=$REPEAT
+            --set spotify.cover background.image="/tmp/cover.jpg"
+            background.color=0x00000000
+        --set spotify.anchor drawing=on                      )
+    else
+        args+=(--set spotify.anchor drawing=off popup.drawing=off
+        --set spotify.play icon=􀊄                         )
+    fi
+    sketchybar -m "${args[@]}"
+}
 
-spotify_artist=(
-    icon.drawing=off
-    y_offset=7
-    padding_left=0
-    padding_right=0
-    width=0
-    label.font="SF Pro:Regular:14.0"
-    label="$CURRENT_ARTIST"
-)
+scrubbing() {
+    DURATION_MS=$(osascript -e 'tell application "Spotify" to get duration of current track')
+    DURATION=$((DURATION_MS/1000))
 
-sketchybar --set spotify.artist "${spotify_artist[@]}"
+    TARGET=$((DURATION*PERCENTAGE/100))
+    osascript -e "tell application \"Spotify\" to set player position to $TARGET"
+    sketchybar --set spotify.state slider.percentage=$PERCENTAGE
+}
 
-spotify_album=(
-    icon.drawing=off
-    padding_left=0
-    padding_right=0
-    y_offset=-25
-    width=0
-    label.font="SF Pro:Bold:11.0"
-    label="$CURRENT_ALBUM"
-    background.padding_right=235
-)
+scroll() {
+    DURATION_MS=$(osascript -e 'tell application "Spotify" to get duration of current track')
+    DURATION=$((DURATION_MS/1000))
 
-sketchybar --set spotify.album "${spotify_album[@]}"
+    FLOAT="$(osascript -e 'tell application "Spotify" to get player position')"
+    TIME=${FLOAT%.*}
 
-sketchybar --set spotify_label label="$CURRENT_SONG"
+    sketchybar --animate linear 10 \
+        --set spotify.state slider.percentage="$((TIME*100/DURATION))" \
+        icon="$(date -r $TIME +'%M:%S')" \
+        label="$(date -r $DURATION +'%M:%S')"
+}
+
+mouse_clicked () {
+    case "$NAME" in
+        "spotify.next") next
+            ;;
+        "spotify.back") back
+            ;;
+        "spotify.play") play
+            ;;
+        "spotify.shuffle") shuffle
+            ;;
+        "spotify.repeat") repeat
+            ;;
+        "spotify.state") scrubbing
+            ;;
+        *) exit
+            ;;
+    esac
+}
+
+popup () {
+    sketchybar --set spotify.anchor popup.drawing=$1
+}
+
+routine() {
+    case "$NAME" in
+        "spotify.state") scroll
+            ;;
+        *) update
+            ;;
+    esac
+}
+
+case "$SENDER" in
+    "mouse.clicked") mouse_clicked
+        ;;
+    "mouse.entered") popup on
+        ;;
+    "mouse.exited"|"mouse.exited.global") popup off
+        ;;
+    "routine") routine
+        ;;
+    "forced") exit 0
+        ;;
+    *) update
+        ;;
+esac
