@@ -2,6 +2,7 @@ local Util = require 'lazyvim.util'
 
 local M = {
   'nvim-telescope/telescope.nvim',
+  enabled = false,
   cmd = 'Telescope',
   dependencies = {
     'nvim-telescope/telescope-node-modules.nvim',

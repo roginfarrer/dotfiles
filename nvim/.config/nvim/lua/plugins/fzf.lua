@@ -99,7 +99,7 @@ local function node_modules()
   require('fzf-lua').fzf_exec(list, opts)
 end
 
-_G.node_modules = node_modules
+-- _G.node_modules = node_modules
 
 local function lazy(opts)
   opts = {}
@@ -175,7 +175,6 @@ end
 
 return {
   'ibhagwan/fzf-lua',
-  enabled = false,
   dependencies = {
     { dir = '~/projects/fzf-lua-lazy', opts = {}, dependencies = { dir = '~/neovim/open.nvim', opts = {} } },
   },
@@ -205,9 +204,11 @@ return {
     { '<leader>ft', cmd 'builtin', desc = 'fzf builtins' },
     { '<leader>fp', project_files, desc = 'git files' },
     { '<leader>;', cmd 'buffers', desc = 'buffers' },
+    { '<leader>/', cmd 'live_grep', desc = 'live grep' },
     { '<leader>fb', cmd 'buffers', desc = 'buffers' },
     { '<leader>ff', cmd 'files', desc = 'all files' },
     { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
+    { '<leader>/', cmd 'live_grep', desc = 'live grep' },
     -- { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
     { '<leader>fd', cmd 'git_files cwd=~/dotfiles', desc = 'find in dotfiles' },
     -- { '<leader>fD', searchDotfiles, desc = 'grep in dotfiles' },
@@ -226,5 +227,6 @@ return {
     { '<leader>Ha', cmd 'autocommands', desc = 'auto commands' },
     { '<leader>gb', cmd 'git_branches', desc = 'checkout branch' },
     { '<leader>gC', cmd 'git_bcommits', desc = 'checkout commit (for current file)' },
+    { '<leader>r', cmd 'resume', desc = 'Fzf resume' },
   },
 }
