@@ -1,11 +1,14 @@
 # Install Fisher if it's not installed
 if not functions -q fisher && status is-interactive
-    curl -sL https://git.io/fisher | source && fisher update || fisher install jorgebucaran/fisher
+    curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 end
+
+set -g fish_greeting
 
 set -gx EDITOR nvim
 set -gx VISUAL nvim
 set -gx SUDO_EDITOR $EDITOR
+set -gx XDG_CONFIG_HOME "$HOME/.config"
 set -x MANPAGER "nvim +Man!"
 
 abbr g git
@@ -35,6 +38,7 @@ abbr gcp "git cherry-pick"
 abbr sshpi "ssh -t pi@192.168.0.194 'export TERM=linux; fish'"
 abbr themes "kitty +kitten themes"
 abbr p pnpm
+abbr b bun
 
 if test -e $HOME/.config/fish/local-config.fish
     source $HOME/.config/fish/local-config.fish
@@ -47,16 +51,9 @@ set -gx FZF_DEFAULT_OPTS "\
   --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
 set -gx fzf_directory_opts --bind "ctrl-o:execute($EDITOR {} &> /dev/tty)"
 set -gx fzf_fd_opts --hidden --exclude=.git --exclude=node_modules
-fzf_configure_bindings --directory=\cf
-
-# bun
-fish_add_path "$HOME/.bun/bin"
-
-# tabtab source for packages
-# uninstall by removing these lines
-[ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
-
-# status is-interactive && oh-my-posh init fish --config $HOME/.config/oh-my-posh.json | source
+if type -q fzf_configure_bindings
+    fzf_configure_bindings --directory=\cf
+end
 
 fish_vi_key_bindings
 # Emulates vim's cursor shape behavior
