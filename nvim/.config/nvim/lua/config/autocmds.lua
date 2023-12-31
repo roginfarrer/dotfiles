@@ -18,13 +18,8 @@ autocmd({ 'VimResized' }, {
 autocmd('BufReadPost', {
   group = 'last_loc',
   callback = function()
-    local exclude = { 'gitcommit' }
-    local buf = vim.api.nvim_get_current_buf()
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
-      return
-    end
-    local mark = vim.api.nvim_buf_get_mark(buf, '"')
-    local lcount = vim.api.nvim_buf_line_count(buf)
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
@@ -94,36 +89,18 @@ autocmd('BufReadPost', {
   end,
 })
 
-autocmd('FileType', {
-  group = 'astro_server',
-  pattern = 'astro',
-  callback = function(event)
-    if _G.astro_server then
-      return
+autocmd('BufReadPost', {
+  group = 'github_gf',
+  pattern = { '~/dotfiles/*', '~/.config/*' },
+  callback = function()
+    _G.includeexpr = function(fname)
+      vim.print(fname)
     end
-
-    local util = require 'lspconfig.util'
-    local file = util.path.join(vim.fn.getcwd(), event.file)
-    local gitAncestor = util.find_git_ancestor(file)
-
-    local function seek(startpath)
-      local rootPath = util.find_node_modules_ancestor(startpath)
-      local maybeFile = util.path.join(rootPath, 'node_modules/typescript/lib/tsserverlibrary.js')
-      if util.path.exists(maybeFile) then
-        return maybeFile
-      end
-
-      if rootPath ~= gitAncestor then
-        return seek(util.path.dirname(rootPath))
-      end
-    end
-
-    local foundFile = seek(util.path.dirname(file))
-    _G.astro_server = foundFile
-    print(foundFile)
+    -- vim.cmd [[setlocal isfname+=@-@]]
+    -- vim.bo.suffixesadd = vim.bo.suffixesadd .. '.js,.jsx,.ts,.tsx'
+    vim.bo.includeexpr = 'v:lua._G.includeexpr(v:fname)'
   end,
 })
-
 autocmd('FileType', {
   group = 'node_gf',
   pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },

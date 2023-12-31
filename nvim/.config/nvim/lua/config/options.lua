@@ -5,7 +5,7 @@ local o = vim.o
 
 o.breakindent = true
 o.breakindentopt = 'shift:2'
-o.cmdheight = 0
+-- o.cmdheight = 0
 o.completeopt = 'menuone,noselect,noinsert'
 o.confirm = true
 o.cursorline = true

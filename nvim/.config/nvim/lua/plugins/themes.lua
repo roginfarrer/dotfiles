@@ -105,12 +105,11 @@ local plugins = {
   {
     'catppuccin/nvim',
     name = 'catppuccin',
-    config = function()
-      local cat = require 'catppuccin'
+    opts = function()
       local cp = require('catppuccin.palettes').get_palette()
       local util = require 'catppuccin.utils.colors'
 
-      cat.setup {
+      return {
         no_italic = true,
         integrations = {
           treesitter = true,
@@ -144,12 +143,12 @@ local plugins = {
           markdown = true,
           mason = true,
           mini = true,
-          navic = { enabled = true, custom_bg = cp.mantle },
+          navic = { enabled = false, custom_bg = cp.mantle },
           neogit = true,
           neotest = true,
           neotree = true,
-          noice = true,
-          notify = true,
+          -- noice = true,
+          -- notify = true,
           octo = true,
           symbols_outline = false,
           telescope = { enabled = true, style = 'nvchad' },
@@ -170,25 +169,23 @@ local plugins = {
           DiffAdd = { bg = util.darken(cp.green, 0.2) },
           DiffDelete = { bg = util.darken(cp.red, 0.2) },
           DiffText = { bg = util.darken(cp.yellow, 0.3) },
-          -- TelescopePromptPrefix = { bg = cp.crust },
-          -- TelescopePromptNormal = { bg = cp.crust },
-          -- TelescopeResultsNormal = { bg = cp.mantle },
-          -- TelescopePreviewNormal = { bg = cp.crust },
-          -- TelescopePromptBorder = { bg = cp.crust, fg = cp.crust },
-          -- TelescopeResultsBorder = { bg = cp.mantle, fg = cp.crust },
-          -- TelescopePreviewBorder = { bg = cp.crust, fg = cp.crust },
-          -- TelescopePromptTitle = { fg = cp.crust, bg = cp.lavender },
-          -- TelescopeResultsTitle = { fg = cp.mantle, bg = cp.mantle },
-          -- TelescopePreviewTitle = { fg = cp.crust, bg = cp.lavender },
+          FzfLuaBorder = { bg = cp.crust, fg = cp.crust },
+          -- FzfLuaHelpBorder = { bg = cp.crust, fg = cp.crust },
+          FzfLuaPreviewBorder = { bg = cp.mantle, fg = cp.mantle },
+          FzfLuaPreviewNormal = { bg = cp.mantle },
+          FzfLuaScrollBorderEmpty = { bg = cp.base, fg = cp.base },
+          FzfLuaScrollBorderFull = { bg = cp.base, fg = cp.base },
+          FzfLuaScrollFloatEmpty = { bg = cp.base, fg = cp.lavender },
+          FzfLuaScrollFloatFull = { bg = cp.base, fg = cp.lavender },
         },
       }
     end,
   },
 }
 
-for _, plugin in ipairs(plugins) do
-  plugin.lazy = true
-  plugin.priority = 1000
-end
+-- for _, plugin in ipairs(plugins) do
+--   plugin.lazy = true
+--   plugin.priority = 1000
+-- end
 
 return plugins

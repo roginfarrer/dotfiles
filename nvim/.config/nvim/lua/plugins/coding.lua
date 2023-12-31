@@ -23,6 +23,7 @@ return {
   {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
+    version = false,
     dependencies = {
       'saadparwaiz1/cmp_luasnip',
       'petertriho/cmp-git',
@@ -37,30 +38,9 @@ return {
       'lukas-reineke/cmp-under-comparator',
     },
     opts = function()
+      vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
       local cmp = require 'cmp'
-
-      local function border(hl_name)
-        -- return {
-        --   { ' ', hl_name },
-        --   { '▁', hl_name },
-        --   { ' ', hl_name },
-        --   { '▏', hl_name },
-        --   { ' ', hl_name },
-        --   { '▔', hl_name },
-        --   { ' ', hl_name },
-        --   { '▕', hl_name },
-        -- }
-        -- return {
-        --   { '╭', hl_name },
-        --   { '─', hl_name },
-        --   { '╮', hl_name },
-        --   { '│', hl_name },
-        --   { '╯', hl_name },
-        --   { '─', hl_name },
-        --   { '╰', hl_name },
-        --   { '│', hl_name },
-        -- }
-      end
+      local defaults = require 'cmp.config.default'()
 
       return {
         completion = {
@@ -96,16 +76,17 @@ return {
             return vim_item
           end,
         },
-        sorting = {
-          comparators = {
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            require('cmp-under-comparator').under,
-            cmp.config.compare.kind,
-          },
-        },
+        sorting = defaults.sorting,
+        -- sorting = {
+        --   comparators = {
+        --     cmp.config.compare.offset,
+        --     cmp.config.compare.exact,
+        --     cmp.config.compare.score,
+        --     cmp.config.compare.recently_used,
+        --     require('cmp-under-comparator').under,
+        --     cmp.config.compare.kind,
+        --   },
+        -- },
         mapping = {
           ['<C-n>'] = cmp.mapping.select_next_item {
             behavior = cmp.SelectBehavior.Insert,
@@ -126,8 +107,6 @@ return {
           },
         },
         sources = cmp.config.sources({
-          -- { name = 'copilot' },
-          { name = 'nvim_lsp_signature_help' },
           { name = 'nvim_lsp' },
           { name = 'luasnip', keyword_length = 1 },
           { name = 'npm' },
@@ -140,23 +119,33 @@ return {
         }, {
           { name = 'buffer', keyword_length = 4 },
         }),
-        experimental = {
-          -- native_menu = false,
-          -- ghost_text = true,
-        },
       }
     end,
     config = function(_, opts)
-      local cmp_window = require 'cmp.utils.window'
-
-      cmp_window.info_ = cmp_window.info
-      cmp_window.info = function(self)
-        local info = self:info_()
-        info.scrollable = false
-        return info
+      for _, source in ipairs(opts.sources) do
+        source.group_index = source.group_index or 1
       end
-
-      require('cmp').setup(opts)
+      local cmp = require 'cmp'
+      cmp.setup(opts)
+      cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' },
+        },
+      })
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' },
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' },
+            },
+          },
+        }),
+      })
     end,
   },
 
@@ -170,25 +159,17 @@ return {
   -- Auto pairs
   {
     'echasnovski/mini.pairs',
-    enabled = false,
     event = 'InsertEnter',
+    version = '*',
     config = function(_, opts)
       require('mini.pairs').setup(opts)
     end,
-  },
-  {
-    'altermo/ultimate-autopair.nvim',
-    event = { 'InsertEnter', 'CmdlineEnter' },
-    branch = 'v0.6',
-    opts = {
-      --Config goes here
-    },
   },
 
   {
     'echasnovski/mini.bracketed',
     event = 'BufReadPost',
-    version = false,
+    version = '*',
     opts = {},
     config = function(_, opts)
       local bracketed = require 'mini.bracketed'
@@ -198,6 +179,7 @@ return {
 
   {
     'echasnovski/mini.surround',
+    version = '*',
     keys = function(_, keys)
       -- Populate the keys based on the user's options
       local plugin = require('lazy.core.config').spec.plugins['mini.surround']
@@ -218,13 +200,13 @@ return {
     end,
     opts = {
       mappings = {
-        add = 'gza', -- Add surrounding in Normal and Visual modes
-        delete = 'gzd', -- Delete surrounding
-        find = 'gzf', -- Find surrounding (to the right)
-        find_left = 'gzF', -- Find surrounding (to the left)
-        highlight = 'gzh', -- Highlight surrounding
-        replace = 'gzr', -- Replace surrounding
-        update_n_lines = 'gzn', -- Update `n_lines`
+        add = 'gsa', -- Add surrounding in Normal and Visual modes
+        delete = 'gsd', -- Delete surrounding
+        find = 'gsf', -- Find surrounding (to the right)
+        find_left = 'gsF', -- Find surrounding (to the left)
+        highlight = 'gsh', -- Highlight surrounding
+        replace = 'gsr', -- Replace surrounding
+        update_n_lines = 'gsn', -- Update `n_lines`
         -- add = 'ys', -- Add surrounding in Normal and Visual modes
         -- delete = 'ds', -- Delete surrounding
         -- replace = 'cs', -- Replace surrounding
@@ -235,27 +217,16 @@ return {
       },
     },
     config = function(_, opts)
-      -- use these mappings instead of s to prevent conflict with leap
       require('mini.surround').setup(opts)
     end,
   },
 
   -- better text-objects
+  -- config from
+  -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/plugins/coding.lua#L186
   {
     'echasnovski/mini.ai',
-    keys = {
-      { 'a', mode = { 'x', 'o' } },
-      { 'i', mode = { 'x', 'o' } },
-    },
-    dependencies = {
-      {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        init = function()
-          -- no need to load the plugin, since we only need its queries
-          require('lazy.core.loader').disable_rtp_plugin 'nvim-treesitter-textobjects'
-        end,
-      },
-    },
+    event = 'VeryLazy',
     opts = function()
       local ai = require 'mini.ai'
       return {
@@ -267,77 +238,94 @@ return {
           }, {}),
           f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, {}),
           c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
+          t = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' },
         },
       }
     end,
     config = function(_, opts)
-      local ai = require 'mini.ai'
-      ai.setup(opts)
+      require('mini.ai').setup(opts)
+      -- register all text objects with which-key
+      require('util').on_plugin_load('which-key.nvim', function()
+        ---@type table<string, string|table>
+        local i = {
+          [' '] = 'Whitespace',
+          ['"'] = 'Balanced "',
+          ["'"] = "Balanced '",
+          ['`'] = 'Balanced `',
+          ['('] = 'Balanced (',
+          [')'] = 'Balanced ) including white-space',
+          ['>'] = 'Balanced > including white-space',
+          ['<lt>'] = 'Balanced <',
+          [']'] = 'Balanced ] including white-space',
+          ['['] = 'Balanced [',
+          ['}'] = 'Balanced } including white-space',
+          ['{'] = 'Balanced {',
+          ['?'] = 'User Prompt',
+          _ = 'Underscore',
+          a = 'Argument',
+          b = 'Balanced ), ], }',
+          c = 'Class',
+          f = 'Function',
+          o = 'Block, conditional, loop',
+          q = 'Quote `, ", \'',
+          t = 'Tag',
+        }
+        local a = vim.deepcopy(i)
+        for k, v in pairs(a) do
+          a[k] = v:gsub(' including.*', '')
+        end
+
+        local ic = vim.deepcopy(i)
+        local ac = vim.deepcopy(a)
+        for key, name in pairs { n = 'Next', l = 'Last' } do
+          i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
+          a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
+        end
+        require('which-key').register {
+          mode = { 'o', 'x' },
+          i = i,
+          a = a,
+        }
+      end)
     end,
   },
 
   -- Better clipboard management
   {
     'gbprod/yanky.nvim',
-    enabled = false,
-    dependencies = { { 'kkharji/sqlite.lua', enabled = not jit.os:find 'Windows' }, { 'aserowy/tmux.nvim' } },
-    opts = function()
-      local mapping = require 'yanky.telescope.mapping'
-      local mappings = mapping.get_defaults()
-      mappings.i['<c-p>'] = nil
-      return {
-        highlight = { timer = 200 },
-        ring = { storage = jit.os:find 'Windows' and 'shada' or 'sqlite' },
-        preserve_cursor_position = { enabled = true },
-        picker = {
-          telescope = {
-            use_default_mappings = false,
-            mappings = mappings,
-          },
-        },
-      }
-    end,
-    keys = function()
-      local t = function(tbl)
-        local rhs = tbl[2]
-        local new_rhs = function()
-          local ok, tmux = pcall(require, 'tmux.copy')
-          if vim.env.TMUX and ok then
-            tmux.sync_registers()
-          end
-          return rhs
-        end
-        tbl[2] = new_rhs
-        tbl.expr = true
-        return tbl
-      end
-      return {
-        -- stylua: ignore
-        { '<leader>p', function() require('telescope').extensions.yank_history.yank_history {} end, desc = 'Open Yank History', },
-        { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
-        { '[y', '<Plug>(YankyCycleForward)', desc = 'Cycle forward through yank history' },
-        { ']y', '<Plug>(YankyCycleBackward)', desc = 'Cycle backward through yank history' },
-        t { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after cursor' },
-        t { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before cursor' },
-        t { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after selection' },
-        t { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before selection' },
-        t { ']p', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
-        t { '[p', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
-        t { ']P', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
-        t { '[P', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
-        t { '>p', '<Plug>(YankyPutIndentAfterShiftRight)', desc = 'Put and indent right' },
-        t { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)', desc = 'Put and indent left' },
-        t { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)', desc = 'Put before and indent right' },
-        t { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put before and indent left' },
-        t { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put after applying a filter' },
-        t { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
-      }
-    end,
+    dependencies = { { 'kkharji/sqlite.lua' } },
+    opts = {
+      highlight = { timer = 200 },
+      ring = { storage = 'sqlite' },
+      preserve_cursor_position = { enabled = true },
+    },
+    keys = {
+      -- stylua: ignore
+      -- { '<leader>p', function() require('telescope').extensions.yank_history.yank_history {} end, desc = 'Open Yank History' },
+      { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
+      { '[y', '<Plug>(YankyCycleForward)', desc = 'Cycle forward through yank history' },
+      { ']y', '<Plug>(YankyCycleBackward)', desc = 'Cycle backward through yank history' },
+      { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after cursor' },
+      { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before cursor' },
+      { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after selection' },
+      { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before selection' },
+      { ']p', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
+      { '[p', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
+      { ']P', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
+      { '[P', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
+      { '>p', '<Plug>(YankyPutIndentAfterShiftRight)', desc = 'Put and indent right' },
+      { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)', desc = 'Put and indent left' },
+      { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)', desc = 'Put before and indent right' },
+      { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put before and indent left' },
+      { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put after applying a filter' },
+      { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
+    },
   },
 
   -- better increase/descrease
   {
     'monaqa/dial.nvim',
+    enabled = false,
     -- stylua: ignore
     keys = {
       { "<C-a>", function() return require("dial.map").inc_normal() end, expr = true, desc = "Increment" },

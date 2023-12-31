@@ -12,10 +12,8 @@ return {
       require('live-command').setup(opts)
     end,
   },
-  -- { 'jghauser/mkdir.nvim', event = 'CmdlineEnter' },
-  -- { 'tpope/vim-eunuch', event = 'CmdlineEnter' },
   { 'tpope/vim-abolish', event = 'CmdlineEnter' },
-  { 'smjonas/inc-rename.nvim', lazy = true, config = true },
+  { 'smjonas/inc-rename.nvim', opts = {} },
 
   -- Terminal management
   {
@@ -54,41 +52,5 @@ return {
 
       vim.keymap.set('n', '<leader>gt', toggleLazyGit, { desc = 'lazygit' })
     end,
-  },
-
-  -- {
-  --   'boltlessengineer/bufterm.nvim',
-  --   enabled = false,
-  --   cmd = { 'BufTermEnter', 'BufTermPrev', 'BufTermNext' },
-  --   keys = { { [[<C-\>]], '<cmd>BufTermEnter<CR>', desc = 'Terminal' } },
-  --   config = function(_, opts)
-  --     require('bufterm').setup(opts)
-
-  --     -- this will add Terminal to the list (not starting job yet)
-  --     local Terminal = require('bufterm.terminal').Terminal
-  --     local ui = require 'bufterm.ui'
-
-  --     local lazygit = Terminal:new {
-  --       cmd = 'lazygit',
-  --       buflisted = false,
-  --       termlisted = false, -- set this option to false if you treat this terminal as single independent terminal
-  --     }
-  --     vim.keymap.set('n', '<leader>gt', function()
-  --       -- spawn terminal (terminal won't be spawned if self.jobid is valid)
-  --       lazygit:spawn()
-  --       -- open floating window
-  --       ui.toggle_float(lazygit.bufnr)
-  --     end, {
-  --       desc = 'Open lazygit in floating window',
-  --     })
-  --   end,
-  -- },
-
-  -- Open files from neovim terminals in current neovim instance
-  {
-    'willothy/flatten.nvim',
-    opts = {},
-    lazy = false,
-    priority = 1001,
   },
 }

@@ -4,7 +4,7 @@ return {
   event = { 'BufReadPost', 'BufNewFile' },
   version = false, -- last release is way too old and doesn't work on Windows
   dependencies = {
-    -- { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
+    { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
     { 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } },
     { 'windwp/nvim-ts-autotag', config = true },
   },
@@ -65,7 +65,7 @@ return {
       },
     },
     context = {
-      enable = false,
+      enable = true,
     },
     -- textobjects = {
     --   -- swap = {

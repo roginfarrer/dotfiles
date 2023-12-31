@@ -91,10 +91,13 @@ map('c', '/', enable_very_magic, { noremap = true, expr = true, silent = false }
 map('n', '<space><space>', 'za', { desc = 'Toggle fold' })
 map('n', '<BS>', '<C-^>', { desc = 'Previous buffer' })
 map({ 'n', 'x' }, 'gw', '*N', { desc = 'Search word under cursor' })
-map('n', 'gx', function()
-  local path = vim.fn.expand '<cfile>'
-  require('plenary.job'):new({ command = 'open', args = { path } }):start()
-end, { desc = 'Open URL under cursor' })
+-- map('n', 'gx', function()
+--   local path = vim.fn.expand '<cfile>'
+--   vim.print(path)
+--   local isUrl = string.find(path, "^%a+://")
+--   local match = string.find(path, "%a+/%a+")
+--   require('plenary.job'):new({ command = 'open', args = { path } }):start()
+-- end, { desc = 'Open URL under cursor' })
 map(
   'n',
   '<leader>yf',
