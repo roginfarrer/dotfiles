@@ -23,6 +23,7 @@ require('lazy').setup {
   },
   dev = {
     path = '~/projects',
+    fallback = true,
   },
   install = {
     missing = true,

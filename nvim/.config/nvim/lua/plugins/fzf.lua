@@ -13,20 +13,18 @@ function M.fzf(builtin, opts)
     -- local defaults = require('fzf-lua.config').defaults
     -- local builtin_defaults = defaults[builtin]
     builtin = params.builtin
-    opts = params.opts
-    opts = vim.tbl_deep_extend('force', { cwd = require('lazyvim.util').root() }, opts or {})
+    opts = params.opts or {}
+    if opts.cwd == 'root_from_file' then
+      opts = vim.tbl_deep_extend('force', { cwd = require('lazyvim.util').root() }, opts)
+    end
     if builtin == 'files' then
       if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. '/.git') then
         builtin = 'git_files'
       end
     end
-    if not opts.cwd then
-      opts.cwd = nil
-    end
     opts.prompt = '󰍉 '
     local title = string.gsub(builtin, '_', ' ')
     opts.winopts = { title = ' ' .. capitalizeWords(title) .. ' ', title_pos = 'center' }
-    -- opts.cwd_prompt = false
     require('fzf-lua')[builtin](opts)
   end
 end
@@ -52,7 +50,7 @@ end
 return {
   'ibhagwan/fzf-lua',
   dependencies = {
-    { dir = '~/projects/fzf-lua-lazy.nvim' },
+    { 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
   },
   cmd = 'FzfLua',
   opts = {
@@ -121,37 +119,33 @@ return {
       },
     },
     colorschemes = {
-      colors = vim.list_extend(
-        {
-          'rose-pine',
-          'tokyonight',
-          'nordic',
-          'kanagawa',
-          'palenightfall',
-          'nightfox',
-          'onenord',
-          'onedarkpro',
-          'gruvbox',
-        },
-        vim.fn.getcompletion('', 'color')
-      ),
+      colors = vim.list_extend({
+        'rose-pine',
+        'tokyonight',
+        'nordic',
+        'kanagawa',
+        'palenightfall',
+        'nightfox',
+        'onenord',
+        'onedarkpro',
+        'gruvbox',
+      }, vim.fn.getcompletion('', 'color')),
     },
   },
   keys = {
     { '<leader>;', M.fzf 'buffers', desc = 'Buffers' },
     { '<leader>/', M.fzf 'live_grep', desc = 'live grep' },
-    { '<leader>ft', M.fzf 'builtin', desc = 'FzfLua Builtins' },
-    { '<leader>fp', M.fzf('files', { cwd = false }), desc = 'Find Files (root dir)' },
-    { '<leader>fb', M.fzf 'buffers', desc = 'Buffers' },
-    { '<leader>ff', M.fzf('files', { cwd = false }), desc = 'Find Files (cwd)' },
-    { '<leader>fF', M.fzf 'files', desc = 'all files' },
-    { '<leader>fg', M.fzf 'live_grep', desc = 'live grep' },
+    -- { '<leader>ft', M.fzf 'builtin', desc = 'FzfLua Builtins' },
+    -- { '<leader>fb', M.fzf 'buffers', desc = 'Buffers' },
+    { '<leader>ff', M.fzf 'files', desc = 'Find Files (cwd)' },
+    { '<leader>fF', M.fzf('files', { cwd = 'root_from_file' }), desc = 'Find Files (root dir)' },
+    { '<leader>fg', M.fzf 'live_grep', desc = 'Grep (cwd)' },
+    { '<leader>fG', M.fzf('live_grep', { cwd = 'root_from_file' }), desc = 'Grep (cwd)' },
     -- stylua: ignore
-    { '<leader>fG', M.fzf('live_grep', { cmd = 'rg --files-with-matches ' .. rg_opts, prompt = 'FilesContaining' }), desc = 'Files containing grep', },
+    -- { '<leader>fG', M.fzf('live_grep', { cmd = 'rg --files-with-matches ' .. rg_opts, prompt = 'FilesContaining' }), desc = 'Files containing grep', },
     { '<leader>fd', M.fzf('files', { cwd = '~/dotfiles' }), desc = 'Dotfiles' },
     { '<leader>fD', M.fzf('live_grep', { cwd = '~/dotfiles' }), desc = 'Grep Dotfiles' },
     { '<leader>fh', M.fzf 'oldfiles', desc = 'old files' },
-    { '<leader>fH', M.fzf 'help_tags', desc = 'help tags' },
     {
       '<leader>fl',
       function()
