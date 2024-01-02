@@ -1,0 +1,66 @@
+{
+  "querySelector": {
+    "prefix": "qs",
+    "body": "${1:document}.querySelector('${2:selector}')"
+  },
+  "querySelectorAll": {
+    "prefix": "qsa",
+    "body": "Array.from(${1:document}.querySelectorAll('${2:selector}'))"
+  },
+  "try/catch": {
+    "prefix": "tc",
+    "body": "try {\n\t${0}\n} catch (${1:err}) {\n\t\n}"
+  },
+  "immediately-invoked function expression": {
+    "prefix": "iife",
+    "body": "((${1:arguments}) => {\n\t${2:statement}\n})()"
+  },
+  "arrow function": {
+    "prefix": "af",
+    "body": "(${1:arguments}) => ${2:statement}"
+  },
+  "arrow function with destructuring": {
+    "prefix": "afd",
+    "body": "({${1:arguments}}) => {\n\t${2:statement}\n}"
+  },
+  "console.log": {
+    "prefix": "cl",
+    "body": "console.log(${0})"
+  },
+  "console.log a variable": {
+    "prefix": "cv",
+    "body": "console.log('${1}:', ${1})"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+      "\tconst ${3:element} = ${2:array}[${1:index}];",
+      "\t$0",
+      "}"
+    ],
+    "description": "For Loop"
+  },
+  "For-Each Loop": {
+    "prefix": "foreach",
+    "body": ["${1:array}.forEach(${2:element} => {", "\t$0", "});"],
+    "description": "For-Each Loop"
+  },
+  "For-In Loop": {
+    "prefix": "forin",
+    "body": [
+      "for (const ${1:key} in ${2:object}) {",
+      "\tif (${2:object}.hasOwnProperty(${1:key})) {",
+      "\t\tconst ${3:element} = ${2:object}[${1:key}];",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "For-In Loop"
+  },
+  "For-Of Loop": {
+    "prefix": "forof",
+    "body": ["for (const ${1:iterator} of ${2:object}) {", "\t$0", "}"],
+    "description": "For-Of Loop"
+  }
+}

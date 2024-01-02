@@ -11,6 +11,16 @@ set -gx SUDO_EDITOR $EDITOR
 set -gx XDG_CONFIG_HOME "$HOME/.config"
 set -x MANPAGER "nvim +Man!"
 
+if test -d ~/.bin/bun
+    fish_add_path ~/.bun/bin
+end
+if test -d ~/.local/share/bob/nvim-bin
+    fish_add_path ~/.local/share/bob/nvim-bin
+ end
+if test -d ~/.cargo/bin
+    fish_add_path ~/.cargo/bin
+end
+
 abbr g git
 abbr gs "git status"
 # abbr gd "nvim -c DiffviewOpen"

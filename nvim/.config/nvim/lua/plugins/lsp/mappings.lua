@@ -40,38 +40,45 @@ function M.setup(client, bufnr)
   lsp_cmd('LspPrevDiagnostic', 'vim.diagnostic.goto_prev')
   lsp_cmd('LspNextDiagnostic', 'vim.diagnostic.goto_next')
 
+  map('n', '<leader>la', '<cmd>LspCodeAction<CR>', { desc = 'Code Action' })
+  map('x', '<leader>la', ':<c-u>LspRangeCodeAction<CR>', { desc = 'Code Action' })
+  map('n', '<leader>lr', function()
+    require 'inc_rename'
+    return ':IncRename ' .. vim.fn.expand '<cword>'
+  end, { desc = 'Rename', expr = true })
+  map('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Quickfix' })
+  map('n', '<leader>lR', '<cmd>FzfLua lsp_references<CR>', { desc = 'References' })
+  map('n', '<leader>ls', '<cmd>FzfLua lsp_document_symbols<CR>', { desc = 'Document Symbols' })
+  map('n', '<leader>lS', '<cmd>FzfLua lsp_dynamic_workspace_symbols<CR>', { desc = 'Workspace Symbols' })
+
+  -- local _, has_lsp_lines = pcall(require, 'lsp_lines')
+  -- if has_lsp_lines then
+  --   map('n', '<leader>ll', require('lsp_lines').toggle, { desc = 'Toggle lsp_lines' })
+  -- end
+
+  -- local miniclue = require("mini.clue")
+  -- require('mini.clue').setup {
+  --   opts = function(_, opts)
+  --     vim.print(opts.clues)
+  --     table.insert(opts.clues, { mode = 'n', keys = '<leader>l', desc = '+LSP' })
+  --     table.insert(opts.clues, { mode = 'x', keys = '<leader>l', desc = '+LSP' })
+  --     return opts
+  --   end,
+  -- }
+
   local leader = {
     l = {
       name = 'LSP',
-      a = { '<cmd>LspCodeAction<CR>', 'Code Action' },
-      r = {
-        function()
-          require 'inc_rename'
-          return ':IncRename '
-          -- return ':IncRename ' .. vim.fn.expand '<cword>'
-        end,
-        'Rename',
-        -- cond = cap.renameProvider,
-        expr = true,
-      },
-      q = { '<cmd>lua vim.diagnostic.setloclist()<cr>', 'Quickfix' },
-      R = { '<cmd>Telescope lsp_references<cr>', 'References' },
-      s = { '<cmd>Telescope lsp_document_symbols<cr>', 'Document Symbols' },
-      S = {
-        '<cmd>Telescope lsp_dynamic_workspace_symbols<cr>',
-        'Workspace Symbols',
-      },
     },
   }
 
-  if pcall(require, 'lsp_lines') then
-    leader.l.l = { require('lsp_lines').toggle, 'Toggle lsp_lines' }
-  end
+  -- if pcall(require, 'lsp_lines') then
+  --   leader.l.l = { require('lsp_lines').toggle, 'Toggle lsp_lines' }
+  -- end
 
   local visual = {
     l = {
       name = 'LSP',
-      a = { ':<c-u>LspRangeCodeAction<CR>', 'Code Action' },
     },
   }
 

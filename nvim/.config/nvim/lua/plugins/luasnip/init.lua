@@ -1,13 +1,13 @@
 local M = {
   'L3MON4D3/LuaSnip',
-  dependencies = {
-    {
-      'rafamadriz/friendly-snippets',
-      config = function()
-        require('luasnip.loaders.from_vscode').lazy_load()
-      end,
-    },
-  },
+  -- dependencies = {
+  --   {
+  --     'rafamadriz/friendly-snippets',
+  --     config = function()
+  --       require('luasnip.loaders.from_vscode').lazy_load()
+  --     end,
+  --   },
+  -- },
   opts = function()
     local types = require 'luasnip.util.types'
     return {
@@ -72,18 +72,12 @@ local M = {
 
 function M.config(_, opts)
   local ls = require 'luasnip'
-  local types = require 'luasnip.util.types'
 
   ls.setup(opts)
 
   local t = ls.text_node
-  local rep = require('luasnip.extras').rep
-  local c = ls.choice_node
   local i = ls.insert_node
-  local d = ls.dynamic_node
-  local snippet_from_nodes = ls.sn
   local s = ls.snippet
-  local fmt = require('luasnip.extras.fmt').fmt
 
   vim.api.nvim_create_autocmd('InsertLeave', {
     callback = function()
@@ -105,6 +99,10 @@ function M.config(_, opts)
     type = 'autosnippets',
     key = 'markdown_auto',
   })
+
+  require('luasnip.loaders.from_vscode').lazy_load {
+    paths = { '~/.config/nvim/lua/plugins/luasnip/vscode-snippets/' },
+  }
 end
 
 return M

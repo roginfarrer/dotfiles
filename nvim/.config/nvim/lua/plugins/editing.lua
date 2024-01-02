@@ -50,6 +50,12 @@ return {
       opts.defaults['g?'] = { name = '+debugprint' }
     end,
   },
+  -- {
+  --   'echasnovski/mini.clue',
+  --   opts = function(_, opts)
+  --     table.insert(opts.triggers, { mode = 'n', keys = 'g?', desc = '+debugprint' })
+  --   end,
+  -- },
   {
     'andrewferrier/debugprint.nvim',
     opts = {},

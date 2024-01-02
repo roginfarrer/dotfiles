@@ -50,8 +50,7 @@ local jsSnips = {
         -- Whether text was selected
         local has_selection = table.getn(snip.env.TM_SELECTED_TEXT) > 0
         -- If has selection, inject the content ahead of insert
-        local body = has_selection and { t(snip.env.TM_SELECTED_TEXT), i(1) }
-          or { i(1) }
+        local body = has_selection and { t(snip.env.TM_SELECTED_TEXT), i(1) } or { i(1) }
         return snippet_from_nodes(nil, body)
       end
 
@@ -144,3 +143,4 @@ ls.add_snippets('javascript', jsSnips, { key = 'js_snips' })
 ls.filetype_extend('javascriptreact', { 'javascript' })
 ls.filetype_extend('typescript', { 'javascript' })
 ls.filetype_extend('typescriptreact', { 'javascript' })
+ls.filetype_extend('astro', { 'javascript' })
