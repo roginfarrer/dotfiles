@@ -1,4 +1,4 @@
-local wk = require 'which-key'
+-- local wk = require 'which-key'
 
 local map = require('util').map
 
@@ -82,8 +82,8 @@ function M.setup(client, bufnr)
     },
   }
 
-  wk.register(leader, { prefix = '<leader>' })
-  wk.register(visual, { prefix = '<leader>', mode = 'x' })
+  -- wk.register(leader, { prefix = '<leader>' })
+  -- wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
   local function showDocs()
     local winid = require('ufo').peekFoldedLinesUnderCursor()
