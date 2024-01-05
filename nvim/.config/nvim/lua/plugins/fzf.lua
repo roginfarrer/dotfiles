@@ -14,7 +14,7 @@ function M.fzf(builtin, opts)
     -- local builtin_defaults = defaults[builtin]
     builtin = params.builtin
     opts = params.opts or {}
-    if opts.cwd ~= 'root_from_file' then
+    if opts.cwd == 'root_from_file' then
       opts = vim.tbl_deep_extend('force', { cwd = require('lazyvim.util').root() }, opts)
     end
     if builtin == 'files' then
