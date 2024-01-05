@@ -14,6 +14,7 @@ return {
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
+    enabled = false,
     opts = {
       triggers = 'auto',
       plugins = { spelling = true },
@@ -41,7 +42,6 @@ return {
 
   {
     'echasnovski/mini.clue',
-    enabled = false,
     version = '*',
     lazy = false,
     opts = function()
