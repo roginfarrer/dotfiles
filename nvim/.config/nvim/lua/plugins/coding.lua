@@ -76,17 +76,17 @@ return {
             return vim_item
           end,
         },
-        sorting = defaults.sorting,
-        -- sorting = {
-        --   comparators = {
-        --     cmp.config.compare.offset,
-        --     cmp.config.compare.exact,
-        --     cmp.config.compare.score,
-        --     cmp.config.compare.recently_used,
-        --     require('cmp-under-comparator').under,
-        --     cmp.config.compare.kind,
-        --   },
-        -- },
+        -- sorting = defaults.sorting,
+        sorting = {
+          comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            require('cmp-under-comparator').under,
+            cmp.config.compare.kind,
+          },
+        },
         mapping = {
           ['<C-n>'] = cmp.mapping.select_next_item {
             behavior = cmp.SelectBehavior.Insert,
