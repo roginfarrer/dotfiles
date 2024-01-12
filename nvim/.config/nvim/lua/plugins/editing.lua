@@ -237,7 +237,8 @@ return {
   },
   {
     'stevearc/conform.nvim',
-    event = 'VeryLazy',
+    event = 'BufWritePre',
+    cmd = { 'ConformInfo' },
     keys = {
       {
         '=',
@@ -248,8 +249,11 @@ return {
         desc = 'Format buffer',
       },
     },
+    init = function()
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
     opts = function()
-      local prettier = { 'prettier' }
+      local prettier = { 'prettierd', 'prettier' }
       return {
         formatters_by_ft = {
           lua = { 'stylua' },

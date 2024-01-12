@@ -122,9 +122,9 @@ return {
       }
     end,
     config = function(_, opts)
-      for _, source in ipairs(opts.sources) do
-        source.group_index = source.group_index or 1
-      end
+      -- for _, source in ipairs(opts.sources) do
+      --   source.group_index = source.group_index or 1
+      -- end
       local cmp = require 'cmp'
       cmp.setup(opts)
       cmp.setup.cmdline({ '/', '?' }, {
@@ -258,48 +258,48 @@ return {
     config = function(_, opts)
       require('mini.ai').setup(opts)
       -- register all text objects with which-key
-      -- require('util').on_plugin_load('which-key.nvim', function()
-      --   ---@type table<string, string|table>
-      --   local i = {
-      --     [' '] = 'Whitespace',
-      --     ['"'] = 'Balanced "',
-      --     ["'"] = "Balanced '",
-      --     ['`'] = 'Balanced `',
-      --     ['('] = 'Balanced (',
-      --     [')'] = 'Balanced ) including white-space',
-      --     ['>'] = 'Balanced > including white-space',
-      --     ['<lt>'] = 'Balanced <',
-      --     [']'] = 'Balanced ] including white-space',
-      --     ['['] = 'Balanced [',
-      --     ['}'] = 'Balanced } including white-space',
-      --     ['{'] = 'Balanced {',
-      --     ['?'] = 'User Prompt',
-      --     _ = 'Underscore',
-      --     a = 'Argument',
-      --     b = 'Balanced ), ], }',
-      --     c = 'Class',
-      --     f = 'Function',
-      --     o = 'Block, conditional, loop',
-      --     q = 'Quote `, ", \'',
-      --     t = 'Tag',
-      --   }
-      --   local a = vim.deepcopy(i)
-      --   for k, v in pairs(a) do
-      --     a[k] = v:gsub(' including.*', '')
-      --   end
+      require('util').on_plugin_load('which-key.nvim', function()
+        ---@type table<string, string|table>
+        local i = {
+          [' '] = 'Whitespace',
+          ['"'] = 'Balanced "',
+          ["'"] = "Balanced '",
+          ['`'] = 'Balanced `',
+          ['('] = 'Balanced (',
+          [')'] = 'Balanced ) including white-space',
+          ['>'] = 'Balanced > including white-space',
+          ['<lt>'] = 'Balanced <',
+          [']'] = 'Balanced ] including white-space',
+          ['['] = 'Balanced [',
+          ['}'] = 'Balanced } including white-space',
+          ['{'] = 'Balanced {',
+          ['?'] = 'User Prompt',
+          _ = 'Underscore',
+          a = 'Argument',
+          b = 'Balanced ), ], }',
+          c = 'Class',
+          f = 'Function',
+          o = 'Block, conditional, loop',
+          q = 'Quote `, ", \'',
+          t = 'Tag',
+        }
+        local a = vim.deepcopy(i)
+        for k, v in pairs(a) do
+          a[k] = v:gsub(' including.*', '')
+        end
 
-      --   local ic = vim.deepcopy(i)
-      --   local ac = vim.deepcopy(a)
-      --   for key, name in pairs { n = 'Next', l = 'Last' } do
-      --     i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
-      --     a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
-      --   end
-      --   require('which-key').register {
-      --     mode = { 'o', 'x' },
-      --     i = i,
-      --     a = a,
-      --   }
-      -- end)
+        local ic = vim.deepcopy(i)
+        local ac = vim.deepcopy(a)
+        for key, name in pairs { n = 'Next', l = 'Last' } do
+          i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
+          a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
+        end
+        require('which-key').register {
+          mode = { 'o', 'x' },
+          i = i,
+          a = a,
+        }
+      end)
     end,
   },
 

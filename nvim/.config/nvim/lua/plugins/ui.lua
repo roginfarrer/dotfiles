@@ -434,5 +434,5 @@ return {
   } },
 
   { 'NvChad/nvim-colorizer.lua', event = 'VeryLazy', opts = {} },
-  { 'b0o/incline.nvim', opts = {}, event = 'BufReadPost' },
+  { 'b0o/incline.nvim', enabled = false, opts = {}, event = 'BufReadPost' },
 }

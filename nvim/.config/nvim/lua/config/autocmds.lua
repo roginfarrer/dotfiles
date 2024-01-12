@@ -185,3 +185,21 @@ if require('util').has 'conform' then
     require('conform').format { async = true, lsp_fallback = true, range = range }
   end, { range = true })
 end
+
+-- autocmd('BufWritePre', {
+--   group = 'TS_add_missing_imports',
+--   pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
+--   callback = function()
+--     local _, usingTools = pcall(require, 'typescript-tools')
+--     if usingTools then
+--       vim.cmd [[TSToolsAddMissingImports]]
+--     else
+--       vim.lsp.buf.code_action {
+--         apply = true,
+--         context = {
+--           only = { 'source.addMissingImports.ts' },
+--         },
+--       }
+--     end
+--   end,
+-- })
