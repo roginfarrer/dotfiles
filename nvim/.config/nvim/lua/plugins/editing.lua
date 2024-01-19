@@ -14,7 +14,6 @@ return {
   -- Better netrw
   {
     'stevearc/oil.nvim',
-    enabled = false,
     opts = {
       skip_confirm_for_simple_edits = true,
       view_options = {
@@ -75,7 +74,7 @@ return {
 
   {
     'echasnovski/mini.files',
-    -- enabled = false,
+    enabled = false,
     opts = {
       windows = { width_nofocus = 25 },
       options = {
