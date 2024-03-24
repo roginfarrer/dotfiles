@@ -106,6 +106,7 @@ return {
       ['header'] = { 'fg', 'TelescopeTitle' },
     },
     winopts = {
+      border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
       preview = {
         hidden = vim.fn.winwidth(0) < 125 and 'hidden' or 'nohidden',
         vertical = 'up:45%',

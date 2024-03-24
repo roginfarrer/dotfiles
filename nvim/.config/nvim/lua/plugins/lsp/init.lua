@@ -45,17 +45,31 @@ return {
   {
     'neovim/nvim-lspconfig',
     event = 'BufReadPre',
+    dev = true,
     dependencies = {
+      {
+        'nvimdev/lspsaga.nvim',
+        commit = '2198c07',
+        opts = function()
+          local opts = {
+            lightbulb = {
+              enable = false,
+            },
+          }
+          local colors = vim.cmd [[echo colors_name]]
+          if string.match(colors, 'catppuccin') then
+            opts.ui = {
+              kind = require('catppuccin.groups.integrations.lsp_saga').custom_kind(),
+            }
+          end
+          return opts
+        end,
+        event = 'LspAttach',
+      },
       'hrsh7th/cmp-nvim-lsp',
-      -- { 'mattn/efm-langserver', dependencies = { 'creativenull/efmls-configs-nvim' } },
-      -- 'folke/which-key.nvim',
       { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest' } } } },
-      -- 'jose-elias-alvarez/null-ls.nvim',
-      -- 'jose-elias-alvarez/typescript.nvim',
-      -- 'yioneko/nvim-vtsls',
       { 'pmizio/typescript-tools.nvim', enabled = true },
       'davidosomething/format-ts-errors.nvim',
-      -- { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
       { 'dnlhc/glance.nvim', opts = { list = { position = 'left' } } },
       {
         'williamboman/mason.nvim',
@@ -99,6 +113,8 @@ return {
         -- For lsp_lines
         virtual_lines = false,
         float = {
+          filetype = 'markdown',
+          focusable = true,
           border = { '🭽', '▔', '🭾', '▕', '🭿', '▁', '🭼', '▏' },
           format = function(diagnostic)
             if diagnostic.source == 'eslint' then
@@ -132,20 +148,48 @@ return {
       local options = { on_attach = on_attach, capabilities = capabilities }
 
       -- replace the default lsp diagnostic symbols
-      local function lspSymbol(name, icon)
-        vim.fn.sign_define('DiagnosticSign' .. name, { text = icon, numhl = 'DiagnosticDefault' .. name })
+      for name, icon in pairs(require('ui.icons').lazy.diagnostics) do
+        name = 'DiagnosticSign' .. name
+        vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
       end
-
-      lspSymbol('Error', '')
-      lspSymbol('Information', '')
-      lspSymbol('Hint', '')
-      lspSymbol('Info', '')
-      lspSymbol('Warn', '')
 
       -- vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
       -- print('_G.astro_server is ' .. _G.astro_server)
 
       local util = require 'lspconfig.util'
+
+      -- local configs = require 'lspconfig.configs'
+      -- configs.css_variables = {
+      --   default_config = {
+      --     cmd = {
+      --       '/Users/rfarrer/projects/vscode-css-variables/packages/css-variables-language-server/bin/index.js',
+      --       '--stdio',
+      --     },
+      --     filetypes = { 'css', 'scss', 'sass', 'less' },
+      --     root_dir = function(fname)
+      --       return require('lspconfig').util.find_git_ancestor(fname)
+      --     end,
+      --     settings = {
+      --       cssVariables = {
+      --         lookupFiles = { '**/*.less', '**/*.scss', '**/*.sass', '**/*.css' },
+      --         blacklistFolders = {
+      --           '**/.cache',
+      --           '**/.DS_Store',
+      --           '**/.git',
+      --           '**/.hg',
+      --           '**/.next',
+      --           '**/.svn',
+      --           '**/bower_components',
+      --           '**/CVS',
+      --           '**/dist',
+      --           '**/node_modules',
+      --           '**/tests',
+      --           '**/tmp',
+      --         },
+      --       },
+      --     },
+      --   },
+      -- }
 
       local servers = {
         -- efm = require 'plugins.lsp.efm',
@@ -159,6 +203,7 @@ return {
             },
           },
         },
+        css_variables = {},
         -- vtsls = {},
         -- tsserver = {
         --   settings = {
@@ -194,6 +239,7 @@ return {
         },
         rust_analyzer = {},
         emmet_language_server = {},
+        tailwindcss = {},
       }
 
       if pcall(require, 'vtsls') then

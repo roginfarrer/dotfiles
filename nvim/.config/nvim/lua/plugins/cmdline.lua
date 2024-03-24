@@ -17,6 +17,7 @@ return {
 
   -- Terminal management
   {
+    enabled = false,
     'akinsho/toggleterm.nvim',
     -- tag = '*',
     keys = { [[<C-\>]] },

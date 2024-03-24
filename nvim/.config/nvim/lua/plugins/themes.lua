@@ -21,6 +21,14 @@ local plugins = {
         IlluminatedWordRead = { bg = 'highlight_med' },
         IlluminatedWordText = { bg = 'highlight_med' },
         IlluminatedWordWrite = { bg = 'highlight_med' },
+        -- FzfLuaBorder = { bg = 'overlay', fg = 'overlay' },
+        -- FzfLuaPreviewBorder = { bg = 'surface', fg = 'surface' },
+        -- FzfLuaPreviewNormal = { bg = 'surface' },
+        -- FzfLuaScrollBorder = { bg = 'overlay', fg = 'overlay' },
+        -- FzfLuaScrollBorderEmpty = { bg = 'surface', fg = 'surface' },
+        -- FzfLuaScrollBorderFull = { bg = 'surface', fg = 'surface' },
+        -- FzfLuaScrollFloatEmpty = { bg = 'surface', fg = 'iris' },
+        -- FzfLuaScrollFloatFull = { bg = 'surface', fg = 'iris' },
       },
     },
   },
@@ -105,13 +113,15 @@ local plugins = {
   {
     'catppuccin/nvim',
     name = 'catppuccin',
+    priority = 1000,
     opts = function()
       local cp = require('catppuccin.palettes').get_palette()
       local util = require 'catppuccin.utils.colors'
 
       return {
-        no_italic = true,
+        no_italic = false,
         integrations = {
+          lsp_saga = true,
           treesitter = true,
           native_lsp = {
             enabled = true,
@@ -127,30 +137,19 @@ local plugins = {
               warnings = { 'undercurl' },
               information = { 'undercurl' },
             },
-            barbecue = {
-              enabled = false,
-              dim_dirname = true,
-            },
           },
-          alpha = true,
-          cmp = true,
-          dap = { enabled = true, enable_ui = true },
-          flash = true,
-          gitsigns = true,
+          headlines = true,
           illuminate = true,
           indent_blankline = { enabled = false },
           lsp_trouble = true,
-          markdown = true,
           mason = true,
           mini = true,
           navic = { enabled = false, custom_bg = cp.mantle },
-          neogit = true,
           neotest = true,
           neotree = true,
-          -- noice = true,
-          -- notify = true,
+          noice = true,
+          notify = true,
           octo = true,
-          symbols_outline = false,
           telescope = { enabled = true, style = 'nvchad' },
           which_key = true,
         },
@@ -177,6 +176,7 @@ local plugins = {
           FzfLuaScrollBorderFull = { bg = cp.base, fg = cp.base },
           FzfLuaScrollFloatEmpty = { bg = cp.base, fg = cp.lavender },
           FzfLuaScrollFloatFull = { bg = cp.base, fg = cp.lavender },
+          DashboardHeader = { fg = cp.yellow },
         },
       }
     end,

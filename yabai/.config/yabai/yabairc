@@ -29,7 +29,7 @@ yabai -m config \
     left_padding 10 \
     right_padding 10 \
     window_gap 10 \
-    external_bar all:30:0
+    # external_bar all:30:0
 
 # https://github.com/xiamaz/YabaiIndicator
 yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
@@ -45,9 +45,9 @@ yabai -m signal --add event=window_deminimized action='echo "refresh windows" | 
 
 yabai -m rule --add app="^iTerm2|Warp|Kitty|WezTerm$" space=1
 yabai -m rule --add app="^Google Chrome|Firefox|Safari|Arc$" space=2
-yabai -m rule --add app="^Slack$" space=3
-yabai -m rule --add app="^Mimestream|Beeper|Fantastical$" space=4
-yabai -m rule --add app="^Spotify$" space=5
+yabai -m rule --add app="^Fantastical|Todoist(?! Helper)$" space=3
+yabai -m rule --add app="^Mimestream|Beeper$" space=4
+yabai -m rule --add app="^Spotify|YouTube Music$" space=5
 yabai -m rule --add app="^Zoom$" space=6
 
 # Exclude problematic apps from being managed:
@@ -55,12 +55,8 @@ yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
-yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^Archive Utility$" manage=off
-yabai -m rule --add app="^Wally$" manage=off
-yabai -m rule --add app="^Pika$" manage=off
-yabai -m rule --add app="^balenaEtcher$" manage=off
 yabai -m rule --add app="^Creative Cloud$" manage=off
 yabai -m rule --add app="^Logi Options$" manage=off
 yabai -m rule --add app="^Alfred Preferences$" manage=off
@@ -70,10 +66,13 @@ yabai -m rule --add app="Cisco AnyConnect" manage=off
 yabai -m rule --add app="Zoom" manage=off
 yabai -m rule --add app="Poolsuite" manage=off
 yabai -m rule --add app="^Fantastical Helper$" manage=off
+yabai -m rule --add app="^FaceTime$" manage=off
+yabai -m rule --add app="Bartender" manage=off
+yabai -m rule --add app="Cleanshot" manage=off
 yabai -m rule --add app="1Password" title="Lock Screen — 1Password" sticky=on manage=off layer=above grid=4:4:1:1:2:2
 
 yabai -m config layout bsp
 
-borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 2>/dev/null 1>&2 &
+borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 blacklist="Fantastical Helper" 2>/dev/null 1>&2 &
 
 echo "yabai configuration loaded.."

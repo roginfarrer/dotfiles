@@ -1,4 +1,4 @@
-local folder_icon = require('ui.icons').lspkind.Folder
+local folder_icon = require('ui.icons').codicons.Folder
 
 local M = {}
 

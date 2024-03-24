@@ -101,7 +101,7 @@ function M.setup(client, bufnr)
       --   })
       else
         -- if client.supports_method 'textDocument/hover' then
-        vim.fn.execute 'LspHover'
+        vim.fn.execute 'Lspsaga hover_doc'
         -- end
       end
     end
@@ -119,8 +119,8 @@ function M.setup(client, bufnr)
   bufmap('n', 'gY', '<cmd>Telescope lsp_type_definitions<CR>')
   -- bufmap('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
   -- bufmap('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<CR>')
-  bufmap('n', '[d', '<cmd>LspPrevDiagnostic<CR>')
-  bufmap('n', ']d', '<cmd>LspNextDiagnostic<CR>')
+  bufmap('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
+  bufmap('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<CR>')
   bufmap('n', 'K', showDocs)
   bufmap('n', 'gK', luaDocs)
   if vim.lsp.inlay_hint then

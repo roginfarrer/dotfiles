@@ -186,6 +186,13 @@ if require('util').has 'conform' then
   end, { range = true })
 end
 
+autocmd('BufWritePost', {
+  pattern = 'kitty.conf',
+  callback = function()
+    vim.cmd [[!kill -SIGUSR1 $(pgrep -a kitty)]]
+  end,
+})
+
 -- autocmd('BufWritePre', {
 --   group = 'TS_add_missing_imports',
 --   pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
