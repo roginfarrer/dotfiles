@@ -49,6 +49,7 @@ end
 
 return {
   'ibhagwan/fzf-lua',
+  enabled = false,
   dependencies = {
     { 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
   },
@@ -63,6 +64,7 @@ return {
       },
     },
     files = {
+      formatter = 'path.filename_first',
       fzf_opts = {
         ['--info'] = 'inline-right',
       },
@@ -78,7 +80,7 @@ return {
       -- https://github.com/ibhagwan/fzf-lua/wiki#how-do-i-setup-input-history-keybinds
       -- ['--history'] = vim.fn.stdpath 'data' .. '/fzf-lua-history',
     },
-    defaults = { git_icons = false },
+    defaults = { git_icons = false, formatter = 'path.filename_first' },
     hls = {
       normal = 'TelescopeResultsNormal',
       title = 'TelescopePromptTitle',

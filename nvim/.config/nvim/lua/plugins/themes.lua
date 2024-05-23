@@ -1,9 +1,10 @@
 local plugins = {
+  { 'projekt0n/github-nvim-theme' },
   {
     'rose-pine/neovim',
     name = 'rose-pine',
     opts = {
-      variant = 'moon',
+      variant = 'dawn',
       disable_italics = true,
       highlight_groups = {
         TelescopePromptPrefix = { bg = 'surface', fg = 'iris' },
@@ -153,39 +154,40 @@ local plugins = {
           telescope = { enabled = true, style = 'nvchad' },
           which_key = true,
         },
-        custom_highlights = {
-          VertSplit = { fg = cp.black4 },
-          -- aka horizontal split
-          StatusLineNC = { fg = cp.black4 },
-          InclineNormal = {
-            fg = util.darken(cp.lavender, 0.3),
-            bg = util.darken(cp.lavender, 0.8),
+        highlight_overrides = {
+          mocha = {
+            VertSplit = { fg = cp.black4 },
+            -- aka horizontal split
+            StatusLineNC = { fg = cp.black4 },
+            InclineNormal = {
+              fg = util.darken(cp.lavender, 0.3),
+              bg = util.darken(cp.lavender, 0.8),
+            },
+            InclineNormalNC = {
+              fg = util.darken(cp.lavender, 0.3),
+              bg = util.darken(cp.lavender, 0.8),
+            },
+            DiffAdd = { bg = util.darken(cp.green, 0.2) },
+            DiffDelete = { bg = util.darken(cp.red, 0.2) },
+            DiffText = { bg = util.darken(cp.yellow, 0.3) },
+            FzfLuaBorder = { bg = cp.crust, fg = cp.crust },
+            -- FzfLuaHelpBorder = { bg = cp.crust, fg = cp.crust },
+            FzfLuaPreviewBorder = { bg = cp.mantle, fg = cp.mantle },
+            FzfLuaPreviewNormal = { bg = cp.mantle },
+            FzfLuaScrollBorderEmpty = { bg = cp.base, fg = cp.base },
+            FzfLuaScrollBorderFull = { bg = cp.base, fg = cp.base },
+            FzfLuaScrollFloatEmpty = { bg = cp.base, fg = cp.lavender },
+            FzfLuaScrollFloatFull = { bg = cp.base, fg = cp.lavender },
+            DashboardHeader = { fg = cp.yellow },
           },
-          InclineNormalNC = {
-            fg = util.darken(cp.lavender, 0.3),
-            bg = util.darken(cp.lavender, 0.8),
-          },
-          DiffAdd = { bg = util.darken(cp.green, 0.2) },
-          DiffDelete = { bg = util.darken(cp.red, 0.2) },
-          DiffText = { bg = util.darken(cp.yellow, 0.3) },
-          FzfLuaBorder = { bg = cp.crust, fg = cp.crust },
-          -- FzfLuaHelpBorder = { bg = cp.crust, fg = cp.crust },
-          FzfLuaPreviewBorder = { bg = cp.mantle, fg = cp.mantle },
-          FzfLuaPreviewNormal = { bg = cp.mantle },
-          FzfLuaScrollBorderEmpty = { bg = cp.base, fg = cp.base },
-          FzfLuaScrollBorderFull = { bg = cp.base, fg = cp.base },
-          FzfLuaScrollFloatEmpty = { bg = cp.base, fg = cp.lavender },
-          FzfLuaScrollFloatFull = { bg = cp.base, fg = cp.lavender },
-          DashboardHeader = { fg = cp.yellow },
         },
       }
     end,
   },
 }
 
--- for _, plugin in ipairs(plugins) do
---   plugin.lazy = true
---   plugin.priority = 1000
--- end
+for _, plugin in ipairs(plugins) do
+  plugin.priority = 1000
+end
 
 return plugins

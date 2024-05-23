@@ -13,5 +13,6 @@ hi def link todoCheckbox Conceal
 highlight Conceal ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 
 setlocal showbreak=NONE
+:lua vim.opt_local.breakindent = false
 
 " setlocal cole=2

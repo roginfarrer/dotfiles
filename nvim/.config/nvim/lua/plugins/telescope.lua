@@ -1,10 +1,37 @@
-local Util = require 'lazyvim.util'
+local builtin = require 'telescope.builtin'
+-- Function to capitalize the first letters of words
+-- local function capitalizeWords(str)
+--   return str:gsub("(%a)([%w_']*)", function(first, rest)
+--     return first:upper() .. rest:lower()
+--   end)
+-- end
+
+-- local telescope = function(builtin, opts)
+--   local params = { builtin = builtin, opts = opts }
+--   return function()
+--     builtin = params.builtin
+--     opts = params.opts or {}
+--     if opts.cwd == 'root_from_file' then
+--       opts = vim.tbl_deep_extend('force', { cwd = require('lazyvim.util').root() }, opts)
+--     end
+--     if builtin == 'files' then
+--       if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. '/.git') then
+--         builtin = 'git_files'
+--       end
+--     end
+--     opts.prompt = '󰍉 '
+--     local title = string.gsub(builtin, '_', ' ')
+--     opts.winopts = { title = ' ' .. capitalizeWords(title) .. ' ', title_pos = 'center' }
+--     require('telescope')[builtin](opts)
+--   end
+-- end
 
 local M = {
   'nvim-telescope/telescope.nvim',
-  enabled = false,
+  -- enabled = false,
   cmd = 'Telescope',
   dependencies = {
+    { 'LazyVim/LazyVim' },
     'nvim-telescope/telescope-node-modules.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     'tsakirist/telescope-lazy.nvim',
@@ -108,8 +135,8 @@ end
 M.keys = {
   { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
   { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
-  { '<leader>/', Util.telescope 'live_grep', desc = 'Grep (root dir)' },
-  { '<leader>fp', Util.telescope('files', { cwd = false }), desc = 'Find Files (root dir)' },
+  { '<leader>/', cmd 'live_grep', desc = 'Grep (root dir)' },
+  { '<leader>fp', cmd 'find_files', desc = 'Find Files (root dir)' },
   -- find
   { '<leader>fb', cmd 'buffers', desc = 'Buffers' },
   {
@@ -119,21 +146,21 @@ M.keys = {
     end,
     desc = 'Buffers',
   },
-  { '<leader>fF', Util.telescope 'files', desc = 'Find Files (root dir)' },
-  { '<leader>ff', Util.telescope('files', { cwd = false }), desc = 'Find Files (cwd)' },
+  -- { '<leader>fF', telescope 'files', desc = 'Find Files (root dir)' },
+  { '<leader>ff', cmd 'find_files', desc = 'Find Files (cwd)' },
   { '<leader>fr', cmd 'oldfiles', desc = 'Recent' },
-  { '<leader>fR', Util.telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
-  { '<leader>fg', Util.telescope 'live_grep', desc = 'live grep' },
+  -- { '<leader>fR', telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
+  { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
   { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
   -- stylua: ignore
-  { '<leader>fd', Util.telescope('files', { cwd = '~/dotfiles', prompt_title = '~ Dotfiles ~' }), desc = 'Dotfiles', },
+  { '<leader>fd', function() builtin.git_files({ cwd = '~/dotfiles', prompt_title = '~ Dotfiles ~' }) end, desc = 'Dotfiles', },
   -- stylua: ignore
-  { '<leader>fD', Util.telescope('live_grep', { cwd = '~/dotfiles', prompt_title = '~ Dotfiles ~' }), desc = 'Grep (dotfiles)' },
+  { '<leader>fD', function() builtin.live_grep({ cwd = '~/dotfiles', prompt_title = '~ Dotfiles ~' }) end, desc = 'Grep (dotfiles)' },
   { '<leader>fh', cmd 'oldfiles', desc = 'old files' },
   { '<leader>fH', cmd 'help_tags', desc = 'help tags' },
   { '<leader>fl', cmd 'lazy', desc = 'lazy plugins' },
   { '<leader>fc', findCWord, desc = 'Search word under cursor' },
-  { '<leader>fC', Util.telescope 'grep_string', desc = 'Grep word under cursor' },
+  { '<leader>fC', cmd 'grep_string', desc = 'Grep word under cursor' },
   { '<leader>f.', grepInCurrentDirectory, desc = 'find in current directory' },
   -- Search
   { '<leader>st', cmd 'builtin', desc = 'telescope' },

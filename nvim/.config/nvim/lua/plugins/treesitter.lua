@@ -6,7 +6,8 @@ return {
   dependencies = {
     -- { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
     { 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } },
-    { 'windwp/nvim-ts-autotag', config = true },
+    { 'windwp/nvim-ts-autotag', opts = {} },
+    { 'yorickpeterse/nvim-tree-pairs', opts = {} },
   },
   opts = {
     ensure_installed = {
@@ -49,8 +50,6 @@ return {
       enable = true,
     },
     autotag = {
-      enable = true,
-      enable_close_on_slash = false,
       filetypes = {
         'astro',
         'html',

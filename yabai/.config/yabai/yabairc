@@ -17,7 +17,6 @@ yabai -m config \
     focus_follows_mouse off \
     window_placement second_child \
     window_animation_duration 0.3 \
-    window_animation_frame_rate 30 \
     split_ratio 0.50 \
     auto_balance on \
     mouse_modifier fn \
@@ -30,25 +29,26 @@ yabai -m config \
     right_padding 10 \
     window_gap 10 \
     # external_bar all:30:0
+# window_animation_frame_rate 30 \
 
-# https://github.com/xiamaz/YabaiIndicator
-yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=display_added action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=display_removed action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_created action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_destroyed action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_focused action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_moved action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_resized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_minimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_deminimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+    # https://github.com/xiamaz/YabaiIndicator
+# yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=display_added action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=display_removed action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=window_created action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=window_destroyed action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=window_focused action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=window_moved action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=window_resized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=window_minimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
+# yabai -m signal --add event=window_deminimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
 
 yabai -m rule --add app="^iTerm2|Warp|Kitty|WezTerm$" space=1
 yabai -m rule --add app="^Google Chrome|Firefox|Safari|Arc$" space=2
-yabai -m rule --add app="^Fantastical|Todoist(?! Helper)$" space=3
-yabai -m rule --add app="^Mimestream|Beeper$" space=4
-yabai -m rule --add app="^Spotify|YouTube Music$" space=5
-yabai -m rule --add app="^Zoom$" space=6
+yabai -m rule --add app="^Obisdian$" space=3
+yabai -m rule --add app="^Fantastical|Mimestream$" space=4
+yabai -m rule --add app="^Messages|Beeper$" space=5
+yabai -m rule --add app="^Spotify|YouTube Music$" space=6
 
 # Exclude problematic apps from being managed:
 yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor)$" manage=off
@@ -73,6 +73,6 @@ yabai -m rule --add app="1Password" title="Lock Screen — 1Password" sticky=on 
 
 yabai -m config layout bsp
 
-borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 blacklist="Fantastical Helper" 2>/dev/null 1>&2 &
+# borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 blacklist="Fantastical Helper" 2>/dev/null 1>&2 &
 
 echo "yabai configuration loaded.."

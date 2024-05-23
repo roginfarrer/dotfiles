@@ -64,8 +64,10 @@ return {
 
   {
     'mfussenegger/nvim-dap',
+    enabled = false,
     dependencies = {
       -- fancy UI for the debugger
+      { 'nvim-neotest/nvim-nio' },
       {
         'rcarriga/nvim-dap-ui',
       -- stylua: ignore
@@ -122,7 +124,7 @@ return {
           -- You'll need to check that you have the required things installed
           -- online, please don't ask me how to install them :)
           ensure_installed = {
-            'js-debug-adapter',
+            -- 'js-debug-adapter',
             -- Update this to ensure that you have the debuggers for the langs you want
           },
         },
@@ -150,22 +152,22 @@ return {
     },
     opts = function()
       local dap = require 'dap'
-      if not dap.adapters['pwa-node'] then
-        require('dap').adapters['pwa-node'] = {
-          type = 'server',
-          host = 'localhost',
-          port = '${port}',
-          executable = {
-            command = 'node',
-            -- 💀 Make sure to update this path to point to your installation
-            args = {
-              require('mason-registry').get_package('js-debug-adapter'):get_install_path()
-                .. '/js-debug/src/dapDebugServer.js',
-              '${port}',
-            },
-          },
-        }
-      end
+      -- if not dap.adapters['pwa-node'] then
+      --   require('dap').adapters['pwa-node'] = {
+      --     type = 'server',
+      --     host = 'localhost',
+      --     port = '${port}',
+      --     executable = {
+      --       command = 'node',
+      --       -- 💀 Make sure to update this path to point to your installation
+      --       args = {
+      --         require('mason-registry').get_package('js-debug-adapter'):get_install_path()
+      --           .. '/js-debug/src/dapDebugServer.js',
+      --         '${port}',
+      --       },
+      --     },
+      --   }
+      -- end
       for _, language in ipairs { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' } do
         if not dap.configurations[language] then
           dap.configurations[language] = {

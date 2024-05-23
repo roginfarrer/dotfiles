@@ -2,8 +2,12 @@ return {
   { 'LazyVim/LazyVim' },
   { 'nvim-lua/plenary.nvim', lazy = true },
   { 'MunifTanjim/nui.nvim', lazy = true },
-  { 'NvChad/nvim-colorizer.lua', event = 'VeryLazy', opts = {} },
-  { 'zeioth/garbage-day.nvim', enabled = false, event = 'VeryLazy', opts = {} },
+  {
+    'brenoprata10/nvim-highlight-colors',
+    event = 'VeryLazy',
+    opts = { enable_named_colors = false, enable_tailwind = true, render = 'virtual', virtual_symbol = '•' },
+  },
+  { 'zeioth/garbage-day.nvim', event = 'VeryLazy', opts = {} },
 
   {
     'antoinemadec/FixCursorHold.nvim',
@@ -15,6 +19,7 @@ return {
   {
     'windwp/nvim-spectre',
     lazy = true,
+    cmd = { 'Spectre' },
     -- stylua: ignore
     keys = {
       { '<leader>fr', function() require('spectre').open() end, desc = 'Replace in files (Spectre)', },
@@ -31,11 +36,22 @@ return {
   -- Auto pairs
   {
     'echasnovski/mini.pairs',
+    enabled = false,
     event = 'InsertEnter',
     version = '*',
+    opts = {
+      mappings = {
+        ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = false } },
+      },
+    },
     config = function(_, opts)
       require('mini.pairs').setup(opts)
     end,
+  },
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    opts = {},
   },
 
   {
