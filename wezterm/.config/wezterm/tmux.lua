@@ -43,4 +43,14 @@ local tmux_keys = {
 	tkey("CMD", "z", "\x7a"),
 }
 
-return tmux_keys
+local M = {}
+
+M.setup = function(config)
+	return require("utils").deepMerge(config, {
+		keys = tmux_keys,
+		-- default_prog = { "mux" },
+		hide_tab_bar_if_only_one_tab = true,
+	})
+end
+
+return M

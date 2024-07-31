@@ -193,6 +193,13 @@ autocmd('BufWritePost', {
   end,
 })
 
+autocmd('BufWritePost', {
+  pattern = 'aerospace.toml',
+  callback = function()
+    vim.cmd [[!aerospace reload-config]]
+  end,
+})
+
 -- autocmd('BufWritePre', {
 --   group = 'TS_add_missing_imports',
 --   pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },

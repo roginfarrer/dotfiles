@@ -66,24 +66,12 @@ function M.setup(client, bufnr)
   --   end,
   -- }
 
-  local leader = {
-    l = {
-      name = 'LSP',
+  wk.add {
+    {
+      mode = { 'x', 'n' },
+      { '<leader>l', group = 'LSP' },
     },
   }
-
-  -- if pcall(require, 'lsp_lines') then
-  --   leader.l.l = { require('lsp_lines').toggle, 'Toggle lsp_lines' }
-  -- end
-
-  local visual = {
-    l = {
-      name = 'LSP',
-    },
-  }
-
-  wk.register(leader, { prefix = '<leader>' })
-  wk.register(visual, { prefix = '<leader>', mode = 'x' })
 
   local function showDocs()
     local winid = require('ufo').peekFoldedLinesUnderCursor()

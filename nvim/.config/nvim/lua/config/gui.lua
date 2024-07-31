@@ -1,17 +1,38 @@
-local fontsize = 16
+---@type 'neovide' | 'nvim-qt' | false
+vim.g.gui_program = vim.g.neovide and 'neovide' or vim.fn.exists ':Guifont' > 0 and 'nvim-qt' or false
 
-local function adjustFontSize(amount)
-  fontsize = fontsize + amount
-  local newValue = 'Zed Mono:h' .. fontsize
+print(vim.g.gui_program)
 
-  if vim.fn.exists ':Guifont' > 0 then
-    vim.fn.execute('Guifont! ' .. newValue)
-  else
-    vim.o.guifont = newValue
-  end
+if not vim.g.gui_program then
+  return
 end
 
-adjustFontSize(0)
+local M = {}
+
+local map = require('util').map
+
+---@type number
+M.default_font_size = 16
+---@type number
+M.font_size = M.default_font_size
+---@type string
+M.font_family = 'Zed Mono'
+
+local function setGuiFont(typeface, size)
+  vim.opt.guifont = string.format('%s:h%s', typeface, size)
+end
+
+setGuiFont(M.font_family, M.font_size)
+
+---@param delta number
+local function adjustFontSize(delta)
+  M.font_size = M.font_size + delta
+  setGuiFont(M.font_family, M.font_size)
+
+  if vim.g.gui_program == 'nvim-qt' then
+    vim.fn.execute('Guifont! ' .. vim.opt.guifont)
+  end
+end
 
 map('n', '<C-=>', function()
   adjustFontSize(1)

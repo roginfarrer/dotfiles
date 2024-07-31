@@ -1,6 +1,5 @@
 return {
 
-  { 'tomiis4/Hypersonic.nvim', cmd = 'Hypersonic' },
   {
     'bennypowers/nvim-regexplainer',
     lazy = true,
@@ -45,7 +44,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     event = 'BufReadPre',
-    dev = true,
     dependencies = {
       {
         'nvimdev/lspsaga.nvim',
@@ -56,7 +54,7 @@ return {
               enable = false,
             },
           }
-          local colors = vim.cmd [[echo colors_name]]
+          local colors = vim.g.colors_name
           if string.match(colors, 'catppuccin') then
             opts.ui = {
               kind = require('catppuccin.groups.integrations.lsp_saga').custom_kind(),
@@ -67,7 +65,18 @@ return {
         event = 'LspAttach',
       },
       'hrsh7th/cmp-nvim-lsp',
-      { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest' } } } },
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua', -- only load on lua files
+        cmd = 'LazyDev',
+        opts = {
+          library = {
+            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+            { path = 'lazy.nvim', words = { 'LazyVim' } },
+          },
+        },
+      },
+      { 'Bilal2453/luvit-meta', lazy = true },
       { 'pmizio/typescript-tools.nvim', enabled = true },
       'davidosomething/format-ts-errors.nvim',
       { 'dnlhc/glance.nvim', opts = { list = { position = 'left' } } },
@@ -198,20 +207,23 @@ return {
           settings = {
             Lua = {
               workspace = { checkThirdParty = false },
+              codeLens = { enable = true },
               telemetry = { enable = false },
               hint = { enable = true },
             },
           },
         },
         css_variables = {},
-        -- vtsls = {},
-        tsserver = {
-          settings = {
-            completions = {
-              completeFunctionCalls = true,
-            },
-          },
+        vtsls = {
+          autoUseWorkspaceTsdk = true,
         },
+        -- tsserver = {
+        --   settings = {
+        --     completions = {
+        --       completeFunctionCalls = true,
+        --     },
+        --   },
+        -- },
         eslint = {
           settings = {
             workingDirectories = { mode = 'auto' },
@@ -239,21 +251,12 @@ return {
         },
         rust_analyzer = {},
         emmet_language_server = {},
-        -- tailwindcss = {},
+        tailwindcss = {},
       }
-
-      if pcall(require, 'vtsls') then
-        require('lspconfig.configs').vtsls = require('vtsls').lspconfig
-      end
 
       for server, opts in pairs(servers) do
         opts = vim.tbl_deep_extend('force', {}, options, opts or {})
         require('lspconfig')[server].setup(opts)
-        -- if server == 'tsserver' then
-        --   require('typescript').setup { server = opts }
-        -- else
-        --   require('lspconfig')[server].setup(opts)
-        -- end
       end
 
       local function prefix_bun(cmd)
@@ -317,8 +320,6 @@ return {
       --     end,
       --   },
       -- }
-
-      -- require('plugins.lsp.null-ls').setup(on_attach)
     end,
   },
 }

@@ -29,7 +29,6 @@ local direction_keys = {
 
 local function split_nav(resize_or_move, key)
 	return w.action_callback(function(win, pane)
-		print(is_vim(pane))
 		if is_vim(pane) then
 			-- pass the keys through to vim/nvim
 			win:perform_action({

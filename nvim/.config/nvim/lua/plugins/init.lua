@@ -5,7 +5,7 @@ return {
   {
     'brenoprata10/nvim-highlight-colors',
     event = 'VeryLazy',
-    opts = { enable_named_colors = false, enable_tailwind = true, render = 'virtual', virtual_symbol = '•' },
+    opts = { enable_named_colors = false, enable_tailwind = true, render = 'background', virtual_symbol = '•' },
   },
   { 'zeioth/garbage-day.nvim', event = 'VeryLazy', opts = {} },
 

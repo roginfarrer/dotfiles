@@ -1,6 +1,7 @@
 return {
   {
     'kyazdani42/nvim-web-devicons',
+    enabled = false,
     lazy = true,
     opts = {
       override = {

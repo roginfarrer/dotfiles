@@ -35,7 +35,14 @@ local M = {
     'nvim-telescope/telescope-node-modules.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     'tsakirist/telescope-lazy.nvim',
-    'nvim-telescope/telescope-file-browser.nvim',
+    {
+      'danielfalk/smart-open.nvim',
+      branch = '0.2.x',
+      config = function() end,
+      dependencies = {
+        'kkharji/sqlite.lua',
+      },
+    },
   },
   version = false,
 }
@@ -97,9 +104,9 @@ end
 M.config = function(_, opts)
   require('telescope').setup(opts)
   require('telescope').load_extension 'node_modules'
-  require('telescope').load_extension 'file_browser'
   require('telescope').load_extension 'fzf'
   require('telescope').load_extension 'lazy'
+  require('telescope').load_extension 'smart_open'
 end
 
 local filesContaining = function()
@@ -134,7 +141,8 @@ end
 
 M.keys = {
   { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
-  { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
+  { '<leader>;', cmd 'smart_open', desc = 'Smart Open' },
+  -- { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
   { '<leader>/', cmd 'live_grep', desc = 'Grep (root dir)' },
   { '<leader>fp', cmd 'find_files', desc = 'Find Files (root dir)' },
   -- find

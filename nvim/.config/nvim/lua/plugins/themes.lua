@@ -1,10 +1,10 @@
 local plugins = {
+  { 'dgox16/oldworld.nvim' },
   { 'projekt0n/github-nvim-theme' },
   {
     'rose-pine/neovim',
     name = 'rose-pine',
     opts = {
-      variant = 'dawn',
       disable_italics = true,
       highlight_groups = {
         TelescopePromptPrefix = { bg = 'surface', fg = 'iris' },
@@ -19,9 +19,9 @@ local plugins = {
         TelescopePreviewNormal = { bg = 'surface' },
         TelescopeSelection = { fg = 'text', bg = 'base' },
         TelescopeSelectionCaret = { fg = 'iris', bg = 'iris' },
-        IlluminatedWordRead = { bg = 'highlight_med' },
-        IlluminatedWordText = { bg = 'highlight_med' },
-        IlluminatedWordWrite = { bg = 'highlight_med' },
+        IlluminatedWordRead = { bg = 'highlight_low' },
+        IlluminatedWordText = { bg = 'highlight_low' },
+        IlluminatedWordWrite = { bg = 'highlight_low' },
         -- FzfLuaBorder = { bg = 'overlay', fg = 'overlay' },
         -- FzfLuaPreviewBorder = { bg = 'surface', fg = 'surface' },
         -- FzfLuaPreviewNormal = { bg = 'surface' },

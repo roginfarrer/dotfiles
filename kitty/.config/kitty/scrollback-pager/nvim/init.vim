@@ -26,7 +26,6 @@ packadd neoscroll.nvim
 
 lua << EOF
   local present, catppuccin = pcall(require, 'catppuccin')
-  print(present)
   if present then
     catppuccin.setup{
       integrations = {

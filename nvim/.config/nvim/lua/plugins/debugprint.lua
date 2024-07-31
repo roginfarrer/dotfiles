@@ -2,16 +2,12 @@ return {
   -- Debugging utils
   {
     'andrewferrier/debugprint.nvim',
-    dependencies = {
-      {
-        'folke/which-key.nvim',
-        opts = function(_, opts)
-          opts.defaults = opts.defaults or {}
-          opts.defaults['g?'] = { name = '+debugprint' }
-        end,
-      },
-    },
-    opts = {},
+    config = function()
+      require('debugprint').setup()
+      require('which-key').add {
+        { 'g?', group = 'debugprint' },
+      }
+    end,
     -- Remove the following line to use development versions,
     -- not just the formal releases
     version = '*',

@@ -26,6 +26,7 @@ return {
       'mtoohey31/cmp-fish',
       'lukas-reineke/cmp-under-comparator',
       { 'roginfarrer/cmp-css-variables', dev = true },
+      'roobert/tailwindcss-colorizer-cmp.nvim',
     },
     opts = function()
       vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
@@ -63,6 +64,10 @@ return {
               -- latex_symbols = '[LaTeX]',
               copilot = '[Copilot]',
             })[entry.source.name]
+            local ok, tailwind = pcall(require, 'tailwind-colorizer-cmp')
+            if ok then
+              return tailwind.formatter(entry, vim_item)
+            end
             return vim_item
           end,
         },
@@ -104,6 +109,10 @@ return {
           { name = 'npm' },
           { name = 'cmp_git' },
           { name = 'nvim_lua' },
+          {
+            name = 'lazydev',
+            group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+          },
           { name = 'neorg' },
           { name = 'orgmode' },
           { name = 'path' },

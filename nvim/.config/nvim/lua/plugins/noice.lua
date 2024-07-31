@@ -1,13 +1,5 @@
 return {
   {
-    'folke/which-key.nvim',
-    opts = function(_, opts)
-      if require('util').has 'noice.nvim' then
-        opts.defaults['<leader>sn'] = { name = '+noice' }
-      end
-    end,
-  },
-  {
     'folke/noice.nvim',
     event = 'VeryLazy',
      -- stylua: ignore
@@ -20,6 +12,12 @@ return {
       { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
       { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
     },
+    config = function(_, opts)
+      require('noice').setup(opts)
+      require('which-key').add {
+        { '<leader>sn', group = 'noice' },
+      }
+    end,
     opts = {
       messages = { enabled = true },
       -- cmdline = { view = 'cmdline' },

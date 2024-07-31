@@ -1,12 +1,11 @@
+[include]
+  path = ~/.gitconfig_local
 [user]
 	name = Rogin Farrer
-	SAM = rfarrer
-	email = rfarrer@wayfair.com
+	email = rogin@roginfarrer.com
 [color]
 	ui = true
 	status = always
-[push]
-	default = current
 [fetch]
 	prune = true
 [core]
@@ -17,13 +16,10 @@
 	editor = nvim
 	symlinks = true
 	pager = delta
-
 [delta]
 	navigate = true # use n and N to move between diff sections
 [log]
 	decorate = short
-[http]
-	sslVerify = false
 [pack]
 	useSparse = true
 [filter "lfs"]
@@ -31,14 +27,19 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[include]
-    path = ~/.gitconfig_local
 [interactive]
     diffFilter = delta --color-only
 [init]
 	defaultBranch = main
 [pull]
-	rebase = false
+	rebase = true
+[help]
+	autoCorrect = prompt
+[branch]
+	sort = -committerdate
+[push]
+	autoSetupRemote = true
+
 [merge]
 	conflictStyle = diff3
 	tool = gitconflict
@@ -46,8 +47,6 @@
 	colorMoved = default
   tool = gitconflict
   keepBackup = false
-; [difftool "diffview"]
-;   cmd = nvim -c "WindowsDisableAutowidth" "DiffviewOpen"
 [difftool "nvimdiff"]
   cmd = nvim -d $LOCAL $REMOTE
 

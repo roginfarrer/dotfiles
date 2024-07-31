@@ -68,6 +68,11 @@ else
   vim.g.python_host_prog = '/usr/bin/python'
 end
 
+-- https://github.com/wez/wezterm/issues/4607
+if vim.env.TERM_PROGRAM == 'WezTerm' and not vim.env.TMUX then
+  o.termsync = false
+end
+
 -- if vim.g.started_by_firenvim then
 --   o.guifont = 'Monolisa Nerd Font:h13'
 --   o.laststatus = 0

@@ -1,6 +1,7 @@
 return {
   {
     'aserowy/tmux.nvim',
+    enabled = false,
     lazy = false,
     opts = {
       -- Conflicts with Yanky, generally slows things down
