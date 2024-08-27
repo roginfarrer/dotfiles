@@ -41,7 +41,7 @@ fish
 fisher update
 
 echo 'Installing global node packages...'
-npm install -g @fsouza/prettierd neovim eslint_d tldr
+npm install -g neovim tldr
 
 echo 'Installing Rust...'
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
