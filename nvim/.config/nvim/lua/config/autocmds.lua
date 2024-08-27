@@ -89,18 +89,18 @@ autocmd('BufReadPost', {
   end,
 })
 
-autocmd('BufReadPost', {
-  group = 'github_gf',
-  pattern = { '~/dotfiles/*', '~/.config/*' },
-  callback = function()
-    _G.includeexpr = function(fname)
-      vim.print(fname)
-    end
-    -- vim.cmd [[setlocal isfname+=@-@]]
-    -- vim.bo.suffixesadd = vim.bo.suffixesadd .. '.js,.jsx,.ts,.tsx'
-    vim.bo.includeexpr = 'v:lua._G.includeexpr(v:fname)'
-  end,
-})
+-- autocmd('BufReadPost', {
+--   group = 'github_gf',
+--   pattern = { '~/dotfiles/*', '~/.config/*' },
+--   callback = function()
+--     _G.includeexpr = function(fname)
+--       vim.print(fname)
+--     end
+--     -- vim.cmd [[setlocal isfname+=@-@]]
+--     -- vim.bo.suffixesadd = vim.bo.suffixesadd .. '.js,.jsx,.ts,.tsx'
+--     vim.bo.includeexpr = 'v:lua._G.includeexpr(v:fname)'
+--   end,
+-- })
 autocmd('FileType', {
   group = 'node_gf',
   pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },

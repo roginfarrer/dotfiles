@@ -1,8 +1,6 @@
 ---@type 'neovide' | 'nvim-qt' | false
 vim.g.gui_program = vim.g.neovide and 'neovide' or vim.fn.exists ':Guifont' > 0 and 'nvim-qt' or false
 
-print(vim.g.gui_program)
-
 if not vim.g.gui_program then
   return
 end

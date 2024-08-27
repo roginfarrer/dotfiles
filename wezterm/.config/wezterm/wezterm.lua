@@ -25,8 +25,8 @@ local theme = wezterm.plugin.require("https://github.com/neapsix/wezterm").main
 
 local config = {
 	hyperlink_rules = hyperlink_rules,
-	-- color_scheme = "Catppuccin Mocha",
-	colors = theme.colors(),
+	color_scheme = "Catppuccin Mocha",
+	-- colors = theme.colors(),
 	window_frame = theme.window_frame(),
 	font = wezterm.font_with_fallback({
 		-- "Maple Mono",
@@ -36,6 +36,7 @@ local config = {
 		-- "0xProto Nerd Font",
 		-- "JetBrainsMono Nerd Font",
 		-- "CommitMono Nerd Font",
+		-- "Liga SFMono Nerd Font",
 		-- "ZedMono Nerd Font",
 		"Zed Mono",
 		"Symbols Nerd Font",
@@ -46,14 +47,16 @@ local config = {
 	font_size = 16,
 	line_height = 1.35,
 	adjust_window_size_when_changing_font_size = false,
+	bold_brightens_ansi_colors = true,
 	use_fancy_tab_bar = false,
 	enable_scroll_bar = false,
-	-- default_cursor_style = "SteadyBlock",
+	default_cursor_style = "BlinkingBar",
 	window_decorations = "RESIZE",
+	-- window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
 	window_padding = {
-		left = 30,
-		right = 30,
-		top = 20,
+		left = 10,
+		right = 10,
+		top = 10,
 		bottom = 10,
 	},
 	default_workspace = "dotfiles",
@@ -62,6 +65,7 @@ local config = {
 	native_macos_fullscreen_mode = false,
 	cursor_blink_rate = 0,
 	front_end = "WebGpu",
+	webgpu_power_preference = "HighPerformance",
 	tab_max_width = 32,
 }
 
@@ -130,6 +134,8 @@ else
 		unix_domains = { { name = "unix" } },
 		default_gui_startup_args = { "connect", "unix" },
 		hide_tab_bar_if_only_one_tab = false,
+		-- window_background_opacity = 0.75,
+		-- macos_window_background_blur = 20,
 	})
 
 	require("workspace-switcher").setup(config)

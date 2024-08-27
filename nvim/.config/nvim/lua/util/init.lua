@@ -1,5 +1,6 @@
 local M = {}
 
+---@param ... any
 M.dump = function(...)
   print(vim.inspect(...))
 end
@@ -10,11 +11,13 @@ end
 
 M.is_apple_silicon = require('jit').arch == 'arm64'
 
--- The function is called `t` for `termcodes`.
+---@param str string
 M.termcodes = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
+---@param event any
+---@param opts vim.api.keyset.create_autocmd
 M.autocmd = function(event, opts)
   if opts.group then
     vim.api.nvim_create_autocmd(
@@ -26,6 +29,7 @@ M.autocmd = function(event, opts)
   end
 end
 
+---@param plugin string
 M.has = function(plugin)
   return require('lazy.core.config').spec.plugins[plugin] ~= nil
 end

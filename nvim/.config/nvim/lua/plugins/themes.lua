@@ -1,11 +1,20 @@
 local plugins = {
   { 'dgox16/oldworld.nvim' },
-  { 'projekt0n/github-nvim-theme' },
+  {
+    'projekt0n/github-nvim-theme',
+    config = function()
+      require('github-theme').setup()
+    end,
+    event = 'VeryLazy',
+  },
   {
     'rose-pine/neovim',
     name = 'rose-pine',
     opts = {
       disable_italics = true,
+      -- styles = {
+      --   transparency = true,
+      -- },
       highlight_groups = {
         TelescopePromptPrefix = { bg = 'surface', fg = 'iris' },
         TelescopePromptNormal = { bg = 'surface' },

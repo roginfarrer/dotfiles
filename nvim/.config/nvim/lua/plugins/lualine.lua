@@ -25,17 +25,30 @@ return {
         return msg
       end
 
+      local empty = {
+        function()
+          return ' '
+        end,
+        padding = 0,
+        color = 'Normal',
+      }
+
       return {
         options = {
           theme = 'auto',
-          section_separators = { right = '', left = '' },
+          -- section_separators = { left = '', right = '' },
+          -- component_separators = { left = '', right = '' },
+          -- section_separators = { right = '', left = '' },
           -- component_separators = { left = '', right = '' },
+          component_separators = '',
+          section_separators = { left = '', right = '' },
           icons_enabled = true,
           globalstatus = true,
           disabled_filetypes = { statusline = { 'dashboard', 'alpha' } },
         },
         sections = {
-          lualine_a = { 'mode' },
+          lualine_a = { { 'mode', separator = { left = '' }, padding = { right = 1 } } },
+
           lualine_b = {
             { 'branch' },
           },
@@ -92,7 +105,7 @@ return {
               },
             },
           },
-          lualine_z = { lsp_client_names },
+          lualine_z = { { lsp_client_names, separator = { right = '' }, padding = { left = 1 } } },
         },
         -- inactive_winbar = {
         --   lualine_a = { { 'filename', path = 1 } },

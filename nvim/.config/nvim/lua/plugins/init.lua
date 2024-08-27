@@ -7,7 +7,7 @@ return {
     event = 'VeryLazy',
     opts = { enable_named_colors = false, enable_tailwind = true, render = 'background', virtual_symbol = '•' },
   },
-  { 'zeioth/garbage-day.nvim', event = 'VeryLazy', opts = {} },
+  { 'zeioth/garbage-day.nvim', enabled = false, event = 'VeryLazy', opts = {} },
 
   {
     'antoinemadec/FixCursorHold.nvim',
@@ -34,20 +34,6 @@ return {
   },
 
   -- Auto pairs
-  {
-    'echasnovski/mini.pairs',
-    enabled = false,
-    event = 'InsertEnter',
-    version = '*',
-    opts = {
-      mappings = {
-        ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = false } },
-      },
-    },
-    config = function(_, opts)
-      require('mini.pairs').setup(opts)
-    end,
-  },
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
