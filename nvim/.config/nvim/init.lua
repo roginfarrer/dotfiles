@@ -7,9 +7,12 @@ require 'config.lazy'
 require 'config.autocmds'
 require 'config.filetype'
 require 'config.gui'
--- require 'ui.winbar'
--- vim.cmd.colorscheme 'rose-pine'
-vim.cmd.colorscheme 'catppuccin'
--- vim.cmd [[colorscheme catppuccin]]
--- vim.cmd [[colorscheme tokyonight-day]]
--- vim.cmd [[colorscheme github_light]]
+
+if not vim.g.vscode then
+  -- require 'ui.winbar'
+  -- vim.cmd.colorscheme 'rose-pine'
+  vim.cmd.colorscheme 'catppuccin'
+  -- vim.cmd [[colorscheme catppuccin]]
+  -- vim.cmd [[colorscheme tokyonight-day]]
+  -- vim.cmd [[colorscheme github_light]]
+end

@@ -93,21 +93,23 @@ return {
         { '}', desc = 'balanced } including white-space' },
       }
 
-      local ret = { mode = { 'o', 'x' } }
-      for prefix, name in pairs {
-        i = 'inside',
-        a = 'around',
-        il = 'last',
-        ['in'] = 'next',
-        al = 'last',
-        an = 'next',
-      } do
-        ret[#ret + 1] = { prefix, group = name }
-        for _, obj in ipairs(objects) do
-          ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
+      if require('util').has 'which-key' then
+        local ret = { mode = { 'o', 'x' } }
+        for prefix, name in pairs {
+          i = 'inside',
+          a = 'around',
+          il = 'last',
+          ['in'] = 'next',
+          al = 'last',
+          an = 'next',
+        } do
+          ret[#ret + 1] = { prefix, group = name }
+          for _, obj in ipairs(objects) do
+            ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
+          end
         end
+        require('which-key').add(ret)
       end
-      require('which-key').add(ret)
 
       return {
         n_lines = 500,
