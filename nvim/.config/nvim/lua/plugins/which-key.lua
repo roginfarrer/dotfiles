@@ -19,6 +19,7 @@ return {
           { '<leader>d', group = 'debug' },
           { '<leader>t', group = 'test' },
           { '<leader>u', group = 'ui' },
+          { '<leader>o', group = 'obsidian' },
         },
       },
     },

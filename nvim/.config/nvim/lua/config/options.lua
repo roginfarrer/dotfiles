@@ -3,6 +3,7 @@ vim.g.maplocalleader = ' '
 
 local o = vim.o
 
+vim.cmd 'setlocal conceallevel=2'
 o.breakindent = true
 o.breakindentopt = 'shift:2'
 -- o.cmdheight = 0
