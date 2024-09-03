@@ -17,8 +17,9 @@ return {
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
     opts = function()
-      local prettier = { 'prettier' }
+      local prettier = { 'prettierd' }
       return {
+        stop_after_first = true,
         formatters_by_ft = {
           lua = { 'stylua' },
           -- Use a sub-list to run only the first available formatter
@@ -42,7 +43,7 @@ return {
         },
         format_on_save = {
           lsp_fallback = true,
-          timeout_ms = 1000,
+          timeout_ms = 2000,
         },
       }
     end,

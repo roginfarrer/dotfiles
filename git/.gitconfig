@@ -1,5 +1,3 @@
-[include]
-  path = ~/.gitconfig_local
 [user]
 	name = Rogin Farrer
 	email = rogin@roginfarrer.com
@@ -63,3 +61,6 @@
 	cmd = nvim \"$MERGED\"
 [mergetool "diffconflicts"]
 	cmd = nvim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+
+[include]
+  path = ~/.gitconfig_local

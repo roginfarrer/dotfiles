@@ -82,9 +82,13 @@ return {
       { 'dnlhc/glance.nvim', opts = { list = { position = 'left' } } },
       {
         'williamboman/mason.nvim',
+        lazy = false,
         cmd = { 'Mason' },
+        opts = {},
         dependencies = {
+
           'WhoIsSethDaniel/mason-tool-installer.nvim',
+          lazy = false,
           opts = {
             automatic_installation = true,
             ensure_installed = {
@@ -98,19 +102,20 @@ return {
               'stylelint-lsp',
               'marksman',
               'yaml-language-server',
+              'vtsls',
+              'html-lsp',
+              'astro-language-server',
+              'intelephense',
               -- Formatters
-              -- 'prettierd',
               'stylua',
               'shfmt',
-              -- Linters
-              'vint',
+              'prettier',
               -- DAP
               'chrome-debug-adapter',
               -- 'node-debug2-adapter',
             },
           },
         },
-        config = true,
       },
     },
     config = function()
@@ -215,10 +220,23 @@ return {
         },
         css_variables = {},
         vtsls = {
-          autoUseWorkspaceTsdk = true,
+          settings = {
+            vtsls = {
+              autoUseWorkspaceTsdk = true,
+            },
+            typescript = {
+              suggest = {
+                completeFunctionCalls = true,
+              },
+              tsserver = {
+                maxTsServerMemory = 8192,
+              },
+            },
+          },
         },
         -- tsserver = {
         --   settings = {
+        --     maxTsServerMemory = 8192,
         --     completions = {
         --       completeFunctionCalls = true,
         --     },
@@ -251,7 +269,37 @@ return {
         },
         rust_analyzer = {},
         emmet_language_server = {},
-        tailwindcss = {},
+        -- tailwindcss = {},
+        intelephense = {
+          settings = {
+            intelephense = {
+              files = {
+                exclude = {
+                  '**/.git/**',
+                  '**/.svn/**',
+                  '**/.hg/**',
+                  '**/CVS/**',
+                  '**/.DS_Store/**',
+                  '**/node_modules/**',
+                  '**/bower_components/**',
+                  '**/htdocs_customshops/**',
+                  '**/htdocs_gearman/**',
+                  '**/htdocs/assets/dist/**',
+                  '**/tmp/**',
+                  '**vendor/*/{!(phpunit)/**}',
+                  'translations/**',
+                  '**/.phan/**',
+                  '**/cron.d/**',
+                  '**/generated/**',
+                  '**/Generated/**',
+                  '**/modules/css/**',
+                  '**/__modules__*__src__/**',
+                  'vendor/etsy/module-*/**',
+                },
+              },
+            },
+          },
+        },
       }
 
       for server, opts in pairs(servers) do
