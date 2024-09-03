@@ -1,3 +1,15 @@
+if test -d ~/.bin/bun
+    fish_add_path ~/.bun/bin
+end
+if test -d ~/.local/share/bob/nvim-bin
+    fish_add_path ~/.local/share/bob/nvim-bin
+end
+if test -d ~/.cargo/bin
+    fish_add_path ~/.cargo/bin
+end
+if test -d /opt/homebrew/bin
+    fish_add_path /opt/homebrew/bin
+end
 # Install Fisher if it's not installed
 if not functions -q fisher && status is-interactive
     curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
@@ -11,14 +23,8 @@ set -gx SUDO_EDITOR $EDITOR
 set -gx XDG_CONFIG_HOME "$HOME/.config"
 set -x MANPAGER "nvim +Man!"
 
-if test -d ~/.bin/bun
-    fish_add_path ~/.bun/bin
-end
-if test -d ~/.local/share/bob/nvim-bin
-    fish_add_path ~/.local/share/bob/nvim-bin
-end
-if test -d ~/.cargo/bin
-    fish_add_path ~/.cargo/bin
+if command -q zoxide
+    zoxide init fish | source
 end
 
 abbr g git
