@@ -4,6 +4,7 @@
 
 format = """
 $hostname\
+$docker\
 $shlvl\
 $kubernetes\
 $directory\
@@ -27,8 +28,8 @@ $jobs\
 $status\
 $character"""
 
-[username]
-disabled = true
+# [username]
+# disabled = true
 
 [cmd_duration]
 disabled = true

@@ -15,6 +15,13 @@ return {
     },
     init = function()
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        group = vim.api.nvim_create_augroup('RestartPrettierd', { clear = true }),
+        pattern = '*prettier*',
+        callback = function()
+          vim.fn.system 'prettierd restart'
+        end,
+      })
     end,
     opts = function()
       local prettier = { 'prettierd' }

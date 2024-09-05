@@ -64,3 +64,8 @@
 
 [include]
   path = ~/.gitconfig_local
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[safe]
+	directory = *
