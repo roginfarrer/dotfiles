@@ -35,6 +35,7 @@ return {
       'diff',
       'git_config',
       'gitignore',
+      'html',
     },
     query_linter = {
       enable = true,

@@ -71,4 +71,21 @@ return {
     cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
   },
+
+  {
+    'chipsenkbeil/distant.nvim',
+    lazy = false,
+    branch = 'v0.3',
+    dependencies = { 'nvim-telescope/telescope.nvim' },
+    config = function()
+      require('distant'):setup {
+        servers = {
+          ['rfarrer.vm.dev.etsycloud.com'] = {
+            cwd = 'development/Etsyweb',
+          },
+        },
+      }
+      require('telescope').load_extension 'distant'
+    end,
+  },
 }
