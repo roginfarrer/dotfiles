@@ -1,5 +1,8 @@
 return {
+  {'sheerun/vim-polyglot', cond = vim.g.disable_treesitter},
+  {
   'nvim-treesitter/nvim-treesitter',
+  cond = not vim.g.disable_treesitter,
   build = ':TSUpdate',
   event = { 'BufReadPost', 'BufNewFile' },
   version = false, -- last release is way too old and doesn't work on Windows
@@ -123,6 +126,9 @@ return {
   },
   config = function(_, opts)
     vim.treesitter.language.register('markdown', { 'mdx' })
+    -- require'nvim-treesitter.install'.compilers = { '/home/rfarrer/projects/gcc-14.2.0/bin/x86_64-pc-linux-gnu-gcc', '/home/rfarrer/projects/gcc-14.2.0/bin/gcc', '/home/rfarrer/projects/gcc-14.2.0/bin/c++'}
+
     require('nvim-treesitter.configs').setup(opts)
   end,
+}
 }

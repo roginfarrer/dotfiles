@@ -1,6 +1,7 @@
 return {
   {
     'OXY2DEV/markview.nvim',
+    cond = not vim.g.disable_treesitter,
     -- ft = { 'markdown', 'mdx' },
     -- cmd = 'Markview',
     lazy = false,
