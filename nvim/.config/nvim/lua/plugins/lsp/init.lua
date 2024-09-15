@@ -90,7 +90,7 @@ return {
           'WhoIsSethDaniel/mason-tool-installer.nvim',
           lazy = false,
           opts = {
-            automatic_installation = true,
+            run_on_start = false,
             ensure_installed = {
               -- language servers
               'typescript-language-server',
