@@ -1,6 +1,7 @@
 return {
   -- { 'moll/vim-bbye', cmd = 'Bdelete' },
   -- { 'kevinhwang91/nvim-bqf', ft = 'qf', enabled = false },
+  { 'mustache/vim-mustache-handlebars', ft = 'mustache' },
   { 'jxnblk/vim-mdx-js', enabled = false, ft = 'mdx' },
   { 'fladson/vim-kitty', ft = 'kitty' },
   { 'Amar1729/skhd-vim-syntax', ft = 'skhd' },

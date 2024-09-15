@@ -1,6 +1,10 @@
 vim.loader.enable()
 
-pcall(require, 'local-config')
+local ok, lconfig = pcall(require, 'local-config')
+if type(lconfig) == 'table' and lconfig.before then
+  lconfig.before()
+end
+
 require 'config.options'
 require 'config.keymaps'
 require 'config.lazy'
@@ -15,4 +19,8 @@ if not vim.g.vscode then
   -- vim.cmd [[colorscheme catppuccin]]
   -- vim.cmd [[colorscheme tokyonight-day]]
   -- vim.cmd [[colorscheme github_light]]
+end
+
+if type(lconfig) == 'table' and lconfig.after then
+  lconfig.after()
 end
