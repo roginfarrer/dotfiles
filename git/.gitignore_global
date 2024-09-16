@@ -1,5 +1,6 @@
 .reviewboardrc
 .vscode/
+.devcontainer/
 
 # Compiled source #
 ###################

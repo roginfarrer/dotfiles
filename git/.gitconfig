@@ -10,7 +10,7 @@
 	autocrlf = false
 	preloadindex = true
 	fscache = true
-	excludesfile = /Users/rfarrer/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	editor = nvim
 	symlinks = true
 	pager = delta
