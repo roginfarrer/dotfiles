@@ -1,6 +1,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = '$shell$all$character'
+# format = '$shell$all$character'
 
 # format = """
 # $shell\
@@ -53,8 +53,8 @@ disabled = false
 
 [shell]
 disabled = false
-fish_indicator = '󰈺 '
-zsh_indicator = '_'
+fish_indicator = ''
+zsh_indicator = 'zsh'
 
 [gcloud]
 disabled = true

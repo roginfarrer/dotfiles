@@ -1,4 +1,5 @@
 jeffreytse/zsh-vi-mode
+olets/zsh-abbr
 
 # set up Zsh completions with plugins
 mattmc3/ez-compinit

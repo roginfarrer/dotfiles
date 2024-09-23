@@ -54,6 +54,7 @@ return {
   {
     'Wansmer/treesj',
     cmd = { 'TSJToggle', 'TSJSplit', 'TSJJoin' },
+    cond = not vim.g.disable_treesitter,
     -- stylua: ignore
     keys = {
       { 'J', function() require('treesj').toggle() end, desc = 'toggle treesj' },
@@ -68,24 +69,8 @@ return {
   {
     'danymat/neogen',
     dependencies = 'nvim-treesitter/nvim-treesitter',
+    cond = not vim.g.disable_treesitter,
     cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
-  },
-
-  {
-    'chipsenkbeil/distant.nvim',
-    lazy = false,
-    branch = 'v0.3',
-    dependencies = { 'nvim-telescope/telescope.nvim' },
-    config = function()
-      require('distant'):setup {
-        servers = {
-          ['rfarrer.vm.dev.etsycloud.com'] = {
-            cwd = 'development/Etsyweb',
-          },
-        },
-      }
-      require('telescope').load_extension 'distant'
-    end,
   },
 }

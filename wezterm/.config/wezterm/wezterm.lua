@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 local default_hyperlink_rules = wezterm.default_hyperlink_rules()
 
-local tmux = false
+local tmux = true
 
 local default_hyperlink_regex = {
 	-- match github looking patterns, like neovim/neovim
@@ -36,11 +36,10 @@ local config = {
 		-- "0xProto Nerd Font",
 		-- "JetBrainsMono Nerd Font",
 		-- "CommitMono Nerd Font",
-		-- "Liga SFMono Nerd Font",
 		-- "ZedMono Nerd Font",
 		"Zed Mono",
 		"Symbols Nerd Font",
-		"MonaspiceNe Nerd Font",
+		-- "MonaspiceNe Nerd Font",
 	}),
 	allow_square_glyphs_to_overflow_width = "Always",
 	cell_width = 1.05,
@@ -54,9 +53,9 @@ local config = {
 	window_decorations = "RESIZE",
 	-- window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
 	window_padding = {
-		left = 10,
-		right = 10,
-		top = 10,
+		left = 30,
+		right = 30,
+		top = 20,
 		bottom = 10,
 	},
 	default_workspace = "dotfiles",

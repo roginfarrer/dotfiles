@@ -2,12 +2,11 @@
 
 echo "It's ZSH"
 
-EDITOR="nvim"
-GIT_EDITOR="nvim"
-
-export EDITOR="${EDITOR}"
-export GIT_EDITOR="${GIT_EDITOR}"
-export DEFAULT_USER="${USER}"
+export EDITOR="nvim"
+export GIT_EDITOR="nvim"
+export SUDO_EDITOR="nvim"
+export XDG_CONFIG_HOME="$HOME/.config"
+export MANPAGER="nvim +Man!"
 
 ### Imports
 source ${ZDOTDIR}/utils.zsh
@@ -38,4 +37,8 @@ fi
 
 if has fzf; then
     source <(fzf --zsh)
+fi
+
+if has zoxide; then
+    eval "$(zoxide init zsh)"
 fi

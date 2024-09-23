@@ -32,7 +32,7 @@ local tmux_keys = {
 	-- Split the current pane into two, top and bottom.
 	tkey("CMD", "n", "\x25"),
 	-- Detach the current tmux client
-	tkey("CMD", "q", "\x64"),
+	-- tkey("CMD", "q", "\x64"),
 	-- Create a new tmux window
 	tkey("CMD", "t", "\x63"),
 	-- Break the current tmux pane out of the tmux window
