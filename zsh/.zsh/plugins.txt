@@ -1,8 +1,0 @@
-denysdovhan/spaceship-prompt
-zsh-users/zsh-completions
-zsh-users/zsh-autosuggestions
-eendroroy/zed-zsh
-
-# These should be last!
-zdharma/fast-syntax-highlighting
-zsh-users/zsh-history-substring-search

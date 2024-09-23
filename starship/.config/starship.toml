@@ -1,32 +1,33 @@
-# Replace the "❯" symbol in the prompt with "➜"
-# [character]      # The name of the module we are configuring is "character"
-# symbol = "➜"     # The "symbol" segment is being set to "➜"
+"$schema" = 'https://starship.rs/config-schema.json'
 
-format = """
-$hostname\
-$docker\
-$shlvl\
-$kubernetes\
-$directory\
-$git_branch\
-$git_commit\
-$git_state\
-$git_status\
-$hg_branch\
-$docker_context\
-$nodejs\
-$php\
-$python\
-$ruby\
-$rust\
-$swift\
-$nix_shell\
-$env_var\
-$line_break\
-$lua\
-$jobs\
-$status\
-$character"""
+format = '$shell$all$character'
+
+# format = """
+# $shell\
+# $hostname\
+# $docker\
+# $shlvl\
+# $kubernetes\
+# $directory\
+# $git_branch\
+# $git_commit\
+# $git_state\
+# $git_status\
+# $hg_branch\
+# $docker_context\
+# $nodejs\
+# $php\
+# $python\
+# $ruby\
+# $rust\
+# $swift\
+# $nix_shell\
+# $env_var\
+# $line_break\
+# $lua\
+# $jobs\
+# $status\
+# $character"""
 
 # [username]
 # disabled = true
@@ -49,3 +50,11 @@ vicmd_symbol = "[V](bold green) "
 
 [sudo]
 disabled = false
+
+[shell]
+disabled = false
+fish_indicator = '󰈺 '
+zsh_indicator = '_'
+
+[gcloud]
+disabled = true

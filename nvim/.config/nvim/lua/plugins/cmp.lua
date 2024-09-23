@@ -9,9 +9,21 @@ return {
         enabled = false,
         cmd = 'Copilot',
         event = 'InsertEnter',
+        enabled = false,
         opts = {
-          suggestion = { enabled = false },
+          suggestion = {
+            enabled = true,
+            keymap = {
+              accept = '<C-y>',
+              accept_word = false,
+              accept_line = false,
+              next = '<leader>]',
+              prev = '<leader>[',
+              dismiss = '<C-]>',
+            },
+          },
           panel = { enabled = false },
+          copilot_node_command = vim.env.COPILOT_LUA_NODE or 'node',
         },
       },
       'zbirenbaum/copilot-cmp',

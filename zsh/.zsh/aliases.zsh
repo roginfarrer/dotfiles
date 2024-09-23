@@ -3,7 +3,7 @@
 restartzsh () { echo "$fg_bold[yellow]Sourcing...$reset_color"; . ~/.zshrc; }
 
 fgb() {
-  git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)' | fzf
+    git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)' | fzf
 }
 
 alias fcb="fgb | xargs git checkout"
@@ -48,6 +48,3 @@ alias config="git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 
 ### Misc
 alias edit="${EDITOR}"
-
-### Utilities
-alias svg="svgo --config='${PARTIALS}/svgo_config.yml'"

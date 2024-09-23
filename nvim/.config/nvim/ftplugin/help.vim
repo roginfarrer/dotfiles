@@ -1,5 +1,3 @@
-" Press Enter to jump to the subject (topic) under the cursor.
-nnoremap <buffer> <CR> <C-]>
 " Press Backspace to return from the last jump.
 nnoremap <buffer> <BS> <C-T>
 " Press s to find the next subject, or S to find the previous subject.

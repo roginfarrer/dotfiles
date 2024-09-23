@@ -247,7 +247,10 @@ return {
             workingDirectories = { mode = 'auto' },
           },
         },
-        bashls = { settings = { includeAllWorkspaceSymbols = true } },
+        bashls = {
+          -- filetypes = { 'sh', 'zsh' },
+          settings = { includeAllWorkspaceSymbols = true },
+        },
         cssls = {},
         astro = {
           -- root_dir = util.root_pattern '.git',
