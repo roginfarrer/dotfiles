@@ -1,5 +1,6 @@
 jeffreytse/zsh-vi-mode
 olets/zsh-abbr
+hlissner/zsh-autopair
 
 # set up Zsh completions with plugins
 mattmc3/ez-compinit
