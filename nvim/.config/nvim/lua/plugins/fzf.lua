@@ -49,7 +49,7 @@ end
 
 return {
   'ibhagwan/fzf-lua',
-  enabled = false,
+  -- enabled = false,
   dependencies = {
     { 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
   },

@@ -37,6 +37,7 @@
 	sort = -committerdate
 [push]
 	autoSetupRemote = true
+  default = current
 
 [merge]
 	conflictStyle = diff3

@@ -28,7 +28,7 @@ local builtin = require 'telescope.builtin'
 
 local M = {
   'nvim-telescope/telescope.nvim',
-  -- enabled = false,
+  enabled = false,
   cmd = 'Telescope',
   dependencies = {
     { 'LazyVim/LazyVim' },

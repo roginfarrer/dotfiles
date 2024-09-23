@@ -1,4 +1,4 @@
-if test -d ~/.bin/bun
+if test -d ~/.bun/bin
     fish_add_path ~/.bun/bin
 end
 if test -d ~/.local/share/bob/nvim-bin
@@ -85,6 +85,13 @@ set fish_cursor_replace_one underscore
 set fish_cursor_visual block
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/rfarrer/google-cloud-sdk/path.fish.inc' ]
-    . '/Users/rfarrer/google-cloud-sdk/path.fish.inc'
+# if test -e /Users/rfarrer/google-cloud-sdk/path.fish.inc
+#     . '/Users/rfarrer/google-cloud-sdk/path.fish.inc'
+# end
+
+if test -d $HOME/.tmux/plugins/t-smart-tmux-session-manager/bin
+    fish_add_path $HOME/.tmux/plugins/t-smart-tmux-session-manager/bin
+end
+if test -d $HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin
+    fish_add_path $HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin
 end

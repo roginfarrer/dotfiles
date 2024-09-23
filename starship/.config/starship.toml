@@ -29,6 +29,8 @@
 # $status\
 # $character"""
 
+command_timeout = 3000
+
 # [username]
 # disabled = true
 
