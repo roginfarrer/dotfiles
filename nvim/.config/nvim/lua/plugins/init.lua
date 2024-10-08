@@ -7,7 +7,7 @@ return {
     event = 'VeryLazy',
     opts = { enable_named_colors = false, enable_tailwind = true, render = 'background', virtual_symbol = '•' },
   },
-  { 'zeioth/garbage-day.nvim', enabled = false, event = 'VeryLazy', opts = {} },
+  { 'zeioth/garbage-day.nvim', enabled = true, event = 'VeryLazy', opts = {} },
 
   {
     'antoinemadec/FixCursorHold.nvim',
@@ -31,6 +31,7 @@ return {
     'axelvc/template-string.nvim',
     opts = { remove_template_string = true },
     event = 'InsertEnter',
+    cond = not vim.g.disable_treesitter
   },
 
   -- Auto pairs

@@ -2,6 +2,7 @@ return {
   -- testing integration
   {
     'nvim-neotest/neotest',
+    cond = not vim.g.disable_treesitter,
     dependencies = {
       { 'guivazcabral/neotest-jest' },
       'nvim-lua/plenary.nvim',

@@ -1,5 +1,5 @@
 return {
-  { 'sheerun/vim-polyglot', cond = vim.g.disable_treesitter, enabled = false },
+  {'sheerun/vim-polyglot', cond = vim.g.disable_treesitter},
   {
     'nvim-treesitter/nvim-treesitter',
     cond = not vim.g.disable_treesitter,

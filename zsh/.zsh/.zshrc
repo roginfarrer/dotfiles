@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-echo "It's ZSH"
+echo ".zshrc"
 
 export EDITOR="nvim"
 export GIT_EDITOR="nvim"
@@ -10,9 +10,12 @@ export MANPAGER="nvim +Man!"
 
 ### Imports
 source ${ZDOTDIR}/utils.zsh
-source ${ZDOTDIR}/plugins.zsh
+# source ${ZDOTDIR}/plugins.zsh
+source ${ZDOTDIR}/zap.zsh
 source ${ZDOTDIR}/settings.zsh
 source ${ZDOTDIR}/aliases.zsh
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
 
 if [ -f ~/.zshrc_local ]; then
     source ~/.zshrc_local

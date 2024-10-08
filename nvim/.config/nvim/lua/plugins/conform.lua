@@ -24,7 +24,7 @@ return {
       })
     end,
     opts = function()
-      local prettier = { 'prettierd' }
+      local prettier = { 'prettier' }
       return {
         stop_after_first = true,
         formatters_by_ft = {
