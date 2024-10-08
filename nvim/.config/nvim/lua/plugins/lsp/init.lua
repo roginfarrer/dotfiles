@@ -64,7 +64,7 @@ return {
         end,
         event = 'LspAttach',
       },
-      'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-nvim-lsp',
       {
         'folke/lazydev.nvim',
         ft = 'lua', -- only load on lua files
@@ -147,12 +147,13 @@ return {
         },
       }
 
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
+      local capabilities = {}
+      -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      -- capabilities.textDocument.completion.completionItem.snippetSupport = true
+      -- capabilities.textDocument.foldingRange = {
+      --   dynamicRegistration = false,
+      --   lineFoldingOnly = true,
+      -- }
 
       local function on_attach(client, bufnr)
         -- require('plugins.lsp.formatting').setup(client, bufnr)

@@ -2,10 +2,12 @@ if not vim.g.vscode then
 	return {}
 end
 
+vim.keymap.set("", "<Space>", "<Nop>")
+vim.g.mapleader = " "
+
 local enabled = {
 	"dial.nvim",
 	"lazy.nvim",
-	"mini.ai",
 	"mini.surround",
 	"Comment.nvim",
 	"flash.nvim",
@@ -30,18 +32,33 @@ end
 
 local map = require("util").map
 
-local function vscodeNotify(cmd)
-	return '<cmd>call VSCodeNotify("' .. cmd .. '")<CR>'
+local function vscodeCall(cmd)
+	return function()
+		require("vscode").call(cmd)
+	end
+	-- return '<cmd>call VSCodeNotify("' .. cmd .. '")<CR>'
 end
 
-map("n", "<C-h>", vscodeNotify("workbench.action.navigateLeft"))
-map("n", "<C-l>", vscodeNotify("workbench.action.navigateRight"))
-map("n", "<C-k>", vscodeNotify("workbench.action.navigateUp"))
-map("n", "<C-j>", vscodeNotify("workbench.action.navigateDown"))
+map("n", "<C-h>", vscodeCall("workbench.action.navigateLeft"))
+map("n", "<C-l>", vscodeCall("workbench.action.navigateRight"))
+map("n", "<C-k>", vscodeCall("workbench.action.navigateUp"))
+map("n", "<C-j>", vscodeCall("workbench.action.navigateDown"))
 
-map({ "n", "x" }, "gcc", vscodeNotify("editor.action.commentLine"))
-map("n", "gy", vscodeNotify("editor.action.peekTypeDefinition"))
-map("n", "gr", vscodeNotify("editor.action.referenceSearch.trigger"))
+map("x", "gc", vscodeCall("editor.action.commentLine"))
+map("n", "gcc", vscodeCall("editor.action.commentLine"))
+map("n", "gy", vscodeCall("editor.action.peekTypeDefinition"))
+map("n", "gr", vscodeCall("editor.action.referenceSearch.trigger"))
+
+map("n", "<leader>gr", vscodeCall("git.revertChange"))
+map("n", "<leader>la", vscodeCall("editor.action.codeAction"))
+map("n", "<leader>lr", vscodeCall("editor.action.rename"))
+
+map("n", "<leader>;", vscodeCall("workbench.action.showAllEditors"))
+map("n", "<leader>b", vscodeCall("workbench.action.showAllEditors"))
+
+-- These don't work! They're set in the keybindings.json file
+-- map("n", "]d", vscodeCall("editor.action.marker.next"))
+-- map("n", "[d", vscodeCall("editor.action.marker.prev"))
 
 -- -- Add some vscode specific keymaps
 -- vim.api.nvim_create_autocmd('User', {
