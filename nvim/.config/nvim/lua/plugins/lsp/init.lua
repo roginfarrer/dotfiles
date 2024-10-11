@@ -160,7 +160,9 @@ return {
         require('plugins.lsp.mappings').setup(client, bufnr)
       end
 
-      local options = { on_attach = on_attach, capabilities = capabilities }
+      local options = {
+        on_attach = on_attach --[[ , capabilities = capabilities ]],
+      }
 
       -- replace the default lsp diagnostic symbols
       for name, icon in pairs(require('ui.icons').lazy.diagnostics) do

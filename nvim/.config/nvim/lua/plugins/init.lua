@@ -74,4 +74,21 @@ return {
     cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
   },
+
+  {
+    'coffebar/transfer.nvim',
+    lazy = true,
+    cmd = { 'TransferInit', 'DiffRemote', 'TransferUpload', 'TransferDownload', 'TransferDirDiff', 'TransferRepeat' },
+    opts = {},
+    init = function()
+      local util = require 'util'
+      util.autocmd('BufWritePost', {
+        pattern = vim.fn.expand '~' .. '/development/Etsyweb-git/*',
+        callback = function(data)
+          local file = data.file
+          vim.cmd('TransferUpload ' .. file)
+        end,
+      })
+    end,
+  },
 }
