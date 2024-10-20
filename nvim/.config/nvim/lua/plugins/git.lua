@@ -29,19 +29,6 @@ return {
       { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
     },
   },
-  -- {
-  --   'pwntester/octo.nvim',
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     'nvim-telescope/telescope.nvim',
-  --     'kyazdani42/nvim-web-devicons',
-  --   },
-  --   cmd = 'Octo',
-  --   opts = {
-  --     ---@diagnostic disable-next-line: undefined-field
-  --     github_hostname = _G.work_github_url,
-  --   },
-  -- },
 
   {
     'ruifm/gitlinker.nvim',
@@ -119,5 +106,37 @@ return {
     keys = {
       { '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' },
     },
+  },
+
+  {
+    'daliusd/ghlite.nvim',
+    opts = {
+      keymaps = { -- override default keymaps with the ones you prefer
+        diff = {
+          open_file = 'gf',
+          approve = '<C-A>',
+        },
+        comment = {
+          send_comment = '<C-CR>',
+        },
+        pr = {
+          approve = '<C-A>',
+        },
+      },
+    },
+    keys = function()
+      local desc = function(str)
+        return 'GHLite: ' .. str
+      end
+      return {
+        { '<leader>us', '<cmd>GHLitePRSelect<cr>', silent = true, desc = desc 'Select PR' },
+        { '<leader>uo', '<cmd>GHLitePRCheckout<cr>', silent = true, desc = desc 'Checkout PR' },
+        { '<leader>uv', '<cmd>GHLitePRView<cr>', silent = true, desc = desc 'View PR' },
+        { '<leader>uu', '<cmd>GHLitePRLoadComments<cr>', silent = true, desc = 'Load PR Comments' },
+        { '<leader>up', '<cmd>GHLitePRDiff<cr>', silent = true, desc = desc 'PR Diff' },
+        { '<leader>ua', '<cmd>GHLitePRAddComment<cr>', silent = true, desc = 'Add Comment' },
+        { '<leader>ug', '<cmd>GHLitePROpenComment<cr>', silent = true, desc = desc 'Open Comment' },
+      }
+    end,
   },
 }
