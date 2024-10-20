@@ -1,6 +1,8 @@
 .reviewboardrc
 .vscode/
 .devcontainer/
+.nvim/
+*.lazy.lua
 
 # Compiled source #
 ###################

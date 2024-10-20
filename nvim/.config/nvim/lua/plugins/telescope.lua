@@ -1,3 +1,7 @@
+local installed, telescope = pcall(require, 'telescope')
+if not installed then
+  return {}
+end
 local builtin = require 'telescope.builtin'
 -- Function to capitalize the first letters of words
 -- local function capitalizeWords(str)
@@ -108,9 +112,9 @@ M.config = function(_, opts)
   require('telescope').load_extension 'node_modules'
   require('telescope').load_extension 'fzf'
   require('telescope').load_extension 'lazy'
-  if has('smart-open.nvim') then
-  require('telescope').load_extension 'smart_open'
-end
+  if has 'smart-open.nvim' then
+    require('telescope').load_extension 'smart_open'
+  end
 end
 
 local filesContaining = function()
@@ -145,13 +149,17 @@ end
 
 M.keys = {
   { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
-  { '<leader>;', function() 
-    if vim.g.disable_sqlite then
-      vim.cmd(cmd'smart_open')
-    else
-      vim.cmd(cmd'buffers')
-    end
-  end, desc = 'Smart Open' },
+  {
+    '<leader>;',
+    function()
+      if vim.g.disable_sqlite then
+        vim.cmd(cmd 'smart_open')
+      else
+        vim.cmd(cmd 'buffers')
+      end
+    end,
+    desc = 'Smart Open',
+  },
   -- { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
   { '<leader>/', cmd 'live_grep', desc = 'Grep (root dir)' },
   { '<leader>fp', cmd 'find_files', desc = 'Find Files (root dir)' },

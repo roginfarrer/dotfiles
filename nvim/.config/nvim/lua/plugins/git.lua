@@ -29,19 +29,19 @@ return {
       { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
     },
   },
-  {
-    'pwntester/octo.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-      'kyazdani42/nvim-web-devicons',
-    },
-    cmd = 'Octo',
-    opts = {
-      ---@diagnostic disable-next-line: undefined-field
-      github_hostname = _G.work_github_url,
-    },
-  },
+  -- {
+  --   'pwntester/octo.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-telescope/telescope.nvim',
+  --     'kyazdani42/nvim-web-devicons',
+  --   },
+  --   cmd = 'Octo',
+  --   opts = {
+  --     ---@diagnostic disable-next-line: undefined-field
+  --     github_hostname = _G.work_github_url,
+  --   },
+  -- },
 
   {
     'ruifm/gitlinker.nvim',

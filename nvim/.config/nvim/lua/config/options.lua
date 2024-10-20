@@ -61,6 +61,40 @@ if vim.fn.executable 'rg' then
   o.grepformat = '%f:%l:%c:%m'
 end
 
+vim.diagnostic.config {
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  virtual_text = false,
+  -- For lsp_lines
+  virtual_lines = false,
+  float = {
+    filetype = 'markdown',
+    focusable = true,
+    border = { '🭽', '▔', '🭾', '▕', '🭿', '▁', '🭼', '▏' },
+    format = function(diagnostic)
+      if diagnostic.source == 'eslint' then
+        return string.format(
+          '%s [%s]',
+          diagnostic.message,
+          -- shows the name of the rule
+          diagnostic.user_data.lsp.code
+        )
+      end
+      return string.format('%s [%s]', diagnostic.message, diagnostic.source)
+    end,
+    severity_sort = true,
+    close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+    max_width = 80,
+  },
+}
+
+-- replace the default lsp diagnostic symbols
+for name, icon in pairs(require('ui.icons').lazy.diagnostics) do
+  name = 'DiagnosticSign' .. name
+  vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
+end
+
 if require('jit').arch == 'arm64' then
   vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
   vim.g.python_host_prog = '/opt/homebrew/bin/python'

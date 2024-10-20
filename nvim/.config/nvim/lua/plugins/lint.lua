@@ -1,14 +1,9 @@
-local ft = { 'vim', 'bash', 'zsh', 'sh' }
-
 return {
   {
     'mfussenegger/nvim-lint',
-    -- ft = ft,
+    lazy = true,
     config = function(_, opts)
       require('lint').linters_by_ft = {
-        -- css = { 'stylelint' },
-        -- scss = { 'stylelint' },
-        -- lua = { 'luacheck' },
         vim = { 'vint' },
         bash = { 'shellcheck' },
         zsh = { 'shellcheck' },
