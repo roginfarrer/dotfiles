@@ -54,7 +54,7 @@ return {
     event = 'BufReadPre',
     dependencies = {
       'folke/lazydev.nvim',
-      -- 'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lsp',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       { 'Bilal2453/luvit-meta', lazy = true },
@@ -95,7 +95,7 @@ return {
         stylelint_lsp = { filetypes = { 'css', 'less', 'scss' } },
         rust_analyzer = {},
         -- emmet_language_server = {},
-        efm = { filetypes = { 'php' } },
+        -- efm = { filetypes = { 'php' } },
         intelephense = require 'plugins.lsp.intelephense',
       }
 

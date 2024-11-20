@@ -2,7 +2,7 @@ return {
   {
     'mfussenegger/nvim-lint',
     lazy = true,
-    config = function(_, opts)
+    config = function()
       require('lint').linters_by_ft = {
         vim = { 'vint' },
         bash = { 'shellcheck' },

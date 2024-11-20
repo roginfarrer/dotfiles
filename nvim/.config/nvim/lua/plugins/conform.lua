@@ -58,7 +58,7 @@ return {
           sh = { 'beautysh' },
           zsh = { 'beautysh' },
           fish = { 'fish_indent' },
-          php = { 'trim_whitespace', 'trim_newlines', 'my_auto_indent' },
+          -- php = { 'trim_whitespace', 'trim_newlines', 'my_auto_indent' },
         },
         format_on_save = {
           lsp_fallback = true,

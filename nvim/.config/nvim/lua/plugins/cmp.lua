@@ -1,13 +1,12 @@
 return {
   {
     'hrsh7th/nvim-cmp',
-    enabled = false,
+    enabled = true,
     event = 'InsertEnter',
     version = false,
     dependencies = {
       {
         'zbirenbaum/copilot.lua',
-        enabled = false,
         cmd = 'Copilot',
         event = 'InsertEnter',
         enabled = false,
