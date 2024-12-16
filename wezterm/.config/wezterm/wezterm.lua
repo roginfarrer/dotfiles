@@ -66,6 +66,8 @@ local config = {
 	front_end = "WebGpu",
 	webgpu_power_preference = "HighPerformance",
 	tab_max_width = 32,
+	animation_fps = 240,
+	max_fps = 240,
 }
 
 if tmux then
