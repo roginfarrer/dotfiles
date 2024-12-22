@@ -1,9 +1,13 @@
 return {
   {
     'mfussenegger/nvim-lint',
-    lazy = true,
-    config = function()
+    -- ft = ft,
+    config = function(_, opts)
       require('lint').linters_by_ft = {
+        fish = {'fish'},
+        -- css = { 'stylelint' },
+        -- scss = { 'stylelint' },
+        -- lua = { 'luacheck' },
         vim = { 'vint' },
         bash = { 'shellcheck' },
         zsh = { 'shellcheck' },

@@ -1,6 +1,4 @@
 return {
-  -- { 'moll/vim-bbye', cmd = 'Bdelete' },
-  -- { 'kevinhwang91/nvim-bqf', ft = 'qf', enabled = false },
   { 'mustache/vim-mustache-handlebars', ft = 'mustache' },
   { 'jxnblk/vim-mdx-js', enabled = false, ft = 'mdx' },
   { 'fladson/vim-kitty', ft = 'kitty' },
@@ -37,27 +35,4 @@ return {
       },
     },
   },
-
-  -- {
-  --   'nvim-orgmode/orgmode',
-  --   enabled = false,
-  --   -- ft = 'org',
-  --   opts = {
-  --     org_agenda_files = { '~/Dropbox (Maestral)/org/**/*' },
-  --     org_default_notes_file = '~/Dropbox (Maestral)/org/notes.org',
-  --   },
-  --   -- init = function()
-  --   --   autocmd('BufReadPre', {
-  --   --     group = 'org_ft',
-  --   --     pattern = '*.org',
-  --   --     callback = function()
-  --   --       vim.cmd 'doautocmd FileType org'
-  --   --     end,
-  --   --   })
-  --   -- end,
-  --   config = function(_, opts)
-  --     require('orgmode').setup_ts_grammar()
-  --     require('orgmode').setup(opts)
-  --   end,
-  -- },
 }

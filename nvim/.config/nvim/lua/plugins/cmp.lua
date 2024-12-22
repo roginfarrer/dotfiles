@@ -26,18 +26,22 @@ return {
           copilot_node_command = vim.env.COPILOT_LUA_NODE or 'node',
         },
       },
-      'zbirenbaum/copilot-cmp',
-      'saadparwaiz1/cmp_luasnip',
-      'petertriho/cmp-git',
-      'David-Kunz/cmp-npm',
+      -- 'zbirenbaum/copilot-cmp',
+      -- 'saadparwaiz1/cmp_luasnip',
+      {
+        'petertriho/cmp-git',
+        opts = {},
+        init = function()
+          table.insert(require('cmp').get_config().sources, { name = 'git' })
+        end,
+      },
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
-      'hrsh7th/cmp-nvim-lua',
+      -- 'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-cmdline',
       'mtoohey31/cmp-fish',
-      'lukas-reineke/cmp-under-comparator',
+      -- 'lukas-reineke/cmp-under-comparator',
       { 'roginfarrer/cmp-css-variables', dev = true },
       'roobert/tailwindcss-colorizer-cmp.nvim',
     },
@@ -59,11 +63,11 @@ return {
             scrollbar = true,
           },
         },
-        snippet = {
-          expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-          end,
-        },
+        -- snippet = {
+        --   expand = function(args)
+        --     require('luasnip').lsp_expand(args.body)
+        --   end,
+        -- },
         formatting = {
           format = function(entry, vim_item)
             -- Kind icons
@@ -85,17 +89,16 @@ return {
           end,
         },
         -- sorting = defaults.sorting,
-        sorting = {
-          comparators = {
-            require('copilot_cmp.comparators').prioritize,
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            require('cmp-under-comparator').under,
-            cmp.config.compare.kind,
-          },
-        },
+        -- sorting = {
+        --   comparators = {
+        --     cmp.config.compare.offset,
+        --     cmp.config.compare.exact,
+        --     cmp.config.compare.score,
+        --     cmp.config.compare.recently_used,
+        --     require('cmp-under-comparator').under,
+        --     cmp.config.compare.kind,
+        --   },
+        -- },
         mapping = {
           ['<C-n>'] = cmp.mapping.select_next_item {
             behavior = cmp.SelectBehavior.Insert,
@@ -118,10 +121,9 @@ return {
         sources = cmp.config.sources({
           -- { name = 'css-variables' },
           { name = 'nvim_lsp' },
-          { name = 'luasnip', keyword_length = 1 },
-          { name = 'npm' },
+          -- { name = 'luasnip', keyword_length = 1 },
           { name = 'cmp_git' },
-          { name = 'nvim_lua' },
+          -- { name = 'nvim_lua' },
           {
             name = 'lazydev',
             group_index = 0, -- set group index to 0 to skip loading LuaLS completions
@@ -135,31 +137,62 @@ return {
         }),
       }
     end,
-    config = function(_, opts)
-      -- for _, source in ipairs(opts.sources) do
-      --   source.group_index = source.group_index or 1
-      -- end
-      local cmp = require 'cmp'
-      cmp.setup(opts)
-      -- cmp.setup.cmdline({ '/', '?' }, {
-      --   mapping = cmp.mapping.preset.cmdline(),
-      --   sources = {
-      --     { name = 'buffer' },
-      --   },
-      -- })
-      -- cmp.setup.cmdline(':', {
-      --   mapping = cmp.mapping.preset.cmdline(),
-      --   sources = cmp.config.sources({
-      --     { name = 'path' },
-      --   }, {
-      --     {
-      --       name = 'cmdline',
-      --       option = {
-      --         ignore_cmds = { 'Man', '!' },
-      --       },
-      --     },
-      --   }),
-      -- })
-    end,
+  },
+
+  {
+    'nvim-cmp',
+    dependencies = {
+      {
+        'garymjr/nvim-snippets',
+        opts = {
+          friendly_snippets = true,
+          create_cmp_source = true,
+        },
+        dependencies = { 'rafamadriz/friendly-snippets' },
+        keys = {
+          {
+            '<Tab>',
+            function()
+              if vim.snippet.active { direction = 1 } then
+                vim.schedule(function()
+                  vim.snippet.jump(1)
+                end)
+                return
+              end
+              return '<Tab>'
+            end,
+            expr = true,
+            silent = true,
+            mode = 'i',
+          },
+          {
+            '<Tab>',
+            function()
+              vim.schedule(function()
+                vim.snippet.jump(1)
+              end)
+            end,
+            expr = true,
+            silent = true,
+            mode = 's',
+          },
+          {
+            '<S-Tab>',
+            function()
+              if vim.snippet.active { direction = -1 } then
+                vim.schedule(function()
+                  vim.snippet.jump(-1)
+                end)
+                return
+              end
+              return '<S-Tab>'
+            end,
+            expr = true,
+            silent = true,
+            mode = { 'i', 's' },
+          },
+        },
+      },
+    },
   },
 }

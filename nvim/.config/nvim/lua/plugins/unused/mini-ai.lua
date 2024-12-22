@@ -61,6 +61,7 @@ return {
     'echasnovski/mini.ai',
     enabled = false,
     event = 'VeryLazy',
+    enabled = false,
     opts = function()
       local ai = require 'mini.ai'
 

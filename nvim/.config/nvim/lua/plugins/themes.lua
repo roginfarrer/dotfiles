@@ -82,39 +82,6 @@ local plugins = {
   { 'rmehri01/onenord.nvim' },
   { 'olimorris/onedarkpro.nvim' },
   {
-    'ellisonleao/gruvbox.nvim',
-    opts = function()
-      local colors = require('gruvbox.palette').get_base_colors()
-      return {
-        italic = { strings = false, comments = false, keywords = false },
-        bold = false,
-        overrides = {
-          NoiceCmdlinePopupBorder = { link = 'Normal' },
-          NoiceCmdlineIcon = { link = '@character.special' },
-          IlluminatedWordRead = { bg = colors.bg2 },
-          IlluminatedWordText = { bg = colors.bg2 },
-          IlluminatedWordWrite = { bg = colors.bg2 },
-          -- Make more like Zed's Gruvbox Dark
-          ['Identifier'] = { fg = 'NONE', bg = 'NONE' },
-          ['Function'] = { fg = 'NONE', bg = 'NONE' },
-          ['Structure'] = { fg = 'NONE', bg = 'NONE' },
-          ['@constructor'] = { link = 'GruvboxBlue' },
-          ['@punctuation.bracket'] = { link = 'GruvboxGray' },
-          ['@punctuation.special'] = { link = 'GruvboxFg0' },
-          ['@variable'] = { link = 'GruvboxBlue' },
-          ['@field'] = { link = 'GruvboxFg0' },
-          ['@property'] = { link = 'GruvboxFg0' },
-          ['@punctuation.delimiter'] = { link = 'GruvboxFg0' },
-          ['@operator'] = { link = 'GruvboxAqua' },
-          ['@function.call'] = { link = 'GruvboxGreen' },
-          ['@function.builtin'] = { link = 'GruvboxRed' },
-          ['@conditional.ternary'] = { link = 'GruvboxFg0' },
-          ['@type'] = { link = 'GruvboxYellow' },
-        },
-      }
-    end,
-  },
-  {
     'sainnhe/gruvbox-material',
     init = function()
       vim.g.gruvbox_material_background = 'hard'
@@ -123,7 +90,7 @@ local plugins = {
   {
     'catppuccin/nvim',
     name = 'catppuccin',
-    priority = 1000,
+    -- priority = 1000,
     opts = function()
       local cp = require('catppuccin.palettes').get_palette()
       local util = require 'catppuccin.utils.colors'
@@ -196,7 +163,8 @@ local plugins = {
 }
 
 for _, plugin in ipairs(plugins) do
-  plugin.priority = 1000
+  --   plugin.priority = 1000
+  plugin.lazy = true
 end
 
 return plugins

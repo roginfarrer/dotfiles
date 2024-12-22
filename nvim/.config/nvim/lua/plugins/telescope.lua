@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 local installed, telescope = pcall(require, 'telescope')
 if not installed then
   return {}
 end
 local builtin = require 'telescope.builtin'
+||||||| 6df6fd9
+local builtin = require 'telescope.builtin'
+=======
+>>>>>>> local-changes
 -- Function to capitalize the first letters of words
 -- local function capitalizeWords(str)
 --   return str:gsub("(%a)([%w_']*)", function(first, rest)
@@ -147,6 +152,7 @@ local cmd = function(rhs)
   return '<cmd>Telescope ' .. rhs .. '<cr>'
 end
 
+<<<<<<< HEAD
 M.keys = {
   { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
   {
@@ -178,30 +184,94 @@ M.keys = {
   -- { '<leader>fR', telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
   { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
   { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
+||||||| 6df6fd9
+M.keys = {
+  { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
+  { '<leader>;', function() 
+    if vim.g.disable_sqlite then
+      vim.cmd(cmd'smart_open')
+    else
+      vim.cmd(cmd'buffers')
+    end
+  end, desc = 'Smart Open' },
+  -- { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
+  { '<leader>/', cmd 'live_grep', desc = 'Grep (root dir)' },
+  { '<leader>fp', cmd 'find_files', desc = 'Find Files (root dir)' },
+  -- find
+  { '<leader>fb', cmd 'buffers', desc = 'Buffers' },
+  {
+    '<leader>fB',
+    function()
+      vim.cmd [[Telescope file_browser path=%:p:h select_buffer=true]]
+    end,
+    desc = 'Buffers',
+  },
+  -- { '<leader>fF', telescope 'files', desc = 'Find Files (root dir)' },
+  { '<leader>ff', cmd 'find_files', desc = 'Find Files (cwd)' },
+  { '<leader>fr', cmd 'oldfiles', desc = 'Recent' },
+  -- { '<leader>fR', telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
+  { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
+  { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
+=======
+M.keys = function()
+  local builtin = require 'telescope.builtin'
+  return {
+    { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
+    {
+      '<leader>;',
+      function()
+        if vim.g.disable_sqlite then
+          vim.cmd(cmd 'smart_open')
+        else
+          vim.cmd(cmd 'buffers')
+        end
+      end,
+      desc = 'Smart Open',
+    },
+    -- { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
+    { '<leader>/', cmd 'live_grep', desc = 'Grep (root dir)' },
+    { '<leader>fp', cmd 'find_files', desc = 'Find Files (root dir)' },
+    -- find
+    { '<leader>fb', cmd 'buffers', desc = 'Buffers' },
+    {
+      '<leader>fB',
+      function()
+        vim.cmd [[Telescope file_browser path=%:p:h select_buffer=true]]
+      end,
+      desc = 'Buffers',
+    },
+    -- { '<leader>fF', telescope 'files', desc = 'Find Files (root dir)' },
+    { '<leader>ff', cmd 'find_files', desc = 'Find Files (cwd)' },
+    { '<leader>fr', cmd 'oldfiles', desc = 'Recent' },
+    -- { '<leader>fR', telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
+    { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
+    { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
+>>>>>>> local-changes
   -- stylua: ignore
   { '<leader>fd', function() builtin.git_files({ cwd = '~/dotfiles', prompt_title = '~ Dotfiles ~' }) end, desc = 'Dotfiles', },
   -- stylua: ignore
   { '<leader>fD', function() builtin.live_grep({ cwd = '~/dotfiles', prompt_title = '~ Dotfiles ~' }) end, desc = 'Grep (dotfiles)' },
-  { '<leader>fh', cmd 'oldfiles', desc = 'old files' },
-  { '<leader>fH', cmd 'help_tags', desc = 'help tags' },
-  { '<leader>fl', cmd 'lazy', desc = 'lazy plugins' },
-  { '<leader>fc', findCWord, desc = 'Search word under cursor' },
-  { '<leader>fC', cmd 'grep_string', desc = 'Grep word under cursor' },
-  { '<leader>f.', grepInCurrentDirectory, desc = 'find in current directory' },
-  -- Search
-  { '<leader>st', cmd 'builtin', desc = 'telescope' },
-  { '<leader>sc', cmd 'commands', desc = 'commands' },
-  { '<leader>sh', cmd 'help_tags', desc = 'help pages' },
-  { '<leader>sm', cmd 'man_pages', desc = 'man pages' },
-  { '<leader>sk', cmd 'keymaps', desc = 'key maps' },
-  { '<leader>ss', cmd 'highlights', desc = 'search highlight groups' },
-  { '<leader>sf', cmd 'filetypes', desc = 'file types' },
-  { '<leader>so', cmd 'vim_options', desc = 'options' },
-  { '<leader>sa', cmd 'autocommands', desc = 'auto commands' },
-  -- Git
-  { '<leader>gb', cmd 'git_branches', desc = 'checkout branch' },
-  { '<leader>gC', cmd 'git_bcommits', desc = 'checkout commit (for current file)' },
-  { '<leader>r', cmd 'resume', desc = 'Telescope resume' },
-}
+    { '<leader>fh', cmd 'oldfiles', desc = 'old files' },
+    { '<leader>fH', cmd 'help_tags', desc = 'help tags' },
+    { '<leader>fl', cmd 'lazy', desc = 'lazy plugins' },
+    { '<leader>fc', findCWord, desc = 'Search word under cursor' },
+    { '<leader>fC', cmd 'grep_string', desc = 'Grep word under cursor' },
+    { '<leader>f.', grepInCurrentDirectory, desc = 'find in current directory' },
+    -- Search
+    { '<leader>st', cmd 'builtin', desc = 'telescope' },
+    { '<leader>sc', cmd 'commands', desc = 'commands' },
+    { '<leader>sh', cmd 'help_tags', desc = 'help pages' },
+    { '<leader>sm', cmd 'man_pages', desc = 'man pages' },
+    { '<leader>sk', cmd 'keymaps', desc = 'key maps' },
+    { '<leader>ss', cmd 'highlights', desc = 'search highlight groups' },
+    { '<leader>sf', cmd 'filetypes', desc = 'file types' },
+    { '<leader>so', cmd 'vim_options', desc = 'options' },
+    { '<leader>sa', cmd 'autocommands', desc = 'auto commands' },
+    -- Git
+    { '<leader>gb', cmd 'git_branches', desc = 'checkout branch' },
+    { '<leader>gC', cmd 'git_bcommits', desc = 'checkout commit (for current file)' },
+    { '<leader>r', cmd 'resume', desc = 'Telescope resume' },
+  }
+end
 
 return M

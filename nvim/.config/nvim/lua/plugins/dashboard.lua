@@ -41,7 +41,7 @@ return {
             { action = "ene | startinsert",                                        desc = " New file",        icon = " ", key = "n" },
             { action = "FzfLua oldfiles",                                          desc = " Recent files",    icon = " ", key = "r" },
             { action = "FzfLua live_grep",                                         desc = " Find text",       icon = " ", key = "g" },
-            { action = [[lua require("lazyvim.util").telescope.config_files()()]], desc = " Config",          icon = " ", key = "c" },
+            -- { action = [[lua require("lazyvim.util").telescope.config_files()()]], desc = " Config",          icon = " ", key = "c" },
             { action = 'SessionLoad',                                              desc = " Restore Session", icon = " ", key = "s" },
             { action = "Lazy",                                                     desc = " Lazy",            icon = "󰒲 ", key = "l" },
             { action = "qa",                                                       desc = " Quit",            icon = " ", key = "q" },

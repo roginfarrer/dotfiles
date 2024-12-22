@@ -25,21 +25,9 @@ return {
         return msg
       end
 
-      local empty = {
-        function()
-          return ' '
-        end,
-        padding = 0,
-        color = 'Normal',
-      }
-
       return {
         options = {
           theme = 'auto',
-          -- section_separators = { left = '', right = '' },
-          -- component_separators = { left = '', right = '' },
-          -- section_separators = { right = '', left = '' },
-          -- component_separators = { left = '', right = '' },
           component_separators = '',
           section_separators = { left = '', right = '' },
           icons_enabled = true,
@@ -55,11 +43,6 @@ return {
           lualine_c = {
             { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
             { 'filename', symbols = { modified = '', readonly = '', unnamed = '', newfile = '' } },
-            -- stylua: ignore
-            -- {
-            --   function() return require("nvim-navic").get_location() end,
-            --   cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
-            -- },
           },
           lualine_x = {
             { 'grapple' },
@@ -73,7 +56,6 @@ return {
             {
               function() return require("noice").api.status.mode.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              -- color = Util.ui.fg("Constant"),
             },
             -- stylua: ignore
             {
