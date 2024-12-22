@@ -4,8 +4,9 @@ return {
   {
     'mfussenegger/nvim-lint',
     -- ft = ft,
-    config = function(_, opts)
+    config = function()
       require('lint').linters_by_ft = {
+        fish = { 'fish' },
         -- css = { 'stylelint' },
         -- scss = { 'stylelint' },
         -- lua = { 'luacheck' },

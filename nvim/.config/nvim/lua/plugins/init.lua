@@ -16,21 +16,13 @@ return {
     end,
   },
 
-  {
-    'windwp/nvim-spectre',
-    lazy = true,
-    cmd = { 'Spectre' },
-    -- stylua: ignore
-    keys = {
-      { '<leader>fr', function() require('spectre').open() end, desc = 'Replace in files (Spectre)', },
-    },
-  },
-
   -- Automatically between template literal and strings when needed
   {
     'axelvc/template-string.nvim',
     opts = { remove_template_string = true },
     event = 'InsertEnter',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    cond = not vim.g.disable_treesitter,
   },
 
   -- Auto pairs
