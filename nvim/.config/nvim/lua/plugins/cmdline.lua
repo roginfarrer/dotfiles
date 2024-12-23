@@ -1,7 +1,6 @@
 return {
   {
     'smjonas/live-command.nvim',
-    version = '1.*',
     event = 'CmdlineEnter',
     opts = {
       commands = {

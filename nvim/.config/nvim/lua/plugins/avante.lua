@@ -1,8 +1,7 @@
 return {
   {
     'yetone/avante.nvim',
-    enabled = false,
-    lazy = false,
+    lazy = true,
     version = false, -- set this if you want to always pull the latest change
     opts = {
       -- add any opts here
@@ -11,7 +10,6 @@ return {
     build = 'make',
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
-      'stevearc/dressing.nvim',
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
     },

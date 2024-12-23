@@ -1,14 +1,22 @@
 return {
-
   {
     'folke/trouble.nvim',
     cmd = { 'Trouble', 'TroubleClose', 'TroubleToggle', 'TroubleRefresh' },
-    opts = { use_diagnostic_signs = true },
+    opts = function()
+      if require('util').has 'ibhagwan/fzf-lua' then
+        local config = require 'fzf-lua.config'
+        local actions = require('trouble.sources.fzf').actions
+        config.defaults.actions.files['ctrl-t'] = actions.open
+      end
+      return { use_diagnostic_signs = true }
+    end,
     keys = {
-      { '<leader>xx', '<cmd>TroubleToggle document_diagnostics<cr>', desc = 'Document Diagnostics (Trouble)' },
-      { '<leader>xX', '<cmd>TroubleToggle workspace_diagnostics<cr>', desc = 'Workspace Diagnostics (Trouble)' },
-      { '<leader>xL', '<cmd>TroubleToggle loclist<cr>', desc = 'Location List (Trouble)' },
-      { '<leader>xQ', '<cmd>TroubleToggle quickfix<cr>', desc = 'Quickfix List (Trouble)' },
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics (Trouble)' },
+      { '<leader>cs', '<cmd>Trouble symbols toggle<cr>', desc = 'Symbols (Trouble)' },
+      { '<leader>cS', '<cmd>Trouble lsp toggle<cr>', desc = 'LSP references/definitions/... (Trouble)' },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
       {
         '[q',
         function()
@@ -48,19 +56,48 @@ return {
       },
     },
   },
+  { -- optional cmp completion source for require statements and module annotations
+    'hrsh7th/nvim-cmp',
+    optional = true,
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = 'lazydev',
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
+  },
+  -- { -- optional blink completion source for require statements and module annotations
+  --   'saghen/blink.cmp',
+  --   optional = true,
+  --   opts = {
+  --     sources = {
+  --       -- add lazydev to your completion providers
+  --       default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+  --       providers = {
+  --         lazydev = {
+  --           name = 'LazyDev',
+  --           module = 'lazydev.integrations.blink',
+  --           -- make lazydev completions top priority (see `:h blink.cmp`)
+  --           score_offset = 100,
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
 
   {
     'neovim/nvim-lspconfig',
     event = 'BufReadPre',
     dependencies = {
       'folke/lazydev.nvim',
-      'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-nvim-lsp',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       { 'Bilal2453/luvit-meta', lazy = true },
       -- { 'pmizio/typescript-tools.nvim', enabled = true },
       -- 'davidosomething/format-ts-errors.nvim',
-      { 'dnlhc/glance.nvim', opts = { list = { position = 'left' } } },
+      { 'dnlhc/glance.nvim', enabled = false, opts = { list = { position = 'left' } } },
       'williamboman/mason.nvim',
     },
     config = function()
@@ -77,6 +114,10 @@ return {
       local hasCmp, cmpLsp = pcall(require, 'cmp_nvim_lsp')
       if hasCmp then
         capabilities = vim.tbl_deep_extend('force', capabilities, cmpLsp.default_capabilities())
+      end
+      local hasBlink, blinkCmp = pcall(require, 'blink.cmp')
+      if hasBlink then
+        capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
       end
 
       local servers = {
@@ -102,18 +143,10 @@ return {
       require('mason').setup()
 
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua',
-        'shfmt',
-        'prettier',
-      })
-
-      require('mason-tool-installer').setup {
-        run_on_start = false,
-        ensure_installed = ensure_installed,
-      }
 
       require('mason-lspconfig').setup {
+        ensure_installed = ensure_installed,
+        automatic_installation = false,
         handlers = {
           function(server_name)
             local server = servers[server_name]
@@ -127,6 +160,11 @@ return {
             require('lspconfig')[server_name].setup(server)
           end,
         },
+      }
+
+      require('mason-tool-installer').setup {
+        run_on_start = false,
+        ensure_installed = { 'stylua', 'shfmt', 'prettier', 'prettierd' },
       }
 
       -- require('typescript-tools').setup {

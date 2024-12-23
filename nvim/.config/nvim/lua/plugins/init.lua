@@ -7,14 +7,7 @@ return {
     event = 'VeryLazy',
     opts = { enable_named_colors = false, enable_tailwind = true, render = 'background', virtual_symbol = '•' },
   },
-  { 'zeioth/garbage-day.nvim', enabled = true, event = 'VeryLazy', opts = {} },
-
-  {
-    'antoinemadec/FixCursorHold.nvim',
-    config = function()
-      vim.g.cursorhold_updatetime = 100
-    end,
-  },
+  { 'zeioth/garbage-day.nvim', enabled = false, event = 'VeryLazy', opts = {} },
 
   -- Automatically between template literal and strings when needed
   {
@@ -50,9 +43,9 @@ return {
     -- stylua: ignore
     keys = {
       { 'J', function() require('treesj').toggle() end, desc = 'toggle treesj' },
-      { '<leader>jm', function() require('treesj').toggle() end, desc = 'toggle treesj' },
-      { '<leader>jj', function() require('treesj').join() end, desc = 'join treesj' },
-      { '<leader>js', function() require('treesj').split() end, desc = 'split treesj' },
+      -- { '<leader>jm', function() require('treesj').toggle() end, desc = 'toggle treesj' },
+      -- { '<leader>jj', function() require('treesj').join() end, desc = 'join treesj' },
+      -- { '<leader>js', function() require('treesj').split() end, desc = 'split treesj' },
     },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = { use_default_keymaps = false },

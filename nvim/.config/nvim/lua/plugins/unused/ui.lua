@@ -6,6 +6,7 @@ return {
   {
     'stevearc/dressing.nvim',
     lazy = true,
+    enabled = false,
     opts = {
       win_options = { winblend = 0 },
     },
@@ -23,12 +24,13 @@ return {
     end,
   },
 
-  {
-    'j-hui/fidget.nvim',
-    tag = 'v1.1.0',
-    event = 'VeryLazy',
-    opts = { notification = { override_vim_notify = true } },
-  },
+  -- {
+  --   'j-hui/fidget.nvim',
+  --   enabled = false,
+  --   tag = 'v1.1.0',
+  --   event = 'VeryLazy',
+  --   opts = { notification = { override_vim_notify = true } },
+  -- },
 
   -- Better `vim.notify()`
   -- {
@@ -66,5 +68,5 @@ return {
   -- Noicer UI
 
   -- Easy set-up of Neovim's new statuscolumn feature
-  { 'luukvbaal/statuscol.nvim', event = 'BufReadPost', opts = { setopt = true } },
+  -- { 'luukvbaal/statuscol.nvim', event = 'BufReadPost', opts = { setopt = true } },
 }

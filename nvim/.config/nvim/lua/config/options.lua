@@ -4,6 +4,7 @@ vim.g.maplocalleader = ' '
 local o = vim.o
 
 vim.cmd 'setlocal conceallevel=2'
+o.autowrite = true
 o.breakindent = true
 o.breakindentopt = 'shift:2'
 -- o.cmdheight = 0
@@ -29,6 +30,7 @@ o.number = true
 o.pumblend = 10
 o.pumheight = 10
 o.relativenumber = true
+o.ruler = false
 o.scrolloff = 5
 o.shell = 'fish'
 o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
@@ -44,6 +46,7 @@ o.smartindent = true
 o.splitbelow = true
 o.splitkeep = 'screen'
 o.splitright = true
+o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 -- o.suffixesadd = o.suffixesadd .. '.js,.ts,.tsx,.jsx'
 o.swapfile = false
 o.tabstop = 2
@@ -88,12 +91,6 @@ vim.diagnostic.config {
     max_width = 80,
   },
 }
-
--- replace the default lsp diagnostic symbols
-for name, icon in pairs(require('ui.icons').lazy.diagnostics) do
-  name = 'DiagnosticSign' .. name
-  vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
-end
 
 if require('jit').arch == 'arm64' then
   vim.g.python3_host_prog = '/opt/homebrew/bin/python3'

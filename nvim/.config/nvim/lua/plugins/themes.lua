@@ -90,7 +90,7 @@ local plugins = {
   {
     'catppuccin/nvim',
     name = 'catppuccin',
-    -- priority = 1000,
+    priority = 1000,
     opts = function()
       local cp = require('catppuccin.palettes').get_palette()
       local util = require 'catppuccin.utils.colors'
@@ -115,10 +115,20 @@ local plugins = {
               information = { 'undercurl' },
             },
           },
+          blink_cmp = true,
+          dap = true,
+          dap_ui = true,
+          diffview = true,
+          fidget = true,
+          fzf = true,
+          gitsigns = true,
+          grug_far = true,
+          harpoon = ture,
           headlines = true,
-          illuminate = true,
+          illuminate = { enabled = true, lsp = true },
           indent_blankline = { enabled = false },
           lsp_trouble = true,
+          markdown = true,
           mason = true,
           mini = true,
           navic = { enabled = false, custom_bg = cp.mantle },
@@ -127,7 +137,9 @@ local plugins = {
           noice = true,
           notify = true,
           octo = true,
+          render_markdown = true,
           telescope = { enabled = true, style = 'nvchad' },
+          ufo = true,
           which_key = true,
         },
         highlight_overrides = {
@@ -146,14 +158,14 @@ local plugins = {
             DiffAdd = { bg = util.darken(cp.green, 0.2) },
             DiffDelete = { bg = util.darken(cp.red, 0.2) },
             DiffText = { bg = util.darken(cp.yellow, 0.3) },
-            FzfLuaBorder = { bg = cp.crust, fg = cp.crust },
-            -- FzfLuaHelpBorder = { bg = cp.crust, fg = cp.crust },
-            FzfLuaPreviewBorder = { bg = cp.mantle, fg = cp.mantle },
-            FzfLuaPreviewNormal = { bg = cp.mantle },
-            FzfLuaScrollBorderEmpty = { bg = cp.base, fg = cp.base },
-            FzfLuaScrollBorderFull = { bg = cp.base, fg = cp.base },
-            FzfLuaScrollFloatEmpty = { bg = cp.base, fg = cp.lavender },
-            FzfLuaScrollFloatFull = { bg = cp.base, fg = cp.lavender },
+            -- FzfLuaBorder = { bg = cp.crust, fg = cp.crust },
+            -- -- FzfLuaHelpBorder = { bg = cp.crust, fg = cp.crust },
+            -- FzfLuaPreviewBorder = { bg = cp.mantle, fg = cp.mantle },
+            -- FzfLuaPreviewNormal = { bg = cp.mantle },
+            -- FzfLuaScrollBorderEmpty = { bg = cp.base, fg = cp.base },
+            -- FzfLuaScrollBorderFull = { bg = cp.base, fg = cp.base },
+            -- FzfLuaScrollFloatEmpty = { bg = cp.base, fg = cp.lavender },
+            -- FzfLuaScrollFloatFull = { bg = cp.base, fg = cp.lavender },
             DashboardHeader = { fg = cp.yellow },
           },
         },
@@ -163,7 +175,7 @@ local plugins = {
 }
 
 for _, plugin in ipairs(plugins) do
-  --   plugin.priority = 1000
+  plugin.priority = 1000
   plugin.lazy = true
 end
 

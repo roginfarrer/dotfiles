@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-local installed, telescope = pcall(require, 'telescope')
-if not installed then
-  return {}
-end
-local builtin = require 'telescope.builtin'
-||||||| 6df6fd9
-local builtin = require 'telescope.builtin'
-=======
->>>>>>> local-changes
 -- Function to capitalize the first letters of words
 -- local function capitalizeWords(str)
 --   return str:gsub("(%a)([%w_']*)", function(first, rest)
@@ -152,67 +142,6 @@ local cmd = function(rhs)
   return '<cmd>Telescope ' .. rhs .. '<cr>'
 end
 
-<<<<<<< HEAD
-M.keys = {
-  { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
-  {
-    '<leader>;',
-    function()
-      if vim.g.disable_sqlite then
-        vim.cmd(cmd 'smart_open')
-      else
-        vim.cmd(cmd 'buffers')
-      end
-    end,
-    desc = 'Smart Open',
-  },
-  -- { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
-  { '<leader>/', cmd 'live_grep', desc = 'Grep (root dir)' },
-  { '<leader>fp', cmd 'find_files', desc = 'Find Files (root dir)' },
-  -- find
-  { '<leader>fb', cmd 'buffers', desc = 'Buffers' },
-  {
-    '<leader>fB',
-    function()
-      vim.cmd [[Telescope file_browser path=%:p:h select_buffer=true]]
-    end,
-    desc = 'Buffers',
-  },
-  -- { '<leader>fF', telescope 'files', desc = 'Find Files (root dir)' },
-  { '<leader>ff', cmd 'find_files', desc = 'Find Files (cwd)' },
-  { '<leader>fr', cmd 'oldfiles', desc = 'Recent' },
-  -- { '<leader>fR', telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
-  { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
-  { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
-||||||| 6df6fd9
-M.keys = {
-  { '<leader>ft', cmd 'builtin include_extensions=true', desc = 'telescope' },
-  { '<leader>;', function() 
-    if vim.g.disable_sqlite then
-      vim.cmd(cmd'smart_open')
-    else
-      vim.cmd(cmd'buffers')
-    end
-  end, desc = 'Smart Open' },
-  -- { '<leader>;', cmd 'buffers show_all_buffers=true', desc = 'Buffers' },
-  { '<leader>/', cmd 'live_grep', desc = 'Grep (root dir)' },
-  { '<leader>fp', cmd 'find_files', desc = 'Find Files (root dir)' },
-  -- find
-  { '<leader>fb', cmd 'buffers', desc = 'Buffers' },
-  {
-    '<leader>fB',
-    function()
-      vim.cmd [[Telescope file_browser path=%:p:h select_buffer=true]]
-    end,
-    desc = 'Buffers',
-  },
-  -- { '<leader>fF', telescope 'files', desc = 'Find Files (root dir)' },
-  { '<leader>ff', cmd 'find_files', desc = 'Find Files (cwd)' },
-  { '<leader>fr', cmd 'oldfiles', desc = 'Recent' },
-  -- { '<leader>fR', telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
-  { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
-  { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
-=======
 M.keys = function()
   local builtin = require 'telescope.builtin'
   return {
@@ -246,7 +175,6 @@ M.keys = function()
     -- { '<leader>fR', telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
     { '<leader>fg', cmd 'live_grep', desc = 'live grep' },
     { '<leader>fG', filesContaining, desc = 'live grep (files containing)' },
->>>>>>> local-changes
   -- stylua: ignore
   { '<leader>fd', function() builtin.git_files({ cwd = '~/dotfiles', prompt_title = '~ Dotfiles ~' }) end, desc = 'Dotfiles', },
   -- stylua: ignore

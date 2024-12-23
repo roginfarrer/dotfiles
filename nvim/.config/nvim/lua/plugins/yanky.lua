@@ -1,10 +1,8 @@
 return {
   {
     'gbprod/yanky.nvim',
-    dependencies = { { 'kkharji/sqlite.lua' } },
     opts = {
       highlight = { timer = 200 },
-      ring = { storage = 'sqlite' },
       preserve_cursor_position = { enabled = true },
     },
     keys = {

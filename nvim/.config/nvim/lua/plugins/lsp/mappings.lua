@@ -19,7 +19,7 @@ function M.setup(client, bufnr)
     vim.api.nvim_buf_create_user_command(bufnr, name, 'lua ' .. func .. '()', { force = true })
   end
 
-  lsp_cmd('LspGoToDefinition', 'vim.lsp.buf.definition')
+  -- lsp_cmd('LspGoToDefinition', 'vim.lsp.buf.definition')
   vim.api.nvim_buf_create_user_command(bufnr, 'LspGoToDefinition', function()
     if client.name == 'tsserver' then
       vim.fn.execute 'TypescriptGoToSourceDefinition'
@@ -47,7 +47,7 @@ function M.setup(client, bufnr)
     return ':IncRename ' .. vim.fn.expand '<cword>'
   end, { desc = 'Rename', expr = true })
   map('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Quickfix' })
-  map('n', '<leader>lR', '<cmd>FzfLua lsp_references<CR>', { desc = 'References' })
+  -- map('n', '<leader>lR', '<cmd>FzfLua lsp_references<CR>', { desc = 'References' })
   map('n', '<leader>ls', '<cmd>FzfLua lsp_document_symbols<CR>', { desc = 'Document Symbols' })
   map('n', '<leader>lS', '<cmd>FzfLua lsp_dynamic_workspace_symbols<CR>', { desc = 'Workspace Symbols' })
 
@@ -70,11 +70,14 @@ function M.setup(client, bufnr)
   end
 
   bufmap('n', 'gD', vim.lsp.buf.definition, { desc = 'goto definition' })
-  bufmap('n', 'gd', '<cmd>Glance definitions<CR>', { desc = 'preview definitions' })
-  bufmap('n', 'gr', '<cmd>Glance references<CR>', { desc = 'lsp references' })
-  bufmap('n', 'gI', '<cmd>Glance implementations<CR>')
-  bufmap('n', 'gy', '<cmd>Glance type_definitions<CR>')
-  bufmap('n', 'gY', '<cmd>FzfLua lsp_type_definitions<CR>')
+  -- bufmap('n', 'gd', '<cmd>Glance definitions<CR>', { desc = 'preview definitions' })
+  -- bufmap('n', 'gr', '<cmd>Glance references<CR>', { desc = 'lsp references' })
+  -- bufmap('n', 'gI', '<cmd>Glance implementations<CR>')
+  -- bufmap('n', 'gy', '<cmd>Glance type_definitions<CR>')
+  bufmap('n', 'gd', '<cmd>LspGoToDefinition<CR>', { desc = 'preview definitions' })
+  bufmap('n', 'gr', '<cmd>FzfLua lsp_references<CR>', { desc = 'lsp references' })
+  bufmap('n', 'gI', '<cmd>FzfLua lsp_implementations<CR>')
+  bufmap('n', 'gy', '<cmd>FzfLua lsp_definitions<CR>')
   bufmap('n', '[d', '<cmd>LspPrevDiagnostic<CR>')
   bufmap('n', ']d', '<cmd>LspNextDiagnostic<CR>')
   bufmap('n', 'K', showDocs)

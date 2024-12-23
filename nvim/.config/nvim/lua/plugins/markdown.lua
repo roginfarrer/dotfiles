@@ -30,14 +30,4 @@ return {
       }
     end,
   },
-
-  {
-    'MeanderingProgrammer/markdown.nvim',
-    enabled = false,
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    config = function()
-      require('render-markdown').setup {}
-    end,
-    ft = { 'markdown', 'mdx' },
-  },
 }

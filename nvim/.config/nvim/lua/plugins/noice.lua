@@ -19,8 +19,6 @@ return {
       }
     end,
     opts = {
-      messages = { enabled = true },
-      -- cmdline = { view = 'cmdline' },
       lsp = {
         override = {
           -- override the default lsp markdown formatter with Noice
@@ -32,37 +30,41 @@ return {
         },
       },
       presets = {
-        inc_rename = true,
+        -- inc_rename = true,
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
-        lsp_doc_border = true,
+        -- lsp_doc_border = true,
       },
-      commands = {
-        all = {
-          -- options for the message history that you get with `:Noice`
-          view = 'split',
-          opts = { enter = true, format = 'details' },
-          filter = {},
-        },
-      },
+      -- commands = {
+      --   all = {
+      --     -- options for the message history that you get with `:Noice`
+      --     view = 'split',
+      --     opts = { enter = true, format = 'details' },
+      --     filter = {},
+      --   },
+      -- },
       routes = {
-        {
-          filter = {
-            event = 'msg_show',
-            find = '%d+L, %d+B',
-          },
-          view = 'mini',
-        },
+        -- {
+        --   filter = {
+        --     event = 'msg_show',
+        --     any = {
+        --       { find = '%d+L, %d+B' },
+        --       -- { find = '; after #%d+' },
+        --       -- { find = '; before #%d+' },
+        --     },
+        --   },
+        --   view = 'mini',
+        -- },
         -- hide "written" messages
-        {
-          filter = {
-            event = 'msg_show',
-            kind = '',
-            find = 'written',
-          },
-          opts = { skip = true },
-        },
+        -- {
+        --   filter = {
+        --     event = 'msg_show',
+        --     kind = '',
+        --     find = 'written',
+        --   },
+        --   opts = { skip = true },
+        -- },
       },
       -- views = { mini = { win_options = { winblend = 0 } } },
     },
