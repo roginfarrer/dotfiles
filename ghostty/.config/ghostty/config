@@ -1,0 +1,72 @@
+# theme = catppuccin-mocha
+theme = tokyonight
+
+# Font
+font-family = "Symbols Nerd Font Mono"
+font-family = "Fira Code"
+font-family-bold = "Fira Code"
+font-family-italic = "Maple Mono"
+font-family-bold-italic = "Maple Mono"
+font-size = 15
+adjust-cell-height = 10%
+# font-thicken = true
+adjust-underline-position = 4
+
+# Window
+window-padding-y = 4,0
+window-padding-balance = true
+# window-decoration = transparent
+macos-titlebar-style = hidden
+
+# Other
+copy-on-select = clipboard
+shell-integration-features = cursor,sudo,no-title
+
+# Keys
+# keybind = ctrl+h=goto_split:left
+# keybind = ctrl+j=goto_split:bottom
+# keybind = ctrl+k=goto_split:top
+# keybind = ctrl+l=goto_split:right
+# keybind = super+shift+t=new_tab
+# keybind = super+shift+h=previous_tab
+# keybind = super+shift+l=next_tab
+# keybind = super+shift+comma=move_tab:-1
+# keybind = super+shift+period=move_tab:1
+# keybind = super+shift+c=copy_to_clipboard
+# keybind = super+shift+v=paste_from_clipboard
+# keybind = super+shift+enter=new_split:auto
+# keybind = super+shift+i=inspector:toggle
+# keybind = super+shift+m=toggle_split_zoom
+# keybind = super+shift+r=reload_config
+# keybind = super+shift+s=write_screen_file:open
+# keybind = super+shift+w=close_surface
+
+# \x01 = ctrl+a
+keybind = super+1=text:\x01\x31
+keybind = super+2=text:\x01\x32
+keybind = super+3=text:\x01\x33
+keybind = super+4=text:\x01\x34
+keybind = super+5=text:\x01\x35
+keybind = super+6=text:\x01\x36
+keybind = super+7=text:\x01\x37
+keybind = super+8=text:\x01\x38
+keybind = super+9=text:\x01\x38
+
+# Select a new tmux session for the attached client interactively
+keybind = super+k=text:\x01\x73
+# Previous tab
+keybind = super+shift+left_bracket=text:\x01\x6e
+# Next tab
+keybind = super+shift+right_bracket=text:\x01\x70
+# Split the current pane into two, left and right
+keybind = super+shift+n=text:\x01\x22
+# Split the current pane into two, top and bottom.
+keybind = super+n=text:\x01\x25
+# Create a new tmux window
+keybind = super+t=text:\x01\x63
+# Break the current tmux pane out of the tmux window
+keybind = super+t=text:\x01\x21
+# Kill the current tmux pane (and window if last pane)
+keybind = super+w=text:\x01\x78
+# Toggle the zoom state of the current tmux pane
+keybind = super+z=text:\x01\x7a
