@@ -1,7 +1,7 @@
 local M = {}
-local wezterm = require("wezterm")
 
 M.setup = function(config)
+	local wezterm = require("wezterm")
 	local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
 
 	local function update_right_status(window, workspace)
@@ -20,14 +20,15 @@ M.setup = function(config)
 
 	wezterm.on("smart_workspace_switcher.workspace_switcher.created", update_right_status)
 
-	return require("utils").deepMerge(config, {
-		keys = {
-			{
-				key = "s",
-				mods = "CMD",
-				action = workspace_switcher.switch_workspace(),
-			},
-		},
+	table.insert(config.keys, {
+		key = "t",
+		mods = "LEADER",
+		action = workspace_switcher.switch_workspace(),
+	})
+	table.insert(config.keys, {
+		key = "s",
+		mods = "CMD",
+		action = workspace_switcher.switch_workspace(),
 	})
 end
 

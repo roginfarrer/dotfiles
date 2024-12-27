@@ -1,5 +1,5 @@
-# theme = catppuccin-mocha
-theme = tokyonight
+theme = catppuccin-mocha
+# theme = tokyonight
 
 # Font
 font-family = "Symbols Nerd Font Mono"

@@ -10,8 +10,9 @@ return {
       dashboard = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
+      -- statuscolumn = { enabled = true },
       input = { enabled = true },
+      scroll = { enabled = false },
     },
   },
 }

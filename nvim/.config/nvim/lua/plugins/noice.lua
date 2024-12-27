@@ -2,6 +2,7 @@ return {
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
+    dependencies = { 'rcarriga/nvim-notify' },
      -- stylua: ignore
     keys = {
       { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
@@ -34,7 +35,7 @@ return {
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
-        -- lsp_doc_border = true,
+        lsp_doc_border = true,
       },
       -- commands = {
       --   all = {
@@ -57,14 +58,14 @@ return {
         --   view = 'mini',
         -- },
         -- hide "written" messages
-        -- {
-        --   filter = {
-        --     event = 'msg_show',
-        --     kind = '',
-        --     find = 'written',
-        --   },
-        --   opts = { skip = true },
-        -- },
+        {
+          filter = {
+            event = 'msg_show',
+            kind = '',
+            find = 'written',
+          },
+          view = 'mini',
+        },
       },
       -- views = { mini = { win_options = { winblend = 0 } } },
     },

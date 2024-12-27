@@ -58,4 +58,6 @@ return {
     cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
   },
+
+  { 'luukvbaal/statuscol.nvim', opts = {} },
 }
