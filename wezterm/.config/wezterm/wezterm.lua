@@ -21,7 +21,7 @@ table.insert(hyperlink_rules, {
 	format = "https://www.github.com/$1/$3",
 })
 
--- local theme = wezterm.plugin.require("https://github.com/neapsix/wezterm").main
+local rose_pine = wezterm.plugin.require("https://github.com/neapsix/wezterm").main
 
 -- Allow working with both the current release and the nightly
 local config = {}
@@ -31,9 +31,14 @@ end
 
 -- wezterm.plugin.update_all()
 config.hyperlink_rules = hyperlink_rules
+config.color_schemes = {
+	["Rose Pine"] = rose_pine.colors(),
+}
 config.color_scheme = "Catppuccin Mocha"
--- colors = theme.colors()
--- config.window_frame = theme.window_frame()
+-- config.color_scheme = "Tokyo Night"
+if config.color_scheme == "Rose Pine" then
+	config.window_frame = rose_pine.window_frame()
+end
 config.font = wezterm.font_with_fallback({
 	"Fira Code",
 	-- "Recursive Mono Linear Static",
@@ -83,7 +88,7 @@ config.window_padding = {
 }
 config.default_workspace = "dotfiles"
 config.default_cwd = wezterm.home_dir .. "/dotfiles"
-config.window_close_confirmation = "NeverPrompt"
+-- config.window_close_confirmation = "NeverPrompt"
 config.native_macos_fullscreen_mode = false
 -- config.cursor_blink_rate = 0
 config.front_end = "WebGpu"
@@ -168,8 +173,8 @@ else
 			tab:set_title(wezterm.nerdfonts.dev_git .. " Lazygit")
 		end),
 	})
-	-- unix_domains = { { name = "unix" } },
-	-- default_gui_startup_args = { "connect", "unix" },
+	config.unix_domains = { { name = "unix" } }
+	-- config.default_gui_startup_args = { "connect", "unix" }
 	config.hide_tab_bar_if_only_one_tab = false
 
 	wezterm.on("rfarrer-update-plugins", function(window)
@@ -188,7 +193,7 @@ else
 	require("workspace-switcher").setup(config)
 	require("smart-splits").setup(config)
 end
-require("tab-titles")
+-- require("tab-titles")
 require("nvim-zenmode")
 
 local hasLocal, localFile = pcall(require, "local")
