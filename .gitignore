@@ -9,3 +9,4 @@ zsh/.zsh/.zsh_plugins.zsh
 zsh/.zsh/.antidote
 
 nvim/.config/nvim/lua/local-config.lua
+local.lua
