@@ -101,6 +101,16 @@ return {
       require('mason').setup()
 
       local ensure_installed = vim.tbl_keys(servers or {})
+      vim.list_extend(ensure_installed, {
+        'stylua',
+        'shfmt',
+        'prettier',
+      })
+
+      require('mason-tool-installer').setup {
+        run_on_start = true,
+        ensure_installed = ensure_installed,
+      }
 
       require('mason-lspconfig').setup {
         ensure_installed = ensure_installed,

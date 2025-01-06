@@ -113,3 +113,23 @@ vim.g.neovide_cursor_trail_size = 0.5
 if vim.fn.has 'nvim-0.9.0' == 1 then
   o.splitkeep = 'screen'
 end
+
+if os.getenv 'SSH_CLIENT' ~= nil or os.getenv 'SSH_TTY' ~= nil then
+  local function paste()
+    return {
+      vim.split(vim.fn.getreg '', '\n'),
+      vim.fn.getregtype '',
+    }
+  end
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+    },
+    paste = {
+      ['+'] = paste,
+      ['*'] = paste,
+    },
+  }
+end

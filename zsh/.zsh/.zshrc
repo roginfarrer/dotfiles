@@ -10,8 +10,8 @@ export MANPAGER="nvim +Man!"
 
 ### Imports
 source ${ZDOTDIR}/utils.zsh
-# source ${ZDOTDIR}/plugins.zsh
-source ${ZDOTDIR}/zap.zsh
+source ${ZDOTDIR}/plugins.zsh
+# source ${ZDOTDIR}/zap.zsh
 source ${ZDOTDIR}/settings.zsh
 source ${ZDOTDIR}/aliases.zsh
 
