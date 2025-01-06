@@ -1,3 +1,4 @@
+.zcompdump
 .DS_Store
 tmux/.tmux/plugins
 *.bak
