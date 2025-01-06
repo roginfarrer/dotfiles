@@ -198,7 +198,7 @@ require("nvim-zenmode")
 
 local hasLocal, localFile = pcall(require, "local")
 if hasLocal then
-	localFile(config)
+	localFile.setup(config)
 end
 
 return config
