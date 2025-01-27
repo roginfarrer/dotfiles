@@ -3,6 +3,7 @@
 .devcontainer/
 .nvim/
 *.lazy.lua
+.nvim.lua
 
 # Compiled source #
 ###################
