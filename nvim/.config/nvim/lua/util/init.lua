@@ -53,4 +53,63 @@ function M.on_plugin_load(name, fn)
   end
 end
 
+local function getDirectoryPath()
+  if vim.bo.filetype == 'oil' then
+    return require('oil').get_current_dir()
+  end
+  return vim.fn.expand '%:p:h'
+end
+
+_G.SnackPick = function(builtin, args)
+  return function()
+    if Snacks == nil then
+      vim.notify('Snacks not defined or installed?', vim.log.levels.ERROR)
+      return
+    end
+    args = args or {}
+    if args.cwd == 'root_from_file' then
+      args.cwd = getDirectoryPath()
+    end
+    Snacks.picker[builtin](args)
+  end
+end
+
+M.makeRelativePath = function(targetPath, basePath)
+  -- Normalize the paths by removing trailing slashes
+  targetPath = targetPath:gsub('[/\\]+$', '')
+  basePath = basePath:gsub('[/\\]+$', '')
+
+  -- Split the paths into components
+  local targetComponents = {}
+  for component in targetPath:gmatch '[^/\\]+' do
+    table.insert(targetComponents, component)
+  end
+
+  local baseComponents = {}
+  for component in basePath:gmatch '[^/\\]+' do
+    table.insert(baseComponents, component)
+  end
+
+  -- Remove common components
+  local i = 1
+  while i <= #targetComponents and i <= #baseComponents and targetComponents[i] == baseComponents[i] do
+    i = i + 1
+  end
+
+  -- Calculate the number of upward directories needed
+  local upwardDirs = #baseComponents - i + 1
+  local relativePath = {}
+
+  for j = 1, upwardDirs do
+    table.insert(relativePath, '..')
+  end
+
+  -- Add the remaining target components
+  for j = i, #targetComponents do
+    table.insert(relativePath, targetComponents[j])
+  end
+
+  return table.concat(relativePath, '/')
+end
+
 return M

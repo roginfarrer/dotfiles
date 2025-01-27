@@ -123,7 +123,7 @@ local plugins = {
           fzf = true,
           gitsigns = true,
           grug_far = true,
-          harpoon = ture,
+          harpoon = true,
           headlines = true,
           illuminate = { enabled = true, lsp = true },
           indent_blankline = { enabled = false },
@@ -141,6 +141,7 @@ local plugins = {
           telescope = { enabled = true, style = 'nvchad' },
           ufo = true,
           which_key = true,
+          snacks = true,
         },
         highlight_overrides = {
           mocha = {

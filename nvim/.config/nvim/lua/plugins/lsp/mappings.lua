@@ -48,8 +48,11 @@ function M.setup(client, bufnr)
   end, { desc = 'Rename', expr = true })
   map('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Quickfix' })
   -- map('n', '<leader>lR', '<cmd>FzfLua lsp_references<CR>', { desc = 'References' })
-  map('n', '<leader>ls', '<cmd>FzfLua lsp_document_symbols<CR>', { desc = 'Document Symbols' })
-  map('n', '<leader>lS', '<cmd>FzfLua lsp_dynamic_workspace_symbols<CR>', { desc = 'Workspace Symbols' })
+  -- map('n', '<leader>ls', '<cmd>FzfLua lsp_document_symbols<CR>', { desc = 'Document Symbols' })
+  -- map('n', '<leader>lS', '<cmd>FzfLua lsp_dynamic_workspace_symbols<CR>', { desc = 'Workspace Symbols' })
+  -- map('n', '<leader>lR', '<cmd>FzfLua lsp_references<CR>', { desc = 'References' })
+  -- map('n', '<leader>ls', '<cmd>FzfLua lsp_document_symbols<CR>', { desc = 'Document Symbols' })
+  -- map('n', '<leader>lS', '<cmd>FzfLua lsp_dynamic_workspace_symbols<CR>', { desc = 'Workspace Symbols' })
 
   wk.add {
     {

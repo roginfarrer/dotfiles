@@ -1,5 +1,3 @@
--- vim:setlocal nowrap
-
 local M = {}
 
 -- -- Function to capitalize the first letters of words
@@ -59,6 +57,7 @@ end
 
 return {
   'ibhagwan/fzf-lua',
+  enabled = false,
   dependencies = {
     { 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
   },
@@ -178,7 +177,7 @@ return {
       { '<leader>ff', M.open 'files',                                              desc = 'Find Files (cwd)' },
       { '<leader>fF', M.open('files', { cwd = 'root_from_file' }),                 desc = 'Find Files (from buffer)' },
       { '<leader>fG', M.open('live_grep', { cwd = 'root_from_file' }),             desc = 'Grep (cwd)' },
-      { '<leader>fd', M.open('files', { cwd = '~/dotfiles' }),                     desc = 'Dotfiles' },
+      { '<leader>fd', M.open('files', { cwd = '~/dotfiles', hidden = true }),                     desc = 'Dotfiles' },
       { '<leader>fD', M.open('live_grep', { cwd = '~/dotfiles' }),                 desc = 'Grep Dotfiles' },
       { '<leader>fh', M.open 'oldfiles',                                           desc = 'Recent' },
       { '<leader>fH', M.open('oldfiles', { cwd = vim.uv.cwd() }),                  desc = 'Recent (cwd)' },

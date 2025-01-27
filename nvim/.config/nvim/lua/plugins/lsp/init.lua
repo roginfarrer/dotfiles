@@ -6,11 +6,15 @@ return {
     cmd = 'LazyDev',
     dependencies = {
       { 'Bilal2453/luvit-meta', lazy = true },
+      { 'gonstoll/wezterm-types', lazy = true },
     },
     opts = {
       library = {
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
         { path = 'lazy.nvim', words = { 'LazyVim' } },
+        { path = 'snacks.nvim', words = { 'Snacks' } },
+        -- Needs `justinsgithub/wezterm-types` to be installed
+        { path = 'wezterm-types', mods = { 'wezterm' } },
       },
     },
   },

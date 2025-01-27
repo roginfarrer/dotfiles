@@ -1,4 +1,4 @@
-local wezterm = require("wezterm")
+local wezterm = require("wezterm") --[[@as Wezterm]]
 local act = wezterm.action
 local default_hyperlink_rules = wezterm.default_hyperlink_rules()
 
