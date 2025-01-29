@@ -2,7 +2,7 @@ return {
   {
     'saghen/blink.cmp',
     enabled = true,
-    lazy = false,
+    events = 'InsertEnter',
     -- optional: provides snippets for the snippet source
     dependencies = 'rafamadriz/friendly-snippets',
     -- use a release tag to download pre-built binaries
@@ -33,9 +33,14 @@ return {
           auto_show = true,
           auto_show_delay_ms = 200,
         },
-        ghost_text = {
-          enabled = true,
-        },
+        -- ghost_text = {
+        --   enabled = true,
+        -- },
+      },
+
+      keymap = {
+        -- preset = 'enter',
+        ['<C-y>'] = { 'select_and_accept' },
       },
     },
   },
