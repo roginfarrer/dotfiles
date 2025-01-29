@@ -15,7 +15,17 @@ return {
       -- statuscolumn = { enabled = true },
       input = { enabled = true },
       scroll = { enabled = false },
-      picker = {},
+      picker = {
+        ui_select = true,
+        win = {
+          input = {
+            keys = {
+              ['.'] = { 'toggle_ignored', mode = { 'n' } },
+              ['?'] = { 'toggle_hidden', mode = { 'n' } },
+            },
+          },
+        },
+      },
     },
     keys = function()
       local function getDirectoryPath()
@@ -37,12 +47,12 @@ return {
       return {
         { '<leader>;', c 'smart', desc = 'Smart picker' },
         { '<leader>b', c 'buffers', desc = 'Switch Buffer' },
-        { '<leader>/', c 'grep', desc = 'Grep' },
-        { '<leader>ff', c 'git_files', desc = 'Find Files (cwd)' },
-        { '<leader>fF', c('files', { cwd = 'root_from_file' }), desc = 'Find Files (from buffer)' },
-        { '<leader>fG', c('grep', { cwd = 'root_from_file' }), desc = 'Grep (cwd)' },
-        { '<leader>fd', c('git_files', { cwd = '~/dotfiles' }), desc = 'Dotfiles' },
-        { '<leader>fD', c('grep', { cwd = '~/dotfiles' }), desc = 'Grep Dotfiles' },
+        { '<leader>/', c('grep', { hidden = true }), desc = 'Grep' },
+        { '<leader>ff', c('git_files', { hidden = true }), desc = 'Find Files (cwd)' },
+        { '<leader>fF', c('files', { cwd = 'root_from_file', hidden = true }), desc = 'Find Files (from buffer)' },
+        { '<leader>fG', c('grep', { cwd = 'root_from_file', hidden = true }), desc = 'Grep (cwd)' },
+        { '<leader>fd', c('git_files', { cwd = '~/dotfiles', hidden = true }), desc = 'Dotfiles' },
+        { '<leader>fD', c('grep', { cwd = '~/dotfiles', hidden = true }), desc = 'Grep Dotfiles' },
         { '<leader>fh', c 'recent', desc = 'Recent' },
         { '<leader>fc', c 'grep_word', desc = 'Grep word under cursor' },
         { '<leader>st', c 'pickers', desc = 'Picker builtins' },
@@ -54,9 +64,17 @@ return {
         { '<leader>sa', c 'autocmds', desc = 'auto commands' },
         { '<leader>sc', c 'colorschemes', desc = 'colorschemes' },
         { '<leader>r', c 'resume', desc = 'Picker resume' },
+        { '<leader>gsl', c 'git_log', desc = 'Picker Git Log' },
+        { '<leader>gss', c 'git_status', desc = 'Picker Git Status' },
+        { '<leader>ld', c 'lsp_definitions', desc = 'Goto Definition' },
+        { '<leader>lD', c 'lsp_declarations', desc = 'Goto Declarations' },
+        { '<leader>lI', c 'lsp_implementations', desc = 'Goto Implementation' },
+        { '<leader>lR', c 'lsp_references', nowait = true, desc = 'References' },
+        { '<leader>ly', c 'lsp_type_definitions', desc = 'Goto T[y]pe Definition' },
         { 'gd', c 'lsp_definitions', desc = 'Goto Definition' },
+        { 'gD', c 'lsp_declarations', desc = 'Goto Declarations' },
         { 'gr', c 'lsp_references', nowait = true, desc = 'References' },
-        { 'gI', c 'lsp_references', desc = 'Goto Implementation' },
+        { 'gI', c 'lsp_implementations', desc = 'Goto Implementation' },
         { 'gy', c 'lsp_type_definitions', desc = 'Goto T[y]pe Definition' },
         {
           '<c-x><c-f>',

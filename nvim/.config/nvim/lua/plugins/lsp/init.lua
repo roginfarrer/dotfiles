@@ -60,8 +60,9 @@ return {
       -- { 'pmizio/typescript-tools.nvim', enabled = true },
       -- 'davidosomething/format-ts-errors.nvim',
       { 'dnlhc/glance.nvim', enabled = false, opts = { list = { position = 'left' } } },
-      'williamboman/mason.nvim',
+      { 'williamboman/mason.nvim', cmd = 'Mason' },
     },
+    cmd = 'Mason',
     config = function()
       require('util').autocmd('LspAttach', {
         group = 'lsp-attach',
@@ -79,7 +80,7 @@ return {
       end
       local hasBlink, blinkCmp = pcall(require, 'blink.cmp')
       if hasBlink then
-        capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+        capabilities = blinkCmp.get_lsp_capabilities(capabilities)
       end
 
       local servers = {
@@ -97,27 +98,13 @@ return {
         jsonls = require 'plugins.lsp.json',
         stylelint_lsp = { filetypes = { 'css', 'less', 'scss' } },
         rust_analyzer = {},
-        -- emmet_language_server = {},
-        -- efm = { filetypes = { 'php' } },
         intelephense = require 'plugins.lsp.intelephense',
       }
 
       require('mason').setup()
 
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua',
-        'shfmt',
-        'prettier',
-      })
-
-      require('mason-tool-installer').setup {
-        run_on_start = true,
-        ensure_installed = ensure_installed,
-      }
-
       require('mason-lspconfig').setup {
-        ensure_installed = ensure_installed,
+        ensure_installed = servers,
         automatic_installation = false,
         handlers = {
           function(server_name)
@@ -138,54 +125,6 @@ return {
         run_on_start = false,
         ensure_installed = { 'stylua', 'shfmt', 'prettier', 'prettierd' },
       }
-
-      -- require('typescript-tools').setup {
-      --   on_attach = function(client, bufnr)
-      --     on_attach(client, bufnr)
-      --     client.server_capabilities.documentFormattingProvider = false
-      --     client.server_capabilities.documentRangeFormattingProvider = false
-      --   end,
-      --   settings = {
-      --     expose_as_code_action = { 'fix_all', 'add_missing_imports', 'remove_unused' },
-      --     tsserver_plugins = { 'styled-components' },
-      --     complete_function_calls = true,
-      --     tsserver_file_preferences = {
-      --       includeInlayEnumMemberValueHints = true,
-      --       includeInlayFunctionLikeReturnTypeHints = true,
-      --       includeInlayFunctionParameterTypeHints = true,
-      --       includeInlayParameterNameHints = 'all',
-      --       includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-      --       includeInlayPropertyDeclarationTypeHints = true,
-      --       includeInlayVariableTypeHints = true,
-      --     },
-      --   },
-      --   handlers = {
-      --     ['textDocument/publishDiagnostics'] = function(_, result, ctx, config)
-      --       if result.diagnostics == nil then
-      --         return
-      --       end
-
-      --       -- ignore some tsserver diagnostics
-      --       local idx = 1
-      --       while idx <= #result.diagnostics do
-      --         local entry = result.diagnostics[idx]
-
-      --         local formatter = require('format-ts-errors')[entry.code]
-      --         entry.message = formatter and formatter(entry.message) or entry.message
-
-      --         -- codes: https://github.com/microsoft/TypeScript/blob/main/src/compiler/diagnosticMessages.json
-      --         if entry.code == 80001 then
-      --           -- { message = "File is a CommonJS module; it may be converted to an ES module.", }
-      --           table.remove(result.diagnostics, idx)
-      --         else
-      --           idx = idx + 1
-      --         end
-      --       end
-
-      --       vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
-      --     end,
-      --   },
-      -- }
     end,
   },
 }

@@ -23,6 +23,9 @@ return {
     --   'BufNewFile ' .. vim.fn.expand '~' .. '/**.md',
     -- },
     ft = { 'markdown' },
+    cond = function()
+      return require('plenary.path').is_dir(require('plenary.path'):new '~/Obsidian/ObsidianSync')
+    end,
     cmd = cmds,
     opts = {
       workspaces = {
