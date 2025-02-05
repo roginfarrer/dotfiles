@@ -5,6 +5,7 @@ return {
     cond = not vim.g.disable_treesitter,
     dependencies = {
       { 'guivazcabral/neotest-jest' },
+      'nvim-neotest/nvim-nio',
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
     },
@@ -65,7 +66,6 @@ return {
 
   {
     'mfussenegger/nvim-dap',
-    enabled = false,
     dependencies = {
       -- fancy UI for the debugger
       { 'nvim-neotest/nvim-nio' },
@@ -153,96 +153,36 @@ return {
     },
     opts = function()
       local dap = require 'dap'
-      -- if not dap.adapters['pwa-node'] then
-      --   require('dap').adapters['pwa-node'] = {
-      --     type = 'server',
-      --     host = 'localhost',
-      --     port = '${port}',
-      --     executable = {
-      --       command = 'node',
-      --       -- 💀 Make sure to update this path to point to your installation
-      --       args = {
-      --         require('mason-registry').get_package('js-debug-adapter'):get_install_path()
-      --           .. '/js-debug/src/dapDebugServer.js',
-      --         '${port}',
-      --       },
-      --     },
-      --   }
-      -- end
       for _, language in ipairs { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' } do
         if not dap.configurations[language] then
           dap.configurations[language] = {
             {
-              type = 'pwa-node',
+              type = 'node2',
               request = 'launch',
               name = 'Launch file',
               program = '${file}',
               cwd = '${workspaceFolder}',
+              runtimeArgs = { '--inspect-brk', '$path_to_jest', '--no-coverage', '-t', '$result', '--', '$file' },
+              args = { '--no-cache' },
+              sourceMaps = false,
+              protocol = 'inspector',
+              skipFiles = { '<node_internals>/**/*.js' },
+              console = 'integratedTerminal',
+              port = 9229,
+              disableOptimisticBPs = true,
             },
-            {
-              type = 'pwa-node',
-              request = 'attach',
-              name = 'Attach',
-              processId = require('dap.utils').pick_process,
-              cwd = '${workspaceFolder}',
-            },
+            -- {
+            --   type = 'pwa-node',
+            --   request = 'attach',
+            --   name = 'Attach',
+            --   processId = require('dap.utils').pick_process,
+            --   cwd = '${workspaceFolder}',
+            -- },
           }
         end
       end
     end,
-    --     dap.adapters.node2 = {
-    --       type = 'executable',
-    --       command = 'node',
-    --       args = { os.getenv 'HOME' .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
-    --     }
-    --     dap.configurations.javascript = {
-    --       {
-    --         name = 'Launch',
-    --         type = 'node2',
-    --         request = 'launch',
-    --         program = '${file}',
-    --         cwd = vim.fn.getcwd(),
-    --         sourceMaps = true,
-    --         protocol = 'inspector',
-    --         console = 'integratedTerminal',
-    --       },
-    --       {
-    --         -- For this to work you need to make sure the node process is started with the `--inspect` flag.
-    --         name = 'Attach to process',
-    --         type = 'node2',
-    --         request = 'attach',
-    --         processId = require('dap.utils').pick_process,
-    --       },
-    --     }
-    --     dap.adapters.chrome = {
-    --       type = 'executable',
-    --       command = 'node',
-    --       args = { os.getenv 'HOME' .. '/path/to/vscode-chrome-debug/out/src/chromeDebug.js' }, -- TODO adjust
-    --     }
-    --     dap.configurations.javascriptreact = { -- change this to javascript if needed
-    --       {
-    --         type = 'chrome',
-    --         request = 'attach',
-    --         program = '${file}',
-    --         cwd = vim.fn.getcwd(),
-    --         sourceMaps = true,
-    --         protocol = 'inspector',
-    --         port = 9222,
-    --         webRoot = '${workspaceFolder}',
-    --       },
-    --     }
-    --     dap.configurations.typescriptreact = { -- change to typescript if needed
-    --       {
-    --         type = 'chrome',
-    --         request = 'attach',
-    --         program = '${file}',
-    --         cwd = vim.fn.getcwd(),
-    --         sourceMaps = true,
-    --         protocol = 'inspector',
-    --         port = 9222,
-    --         webRoot = '${workspaceFolder}',
-    --       },
-    --     }
-    --   end,
   },
+
+  { 'David-Kunz/jester' },
 }

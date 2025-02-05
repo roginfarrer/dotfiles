@@ -7,7 +7,7 @@ return {
       {
         '=',
         function()
-          require('conform').format { async = true, lsp_fallback = true }
+          require('conform').format { async = true }
           vim.notify('Buffer formatted!', vim.log.levels.INFO)
         end,
         desc = 'Format buffer',
@@ -27,6 +27,11 @@ return {
     end,
     opts = function()
       local prettier = { 'prettier', stop_after_first = true }
+      require('conform').formatters.phpcbf = {
+        prepend_args = {
+          '--standard=/home/rfarrer/development/Etsyweb/tests/standards/stable-ruleset.xml',
+        },
+      }
       return {
         formatters = {
           my_auto_indent = {
@@ -58,12 +63,12 @@ return {
           sh = { 'beautysh' },
           zsh = { 'beautysh' },
           fish = { 'fish_indent' },
-          -- php = { 'trim_whitespace', 'trim_newlines', 'my_auto_indent' },
+          -- php = { lsp_format = 'first', 'phpcbf' },
+          php = { 'my_auto_indent', 'trim_whitepsace', 'trim_newlines', 'phpcbf' },
         },
-        format_on_save = {
-          lsp_fallback = true,
-          timeout_ms = 2000,
-        },
+        default_format_opts = { lsp_format = 'fallback' },
+        log_level = vim.log.levels.DEBUG,
+        format_on_save = { timeout_ms = 2000 },
       }
     end,
   },

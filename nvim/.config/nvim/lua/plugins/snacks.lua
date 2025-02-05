@@ -45,7 +45,7 @@ return {
       end
 
       return {
-        { '<leader>;', c 'smart', desc = 'Smart picker' },
+        { '<leader>;', c 'buffers', desc = 'Buffers' },
         { '<leader>b', c 'buffers', desc = 'Switch Buffer' },
         { '<leader>/', c('grep', { hidden = true }), desc = 'Grep' },
         { '<leader>ff', c('git_files', { hidden = true }), desc = 'Find Files (cwd)' },
