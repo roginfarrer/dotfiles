@@ -67,5 +67,3 @@
   path = ~/.gitconfig_local
 [safe]
 	directory = *
-[commit]
-	gpgsign = true

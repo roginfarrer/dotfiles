@@ -100,12 +100,16 @@ return {
         rust_analyzer = {},
         intelephense = require 'plugins.lsp.intelephense',
       }
+      local server_names = {}
+      for name in pairs(servers) do
+        table.insert(server_names, name)
+      end
 
       require('mason').setup()
 
       require('mason-lspconfig').setup {
-        ensure_installed = servers,
-        automatic_installation = false,
+        ensure_installed = server_names,
+        automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name]
@@ -122,7 +126,7 @@ return {
       }
 
       require('mason-tool-installer').setup {
-        run_on_start = false,
+        run_on_start = true,
         ensure_installed = { 'stylua', 'shfmt', 'prettier', 'prettierd' },
       }
     end,
