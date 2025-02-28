@@ -26,8 +26,10 @@ return {
           },
           headings = require('markview.presets').headings.glow,
         },
-        checkboxes = {
-          enable = false,
+        markdown_inline = {
+          checkboxes = {
+            enable = false,
+          },
         },
       }
     end,

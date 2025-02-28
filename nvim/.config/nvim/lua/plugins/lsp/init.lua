@@ -53,9 +53,9 @@ return {
     event = 'BufReadPre',
     dependencies = {
       'folke/lazydev.nvim',
-      'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-nvim-lsp',
       'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'Bilal2453/luvit-meta', lazy = true },
       -- { 'pmizio/typescript-tools.nvim', enabled = true },
       -- 'davidosomething/format-ts-errors.nvim',
@@ -129,6 +129,25 @@ return {
         run_on_start = true,
         ensure_installed = { 'stylua', 'shfmt', 'prettier', 'prettierd' },
       }
+
+      if require('util').has 'mason-nvim-dap' then
+        require('mason-nvim-dap').setup {
+          -- Makes a best effort to setup the various debuggers with
+          -- reasonable debug configurations
+          automatic_installation = false,
+
+          -- You can provide additional configuration to the handlers,
+          -- see mason-nvim-dap README for more information
+          handlers = {},
+
+          -- You'll need to check that you have the required things installed
+          -- online, please don't ask me how to install them :)
+          ensure_installed = {
+            -- 'js-debug-adapter',
+            -- Update this to ensure that you have the debuggers for the langs you want
+          },
+        }
+      end
     end,
   },
 }

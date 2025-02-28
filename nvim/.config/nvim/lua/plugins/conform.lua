@@ -64,7 +64,7 @@ return {
           zsh = { 'beautysh' },
           fish = { 'fish_indent' },
           -- php = { lsp_format = 'first', 'phpcbf' },
-          php = { 'my_auto_indent', 'trim_whitepsace', 'trim_newlines', 'phpcbf' },
+          php = { 'my_auto_indent', 'trim_newlines', 'phpcbf' },
         },
         default_format_opts = { lsp_format = 'fallback' },
         log_level = vim.log.levels.DEBUG,

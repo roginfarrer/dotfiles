@@ -34,7 +34,6 @@ return {
         'scss',
         'fish',
         'astro',
-        'org',
         'diff',
         'git_config',
         'gitignore',

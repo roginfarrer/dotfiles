@@ -1,0 +1,6 @@
+{
+  "current_file": {
+    "prefix": "%",
+    "body": ["$TM_FILEPATH"]
+  }
+}

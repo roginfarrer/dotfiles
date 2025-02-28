@@ -1,0 +1,11 @@
+{
+  "name": "Rogin's snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "all",
+        "path": "./all.json"
+      }
+    ]
+  }
+}
