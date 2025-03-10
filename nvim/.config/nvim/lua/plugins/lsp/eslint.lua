@@ -1,6 +1,5 @@
 return {
   filetypes = {
-    'html.mustache',
     'javascript',
     'javascriptreact',
     'javascript.jsx',
@@ -10,7 +9,6 @@ return {
     'vue',
     'svelte',
     'astro',
-    'mustache',
     'html',
   },
   settings = {

@@ -38,7 +38,8 @@ return {
             format = function(_, ctx, _, callback)
               -- no range, use whole buffer otherwise use selection
               local cmd = ctx.range == nil and 'gg=G' or '='
-              vim.cmd.normal { 'm`' .. cmd .. '``', bang = true }
+              -- vim.cmd.normal { 'm`' .. cmd .. '``', bang = true }
+              vim.cmd.normal { 'mqHmwgg=G`wzt`q', bang = true }
               callback()
             end,
           },
@@ -64,7 +65,7 @@ return {
           zsh = { 'beautysh' },
           fish = { 'fish_indent' },
           -- php = { lsp_format = 'first', 'phpcbf' },
-          php = { 'my_auto_indent', 'trim_newlines', 'phpcbf' },
+          php = { 'trim_newlines', 'phpcbf' },
         },
         default_format_opts = { lsp_format = 'fallback' },
         log_level = vim.log.levels.DEBUG,
