@@ -2,7 +2,9 @@ return {
   {
     'folke/flash.nvim',
     event = 'VeryLazy',
-    opts = {},
+    opts = {
+      modes = { char = { jump = { autojump = true } } },
+    },
     init = function()
       local autocmd = require('util').autocmd
 

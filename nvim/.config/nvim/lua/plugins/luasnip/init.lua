@@ -1,6 +1,7 @@
 local M = {
   'L3MON4D3/LuaSnip',
-  enabled = false,
+  enabled = true,
+  version = 'v2.*',
   -- dependencies = {
   --   {
   --     'rafamadriz/friendly-snippets',

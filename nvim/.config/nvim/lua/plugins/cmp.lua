@@ -1,31 +1,10 @@
 return {
   {
     'hrsh7th/nvim-cmp',
-    enabled = true,
+    enabled = false,
     event = 'InsertEnter',
     version = false,
     dependencies = {
-      {
-        'zbirenbaum/copilot.lua',
-        cmd = 'Copilot',
-        event = 'InsertEnter',
-        enabled = false,
-        opts = {
-          suggestion = {
-            enabled = true,
-            keymap = {
-              accept = '<C-y>',
-              accept_word = false,
-              accept_line = false,
-              next = '<leader>]',
-              prev = '<leader>[',
-              dismiss = '<C-]>',
-            },
-          },
-          panel = { enabled = false },
-          copilot_node_command = vim.env.COPILOT_LUA_NODE or 'node',
-        },
-      },
       -- 'zbirenbaum/copilot-cmp',
       -- 'saadparwaiz1/cmp_luasnip',
       {
@@ -120,6 +99,7 @@ return {
         },
         sources = cmp.config.sources({
           -- { name = 'css-variables' },
+          { name = 'codecompanion' },
           { name = 'nvim_lsp' },
           -- { name = 'luasnip', keyword_length = 1 },
           { name = 'cmp_git' },

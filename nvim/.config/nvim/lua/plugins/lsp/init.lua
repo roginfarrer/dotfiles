@@ -32,20 +32,22 @@ return {
   -- { -- optional blink completion source for require statements and module annotations
   --   'saghen/blink.cmp',
   --   optional = true,
-  --   opts = {
-  --     sources = {
-  --       -- add lazydev to your completion providers
-  --       default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
-  --       providers = {
-  --         lazydev = {
-  --           name = 'LazyDev',
-  --           module = 'lazydev.integrations.blink',
-  --           -- make lazydev completions top priority (see `:h blink.cmp`)
-  --           score_offset = 100,
+  --   opts = function(_, opts)
+  --     return {
+  --       sources = {
+  --         -- add lazydev to your completion providers
+  --         default = vim.fn.tbl_extend('keep', opts.sources.default or {}, 'lazydev'),
+  --         providers = {
+  --           lazydev = {
+  --             name = 'LazyDev',
+  --             module = 'lazydev.integrations.blink',
+  --             -- make lazydev completions top priority (see `:h blink.cmp`)
+  --             score_offset = 100,
+  --           },
   --         },
   --       },
-  --     },
-  --   },
+  --     }
+  --   end,
   -- },
 
   {
@@ -53,7 +55,7 @@ return {
     event = 'BufReadPre',
     dependencies = {
       'folke/lazydev.nvim',
-      'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-nvim-lsp',
       'williamboman/mason-lspconfig.nvim',
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'Bilal2453/luvit-meta', lazy = true },
@@ -80,7 +82,7 @@ return {
       end
       local hasBlink, blinkCmp = pcall(require, 'blink.cmp')
       if hasBlink then
-        capabilities = blinkCmp.get_lsp_capabilities(capabilities)
+        capabilities = blinkCmp.get_lsp_capabilities()
       end
 
       local servers = {
@@ -119,7 +121,8 @@ return {
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            -- server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            server.capabilities = blinkCmp.get_lsp_capabilities(server.capabilities)
             require('lspconfig')[server_name].setup(server)
           end,
         },

@@ -70,15 +70,15 @@ return {
         enable = false,
       },
       textobjects = {
-        -- swap = {
-        --   enable = true,
-        --   swap_next = {
-        --     ['<leader>fa'] = '@parameter.inner',
-        --   },
-        --   swap_previous = {
-        --     ['<leader>fA'] = '@parameter.inner',
-        --   },
-        -- },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['<leader>fa'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['<leader>fA'] = '@parameter.inner',
+          },
+        },
         select = {
           enable = true,
           lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim

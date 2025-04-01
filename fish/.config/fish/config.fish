@@ -15,6 +15,11 @@ if not functions -q fisher && status is-interactive
     curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 end
 
+# Global variables to store cache
+set -g __FUNCTION_CACHE_RESULT ""
+set -g __FUNCTION_CACHE_TIMESTAMP 0
+set -g __FUNCTION_CACHE_COMMIT_HASH ""
+
 set -g fish_greeting
 
 set -gx EDITOR nvim

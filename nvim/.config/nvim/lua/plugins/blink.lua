@@ -1,12 +1,21 @@
 return {
   {
     'saghen/blink.cmp',
-    enabled = false,
+    enabled = true,
     events = 'InsertEnter',
     -- optional: provides snippets for the snippet source
-    dependencies = 'rafamadriz/friendly-snippets',
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+      'L3MON4D3/LuaSnip',
+      {
+        'Kaiser-Yang/blink-cmp-git',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+      },
+      'MahanRahmati/blink-nerdfont.nvim',
+      'ribru17/blink-cmp-spell',
+    },
     -- use a release tag to download pre-built binaries
-    version = '*',
+    version = '1.*',
     -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
     -- build = 'cargo build --release',
     opts = {
@@ -15,33 +24,47 @@ return {
         nerd_font_variant = 'mono',
       },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
-      },
-      completion = {
-        accept = {
-          -- experimental auto-brackets support
-          auto_brackets = {
-            enabled = true,
+        default = { --[[ 'git',  ]]
+          'lsp',
+          'path',
+          'snippets',
+          'buffer',
+          'nerdfont',
+          'spell',
+        },
+        providers = {
+          -- git = {
+          --   module = 'blink-cmp-git',
+          --   name = 'Git',
+          --   opts = {
+          --     -- options for the blink-cmp-git
+          --   },
+          -- },
+          nerdfont = {
+            module = 'blink-nerdfont',
+            name = 'Nerd Fonts',
+            score_offset = 15, -- Tune by preference
+            opts = { insert = true }, -- Insert nerdfont icon (default) or complete its name
+          },
+          spell = {
+            name = 'Spell',
+            module = 'blink-cmp-spell',
           },
         },
+      },
+      completion = {
+        accept = { auto_brackets = { enabled = true } },
         menu = {
           draw = {
             treesitter = { 'lsp' },
           },
         },
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 200,
-        },
-        -- ghost_text = {
-        --   enabled = true,
-        -- },
       },
-
       keymap = {
         -- preset = 'enter',
         ['<C-y>'] = { 'select_and_accept' },
       },
+      snippets = { preset = 'luasnip' },
     },
   },
 }
