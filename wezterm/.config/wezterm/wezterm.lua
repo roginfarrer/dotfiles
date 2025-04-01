@@ -2,7 +2,7 @@ local wezterm = require("wezterm") --[[@as Wezterm]]
 local act = wezterm.action
 local default_hyperlink_rules = wezterm.default_hyperlink_rules()
 
-local tmux = false
+local tmux = true
 
 local default_hyperlink_regex = {
 	-- match github looking patterns, like neovim/neovim
