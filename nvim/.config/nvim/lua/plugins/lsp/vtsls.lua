@@ -1,15 +1,28 @@
 return {
   settings = {
     vtsls = {
-      autoUseWorkspaceTsdk = true,
+      -- autoUseWorkspaceTsdk = true,
+      experimental = {
+        completion = {
+          enableServerSideFuzzyMatch = true,
+        },
+      },
+    },
+    javascript = {
+      format = {
+        enable = false,
+      },
     },
     typescript = {
-      suggest = {
-        completeFunctionCalls = true,
+      format = {
+        enable = false,
       },
-      tsserver = {
-        maxTsServerMemory = 8192,
-      },
+      -- suggest = {
+      --   completeFunctionCalls = true,
+      -- },
+      -- tsserver = {
+      --   maxTsServerMemory = 8192,
+      -- },
     },
   },
 }

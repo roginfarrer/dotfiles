@@ -59,7 +59,6 @@ return {
       'williamboman/mason-lspconfig.nvim',
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'Bilal2453/luvit-meta', lazy = true },
-      -- { 'pmizio/typescript-tools.nvim', enabled = true },
       -- 'davidosomething/format-ts-errors.nvim',
       { 'dnlhc/glance.nvim', enabled = false, opts = { list = { position = 'left' } } },
       { 'williamboman/mason.nvim', cmd = 'Mason' },
@@ -151,6 +150,14 @@ return {
           },
         }
       end
+    end,
+  },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    enabled = false,
+    config = function()
+      require('plugins.lsp.typescript-tools').setup(require 'plugins.lsp.mappings')
     end,
   },
 }
