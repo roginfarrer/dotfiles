@@ -20,9 +20,9 @@ return {
       -- suggest = {
       --   completeFunctionCalls = true,
       -- },
-      -- tsserver = {
-      --   maxTsServerMemory = 8192,
-      -- },
+      tsserver = {
+        maxTsServerMemory = 8192,
+      },
     },
   },
 }
