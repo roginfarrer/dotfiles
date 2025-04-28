@@ -1,5 +1,6 @@
 return {
   {
+    enabled = false,
     'rmagatti/gx-extended.nvim',
     keys = { 'gx' },
     opts = {

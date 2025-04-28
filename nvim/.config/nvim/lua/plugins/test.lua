@@ -3,10 +3,13 @@ return {
   {
     'nvim-neotest/neotest',
     cond = not vim.g.disable_treesitter,
+    lazy = false,
     dependencies = {
-      { 'guivazcabral/neotest-jest' },
+      -- { 'nvim-neotest/neotest-jest' },
+      { 'MisanthropicBit/neotest-jest', branch = 'optionally-require-jest-dependency' },
       'nvim-neotest/nvim-nio',
       'nvim-lua/plenary.nvim',
+      'antoinemadec/FixCursorHold.nvim',
       'nvim-treesitter/nvim-treesitter',
     },
     config = function()
@@ -24,19 +27,25 @@ return {
         adapters = {
           require 'neotest-jest' {
             cwd = function(path)
-              local cwd = require('neotest-jest.util').find_package_json_ancestor(path)
-              return cwd
+              -- return require('neotest-jest.jest-util').getJestConfig(path)
+              return vim.fn.getcwd()
+              -- local cwd = require('neotest-jest.util').find_package_json_ancestor(path)
+              -- return cwd
             end,
+            jestCommand = 'yarnpkg jest',
+            -- jest_test_discovery = true,
             env = { CI = true },
+            require_jest_dependency = false,
           },
         },
-        log_level = 2,
+        -- discover = { enabled = false },
+        log_level = vim.log.levels.DEBUG,
         icons = require('ui.icons').lazy.test,
         output = { open_on_run = true },
         quickfix = {
           open = function()
             if require('util').has 'trouble.nvim' then
-              vim.cmd 'Trouble quickfix'
+              require('trouble').open { mode = 'quickfix', focus = false }
             else
               vim.cmd 'copen'
             end
@@ -137,36 +146,137 @@ return {
     },
     opts = function()
       local dap = require 'dap'
+      dap.adapters['pwa-node'] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
+        executable = {
+          command = 'node',
+          -- 💀 Make sure to update this path to point to your installation
+          args = { '~/js-debug/', '${port}' },
+        },
+      }
+      dap.adapters.node2 = {
+        type = 'executable',
+        command = 'node',
+        args = { os.getenv 'HOME' .. '/development/vscode-node-debug2/out/src/nodeDebug.js' },
+      }
+
       for _, language in ipairs { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' } do
         if not dap.configurations[language] then
           dap.configurations[language] = {
+            -- {
+            --   type = 'node2',
+            --   request = 'launch',
+            --   name = 'Launch file',
+            --   program = '${file}',
+            --   cwd = '${workspaceFolder}',
+            --   runtimeArgs = { '--inspect-brk', '$path_to_jest', '--no-coverage', '-t', '$result', '--', '$file' },
+            --   args = { '--no-cache' },
+            --   sourceMaps = false,
+            --   protocol = 'inspector',
+            --   skipFiles = { '<node_internals>/**/*.js' },
+            --   console = 'integratedTerminal',
+            --   port = 9229,
+            --   disableOptimisticBPs = true,
+            -- },
             {
+              name = 'Launch',
               type = 'node2',
+              request = 'launch',
+              program = '${file}',
+              cwd = vim.fn.getcwd(),
+              sourceMaps = true,
+              protocol = 'inspector',
+              console = 'integratedTerminal',
+            },
+            {
+              -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+              name = 'Attach to process',
+              type = 'node2',
+              request = 'attach',
+              processId = require('dap.utils').pick_process,
+            },
+            {
+              type = 'pwa-node',
               request = 'launch',
               name = 'Launch file',
               program = '${file}',
               cwd = '${workspaceFolder}',
-              runtimeArgs = { '--inspect-brk', '$path_to_jest', '--no-coverage', '-t', '$result', '--', '$file' },
-              args = { '--no-cache' },
-              sourceMaps = false,
-              protocol = 'inspector',
-              skipFiles = { '<node_internals>/**/*.js' },
-              console = 'integratedTerminal',
-              port = 9229,
-              disableOptimisticBPs = true,
             },
-            -- {
-            --   type = 'pwa-node',
-            --   request = 'attach',
-            --   name = 'Attach',
-            --   processId = require('dap.utils').pick_process,
-            --   cwd = '${workspaceFolder}',
-            -- },
           }
         end
       end
     end,
   },
 
-  { 'David-Kunz/jester' },
+  {
+    'David-Kunz/jester',
+    enabled = false,
+    event = { 'BufReadPre' },
+    dependencies = { 'nvim-neotest/neotest' },
+    config = function()
+      require('util').autocmd('FileType', {
+        pattern = 'javascript,typescript,typescriptreact,javascriptreact',
+        group = 'rf-jester',
+        callback = function(evt)
+          if vim.b.is_jest ~= nil then
+            return
+          end
+
+          local file = evt.file
+          local util = require 'neotest-jest.util'
+          local is_jest = util.search_ancestors(file, function(path)
+            if util.path.is_file(util.path.join(path, 'jest.config.js')) then
+              return path
+            end
+          end)
+          vim.b.is_jest = is_jest
+          if not vim.b.is_jest then
+            return
+          end
+          require('which-key').add {
+            {
+              '<leader>tn',
+              function()
+                require('jester').run()
+              end,
+              desc = 'Nearest Test (Jester)',
+              buffer = true,
+            },
+            {
+              '<leader>tf',
+              function()
+                require('jester').run_file()
+              end,
+              desc = 'Test File (Jester)',
+              buffer = true,
+            },
+            {
+              '<leader>tl',
+              function()
+                require('jester').run_last()
+              end,
+              desc = 'Last Test (Jester)',
+              buffer = true,
+            },
+            {
+              '<leader>td',
+              function()
+                require('jester').debug()
+              end,
+              desc = 'Debug Test (Jester)',
+              buffer = true,
+            },
+          }
+        end,
+      })
+
+      require('jester').setup {
+        cmd = "yarnpkg jest -t '$result' $file", -- run command
+        path_to_jest_debug = './node_modules/.bin/jest', -- used for debugging
+        path_to_run_jest = './node_modules/.bin/jest', -- used for debugging
+      }
+    end,
+  },
 }

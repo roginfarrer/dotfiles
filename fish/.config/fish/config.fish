@@ -100,3 +100,7 @@ end
 if test -d $HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin
     fish_add_path $HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin
 end
+
+if command -q fish_ssh_agent
+    fish_ssh_agent
+end

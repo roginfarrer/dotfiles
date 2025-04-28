@@ -1,7 +1,8 @@
 return {
   settings = {
     vtsls = {
-      -- autoUseWorkspaceTsdk = true,
+      enableMoveToFileCodeAction = true,
+      autoUseWorkspaceTsdk = true,
       experimental = {
         completion = {
           enableServerSideFuzzyMatch = true,
@@ -17,9 +18,9 @@ return {
       format = {
         enable = false,
       },
-      -- suggest = {
-      --   completeFunctionCalls = true,
-      -- },
+      suggest = {
+        completeFunctionCalls = true,
+      },
       tsserver = {
         maxTsServerMemory = 8192,
       },
