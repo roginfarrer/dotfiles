@@ -1,39 +1,97 @@
-#!/bin/zsh
+#!/bin/bash
+
+SELECTED=""
+
+# Function to select directories using whiptail
+select_directories() {
+    # Temporary file for storing results
+    local resultfile=$(mktemp)
+
+    # Get list of directories in the current working directory
+    # Use find to get directories, sed to remove ./ prefix, sort alphabetically
+    mapfile -t dirs < <(find . -maxdepth 1 -type d | sed 's|^\./||' | sort | grep -v '^\.$')
+
+    # Check if no directories exist
+    if [ ${#dirs[@]} -eq 0 ]; then
+        whiptail --title "Error" --msgbox "No directories found in the current working directory." 10 50
+        return 1
+    fi
+
+    # Prepare directory list for whiptail
+    local menu_items=()
+    for dir in "${dirs[@]}"; do
+        menu_items+=("$dir" "" "OFF")
+    done
+
+    # Use whiptail to create checklist
+    if whiptail --title "Select Directories" \
+        --checklist "Choose directories (use space to select):" 20 60 15 \
+        "${menu_items[@]}" 2>"$resultfile"; then
+
+        # Read selected directories
+        mapfile -t selected < <(cat "$resultfile" | tr -d '"')
+
+        # Check if any directories were selected
+        if [ ${#selected[@]} -eq 0 ]; then
+            whiptail --title "Notification" --msgbox "No directories selected." 10 50
+            return 1
+        fi
+
+        # Display selected directories in a message box
+        SELECTED=$(printf '%s\n' "${selected[@]}" | tr '\n' ' ')
+        whiptail --title "Selected Directories" \
+            --msgbox "You selected:\n\n$SELECTED" 20 60
+    else
+        # User cancelled
+        whiptail --title "Cancelled" --msgbox "Directory selection cancelled." 10 50
+        return 1
+    fi
+
+    # Clean up temporary file
+    rm -f "$resultfile"
+}
 
 ###
 # HOMEBREW
-if [[ $(command -v brew) == "" ]]; then
-  echo "Installing Hombrew"
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-  if [ -d "/opt/homebrew/bin/brew" ]; then
-    BREW_DIR="/opt/homebrew/bin/brew"
-  fi
-  if [ -d "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
-    BREW_DIR="/home/linuxbrew/.linuxbrew/bin/brew"
-  fi
-
-  echo 'eval "$($BREW_DIR shellenv)"' >>$HOME/.zprofile
-  eval "$($BREW_DIR shellenv)"
-else
-  echo "Updating Homebrew"
-  brew update
-fi
-
-brew analytics off
-
-if [ -f "$HOME/dotfiles/Brewfile" ]; then
-  echo "Updating homebrew bundle..."
-  brew bundle --file="$HOME/dotfiles/Brewfile"
-else
-  echo "ERROR! Brewfile not found. Exiting..."
-  exit 1
-fi
-brew cleanup
+###
+ # if [[ $(command -v brew) == "" ]]; then
+   echo "Installing Hombrew"
+   # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+ 
+#   if [ -d "/opt/homebrew/bin/brew" ]; then
+#     BREW_DIR="/opt/homebrew/bin/brew"
+#   else
+# 	  echo -n "Brew bin directory? "
+#     read brew_dir
+#     BREW_DIR="$brew_dir"
+#   fi
+# 
+#     echo >> $HOME/.profile
+#     SHELL_ENV_RESULT=$($BREW_DIR/brew shellenv)
+#     echo "$SHELL_ENV_RESULT" >> $HOME/.bashrc
+#     eval "$SHELL_ENV_RESULT"
+# else
+#   echo "Updating Homebrew"
+#   brew update
+# fi
+ 
+ brew analytics off
+ 
+ #if [ -f "$HOME/dotfiles/Brewfile_vm" ]; then
+ #  echo "Updating homebrew bundle..."
+ #  brew bundle --file="$HOME/dotfiles/Brewfile_vm"
+ #else
+ #  echo "ERROR! Brewfile not found. Exiting..."
+ #  exit 1
+ #fi
+ #brew cleanup
 
 ###
 # INITIALIZE DOTFILES
 ###
+if [ -d "$HOME/.config/fish" ]; then
+	mv $HOME/.config/fish $HOME/.config/old-fish
+fi
 mkdir -p $HOME/.config/fish/completions
 mkdir $HOME/.config/fish/conf.d
 mkdir $HOME/.config/fish/functions
@@ -45,43 +103,20 @@ touch $HOME/.config/fish/functions/.keep
 touch $HOME/.config/fish/themes/.keep
 touch $HOME/.config/fish/local-config.fish
 
+if [ -f "$HOME/.gitconfig" ]; then
+	mv $HOME/.gitconfig $HOME/.gitconfig_local
+fi
+
 ###
 # SELECT STOW DIRECTORIES
 ###
-# Get list of directories
-DIRS=($(find $HOME/dotfiles -maxdepth 1 -type d -not -path '*/\.*' -printf '%f\n' | sort))
 
-# Remove the first element if it's empty (current directory)
-if [[ -z "${DIRS[0]}" ]]; then
-    DIRS=("${DIRS[@]:1}")
-fi
+select_directories
 
-# Prepare options for whiptail
-MENU_ITEMS=()
-for dir in "${DIRS[@]}"; do
-    MENU_ITEMS+=("$dir" "" OFF)
-done
-
-# Use whiptail to create a checklist
-SELECTED=$(whiptail --title "Stow Directories" \
-    --checklist "Choose directories to stow:" 20 60 10 \
-    "${MENU_ITEMS[@]}" \
-    3>&1 1>&2 2>&3)
-
-# Check if user cancelled
-if [[ $? -ne 0 ]]; then
-    echo "Operation cancelled."
-    exit 1
-fi
-
-# Remove quotes from selected items
-SELECTED=$(echo "$SELECTED" | tr -d '"')
+"Stowing $SELECTED..."
+stow $SELECTED
 
 # Stow the selected directories
-for dir in $SELECTED; do
-    echo "Stowing $dir..."
-    stow "$dir"
-done
 
 # echo 'Stowing all dotfiles...'
 # stow */
@@ -104,3 +139,4 @@ fish_add_path $HOME/.local/share/bob/nvim-bin
 
 echo 'Installing Bun...'
 curl -fsSL https://bun.sh/install | bash
+
