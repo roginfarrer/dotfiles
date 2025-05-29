@@ -1,7 +1,7 @@
 return {
   settings = {
     intelephense = {
-      format = { enable = false },
+      format = { enable = true },
       files = {
         exclude = {
           '**/.git/**',

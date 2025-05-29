@@ -80,11 +80,11 @@ return {
       { 'nvim-neotest/nvim-nio' },
       {
         'rcarriga/nvim-dap-ui',
-      -- stylua: ignore
-      keys = {
-        { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
-        { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
-      },
+          -- stylua: ignore
+          keys = {
+            { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
+            { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
+          },
         opts = {},
         config = function(_, opts)
           -- setup dap config by VsCode launch.json file
@@ -120,8 +120,9 @@ return {
       -- mason.nvim integration
       {
         'jay-babu/mason-nvim-dap.nvim',
-        dependencies = 'mason.nvim',
+        lazy = false,
         cmd = { 'DapInstall', 'DapUninstall' },
+        -- opts = {},
       },
     },
     -- stylua: ignore

@@ -12,7 +12,7 @@ M.setup = function(on_attach)
     settings = {
       separate_diagnostic_server = true,
       expose_as_code_action = 'all',
-      tsserver_plugins = { '@styled/typescript-styled-plugin' },
+      tsserver_max_memory = 8192,
       tsserver_file_preferences = {
         includeInlayEnumMemberValueHints = true,
         includeInlayFunctionLikeReturnTypeHints = true,
@@ -21,6 +21,7 @@ M.setup = function(on_attach)
         includeInlayParameterNameHintsWhenArgumentMatchesName = true,
         includeInlayPropertyDeclarationTypeHints = true,
         includeInlayVariableTypeHints = true,
+        importModuleSpecifierPreference = 'non-relative',
       },
     },
     -- handlers = {

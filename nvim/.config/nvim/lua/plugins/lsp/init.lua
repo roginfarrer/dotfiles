@@ -62,6 +62,11 @@ return {
       -- 'davidosomething/format-ts-errors.nvim',
       { 'dnlhc/glance.nvim', enabled = false, opts = { list = { position = 'left' } } },
       { 'williamboman/mason.nvim', cmd = 'Mason' },
+      {
+        'pmizio/typescript-tools.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+        enabled = true,
+      },
     },
     cmd = 'Mason',
     config = function()
@@ -88,7 +93,7 @@ return {
         mdx_analyzer = { filetypes = { 'markdown.mdx', 'mdx' } },
         lua_ls = require 'plugins.lsp.lua_ls',
         -- css_variables = {},
-        vtsls = require 'plugins.lsp.vtsls',
+        -- vtsls = require 'plugins.lsp.vtsls',
         -- ts_ls = require'plugins.lsp.tsserver',
         eslint = require 'plugins.lsp.eslint',
         bashls = { settings = { includeAllWorkspaceSymbols = true } },
@@ -108,7 +113,12 @@ return {
 
       require('mason').setup()
 
+      require('plugins.lsp.typescript-tools').setup()
+
       require('mason-lspconfig').setup {
+        automatic_enable = {
+          exclude = { 'vtsls' },
+        },
         ensure_installed = server_names,
         automatic_installation = true,
         handlers = {
@@ -150,14 +160,6 @@ return {
           },
         }
       end
-    end,
-  },
-  {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    enabled = false,
-    config = function()
-      require('plugins.lsp.typescript-tools').setup(require 'plugins.lsp.mappings')
     end,
   },
 }
