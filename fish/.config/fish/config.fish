@@ -60,6 +60,7 @@ abbr sshpi "ssh -t pi@192.168.0.194 'export TERM=linux; fish'"
 abbr themes "kitty +kitten themes"
 abbr p pnpm
 abbr b bun
+abbr mycommits 'git log --author="Rogin Farrer <rogin@roginfarrer.com>'
 
 if test -e $HOME/.config/fish/local-config.fish
     source $HOME/.config/fish/local-config.fish

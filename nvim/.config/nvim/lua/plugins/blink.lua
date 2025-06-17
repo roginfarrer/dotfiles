@@ -5,13 +5,13 @@ return {
     events = 'InsertEnter',
     -- optional: provides snippets for the snippet source
     dependencies = {
-      'rafamadriz/friendly-snippets',
-      'L3MON4D3/LuaSnip',
+      -- 'rafamadriz/friendly-snippets',
+      -- 'L3MON4D3/LuaSnip',
       {
         'Kaiser-Yang/blink-cmp-git',
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
-      'MahanRahmati/blink-nerdfont.nvim',
+      -- 'MahanRahmati/blink-nerdfont.nvim',
       'ribru17/blink-cmp-spell',
     },
     -- use a release tag to download pre-built binaries
@@ -29,7 +29,7 @@ return {
           'path',
           'snippets',
           'buffer',
-          'nerdfont',
+          -- 'nerdfont',
           'spell',
         },
         providers = {
@@ -40,12 +40,12 @@ return {
           --     -- options for the blink-cmp-git
           --   },
           -- },
-          nerdfont = {
-            module = 'blink-nerdfont',
-            name = 'Nerd Fonts',
-            score_offset = 15, -- Tune by preference
-            opts = { insert = true }, -- Insert nerdfont icon (default) or complete its name
-          },
+          -- nerdfont = {
+          --   module = 'blink-nerdfont',
+          --   name = 'Nerd Fonts',
+          --   score_offset = 15, -- Tune by preference
+          --   opts = { insert = true }, -- Insert nerdfont icon (default) or complete its name
+          -- },
           spell = {
             name = 'Spell',
             module = 'blink-cmp-spell',
@@ -64,7 +64,7 @@ return {
         -- preset = 'enter',
         ['<C-y>'] = { 'select_and_accept' },
       },
-      snippets = { preset = 'luasnip' },
+      -- snippets = { preset = 'luasnip' },
     },
   },
 }

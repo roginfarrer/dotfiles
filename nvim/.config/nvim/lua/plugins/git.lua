@@ -31,56 +31,28 @@ return {
   },
 
   {
-    'ruifm/gitlinker.nvim',
-    enabled = false,
+    'linrongbin16/gitlinker.nvim',
+    enabled = true,
     config = function()
       require('gitlinker').setup {
         mappings = nil,
-        -- callbacks = {
-        --   [_G.work_github_url] = require('gitlinker.hosts').get_github_type_url,
-        -- },
       }
     end,
     -- stylua: ignore
-    keys = {
-      { '<leader>gc', function() require('gitlinker').get_buf_range_url 'n' end, desc = 'Copy github url to clipboard', },
-      { '<leader>gc', function() require('gitlinker').get_buf_range_url 'v' end, desc = 'Copy github url to clipboard', mode = { 'v' }, },
-      { '<leader>go', function() require('gitlinker').get_buf_range_url( 'n', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', },
-      { '<leader>go', function() require('gitlinker').get_buf_range_url( 'v', { action_callback = require('gitlinker.actions').open_in_browser }) end, desc = 'Open file in browser', mode = { 'v' }, },
-    },
-  },
-  {
-    'folke/snacks.nvim',
-    opts = {
-      gitbrowse = {
-        enabled = true,
-        open = function(url)
-          -- Use 'local-open' on remote machine to open in local machine's browser
-          if vim.fn.executable 'local-open' then
-            local ret = vim.fn.jobstart('local-open ' .. url, { detach = true })
-            if ret <= 0 then
-              local msg = {
-                'Failed to open uri',
-                ret,
-              }
-              vim.notify(table.concat(msg, '\n'), vim.log.levels.ERROR)
+    keys = function() 
+            local function action(url) 
+                local local_open = vim.fn.expand('$HOME') .. '/bin/open'
+                if (vim.fn.filereadable(local_open)) then
+                    return  vim.fn.system({local_open, url})
+                end
+                return require("gitlinker.actions").system(url)
             end
             return
-          end
-          require('lazy.util').open(url, { system = true })
+            {
+      { '<leader>gc', "<cmd>GitLink<cr>", mode={"n", "v"}, desc = 'Copy github url to clipboard', },
+      { '<leader>go',  "<cmd>GitLink!<cr>", mode= {"n", "v"}, desc = 'Open file in browser', },
+    }
         end,
-      },
-    },
-    keys = {
-      {
-        '<leader>go',
-        function()
-          Snacks.gitbrowse()
-        end,
-        mode = { 'n', 'x' },
-        desc = 'Open file in Github',
-      },
-    },
   },
 
   -- git signs highlights text that has changed since the list

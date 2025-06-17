@@ -25,6 +25,10 @@ return {
             },
           },
         },
+        matches = {
+          frecency = true,
+          history_bonus = true,
+        },
       },
     },
     keys = function()
