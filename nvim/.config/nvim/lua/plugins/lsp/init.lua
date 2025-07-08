@@ -56,17 +56,16 @@ return {
     dependencies = {
       'folke/lazydev.nvim',
       -- 'hrsh7th/cmp-nvim-lsp',
-      'williamboman/mason-lspconfig.nvim',
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'Bilal2453/luvit-meta', lazy = true },
       -- 'davidosomething/format-ts-errors.nvim',
       { 'dnlhc/glance.nvim', enabled = false, opts = { list = { position = 'left' } } },
       { 'williamboman/mason.nvim', cmd = 'Mason' },
-      {
-        'pmizio/typescript-tools.nvim',
-        dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-        enabled = true,
-      },
+      -- {
+      --   'pmizio/typescript-tools.nvim',
+      --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+      --   enabled = true,
+      -- },
     },
     cmd = 'Mason',
     config = function()
@@ -93,7 +92,7 @@ return {
         mdx_analyzer = { filetypes = { 'markdown.mdx', 'mdx' } },
         lua_ls = require 'plugins.lsp.lua_ls',
         -- css_variables = {},
-        -- vtsls = require 'plugins.lsp.vtsls',
+        vtsls = require 'plugins.lsp.vtsls',
         -- ts_ls = require'plugins.lsp.tsserver',
         eslint = require 'plugins.lsp.eslint',
         bashls = { settings = { includeAllWorkspaceSymbols = true } },
@@ -113,29 +112,17 @@ return {
 
       require('mason').setup()
 
-      require('plugins.lsp.typescript-tools').setup()
+      -- require('plugins.lsp.typescript-tools').setup()
+      vim.lsp.config('*', {
+        capabilities = blinkCmp.get_lsp_capabilities(),
+      })
 
-      require('mason-lspconfig').setup {
-        automatic_enable = {
-          exclude = { 'vtsls' },
-        },
-        ensure_installed = server_names,
-        automatic_installation = true,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name]
-            if not server then
-              return
-            end
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            -- server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            server.capabilities = blinkCmp.get_lsp_capabilities(server.capabilities)
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      for server_name, config in pairs(servers) do
+        -- config.capabilities = blinkCmp.get_lsp_capabilities(config.capabilities)
+        vim.lsp.config[server_name] = config
+        vim.lsp.enable(server_name)
+        -- require('lspconfig')[server_name].setup(config)
+      end
 
       require('mason-tool-installer').setup {
         run_on_start = true,

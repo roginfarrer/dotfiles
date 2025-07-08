@@ -2,11 +2,10 @@ return {
   -- testing integration
   {
     'nvim-neotest/neotest',
+    enabled = true,
     cond = not vim.g.disable_treesitter,
-    lazy = false,
     dependencies = {
-      -- { 'nvim-neotest/neotest-jest' },
-      { 'MisanthropicBit/neotest-jest', branch = 'optionally-require-jest-dependency' },
+      { 'nvim-neotest/neotest-jest' },
       'nvim-neotest/nvim-nio',
       'nvim-lua/plenary.nvim',
       'antoinemadec/FixCursorHold.nvim',
@@ -26,19 +25,18 @@ return {
       require('neotest').setup {
         adapters = {
           require 'neotest-jest' {
-            cwd = function(path)
-              -- return require('neotest-jest.jest-util').getJestConfig(path)
-              return vim.fn.getcwd()
-              -- local cwd = require('neotest-jest.util').find_package_json_ancestor(path)
-              -- return cwd
-            end,
-            jestCommand = 'yarnpkg jest',
-            -- jest_test_discovery = true,
+            -- cwd = function(path)
+            --   -- return require('neotest-jest.jest-util').getJestConfig(path)
+            --   return vim.fn.getcwd()
+            --   -- local cwd = require('neotest-jest.util').find_package_json_ancestor(path)
+            --   -- return cwd
+            -- end,
+            jest_test_discovery = true,
             env = { CI = true },
-            require_jest_dependency = false,
+            -- require_jest_dependency = false,
           },
         },
-        -- discover = { enabled = false },
+        discovery = { enabled = false },
         log_level = vim.log.levels.DEBUG,
         icons = require('ui.icons').lazy.test,
         output = { open_on_run = true },
@@ -53,23 +51,72 @@ return {
         },
       }
     end,
-    -- stylua: ignore
     keys = {
-      { '<leader>tn', function() require("neotest").run.run() end, desc = 'Nearest Test' },
-      { '<leader>tf', function() require("neotest").run.run(vim.fn.expand("%")) end, desc = 'Test File' },
-      { '<leader>tl', function() require("neotest").run.run_last() end, desc = 'Last Test' },
-       { "<leader>tw", function() require('neotest').run.run({ jestCommand = 'jest --watch ' }) end, desc = "Run Watch" },
-      -- { 't<C-s>', function() require("neotest").summary.toggle() end, desc = 'Test Summary' },
-      -- { 't<C-o>', function() require("neotest").output.open({enter = true}) end, desc = 'Test Output' },
-      -- { '[t', function() require("neotest").jump.prev({ status = "failed" }) end, desc = 'Go to previous failed test' },
-      -- { ']t', function() require("neotest").jump.next({ status = "failed" }) end, desc = 'Go to next failed test' },
-      -- { 't<C-n>', function() require("neotest").run.run() end, desc = 'Nearest Test' },
-      -- { 't<C-f>', function() require("neotest").run.run(vim.fn.expand("%")) end, desc = 'Test File' },
-      -- { 't<C-l>', function() require("neotest").run.run_last() end, desc = 'Last Test' },
-      -- { 't<C-s>', function() require("neotest").summary.toggle() end, desc = 'Test Summary' },
-      -- { 't<C-o>', function() require("neotest").output.open({enter = true}) end, desc = 'Test Output' },
-      { '[t', function() require("neotest").jump.prev({ status = "failed" }) end, desc = 'Go to previous failed test' },
-      { ']t', function() require("neotest").jump.next({ status = "failed" }) end, desc = 'Go to next failed test' },
+      {
+        '<leader>tn',
+        function()
+          require('neotest').run.run()
+        end,
+        desc = 'Nearest Test',
+      },
+      {
+        '<leader>tf',
+        function()
+          require('neotest').run.run(vim.fn.expand '%')
+        end,
+        desc = 'Test File',
+      },
+      {
+        '<leader>tl',
+        function()
+          require('neotest').run.run_last()
+        end,
+        desc = 'Last Test',
+      },
+      {
+        '<leader>tw',
+        function()
+          require('neotest').run.run {
+            jestCommand = require('neotest-jest.jest-util').getJestCommand(vim.fn.expand '%:p:h') .. ' --watch',
+          }
+        end,
+        desc = 'Run Watch',
+      },
+      {
+        '[t',
+        function()
+          require('neotest').jump.prev { status = 'failed' }
+        end,
+        desc = 'Go to previous failed test',
+      },
+      {
+        ']t',
+        function()
+          require('neotest').jump.next { status = 'failed' }
+        end,
+        desc = 'Go to next failed test',
+      },
+      {
+        '<leader>ts',
+        function()
+          require('neotest').summary.toggle()
+        end,
+        desc = 'Toggle summary',
+      },
+      {
+        '<leader>to',
+        function()
+          require('neotest').output_panel.toggle()
+        end,
+        desc = 'Toggle summary',
+      },
+      {
+        '<leader>tS',
+        function()
+          require('neotest').run.stop()
+        end,
+        desc = 'Stop test',
+      },
     },
   },
 
@@ -278,6 +325,18 @@ return {
         path_to_jest_debug = './node_modules/.bin/jest', -- used for debugging
         path_to_run_jest = './node_modules/.bin/jest', -- used for debugging
       }
+    end,
+  },
+
+  {
+    'vim-test/vim-test',
+    enabled = false,
+    cmd = { 'TestNearest', 'TestClass', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' },
+    dependencies = {
+      { 'jebaum/vim-tmuxify' },
+    },
+    init = function()
+      vim.cmd [[ let test#strategy = 'tmuxify' ]]
     end,
   },
 }

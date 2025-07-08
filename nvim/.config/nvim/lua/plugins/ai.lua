@@ -1,12 +1,13 @@
 return {
   {
     'zbirenbaum/copilot.lua',
-    enabled = false,
+    enabled = true,
+    lazy = false,
     cmd = 'Copilot',
     event = 'InsertEnter',
     opts = {
       suggestion = {
-        enabled = true,
+        enabled = false,
         keymap = {
           accept = '<C-y>',
           accept_word = false,
@@ -16,9 +17,43 @@ return {
           dismiss = '<C-]>',
         },
       },
-      copilot_node_command = vim.env.FNM_DIR .. '/node-versions/v22.14.0/installation/bin/node' or 'node',
+      panel = { enabled = false },
+      copilot_node_command = vim.env.FNM_DIR .. '/node-versions/v24.3.0/installation/bin/node' or 'node',
     },
   },
+
+  -- {
+  --   'saghen/blink.cmp',
+  --   dependencies = { 'fang2hou/blink-copilot' },
+  --   opts = {
+  --     sources = {
+  --       default = { 'copilot' },
+  --       providers = {
+  --         copilot = {
+  --           module = 'blink-copilot',
+  --           name = 'copilot',
+  --           score_offset = 100,
+  --           async = true,
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
+  {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    dependencies = {
+      { 'zbirenbaum/copilot.lua' },
+      { 'nvim-lua/plenary.nvim' }, -- for curl, log and async functions
+    },
+    build = 'make tiktoken', -- Only on MacOS or Linux
+    opts = {},
+    lazy = false,
+    cmd = { 'CopilotChat' },
+    keys = {
+      { '<leader>a', '<cmd>CopilotChat<CR>', desc = 'Copilot Chat' },
+    },
+  },
+
   {
     'olimorris/codecompanion.nvim',
     enabled = false,
@@ -76,6 +111,7 @@ return {
   -- },
   {
     'yetone/avante.nvim',
+    enabled = false,
     event = 'VeryLazy',
     version = false, -- Never set this value to "*"! Never!
     opts = {
@@ -89,23 +125,54 @@ return {
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
     },
-  },
-  {
-    'saghen/blink.cmp',
-    optional = true,
-    opts = function(_, opts)
-      opts = opts or {}
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources.default or {}, 1, 'avante')
-      opts.sources.providers = opts.sources.providers or {}
-      opts.sources.providers.avante = {
-        module = 'blink-cmp-avante',
-        name = 'Avante',
-        opts = {
-          -- options for blink-cmp-avante
-        },
-      }
-      return opts
+    init = function()
+      require('which-key').add { { '<leader>a', group = 'avante' } }
     end,
+    specs = {
+      {
+        'saghen/blink.cmp',
+        opts = function(_, opts)
+          opts = opts or {}
+          opts.sources = opts.sources or {}
+          table.insert(opts.sources.default or {}, 1, 'avante')
+          return vim.tbl_deep_extend('force', opts, {
+            providers = {
+              avante = {
+                module = 'blink-cmp-avante',
+                name = 'Avante',
+                opts = {
+                  -- options for blink-cmp-avante
+                },
+              },
+            },
+          })
+          -- opts = opts or {}
+          -- opts.sources = opts.sources or {}
+          -- table.insert(opts.sources.default or {}, 1, 'avante')
+          -- opts.sources.providers = opts.sources.providers or {}
+          -- opts.sources.providers.avante = {
+          --   module = 'blink-cmp-avante',
+          --   name = 'Avante',
+          --   opts = {
+          --     -- options for blink-cmp-avante
+          --   },
+          -- }
+          -- return opts
+        end,
+      },
+    },
+  },
+
+  {
+    'greggh/claude-code.nvim',
+    enabled = false,
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- Required for git operations
+    },
+    config = function()
+      require('claude-code').setup()
+    end,
+    keys = { '<C-,>', '<leader>ac' },
+    cmd = { 'ClaudeCode', 'ClaudeCodeContinue', 'ClaudeCodeResume', 'ClaudeCodeVerbose' },
   },
 }

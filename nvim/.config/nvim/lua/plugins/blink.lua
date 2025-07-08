@@ -12,6 +12,7 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
       -- 'MahanRahmati/blink-nerdfont.nvim',
+      'fang2hou/blink-copilot',
       'ribru17/blink-cmp-spell',
     },
     -- use a release tag to download pre-built binaries
@@ -25,14 +26,22 @@ return {
       },
       sources = {
         default = { --[[ 'git',  ]]
+          'copilot',
           'lsp',
           'path',
           'snippets',
           'buffer',
           -- 'nerdfont',
-          'spell',
+          -- 'spell',
         },
         providers = {
+          copilot = {
+            module = 'blink-copilot',
+            name = 'copilot',
+            score_offset = 100,
+            async = true,
+            kind = 'Copilot',
+          },
           -- git = {
           --   module = 'blink-cmp-git',
           --   name = 'Git',
@@ -59,12 +68,16 @@ return {
             treesitter = { 'lsp' },
           },
         },
+        documentation = {
+          auto_show = true,
+        },
       },
       keymap = {
         -- preset = 'enter',
         ['<C-y>'] = { 'select_and_accept' },
       },
       -- snippets = { preset = 'luasnip' },
+      signature = { enabled = true },
     },
   },
 }

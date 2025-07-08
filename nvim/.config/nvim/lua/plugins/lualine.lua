@@ -39,6 +39,15 @@ return {
         return msg
       end
 
+      local package_info_section = {
+        function()
+          require('package-info').get_status()
+        end,
+        cond = function()
+          return package.loaded['package-info'] and require('package-info').get_status()
+        end,
+      }
+
       return {
         options = {
           theme = 'auto',
@@ -59,7 +68,7 @@ return {
             { 'filename', symbols = { modified = '', readonly = '', unnamed = '', newfile = '' } },
           },
           lualine_x = {
-            { 'grapple' },
+            -- { 'grapple' },
              -- stylua: ignore
             {
               function() return require("noice").api.status.command end,
@@ -81,6 +90,7 @@ return {
               require('lazy.status').updates,
               cond = require('lazy.status').has_updates, --[[ color = Util.ui.fg 'Special' ]]
             },
+            package_info_section,
           },
           lualine_y = {
             {
