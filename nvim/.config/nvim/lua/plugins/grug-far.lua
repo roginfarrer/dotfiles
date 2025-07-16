@@ -10,6 +10,7 @@ return {
 
   {
     'oil.nvim',
+    optional = true,
     opts = function(_, opts)
       opts.keymaps = {
         ['g/'] = {

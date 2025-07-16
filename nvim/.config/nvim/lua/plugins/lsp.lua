@@ -1,5 +1,56 @@
 local methods = vim.lsp.protocol.Methods
 
+---@param client vim.lsp.Client
+---@param bufnr integer
+local function on_attach(client, bufnr)
+  ---@param v KeymapUtil
+  local function map(v)
+    require('util').keymap(vim.tbl_deep_extend('force', v, { buffer = bufnr }))
+  end
+
+  map {
+    'K',
+    function()
+      local winid = require('ufo').peekFoldedLinesUnderCursor()
+      if not winid then
+        if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
+          vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+        else
+          vim.lsp.buf.hover()
+        end
+      end
+    end,
+    desc = 'Hover Docs',
+  }
+  map {
+    'gK',
+    function()
+      if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
+        vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+      end
+    end,
+    desc = 'Neovim Docs',
+  }
+
+  vim.lsp.document_color.enable(true, bufnr)
+
+  if client:supports_method(methods.textDocument_documentHighlight) then
+    local under_cursor_highlights_group = vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
+    vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
+      group = under_cursor_highlights_group,
+      desc = 'Highlight references under the cursor',
+      buffer = bufnr,
+      callback = vim.lsp.buf.document_highlight,
+    })
+    vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
+      group = under_cursor_highlights_group,
+      desc = 'Clear highlight references',
+      buffer = bufnr,
+      callback = vim.lsp.buf.clear_references,
+    })
+  end
+end
+
 return {
   {
     'folke/lazydev.nvim',
@@ -19,37 +70,6 @@ return {
       },
     },
   },
-  { -- optional cmp completion source for require statements and module annotations
-    'hrsh7th/nvim-cmp',
-    optional = true,
-    opts = function(_, opts)
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, {
-        name = 'lazydev',
-        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-      })
-    end,
-  },
-  -- { -- optional blink completion source for require statements and module annotations
-  --   'saghen/blink.cmp',
-  --   optional = true,
-  --   opts = function(_, opts)
-  --     return {
-  --       sources = {
-  --         -- add lazydev to your completion providers
-  --         default = vim.fn.tbl_extend('keep', opts.sources.default or {}, 'lazydev'),
-  --         providers = {
-  --           lazydev = {
-  --             name = 'LazyDev',
-  --             module = 'lazydev.integrations.blink',
-  --             -- make lazydev completions top priority (see `:h blink.cmp`)
-  --             score_offset = 100,
-  --           },
-  --         },
-  --       },
-  --     }
-  --   end,
-  -- },
 
   {
     'neovim/nvim-lspconfig',
@@ -59,66 +79,9 @@ return {
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'Bilal2453/luvit-meta', lazy = true },
       { 'williamboman/mason.nvim', cmd = 'Mason' },
-      -- {
-      --   'pmizio/typescript-tools.nvim',
-      --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-      --   enabled = true,
-      -- },
     },
     cmd = 'Mason',
     config = function()
-      ---@param client vim.lsp.Client
-      ---@param bufnr integer
-      local function on_attach(client, bufnr)
-        ---@param v KeymapUtil
-        local function map(v)
-          require('util').keymap(vim.tbl_deep_extend('force', v, { buffer = bufnr }))
-        end
-
-        map {
-          'K',
-          function()
-            local winid = require('ufo').peekFoldedLinesUnderCursor()
-            if not winid then
-              if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
-                vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-              else
-                vim.lsp.buf.hover()
-              end
-            end
-          end,
-          desc = 'Hover Docs',
-        }
-        map {
-          'gK',
-          function()
-            if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
-              vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-            end
-          end,
-          desc = 'Neovim Docs',
-        }
-
-        vim.lsp.document_color.enable(true, bufnr)
-
-        if client:supports_method(methods.textDocument_documentHighlight) then
-          local under_cursor_highlights_group =
-            vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
-          vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
-            group = under_cursor_highlights_group,
-            desc = 'Highlight references under the cursor',
-            buffer = bufnr,
-            callback = vim.lsp.buf.document_highlight,
-          })
-          vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
-            group = under_cursor_highlights_group,
-            desc = 'Clear highlight references',
-            buffer = bufnr,
-            callback = vim.lsp.buf.clear_references,
-          })
-        end
-      end
-
       require('util').autocmd('LspAttach', {
         group = 'lsp-attach',
         callback = function(event)
@@ -181,5 +144,33 @@ return {
         return register_capability(err, res, ctx)
       end
     end,
+  },
+
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    enabled = false,
+    opts = {
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+      end,
+      settings = {
+        separate_diagnostic_server = true,
+        expose_as_code_action = 'all',
+        tsserver_max_memory = 8192,
+        tsserver_file_preferences = {
+          includeInlayEnumMemberValueHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          importModuleSpecifierPreference = 'non-relative',
+        },
+      },
+    },
   },
 }

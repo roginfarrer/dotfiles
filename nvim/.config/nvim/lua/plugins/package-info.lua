@@ -9,9 +9,22 @@ return {
       { '<leader>np', "<cmd>lua require('package-info').change_version()<cr>", desc = '(package-info) Change version' },
     },
     init = function()
-      require('which-key').add {
-        { '<leader>n', group = 'package-info' },
-      }
+      if (require 'util').has 'which-key.nvim' then
+        require('which-key').add {
+          { '<leader>n', group = 'package-info' },
+        }
+      end
     end,
   },
+  -- {
+  --   'mini.clue',
+  --   optional = true,
+  --   opts = function(_, opts)
+  --     return vim.tbl_deep_extend('keep', opts, {
+  --       clues = {
+  --         { mode = 'n', keys = '<leader>n', desc = '+package-info' },
+  --       },
+  --     })
+  --   end,
+  -- },
 }

@@ -145,4 +145,15 @@ return {
       }
     end,
   },
+  {
+    'mini.clue',
+    optional = true,
+    opts = function(_, opts)
+      return vim.tbl_deep_extend('keep', opts, {
+        clues = {
+          { mode = 'n', keys = '<leader>u', desc = '+ghlite' },
+        },
+      })
+    end,
+  },
 }

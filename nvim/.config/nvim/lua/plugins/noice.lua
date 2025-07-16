@@ -15,9 +15,11 @@ return {
     },
     config = function(_, opts)
       require('noice').setup(opts)
-      require('which-key').add {
-        { '<leader>sn', group = 'noice' },
-      }
+      if require('util').has 'which-key.nvim' then
+        require('which-key').add {
+          { '<leader>sn', group = 'noice' },
+        }
+      end
     end,
     opts = {
       lsp = {
@@ -69,5 +71,16 @@ return {
       },
       -- views = { mini = { win_options = { winblend = 0 } } },
     },
+  },
+  {
+    'mini.clue',
+    optional = true,
+    opts = function(_, opts)
+      return vim.tbl_deep_extend('keep', opts, {
+        clues = {
+          { mode = 'n', keys = '<leader>sn', desc = '+noice' },
+        },
+      })
+    end,
   },
 }

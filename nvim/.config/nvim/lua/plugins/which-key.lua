@@ -2,6 +2,7 @@ return {
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
+    enabled = false,
     opts = {
       preset = 'helix',
       -- key_labels = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
