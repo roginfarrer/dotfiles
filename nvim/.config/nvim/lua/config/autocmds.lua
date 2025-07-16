@@ -89,18 +89,6 @@ autocmd('BufReadPost', {
   end,
 })
 
--- autocmd('BufReadPost', {
---   group = 'github_gf',
---   pattern = { '~/dotfiles/*', '~/.config/*' },
---   callback = function()
---     _G.includeexpr = function(fname)
---       vim.print(fname)
---     end
---     -- vim.cmd [[setlocal isfname+=@-@]]
---     -- vim.bo.suffixesadd = vim.bo.suffixesadd .. '.js,.jsx,.ts,.tsx'
---     vim.bo.includeexpr = 'v:lua._G.includeexpr(v:fname)'
---   end,
--- })
 autocmd('FileType', {
   group = 'node_gf',
   pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
@@ -189,31 +177,17 @@ end
 autocmd('BufWritePost', {
   pattern = 'kitty.conf',
   callback = function()
-    vim.cmd [[!kill -SIGUSR1 $(pgrep -a kitty)]]
+    if vim.fn.executable 'kitty' then
+      vim.cmd [[!kill -SIGUSR1 $(pgrep -a kitty)]]
+    end
   end,
 })
 
 autocmd('BufWritePost', {
   pattern = 'aerospace.toml',
   callback = function()
-    vim.cmd [[!aerospace reload-config]]
+    if vim.fn.executable 'aerospace' then
+      vim.system { 'aerospace', 'reload-config' }
+    end
   end,
 })
-
--- autocmd('BufWritePre', {
---   group = 'TS_add_missing_imports',
---   pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
---   callback = function()
---     local _, usingTools = pcall(require, 'typescript-tools')
---     if usingTools then
---       vim.cmd [[TSToolsAddMissingImports]]
---     else
---       vim.lsp.buf.code_action {
---         apply = true,
---         context = {
---           only = { 'source.addMissingImports.ts' },
---         },
---       }
---     end
---   end,
--- })

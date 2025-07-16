@@ -20,12 +20,12 @@ return {
       },
       keymaps = {
         ['q'] = 'actions.close',
-        ['<C-v>'] = {
-          desc = 'open in a vertical split',
-          callback = function()
-            oil_select 'vertical'
-          end,
-        },
+        -- ['<C-v>'] = {
+        --   desc = 'open in a vertical split',
+        --   callback = function()
+        --     oil_select 'vertical'
+        --   end,
+        -- },
         ['<C-s>'] = {
           desc = 'open in a vertical split',
           callback = function()
@@ -49,6 +49,16 @@ return {
         end,
       },
     },
+    init = function()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'OilActionsPost',
+        callback = function(event)
+          if Snacks and event.data.actions.type == 'move' then
+            Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
+          end
+        end,
+      })
+    end,
     -- stylua: ignore
     keys = {
       { '-', function() require('oil').open() end, desc = 'Open Oil', },

@@ -5,8 +5,30 @@ M.dump = function(...)
   print(vim.inspect(...))
 end
 
-M.map = function(mode, lhs, rhs, opts)
-  vim.keymap.set(mode, lhs, rhs, vim.tbl_deep_extend('force', { silent = true, noremap = true }, opts or {}))
+---@class KeymapUtil
+---@field [1] string lhs
+---@field [2] string|fun():string? rhs
+---@field mode? string|string[]
+---@field desc? string
+---@field noremap? boolean
+---@field remap? boolean
+---@field expr? boolean
+---@field nowait? boolean
+---@field silent? boolean
+
+---@param v KeymapUtil
+M.keymap = function(v)
+  local lhs = v[1]
+  local rhs = v[2]
+
+  vim.keymap.set(v.mode or 'n', lhs, rhs, {
+    desc = v.desc,
+    noremap = v.noremap == nil and true or v.noremap,
+    remap = v.remap,
+    expr = v.expr,
+    nowait = v.nowait,
+    silent = v.silent == nil and true or v.silent,
+  })
 end
 
 M.is_apple_silicon = require('jit').arch == 'arm64'
@@ -50,27 +72,6 @@ function M.on_plugin_load(name, fn)
         end
       end,
     })
-  end
-end
-
-local function getDirectoryPath()
-  if vim.bo.filetype == 'oil' then
-    return require('oil').get_current_dir()
-  end
-  return vim.fn.expand '%:p:h'
-end
-
-_G.SnackPick = function(builtin, args)
-  return function()
-    if Snacks == nil then
-      vim.notify('Snacks not defined or installed?', vim.log.levels.ERROR)
-      return
-    end
-    args = args or {}
-    if args.cwd == 'root_from_file' then
-      args.cwd = getDirectoryPath()
-    end
-    Snacks.picker[builtin](args)
   end
 end
 

@@ -1,6 +1,8 @@
 return {
   settings = {
     intelephense = {
+      runtime = '~/.local/share/fnm/node-versions/v23.11.0/installation/bin/node',
+      maxMemory = 8192,
       format = { enable = true },
       files = {
         exclude = {

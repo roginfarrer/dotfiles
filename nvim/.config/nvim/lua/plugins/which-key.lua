@@ -19,6 +19,7 @@ return {
           { '<leader>t', group = 'test' },
           { '<leader>u', group = 'ui' },
           { '<leader>o', group = 'obsidian' },
+          { '<leader>y', group = 'clipboard' },
         },
       },
     },

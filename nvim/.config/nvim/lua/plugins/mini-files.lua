@@ -51,6 +51,21 @@ return {
           end, sorted)
         end,
       },
+      mappings = {
+        close = 'q',
+        go_in = 'l',
+        go_in_plus = '<CR>',
+        go_out = 'h',
+        go_out_plus = 'H',
+        mark_goto = "'",
+        mark_set = 'm',
+        reset = '<BS>',
+        reveal_cwd = '@',
+        show_help = 'g?',
+        synchronize = 's',
+        trim_left = '<',
+        trim_right = '>',
+      },
     },
     config = function(_, opts)
       local MiniFiles = require 'mini.files'
@@ -70,6 +85,15 @@ return {
           vim.keymap.set('n', '<leader>yf', copy_path, { buffer = args.data.buf_id })
         end,
       })
+
+      if Snacks.rename then
+        vim.api.nvim_create_autocmd('User', {
+          pattern = 'MiniFilesActionRename',
+          callback = function(event)
+            Snacks.rename.on_rename_file(event.data.from, event.data.to)
+          end,
+        })
+      end
     end,
     -- stylua: ignore
     keys = {
