@@ -1,7 +1,7 @@
 return {
   {
     'echasnovski/mini.clue',
-    enabled = true,
+    enabled = false,
     version = '*',
     event = 'VeryLazy',
     opts = function()

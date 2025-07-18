@@ -5,16 +5,24 @@ return {
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '=',
+        'gw',
         function()
-          require('conform').format { async = true }
-          vim.notify('Buffer formatted!', vim.log.levels.INFO)
+          -- If you call conform.format when in visual mode, conform will perform a range format on the selected region.
+          -- If you want it to leave visual mode afterwards (similar to the default gw or gq behavior), use this mapping:
+          require('conform').format({ async = true }, function(err)
+            if not err then
+              local mode = vim.api.nvim_get_mode().mode
+              if vim.startswith(string.lower(mode), 'v') then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
+              end
+            end
+          end)
         end,
-        desc = 'Format buffer',
+        desc = 'Format code',
+        mode = { 'n', 'v' },
       },
     },
     init = function()
-      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
       if vim.fn.executable 'prettierd' then
         vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
           group = vim.api.nvim_create_augroup('RestartPrettierd', { clear = true }),
@@ -27,11 +35,6 @@ return {
     end,
     opts = function()
       local prettier = { 'prettier', stop_after_first = true }
-      require('conform').formatters.phpcbf = {
-        prepend_args = {
-          '--standard=/home/rfarrer/development/Etsyweb/tests/standards/stable-ruleset.xml',
-        },
-      }
       return {
         formatters = {
           my_auto_indent = {
@@ -64,8 +67,6 @@ return {
           sh = { 'beautysh' },
           zsh = { 'beautysh' },
           fish = { 'fish_indent' },
-          -- php = { lsp_format = 'first', 'phpcbf' },
-          -- php = { 'trim_newlines', 'phpcbf' },
         },
         default_format_opts = { lsp_format = 'fallback' },
         log_level = vim.log.levels.DEBUG,

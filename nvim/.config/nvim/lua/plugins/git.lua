@@ -135,6 +135,7 @@ return {
         return 'GHLite: ' .. str
       end
       return {
+        { '<leader>u', nil, group = 'GHLite' },
         { '<leader>us', '<cmd>GHLitePRSelect<cr>', silent = true, desc = desc 'Select PR' },
         { '<leader>uo', '<cmd>GHLitePRCheckout<cr>', silent = true, desc = desc 'Checkout PR' },
         { '<leader>uv', '<cmd>GHLitePRView<cr>', silent = true, desc = desc 'View PR' },

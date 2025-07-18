@@ -2,14 +2,14 @@ return {
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
-    enabled = false,
+    enabled = true,
     opts = {
       preset = 'helix',
-      -- key_labels = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
+      replace = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },
       spec = {
         {
           mode = { 'n', 'v' },
-          { '<leader><tab>', group = '+tabs' },
+          { '<leader><tab>', group = 'tabs' },
           { '<leader>f', group = 'find' },
           { '<leader>g', group = 'git' },
           { '<leader>gh', group = 'hunk' },
@@ -18,11 +18,11 @@ return {
           { '<leader>j', group = 'join/split' },
           { '<leader>d', group = 'debug' },
           { '<leader>t', group = 'test' },
-          { '<leader>u', group = 'ui' },
           { '<leader>o', group = 'obsidian' },
           { '<leader>y', group = 'clipboard' },
         },
       },
+      icons = { rules = false },
     },
   },
 }

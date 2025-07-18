@@ -124,9 +124,9 @@ return {
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
     },
-    init = function()
-      require('which-key').add { { '<leader>a', group = 'avante' } }
-    end,
+    keys = {
+      { '<leader>a', nil, group = 'avante' },
+    },
     specs = {
       {
         'saghen/blink.cmp',
