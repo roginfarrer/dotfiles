@@ -1,3 +1,3 @@
 return {
-  settings = { includeAllWorkspaceSymbols = true },
+	settings = { includeAllWorkspaceSymbols = true },
 }

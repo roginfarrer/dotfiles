@@ -8,10 +8,10 @@ local M = {}
 -- end
 
 local function getDirectoryPath()
-  if vim.bo.filetype == 'oil' then
-    return require('oil').get_current_dir()
-  end
-  return vim.fn.expand '%:p:h'
+	if vim.bo.filetype == 'oil' then
+		return require('oil').get_current_dir()
+	end
+	return vim.fn.expand '%:p:h'
 end
 
 -- local grepInCurrentDirectory = function()
@@ -23,16 +23,16 @@ end
 -- end
 
 M.open = function(command, opts)
-  return function()
-    opts = opts or {}
-    if opts.cmd == nil and command == 'git_files' and opts.show_untracked then
-      opts.cmd = 'git ls-files --exclude-standard --cached --others'
-    end
-    if opts.cwd == 'root_from_file' then
-      opts.cwd = getDirectoryPath() or opts.cwd
-    end
-    return require('fzf-lua')[command](opts)
-  end
+	return function()
+		opts = opts or {}
+		if opts.cmd == nil and command == 'git_files' and opts.show_untracked then
+			opts.cmd = 'git ls-files --exclude-standard --cached --others'
+		end
+		if opts.cwd == 'root_from_file' then
+			opts.cwd = getDirectoryPath() or opts.cwd
+		end
+		return require('fzf-lua')[command](opts)
+	end
 end
 
 -- function M.fzf(builtin, opts)
@@ -56,120 +56,120 @@ end
 -- end
 
 return {
-  'ibhagwan/fzf-lua',
-  enabled = false,
-  dependencies = {
-    { 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
-  },
-  cmd = 'FzfLua',
-  opts = function()
-    local config = require 'fzf-lua.config'
-    local actions = require 'fzf-lua.actions'
+	'ibhagwan/fzf-lua',
+	enabled = false,
+	dependencies = {
+		{ 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
+	},
+	cmd = 'FzfLua',
+	opts = function()
+		local config = require 'fzf-lua.config'
+		local actions = require 'fzf-lua.actions'
 
-    if require('util').has 'trouble.nvim' then
-      config.defaults.actions.files['ctrl-t'] = require('trouble.sources.fzf').actions.open
-    end
+		if require('util').has 'trouble.nvim' then
+			config.defaults.actions.files['ctrl-t'] = require('trouble.sources.fzf').actions.open
+		end
 
-    -- Toggle root dir / cwd
-    config.defaults.actions.files['ctrl-r'] = function(_, ctx)
-      local o = vim.deepcopy(ctx.__call_opts)
-      o.root = o.root == false
-      o.cwd = nil
-      o.buf = ctx.__CTX.bufnr
-      local cmd = ctx.__INFO.cmd or 'files'
-      M.open(cmd, o)
-    end
-    config.defaults.actions.files['alt-c'] = config.defaults.actions.files['ctrl-r']
-    config.set_action_helpstr(config.defaults.actions.files['ctrl-r'], 'toggle-root-dir')
+		-- Toggle root dir / cwd
+		config.defaults.actions.files['ctrl-r'] = function(_, ctx)
+			local o = vim.deepcopy(ctx.__call_opts)
+			o.root = o.root == false
+			o.cwd = nil
+			o.buf = ctx.__CTX.bufnr
+			local cmd = ctx.__INFO.cmd or 'files'
+			M.open(cmd, o)
+		end
+		config.defaults.actions.files['alt-c'] = config.defaults.actions.files['ctrl-r']
+		config.set_action_helpstr(config.defaults.actions.files['ctrl-r'], 'toggle-root-dir')
 
-    return {
-      'default-title',
-      fzf_colors = true,
-      grep = {
-        rg_opts = "--hidden --column --line-number --no-heading --trim --color=always --smart-case -g '!{.git,node_modules}/*'",
-      },
-      git = {
-        files = {
-          cmd = 'git ls-files --exclude-standard --others --cached',
-        },
-      },
-      files = {
-        fzf_opts = {
-          ['--info'] = 'inline-right',
-        },
-      },
-      keymap = {
-        builtin = {
-          ['?'] = 'toggle-preview',
-        },
-      },
-      fzf_opts = {
-        ['--no-scrollbar'] = true,
-        ['--layout'] = 'reverse',
-        ['--info'] = 'inline-right',
-      },
-      hls = {
-        -- normal = 'TelescopeResultsNormal',
-        -- title = 'TelescopePromptTitle',
-        -- help_normal = 'TelescopeNormal',
-        -- preview_title = 'TelescopePreviewTitle',
-        -- -- builtin preview only
-        -- cursor = 'Cursor',
-        -- cursorline = 'TelescopePreviewLine',
-        -- cursorlinenr = 'TelescopePreviewLine',
-        -- search = 'IncSearch',
-      },
-      -- fzf_colors = {
-      -- ['fg'] = { 'fg', 'TelescopeNormal' },
-      -- ['bg'] = { 'bg', 'FzfLuaBorder' },
-      -- ['hl'] = { 'fg', 'TelescopeMatching' },
-      -- ['fg+'] = { 'fg', 'TelescopeSelection' },
-      -- ['bg+'] = { 'bg', 'TelescopeSelection' },
-      -- ['hl+'] = { 'fg', 'TelescopeMatching' },
-      -- ['info'] = { 'fg', 'TelescopeMultiSelection' },
-      -- ['border'] = { 'fg', 'TelescopeBorder' },
-      -- ['gutter'] = { 'bg', 'TelescopeNormal' },
-      -- ['prompt'] = { 'fg', 'TelescopePromptPrefix' },
-      -- ['pointer'] = { 'fg', 'TelescopeSelectionCaret' },
-      -- ['marker'] = { 'fg', 'TelescopeSelectionCaret' },
-      -- ['header'] = { 'fg', 'TelescopeTitle' },
-      -- },
-      winopts = {
-        border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-        preview = {
-          scrollchars = { '┃', '' },
-          hidden = vim.fn.winwidth(0) < 125 and 'hidden' or 'nohidden',
-          vertical = 'up:45%',
-          horizontal = 'right:45%',
-        },
-      },
-      lsp = {
-        code_actions = {
-          previewer = 'codeaction_native',
-          preview_pager = 'delta --side-by-side --width=$FZF_PREVIEW_COLUMNS',
-        },
-      },
-      colorschemes = {
-        colors = vim.list_extend({
-          'rose-pine',
-          'tokyonight',
-          'nordic',
-          'kanagawa',
-          'palenightfall',
-          'nightfox',
-          'onenord',
-          'onedarkpro',
-          'gruvbox',
-        }, vim.fn.getcompletion('', 'color')),
-      },
-    }
-  end,
-  keys = function()
-    local hasTrouble, troubleActions = pcall(require, 'trouble.sources.fzf')
-    if hasTrouble then
-      local config = require 'fzf-lua.config'
-      config.defaults.actions.files['ctrl-t'] = troubleActions.actions.open
-    end
+		return {
+			'default-title',
+			fzf_colors = true,
+			grep = {
+				rg_opts = "--hidden --column --line-number --no-heading --trim --color=always --smart-case -g '!{.git,node_modules}/*'",
+			},
+			git = {
+				files = {
+					cmd = 'git ls-files --exclude-standard --others --cached',
+				},
+			},
+			files = {
+				fzf_opts = {
+					['--info'] = 'inline-right',
+				},
+			},
+			keymap = {
+				builtin = {
+					['?'] = 'toggle-preview',
+				},
+			},
+			fzf_opts = {
+				['--no-scrollbar'] = true,
+				['--layout'] = 'reverse',
+				['--info'] = 'inline-right',
+			},
+			hls = {
+				-- normal = 'TelescopeResultsNormal',
+				-- title = 'TelescopePromptTitle',
+				-- help_normal = 'TelescopeNormal',
+				-- preview_title = 'TelescopePreviewTitle',
+				-- -- builtin preview only
+				-- cursor = 'Cursor',
+				-- cursorline = 'TelescopePreviewLine',
+				-- cursorlinenr = 'TelescopePreviewLine',
+				-- search = 'IncSearch',
+			},
+			-- fzf_colors = {
+			-- ['fg'] = { 'fg', 'TelescopeNormal' },
+			-- ['bg'] = { 'bg', 'FzfLuaBorder' },
+			-- ['hl'] = { 'fg', 'TelescopeMatching' },
+			-- ['fg+'] = { 'fg', 'TelescopeSelection' },
+			-- ['bg+'] = { 'bg', 'TelescopeSelection' },
+			-- ['hl+'] = { 'fg', 'TelescopeMatching' },
+			-- ['info'] = { 'fg', 'TelescopeMultiSelection' },
+			-- ['border'] = { 'fg', 'TelescopeBorder' },
+			-- ['gutter'] = { 'bg', 'TelescopeNormal' },
+			-- ['prompt'] = { 'fg', 'TelescopePromptPrefix' },
+			-- ['pointer'] = { 'fg', 'TelescopeSelectionCaret' },
+			-- ['marker'] = { 'fg', 'TelescopeSelectionCaret' },
+			-- ['header'] = { 'fg', 'TelescopeTitle' },
+			-- },
+			winopts = {
+				border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+				preview = {
+					scrollchars = { '┃', '' },
+					hidden = vim.fn.winwidth(0) < 125 and 'hidden' or 'nohidden',
+					vertical = 'up:45%',
+					horizontal = 'right:45%',
+				},
+			},
+			lsp = {
+				code_actions = {
+					previewer = 'codeaction_native',
+					preview_pager = 'delta --side-by-side --width=$FZF_PREVIEW_COLUMNS',
+				},
+			},
+			colorschemes = {
+				colors = vim.list_extend({
+					'rose-pine',
+					'tokyonight',
+					'nordic',
+					'kanagawa',
+					'palenightfall',
+					'nightfox',
+					'onenord',
+					'onedarkpro',
+					'gruvbox',
+				}, vim.fn.getcompletion('', 'color')),
+			},
+		}
+	end,
+	keys = function()
+		local hasTrouble, troubleActions = pcall(require, 'trouble.sources.fzf')
+		if hasTrouble then
+			local config = require 'fzf-lua.config'
+			config.defaults.actions.files['ctrl-t'] = troubleActions.actions.open
+		end
     -- stylua: ignore
     return {
       { '<leader>;',  '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<CR>',  desc = 'Switch Buffer' },
@@ -212,20 +212,20 @@ return {
         mode = { 'i' },
       },
     }
-  end,
-  config = function(_, opts)
-    require('fzf-lua').setup(opts)
-    -- Automatically size window for vim.ui.select
-    -- https://github.com/ibhagwan/fzf-lua/wiki#automatic-sizing-of-heightwidth-of-vimuiselect
-    require('fzf-lua').register_ui_select(function(_, items)
-      local min_h, max_h = 0.15, 0.70
-      local h = (#items + 4) / vim.o.lines
-      if h < min_h then
-        h = min_h
-      elseif h > max_h then
-        h = max_h
-      end
-      return { winopts = { height = h, width = 0.60, row = 0.40 } }
-    end)
-  end,
+	end,
+	config = function(_, opts)
+		require('fzf-lua').setup(opts)
+		-- Automatically size window for vim.ui.select
+		-- https://github.com/ibhagwan/fzf-lua/wiki#automatic-sizing-of-heightwidth-of-vimuiselect
+		require('fzf-lua').register_ui_select(function(_, items)
+			local min_h, max_h = 0.15, 0.70
+			local h = (#items + 4) / vim.o.lines
+			if h < min_h then
+				h = min_h
+			elseif h > max_h then
+				h = max_h
+			end
+			return { winopts = { height = h, width = 0.60, row = 0.40 } }
+		end)
+	end,
 }

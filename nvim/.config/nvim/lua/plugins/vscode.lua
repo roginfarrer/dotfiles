@@ -1,42 +1,42 @@
 if not vim.g.vscode then
-  return {}
+	return {}
 end
 
 vim.keymap.set('', '<Space>', '<Nop>')
 vim.g.mapleader = ' '
 
 local enabled = {
-  'dial.nvim',
-  'lazy.nvim',
-  'mini.surround',
-  'Comment.nvim',
-  'flash.nvim',
-  'gx-extended.nvim',
-  'nvim-treesitter',
-  'nvim-treesitter-textobjects',
-  'nvim-ts-context-commentstring',
-  -- 'ts-comments.nvim',
-  -- 'yanky.nvim',
-  'mini.bracketed',
-  'template-string.nvim',
-  'treesj',
-  'nvim-ts-autotag',
+	'dial.nvim',
+	'lazy.nvim',
+	'mini.surround',
+	'Comment.nvim',
+	'flash.nvim',
+	'gx-extended.nvim',
+	'nvim-treesitter',
+	'nvim-treesitter-textobjects',
+	'nvim-ts-context-commentstring',
+	-- 'ts-comments.nvim',
+	-- 'yanky.nvim',
+	'mini.bracketed',
+	'template-string.nvim',
+	'treesj',
+	'nvim-ts-autotag',
 }
 
 local Config = require 'lazy.core.config'
 Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
 Config.options.defaults.cond = function(plugin)
-  return vim.tbl_contains(enabled, plugin.name) or plugin.vscode
+	return vim.tbl_contains(enabled, plugin.name) or plugin.vscode
 end
 
 local map = require('util').map
 
 local function vscodeCall(cmd)
-  return function()
-    require('vscode').call(cmd)
-  end
-  -- return '<cmd>call VSCodeNotify("' .. cmd .. '")<CR>'
+	return function()
+		require('vscode').call(cmd)
+	end
+	-- return '<cmd>call VSCodeNotify("' .. cmd .. '")<CR>'
 end
 
 map('n', '<C-h>', vscodeCall 'workbench.action.navigateLeft')
@@ -81,17 +81,17 @@ map('n', '<leader>h5', vscodeCall 'vscode-harpoon.gotoEditor5')
 -- })
 
 return {
-  -- {
-  --   'LazyVim/LazyVim',
-  --   config = function(_, opts)
-  --     opts = opts or {}
-  --     -- disable the colorscheme
-  --     opts.colorscheme = function() end
-  --     require('lazyvim').setup(opts)
-  --   end,
-  -- },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    opts = { highlight = { enable = false } },
-  },
+	-- {
+	--   'LazyVim/LazyVim',
+	--   config = function(_, opts)
+	--     opts = opts or {}
+	--     -- disable the colorscheme
+	--     opts.colorscheme = function() end
+	--     require('lazyvim').setup(opts)
+	--   end,
+	-- },
+	{
+		'nvim-treesitter/nvim-treesitter',
+		opts = { highlight = { enable = false } },
+	},
 }

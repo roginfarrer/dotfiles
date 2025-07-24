@@ -44,9 +44,9 @@ map { '<BS>', '<C-^>', desc = 'Previous buffer' }
 map { 'gw', '*N', desc = 'Search word under cursor', mode = { 'n', 'x' } }
 
 map {
-  '<leader>yf',
-  ':let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>',
-  desc = 'Copy file path to clipboard',
+	'<leader>yf',
+	':let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>',
+	desc = 'Copy file path to clipboard',
 }
 -- Clipboard yanking and pasting
 map { '<leader>yy', '"+y', desc = 'Yank to clipboard' }
@@ -62,13 +62,13 @@ map { '<leader>w', ':w<CR>', desc = 'Save' }
 
 -- Don't save empty lines to register
 map {
-  'dd',
-  function()
-    if vim.api.nvim_get_current_line():match '^%s*$' then
-      return '"_dd'
-    else
-      return 'dd'
-    end
-  end,
-  expr = true,
+	'dd',
+	function()
+		if vim.api.nvim_get_current_line():match '^%s*$' then
+			return '"_dd'
+		else
+			return 'dd'
+		end
+	end,
+	expr = true,
 }
