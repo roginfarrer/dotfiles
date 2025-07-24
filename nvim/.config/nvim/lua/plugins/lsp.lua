@@ -102,8 +102,18 @@ return {
       vim.lsp.config('*', {
         capabilities = require('blink.cmp').get_lsp_capabilities(),
       })
+
+      -- Read all files in lsp-configs directory and assign the filename to vim.lsp.config with the table returned by that file.
+      -- The configs defined in lspconfig lua/ overrides the confings defined in my lsp/ directory
+      -- If the configs are defined here with vim.lsp.config, mine will override lspconfig
+      local configs = vim.fn.glob(vim.fn.stdpath 'config' .. '/lua/lsp-configs/*.lua', true, true)
+      for _, file in ipairs(configs) do
+        local module_name = vim.fn.fnamemodify(file, ':t:r')
+        vim.lsp.config(module_name, require('lsp-configs.' .. module_name))
+      end
+
       vim.lsp.enable {
-        'mdx_analyzer',
+        -- 'mdx_analyzer',
         'lua_ls',
         'vtsls',
         'eslint',

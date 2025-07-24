@@ -40,7 +40,6 @@ return {
             name = 'copilot',
             score_offset = 100,
             async = true,
-            kind = 'Copilot',
           },
           -- git = {
           --   module = 'blink-cmp-git',

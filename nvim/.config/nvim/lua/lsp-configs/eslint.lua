@@ -10,6 +10,7 @@ return {
     'svelte',
     'astro',
     'html',
+    'mdx',
   },
   settings = {
     workingDirectories = { mode = 'auto' },
