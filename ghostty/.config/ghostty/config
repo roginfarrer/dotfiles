@@ -2,11 +2,11 @@ theme = catppuccin-mocha
 # theme = tokyonight
 
 # Font
-font-family = "Symbols Nerd Font Mono"
-font-family = "Fira Code"
-font-family-bold = "Fira Code"
-font-family-italic = "Maple Mono"
-font-family-bold-italic = "Maple Mono"
+# font-family = "Symbols Nerd Font Mono"
+# font-family = "Fira Code Regular"
+# font-family-bold = "Fira Code Bold"
+# font-family-italic = "Maple Mono"
+# font-family-bold-italic = "Maple Mono"
 font-size = 15
 adjust-cell-height = 10%
 # font-thicken = true
@@ -65,7 +65,7 @@ keybind = super+n=text:\x01\x25
 # Create a new tmux window
 keybind = super+t=text:\x01\x63
 # Break the current tmux pane out of the tmux window
-keybind = super+t=text:\x01\x21
+# keybind = super+t=text:\x01\x21
 # Kill the current tmux pane (and window if last pane)
 keybind = super+w=text:\x01\x78
 # Toggle the zoom state of the current tmux pane

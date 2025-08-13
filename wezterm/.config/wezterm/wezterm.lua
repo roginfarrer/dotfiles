@@ -1,24 +1,29 @@
 ---@type Wezterm
 local wezterm = require("wezterm")
 local act = wezterm.action
-local default_hyperlink_rules = wezterm.default_hyperlink_rules()
+local hyperlink_rules = wezterm.default_hyperlink_rules()
 
 local tmux = true
 
 local default_hyperlink_regex = {
 	-- match github looking patterns, like neovim/neovim
-	[[["]?[\w\d]{1}[-\w\d]+/{1}[-\w\d\.]+["]?]],
+	"go/{1}[-\\w\\d]+",
+	[[[\w\d]{1}[-\w\d]+/{1}[-\w\d\.]+]],
+	[[https?://[\w\d\._\%;\/\?:@#=&-]+]],
 }
-for _, regex in ipairs(default_hyperlink_rules) do
-	table.insert(default_hyperlink_regex, regex.regex)
-end
-local hyperlink_rules = default_hyperlink_rules
+
+-- TEST REGEX
+-- "go/mustache"
+-- "https://google.com"
+-- https://google.com/foo_foo
+-- https://google.com/foo-foo
+
 -- make username/project paths clickable. this implies paths like the following are for github.
--- ( "nvim-treesitter/nvim-treesitter" | wbthomason/packer.nvim | wez/wezterm | "wez/wezterm.git" )
+-- ( "nvim-treesitter/nvim-treesitter" | wbthomason/packer.nvim | wezterm/wezterm | "wezterm/wezterm.git" )
 -- as long as a full url hyperlink regex exists above this it should not match a full url to
 -- github or gitlab / bitbucket (i.e. https://gitlab.com/user/project.git is still a whole clickable url)
 table.insert(hyperlink_rules, {
-	regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]],
+	regex = [[["']?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)['"]?]],
 	format = "https://www.github.com/$1/$3",
 })
 
@@ -67,12 +72,13 @@ config.font_rules = {
 		font = wezterm.font({ family = "Maple Mono", style = "Italic" }),
 	},
 }
+---@diagnostic disable-next-line: assign-type-mismatch
 config.allow_square_glyphs_to_overflow_width = "Always"
 -- cell_width = 1.05
 config.font_size = 14
 config.line_height = 1.25
 config.adjust_window_size_when_changing_font_size = false
-config.bold_brightens_ansi_colors = true
+config.bold_brightens_ansi_colors = "BrightAndBold"
 config.use_fancy_tab_bar = false
 config.enable_scroll_bar = false
 config.default_cursor_style = "BlinkingBar"
@@ -97,6 +103,35 @@ config.max_fps = 240
 
 if tmux then
 	require("tmux").setup(config)
+	config.keys = config.keys or {}
+	local function addKey(tbl)
+		table.insert(config.keys, tbl)
+	end
+	addKey({
+		key = "E",
+		mods = "CTRL",
+		action = wezterm.action.QuickSelectArgs({
+			label = "open url",
+			-- taken from wezterm.default_hyperlink_rules()
+			patterns = default_hyperlink_regex,
+			action = wezterm.action_callback(function(window, pane)
+				local url = window:get_selection_text_for_pane(pane)
+
+				if string.match(url, "^go/") then
+					wezterm.log_info("opening: " .. url)
+					wezterm.open_with(url, "chrome")
+					return
+				end
+
+				local github_pattern = "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"
+				if string.match(url, github_pattern) and not string.match(url, "^go/") then
+					url = "https://www.github.com/" .. url
+				end
+				wezterm.log_info("opening: " .. url)
+				wezterm.open_with(url)
+			end),
+		}),
+	})
 else
 	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
