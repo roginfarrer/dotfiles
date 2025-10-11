@@ -74,6 +74,13 @@ return {
 			keymap = {
 				-- preset = 'enter',
 				['<C-y>'] = { 'select_and_accept' },
+				['<Tab>'] = {
+					'snippet_forward',
+					function() -- sidekick next edit suggestion
+						return require('sidekick').nes_jump_or_apply()
+					end,
+					'fallback',
+				},
 			},
 			-- snippets = { preset = 'luasnip' },
 			signature = { enabled = true },

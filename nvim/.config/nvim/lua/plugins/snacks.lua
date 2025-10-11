@@ -29,9 +29,6 @@ return {
 					frecency = true,
 					history_bonus = true,
 				},
-				db = {
-					sqlite3_path = '/home/linuxbrew/.linuxbrew/lib/libsqlite3.so',
-				},
 			},
 		},
 		keys = function()

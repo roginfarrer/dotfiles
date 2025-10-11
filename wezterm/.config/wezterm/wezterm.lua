@@ -1,4 +1,5 @@
-local wezterm = require("wezterm") --[[@as Wezterm]]
+---@type Wezterm
+local wezterm = require("wezterm")
 local act = wezterm.action
 local default_hyperlink_rules = wezterm.default_hyperlink_rules()
 
@@ -23,11 +24,8 @@ table.insert(hyperlink_rules, {
 
 local rose_pine = wezterm.plugin.require("https://github.com/neapsix/wezterm").main
 
--- Allow working with both the current release and the nightly
-local config = {}
-if wezterm.config_builder then
-	config = wezterm.config_builder()
-end
+---@type Config
+local config = wezterm.config_builder()
 
 -- wezterm.plugin.update_all()
 config.hyperlink_rules = hyperlink_rules

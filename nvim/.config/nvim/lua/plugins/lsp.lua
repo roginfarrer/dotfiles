@@ -32,7 +32,9 @@ local function on_attach(client, bufnr)
 		desc = 'Neovim Docs',
 	}
 
-	vim.lsp.document_color.enable(true, bufnr)
+	if vim.lsp.document_color then
+		vim.lsp.document_color.enable(true, bufnr)
+	end
 
 	if client:supports_method(methods.textDocument_documentHighlight) then
 		local under_cursor_highlights_group =
@@ -59,7 +61,11 @@ return {
 		cmd = 'LazyDev',
 		dependencies = {
 			{ 'Bilal2453/luvit-meta', lazy = true },
-			{ 'gonstoll/wezterm-types', lazy = true },
+			{
+				'DrKJeff16/wezterm-types',
+				lazy = true,
+				version = false, -- Get the latest version
+			},
 		},
 		opts = {
 			library = {
@@ -80,6 +86,7 @@ return {
 			{ 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 			{ 'Bilal2453/luvit-meta', lazy = true },
 			{ 'williamboman/mason.nvim', cmd = 'Mason' },
+			{ 'yioneko/nvim-vtsls', lazy = false },
 		},
 		cmd = 'Mason',
 		config = function()
@@ -113,10 +120,14 @@ return {
 				vim.lsp.config(module_name, require('lsp-configs.' .. module_name))
 			end
 
+			-- vim.lsp.log.set_level 'debug'
+			-- require('vim.lsp.log').set_format_func(vim.inspect)
+
 			vim.lsp.enable {
 				-- 'mdx_analyzer',
 				'lua_ls',
 				'vtsls',
+				-- 'tsgo',
 				'eslint',
 				'bashls',
 				'cssls',
@@ -127,6 +138,8 @@ return {
 				'stylelint_lsp',
 				'rust_analyzer',
 				'intelephense',
+				'some_sass',
+				-- 'copilot',
 			}
 
 			require('mason-tool-installer').setup {

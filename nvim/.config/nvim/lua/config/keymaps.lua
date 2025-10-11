@@ -49,10 +49,10 @@ map {
 	desc = 'Copy file path to clipboard',
 }
 -- Clipboard yanking and pasting
-map { '<leader>yy', '"+y', desc = 'Yank to clipboard' }
-map { '<leader>yF', '"+Y', desc = 'Yank to clipboard' }
-map { '<leader>yp', '"+p', desc = 'Put from clipboard' }
-map { '<leader>yP', '"+P', desc = 'Put from clipboard' }
+map { '<leader>y', '"+y', desc = 'Yank to clipboard' }
+map { '<leader>Y', '"+Y', desc = 'Yank to clipboard' }
+-- map { '<leader>yp', '"+p', desc = 'Put from clipboard' }
+-- map { '<leader>yP', '"+P', desc = 'Put from clipboard' }
 map { '<leader>yp', '"_dP', mode = 'x' }
 -- map { 'yp', '"0p', desc = 'Paste from yank register', mode = { 'n', 'v' } }
 -- map { 'yP', '"0P', desc = 'Paste from yank register', mode = { 'n', 'v' } }

@@ -2,12 +2,13 @@ return {
 	{ 'sheerun/vim-polyglot', cond = vim.g.disable_treesitter },
 	{
 		'nvim-treesitter/nvim-treesitter',
+		branch = 'master',
 		cond = not vim.g.disable_treesitter,
 		build = ':TSUpdate',
-		event = { 'BufReadPost', 'BufNewFile' },
+		lazy = false,
 		version = false, -- last release is way too old and doesn't work on Windows
 		dependencies = {
-			'nvim-treesitter/nvim-treesitter-textobjects',
+			{ 'nvim-treesitter/nvim-treesitter-textobjects' },
 			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } },
 			{ 'windwp/nvim-ts-autotag', opts = {} },
 			{ 'yorickpeterse/nvim-tree-pairs', opts = {} },
@@ -124,7 +125,7 @@ return {
 			},
 		},
 		config = function(_, opts)
-			vim.treesitter.language.register('markdown', { 'mdx' })
+			vim.treesitter.language.register('markdown', 'mdx')
 
 			require('nvim-treesitter.configs').setup(opts)
 		end,

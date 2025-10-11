@@ -15,10 +15,11 @@ require 'config.gui'
 if not vim.g.vscode then
 	-- require 'ui.winbar'
 	-- vim.cmd.colorscheme 'rose-pine'
-	-- vim.cmd.colorscheme 'tokyonight'
-	vim.cmd.colorscheme 'catppuccin-mocha'
+	vim.cmd.colorscheme 'tokyonight'
+	-- vim.cmd.colorscheme 'catppuccin-mocha'
+	-- vim.cmd.colorscheme 'nordic'
 	-- vim.cmd [[colorscheme catppuccin]]
-	-- vim.cmd [[colorscheme tokyonight-day]]
+	-- vim.cmd.colorscheme 'tokyonight-day'
 	-- vim.cmd [[colorscheme github_light]]
 end
 

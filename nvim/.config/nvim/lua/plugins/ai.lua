@@ -1,23 +1,122 @@
 return {
 	{
-		'zbirenbaum/copilot.lua',
+		'folke/sidekick.nvim',
 		enabled = true,
+		opts = {
+			servers = {
+				copilot = {},
+			},
+			-- add any options here
+			-- cli = {
+			-- 	mux = {
+			-- 		backend = 'tmux',
+			-- 		enabled = true,
+			-- 	},
+			-- },
+			-- debug = true,
+		},
+		keys = {
+			{
+				'<tab>',
+				function()
+					-- if there is a next edit, jump to it, otherwise apply it if any
+					if not require('sidekick').nes_jump_or_apply() then
+						return '<Tab>' -- fallback to normal tab
+					end
+				end,
+				expr = true,
+				desc = 'Goto/Apply Next Edit Suggestion',
+			},
+			{
+				'<c-.>',
+				function()
+					require('sidekick.cli').focus()
+				end,
+				mode = { 'n', 'x', 'i', 't' },
+				desc = 'Sidekick Switch Focus',
+			},
+			{ '<leader>a', nil, desc = 'AI' },
+			{
+				'<leader>aa',
+				function()
+					require('sidekick.cli').toggle { focus = true }
+				end,
+				desc = 'Sidekick Toggle CLI',
+				mode = { 'n', 'v' },
+			},
+			{
+				'<leader>ac',
+				function()
+					require('sidekick.cli').toggle { name = 'claude', focus = true }
+				end,
+				desc = 'Sidekick Claude Toggle',
+				mode = { 'n', 'v' },
+			},
+			{
+				'<leader>ap',
+				function()
+					require('sidekick.cli').select_prompt()
+				end,
+				desc = 'Sidekick Ask Prompt',
+				mode = { 'n', 'v' },
+			},
+			{
+				'<leader>ar',
+				function()
+					require('sidekick.nes').update()
+				end,
+				desc = 'Sidekick Refresh Suggestions',
+			},
+			{
+				'<leader>ad',
+				function()
+					require('sidekick').clear()
+				end,
+				desc = 'Sidekick Clear',
+			},
+			{
+				'<leader>aj',
+				function()
+					require('sidekick.nes').jump()
+				end,
+				desc = 'Sidekick Jump To Next',
+			},
+			{
+				'<leader>ay',
+				function()
+					require('sidekick').apply()
+				end,
+				desc = 'Sidekick Apply Edits',
+			},
+		},
+	},
+
+	{
+		'zbirenbaum/copilot.lua',
 		cmd = 'Copilot',
 		event = 'InsertEnter',
 		opts = {
 			suggestion = {
 				enabled = false,
+				auto_trigger = true,
+				hide_during_completion = true,
 				keymap = {
-					accept = '<C-y>',
-					accept_word = false,
-					accept_line = false,
-					next = '<leader>]',
-					prev = '<leader>[',
-					dismiss = '<C-]>',
+					accept = false,
 				},
+				-- keymap = {
+				-- 	accept = '<C-y>',
+				-- 	accept_word = false,
+				-- 	accept_line = false,
+				-- 	next = '<leader>]',
+				-- 	prev = '<leader>[',
+				-- 	dismiss = '<C-]>',
+				-- },
 			},
 			panel = { enabled = false },
-			copilot_node_command = vim.env.FNM_DIR .. '/node-versions/v24.3.0/installation/bin/node' or 'node',
+			filetypes = {
+				markdown = true,
+				help = true,
+			},
 		},
 	},
 
@@ -40,7 +139,7 @@ return {
 	-- },
 	{
 		'CopilotC-Nvim/CopilotChat.nvim',
-		enabled = true,
+		enabled = false,
 		dependencies = {
 			{ 'zbirenbaum/copilot.lua' },
 			{ 'nvim-lua/plenary.nvim' }, -- for curl, log and async functions

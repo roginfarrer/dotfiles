@@ -59,7 +59,7 @@ return {
 	'ibhagwan/fzf-lua',
 	enabled = false,
 	dependencies = {
-		{ 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
+		{ 'roginfarrer/fzf-lua-lazy.nvim' },
 	},
 	cmd = 'FzfLua',
 	opts = function()
@@ -83,84 +83,86 @@ return {
 		config.set_action_helpstr(config.defaults.actions.files['ctrl-r'], 'toggle-root-dir')
 
 		return {
-			'default-title',
-			fzf_colors = true,
-			grep = {
-				rg_opts = "--hidden --column --line-number --no-heading --trim --color=always --smart-case -g '!{.git,node_modules}/*'",
-			},
-			git = {
-				files = {
-					cmd = 'git ls-files --exclude-standard --others --cached',
+			{ 'default-title', 'hide' },
+			{
+				fzf_colors = true,
+				grep = {
+					rg_opts = "--hidden --column --line-number --no-heading --trim --color=always --smart-case -g '!{.git,node_modules}/*'",
 				},
-			},
-			files = {
+				git = {
+					files = {
+						cmd = 'git ls-files --exclude-standard --others --cached',
+					},
+				},
+				files = {
+					fzf_opts = {
+						['--info'] = 'inline-right',
+					},
+				},
+				keymap = {
+					builtin = {
+						['?'] = 'toggle-preview',
+					},
+				},
 				fzf_opts = {
+					['--no-scrollbar'] = true,
+					['--layout'] = 'reverse',
 					['--info'] = 'inline-right',
 				},
-			},
-			keymap = {
-				builtin = {
-					['?'] = 'toggle-preview',
+				hls = {
+					-- normal = 'TelescopeResultsNormal',
+					-- title = 'TelescopePromptTitle',
+					-- help_normal = 'TelescopeNormal',
+					-- preview_title = 'TelescopePreviewTitle',
+					-- -- builtin preview only
+					-- cursor = 'Cursor',
+					-- cursorline = 'TelescopePreviewLine',
+					-- cursorlinenr = 'TelescopePreviewLine',
+					-- search = 'IncSearch',
 				},
-			},
-			fzf_opts = {
-				['--no-scrollbar'] = true,
-				['--layout'] = 'reverse',
-				['--info'] = 'inline-right',
-			},
-			hls = {
-				-- normal = 'TelescopeResultsNormal',
-				-- title = 'TelescopePromptTitle',
-				-- help_normal = 'TelescopeNormal',
-				-- preview_title = 'TelescopePreviewTitle',
-				-- -- builtin preview only
-				-- cursor = 'Cursor',
-				-- cursorline = 'TelescopePreviewLine',
-				-- cursorlinenr = 'TelescopePreviewLine',
-				-- search = 'IncSearch',
-			},
-			-- fzf_colors = {
-			-- ['fg'] = { 'fg', 'TelescopeNormal' },
-			-- ['bg'] = { 'bg', 'FzfLuaBorder' },
-			-- ['hl'] = { 'fg', 'TelescopeMatching' },
-			-- ['fg+'] = { 'fg', 'TelescopeSelection' },
-			-- ['bg+'] = { 'bg', 'TelescopeSelection' },
-			-- ['hl+'] = { 'fg', 'TelescopeMatching' },
-			-- ['info'] = { 'fg', 'TelescopeMultiSelection' },
-			-- ['border'] = { 'fg', 'TelescopeBorder' },
-			-- ['gutter'] = { 'bg', 'TelescopeNormal' },
-			-- ['prompt'] = { 'fg', 'TelescopePromptPrefix' },
-			-- ['pointer'] = { 'fg', 'TelescopeSelectionCaret' },
-			-- ['marker'] = { 'fg', 'TelescopeSelectionCaret' },
-			-- ['header'] = { 'fg', 'TelescopeTitle' },
-			-- },
-			winopts = {
-				border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-				preview = {
-					scrollchars = { '┃', '' },
-					hidden = vim.fn.winwidth(0) < 125 and 'hidden' or 'nohidden',
-					vertical = 'up:45%',
-					horizontal = 'right:45%',
+				-- fzf_colors = {
+				-- ['fg'] = { 'fg', 'TelescopeNormal' },
+				-- ['bg'] = { 'bg', 'FzfLuaBorder' },
+				-- ['hl'] = { 'fg', 'TelescopeMatching' },
+				-- ['fg+'] = { 'fg', 'TelescopeSelection' },
+				-- ['bg+'] = { 'bg', 'TelescopeSelection' },
+				-- ['hl+'] = { 'fg', 'TelescopeMatching' },
+				-- ['info'] = { 'fg', 'TelescopeMultiSelection' },
+				-- ['border'] = { 'fg', 'TelescopeBorder' },
+				-- ['gutter'] = { 'bg', 'TelescopeNormal' },
+				-- ['prompt'] = { 'fg', 'TelescopePromptPrefix' },
+				-- ['pointer'] = { 'fg', 'TelescopeSelectionCaret' },
+				-- ['marker'] = { 'fg', 'TelescopeSelectionCaret' },
+				-- ['header'] = { 'fg', 'TelescopeTitle' },
+				-- },
+				winopts = {
+					border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+					preview = {
+						scrollchars = { '┃', '' },
+						hidden = vim.fn.winwidth(0) < 125 and 'hidden' or 'nohidden',
+						vertical = 'up:45%',
+						horizontal = 'right:45%',
+					},
 				},
-			},
-			lsp = {
-				code_actions = {
-					previewer = 'codeaction_native',
-					preview_pager = 'delta --side-by-side --width=$FZF_PREVIEW_COLUMNS',
+				lsp = {
+					code_actions = {
+						previewer = 'codeaction_native',
+						preview_pager = 'delta --side-by-side --width=$FZF_PREVIEW_COLUMNS',
+					},
 				},
-			},
-			colorschemes = {
-				colors = vim.list_extend({
-					'rose-pine',
-					'tokyonight',
-					'nordic',
-					'kanagawa',
-					'palenightfall',
-					'nightfox',
-					'onenord',
-					'onedarkpro',
-					'gruvbox',
-				}, vim.fn.getcompletion('', 'color')),
+				colorschemes = {
+					colors = vim.list_extend({
+						'rose-pine',
+						'tokyonight',
+						'nordic',
+						'kanagawa',
+						'palenightfall',
+						'nightfox',
+						'onenord',
+						'onedarkpro',
+						'gruvbox',
+					}, vim.fn.getcompletion('', 'color')),
+				},
 			},
 		}
 	end,
@@ -211,6 +213,13 @@ return {
         desc = 'Fuzzy complete path',
         mode = { 'i' },
       },
+      { 'gd', M.open 'lsp_definitions', desc = 'Definitions' },
+      { 'gD', M.open'lsp_declarations', desc = 'Declarations' },
+      { 'grr', M.open'lsp_references', nowait = true, desc = 'References' },
+      { 'gri', M.open'lsp_implementations', desc = 'Implementations' },
+      { 'grt', M.open'lsp_typedefs', desc = 'Type Definitions' },
+      { 'gO', M.open'lsp_document_symbols', desc = 'LSP Document Symbols' },
+      { 'gra', M.open'lsp_code_actions', desc = 'Code Actions' },
     }
 	end,
 	config = function(_, opts)

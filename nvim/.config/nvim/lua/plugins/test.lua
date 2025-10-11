@@ -2,6 +2,8 @@ return {
 	-- testing integration
 	{
 		'nvim-neotest/neotest',
+		-- https://github.com/nvim-neotest/neotest/issues/531
+		commit = '52fca6717ef972113ddd6ca223e30ad0abb2800c',
 		enabled = true,
 		cond = not vim.g.disable_treesitter,
 		dependencies = {
@@ -26,13 +28,7 @@ return {
 			require('neotest').setup {
 				adapters = {
 					require 'neotest-jest' {
-						-- cwd = function(path)
-						--   -- return require('neotest-jest.jest-util').getJestConfig(path)
-						--   return vim.fn.getcwd()
-						--   -- local cwd = require('neotest-jest.util').find_package_json_ancestor(path)
-						--   -- return cwd
-						-- end,
-						jest_test_discovery = true,
+						jest_test_discovery = false,
 						env = { CI = true },
 						-- require_jest_dependency = false,
 					},
@@ -125,15 +121,26 @@ return {
 	{
 		'mfussenegger/nvim-dap',
 		dependencies = {
-			-- fancy UI for the debugger
 			{ 'nvim-neotest/nvim-nio' },
 			{
 				'rcarriga/nvim-dap-ui',
-          -- stylua: ignore
-          keys = {
-            { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
-            { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
-          },
+				keys = {
+					{
+						'<leader>du',
+						function()
+							require('dapui').toggle {}
+						end,
+						desc = 'Dap UI',
+					},
+					{
+						'<leader>de',
+						function()
+							require('dapui').eval()
+						end,
+						desc = 'Eval',
+						mode = { 'n', 'v' },
+					},
+				},
 				opts = {},
 				config = function(_, opts)
 					-- setup dap config by VsCode launch.json file
@@ -194,7 +201,7 @@ return {
       { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
       { "<leader>td", function() require("neotest").run.run({strategy = "dap"}) end, desc = "Debug Nearest" },
     },
-		opts = function()
+		config = function()
 			local dap = require 'dap'
 			dap.adapters['pwa-node'] = {
 				type = 'server',
@@ -203,7 +210,7 @@ return {
 				executable = {
 					command = 'node',
 					-- 💀 Make sure to update this path to point to your installation
-					args = { '~/js-debug/', '${port}' },
+					args = { vim.env.HOME .. '/js-debug/src/dapDebugServer.js', '${port}' },
 				},
 			}
 			dap.adapters.node2 = {
@@ -340,5 +347,23 @@ return {
 		init = function()
 			vim.cmd [[ let test#strategy = 'tmuxify' ]]
 		end,
+
+		keys = {
+			{
+				'<leader>tn',
+				'<cmd>TestNearest<cr>',
+				desc = 'Nearest Test',
+			},
+			{
+				'<leader>tf',
+				'<cmd>TestFile<cr>',
+				desc = 'Test File',
+			},
+			{
+				'<leader>tl',
+				'<cmd>TestLast<cr>',
+				desc = 'Last Test',
+			},
+		},
 	},
 }
