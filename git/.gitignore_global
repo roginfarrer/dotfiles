@@ -43,8 +43,7 @@
 ehthumbs.db
 Thumbs.db
 
-# For Wayfair #
-jsconfig.json
-.vim/
-
 .gitconfig_local
+
+# Mise
+mise.local.toml

@@ -30,11 +30,6 @@ map { '<leader><tab>]', '<cmd>tabnext<cr>', desc = 'Next Tab' }
 map { '<leader><tab>d', '<cmd>tabclose<cr>', desc = 'Close Tab' }
 map { '<leader><tab>[', '<cmd>tabprevious<cr>', desc = 'Previous Tab' }
 
--- Add undo break-points
--- map { ',', ',<c-g>u', mode = 'i' }
--- map { '.', '.<c-g>u', mode = 'i' }
--- map { ';', ';<c-g>u', mode = 'i' }
-
 -- Terminal
 map { '<leader><esc>', [[<C-\><C-n>]], desc = 'Enter normal mode', mode = 't' }
 
@@ -48,14 +43,12 @@ map {
 	':let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>',
 	desc = 'Copy file path to clipboard',
 }
+
 -- Clipboard yanking and pasting
-map { '<leader>y', '"+y', desc = 'Yank to clipboard' }
-map { '<leader>Y', '"+Y', desc = 'Yank to clipboard' }
--- map { '<leader>yp', '"+p', desc = 'Put from clipboard' }
--- map { '<leader>yP', '"+P', desc = 'Put from clipboard' }
-map { '<leader>yp', '"_dP', mode = 'x' }
--- map { 'yp', '"0p', desc = 'Paste from yank register', mode = { 'n', 'v' } }
--- map { 'yP', '"0P', desc = 'Paste from yank register', mode = { 'n', 'v' } }
+map { '<leader>y', '"+y', desc = 'Yank to clipboard', mode = { 'n', 'x', 'v' } }
+map { '<leader>Y', '"+Y', desc = 'Yank to clipboard', mode = { 'n', 'x', 'v' } }
+map { '<leader>P', '"+P', desc = 'Paste from clipboard', mode = { 'n', 'x', 'v' } }
+map { '<leader>p', '"+P', desc = 'Paste from clipboard', mode = { 'n', 'x', 'v' } }
 
 map { '<leader>q', ':q<CR>', desc = 'Quit' }
 map { '<leader>w', ':w<CR>', desc = 'Save' }
@@ -71,4 +64,31 @@ map {
 		end
 	end,
 	expr = true,
+}
+
+-- diagnostic
+local diagnostic_goto = function(next, severity)
+	return function()
+		vim.diagnostic.jump {
+			count = (next and 1 or -1) * vim.v.count1,
+			severity = severity and vim.diagnostic.severity[severity] or nil,
+			float = true,
+		}
+	end
+end
+map { ']d', diagnostic_goto(true), desc = 'Next Diagnostic' }
+map { '[d', diagnostic_goto(false), desc = 'Prev Diagnostic' }
+map { ']e', diagnostic_goto(true, 'ERROR'), desc = 'Next Error' }
+map { '[e', diagnostic_goto(false, 'ERROR'), desc = 'Prev Error' }
+map { ']w', diagnostic_goto(true, 'WARN'), desc = 'Next Warning' }
+map { '[w', diagnostic_goto(false, 'WARN'), desc = 'Prev Warning' }
+
+-- git conflicts
+map {
+	'<leader>gq',
+	function()
+		vim.cmd 'cexpr system("git diff --check --relative")'
+		vim.cmd 'copen'
+	end,
+	desc = 'Git conflicts to quickfix',
 }

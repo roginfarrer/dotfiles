@@ -13,8 +13,7 @@ o.confirm = true
 -- o.cursorline = true
 o.exrc = true
 o.expandtab = true
-o.formatoptions = 'jcroqlnt' -- tcqj
-o.formatexpr = "v:lua.require'conform'.formatexpr({'timeout_ms': 2000})"
+o.fixeol = false
 o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
@@ -60,13 +59,25 @@ if vim.fn.executable 'rg' then
 	o.grepformat = '%f:%l:%c:%m'
 end
 
+local icons = require 'ui.icons'
 vim.diagnostic.config {
+	focusable = true,
 	underline = true,
 	update_in_insert = false,
 	severity_sort = true,
-	virtual_text = false,
-	-- For lsp_lines
-	virtual_lines = false,
+	virtual_text = {
+		spacing = 2,
+		source = 'if_many',
+		prefix = '●',
+	},
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = icons.lazy.diagnostics.Error,
+			[vim.diagnostic.severity.WARN] = icons.lazy.diagnostics.Warn,
+			[vim.diagnostic.severity.HINT] = icons.lazy.diagnostics.Hint,
+			[vim.diagnostic.severity.INFO] = icons.lazy.diagnostics.Info,
+		},
+	},
 	float = {
 		filetype = 'markdown',
 		focusable = true,
@@ -109,10 +120,6 @@ end
 
 vim.g.neovide_cursor_animation_length = 0.08
 vim.g.neovide_cursor_trail_size = 0.5
-
-if vim.fn.has 'nvim-0.9.0' == 1 then
-	o.splitkeep = 'screen'
-end
 
 if os.getenv 'SSH_CLIENT' ~= nil or os.getenv 'SSH_TTY' ~= nil then
 	local function paste()

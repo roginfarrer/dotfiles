@@ -2,7 +2,6 @@ return {
 	{
 		'aaronik/treewalker.nvim',
 		enabled = false,
-		cond = not vim.g.disable_treesitter,
 		opts = {
 			highlight = false,
 		},

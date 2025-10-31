@@ -32,27 +32,13 @@ return {
 
 	{
 		'linrongbin16/gitlinker.nvim',
-		enabled = true,
-		config = function()
-			require('gitlinker').setup {
-				mappings = nil,
-			}
-		end,
-    -- stylua: ignore
-    keys = function() 
-            local function action(url) 
-                local local_open = vim.fn.expand('$HOME') .. '/bin/open'
-                if (vim.fn.filereadable(local_open)) then
-                    return  vim.fn.system({local_open, url})
-                end
-                return require("gitlinker.actions").system(url)
-            end
-            return
-            {
-      { '<leader>gc', "<cmd>GitLink<cr>", mode={"n", "v"}, desc = 'Copy github url to clipboard', },
-      { '<leader>go',  "<cmd>GitLink!<cr>", mode= {"n", "v"}, desc = 'Open file in browser', },
-    }
-        end,
+		opts = {
+			mappings = nil,
+		},
+		keys = {
+			{ '<leader>gc', '<cmd>GitLink<cr>', mode = { 'n', 'v' }, desc = 'Copy github url to clipboard' },
+			{ '<leader>go', '<cmd>GitLink!<cr>', mode = { 'n', 'v' }, desc = 'Open file in browser' },
+		},
 	},
 
 	-- git signs highlights text that has changed since the list
@@ -80,8 +66,8 @@ return {
         -- stylua: ignore start
         map("n", "]h", gs.next_hunk, "Next Hunk")
         map("n", "[h", gs.prev_hunk, "Prev Hunk")
-        map('n', "<leader>gk",  gs.next_hunk, "Next Hunk")
-        map("n", "<leader>gj", gs.prev_hunk, "Prev Hunk")
+        map('n', "<leader>gk",  gs.prev_hunk, "Prev Hunk")
+        map("n", "<leader>gj", gs.next_hunk, "Next Hunk")
         map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
         map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
@@ -145,16 +131,49 @@ return {
 				{ '<leader>ug', '<cmd>GHLitePROpenComment<cr>', silent = true, desc = desc 'Open Comment' },
 			}
 		end,
+		specs = {
+			{
+				'which-key.nvim',
+				optional = true,
+				opts = function()
+					require('which-key').add {
+						{ '<leader>sn', group = 'ghlite' },
+					}
+				end,
+			},
+			{
+				'mini.clue',
+				optional = true,
+				opts = function(_, opts)
+					return vim.tbl_deep_extend('keep', opts, {
+						clues = {
+							{ mode = 'n', keys = '<leader>u', desc = '+ghlite' },
+						},
+					})
+				end,
+			},
+		},
 	},
+
 	{
-		'mini.clue',
-		optional = true,
-		opts = function(_, opts)
-			return vim.tbl_deep_extend('keep', opts, {
-				clues = {
-					{ mode = 'n', keys = '<leader>u', desc = '+ghlite' },
-				},
-			})
-		end,
+		'ahkohd/difft.nvim',
+		lazy = false,
+		keys = {
+			{
+				'<leader>gD',
+				function()
+					if Difft.is_visible() then
+						Difft.hide()
+					else
+						Difft.diff()
+					end
+				end,
+				desc = 'Toggle Difft',
+			},
+		},
+		opts = {
+			command = 'git diff', -- or "GIT_EXTERNAL_DIFF='difft --color=always' git diff"
+			layout = 'float', -- nil (buffer), "float", or "ivy_taller"
+		},
 	},
 }

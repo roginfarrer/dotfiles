@@ -9,9 +9,9 @@ return {
 		opts = {
 			bigfile = {},
 			dashboard = {},
-			notifier = {},
+			-- notifier = {},
 			quickfile = {},
-			-- statuscolumn = { enabled = true },
+			statuscolumn = {},
 			input = {},
 			rename = {},
 			-- explorer = {},
@@ -36,7 +36,7 @@ return {
 			---@param args snacks.picker.Config|nil
 			local function c(builtin, args)
 				return function()
-					Snacks.picker(builtin, args)
+					Snacks.picker[builtin](args)
 				end
 			end
 
@@ -85,13 +85,16 @@ return {
 				{ '<leader>r', c 'resume', desc = 'Picker resume' },
 				{ '<leader>gsl', c 'git_log', desc = 'Picker Git Log' },
 				{ '<leader>gss', c 'git_status', desc = 'Picker Git Status' },
+				{ '<leader>gsd', c 'git_diff', desc = 'Git Diff (Hunks)' },
 				-- Override Neovim LSP defaults
-				{ 'gd', c 'lsp_definitions', desc = 'Definitions' },
-				{ 'gD', c 'lsp_declarations', desc = 'Declarations' },
+				{ 'gd', c 'lsp_definitions', desc = 'Definitions', nowait = true },
+				{ 'gD', c 'lsp_declarations', desc = 'Declarations', nowait = true },
 				{ 'grr', c 'lsp_references', nowait = true, desc = 'References' },
-				{ 'gri', c 'lsp_implementations', desc = 'Implementations' },
-				{ 'grt', c 'lsp_type_definitions', desc = 'Type Definitions' },
+				{ 'gri', c 'lsp_implementations', desc = 'Implementations', nowait = true },
+				{ 'grt', c 'lsp_type_definitions', desc = 'Type Definitions', nowait = true },
 				{ 'gO', c 'lsp_symbols', desc = 'LSP Document Symbols' },
+				{ 'gao', c 'lsp_outgoing_calls', desc = 'C[a]lls Outgoing' },
+				{ 'gai', c 'lsp_incoming_calls', desc = 'C[a]lls Incoming' },
 				{
 					'<c-x><c-f>',
 					function()

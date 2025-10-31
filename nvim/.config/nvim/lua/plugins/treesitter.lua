@@ -1,133 +1,186 @@
 return {
-	{ 'sheerun/vim-polyglot', cond = vim.g.disable_treesitter },
 	{
 		'nvim-treesitter/nvim-treesitter',
-		branch = 'master',
-		cond = not vim.g.disable_treesitter,
+		branch = 'main',
 		build = ':TSUpdate',
 		lazy = false,
 		version = false, -- last release is way too old and doesn't work on Windows
 		dependencies = {
-			{ 'nvim-treesitter/nvim-treesitter-textobjects' },
-			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } },
+			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
 			{ 'windwp/nvim-ts-autotag', opts = {} },
-			{ 'yorickpeterse/nvim-tree-pairs', opts = {} },
 		},
-		opts = {
-			ensure_installed = {
-				'markdown',
-				'markdown_inline',
-				'javascript',
-				'typescript',
-				'tsx',
-				'css',
-				'bash',
-				'yaml',
-				'json',
-				'lua',
-				'toml',
-				'regex',
-				'php',
-				'graphql',
-				'vim',
-				'svelte',
-				'vue',
-				'scss',
-				'fish',
-				'astro',
-				'diff',
-				'git_config',
-				'gitignore',
-				'html',
-			},
-			query_linter = {
-				enable = true,
-				lint_events = { 'BufWrite', 'CursorHold' },
-			},
-			indent = { enable = true },
-			highlight = {
-				enable = true,
-				-- use_languagetree = true,
-				additional_vim_regex_highlighting = { 'org' },
-			},
-			autopairs = {
-				enable = true,
-			},
-			autotag = {
-				filetypes = {
-					'astro',
-					'html',
-					'javascript',
-					'javascriptreact',
-					'typescriptreact',
-					'svelte',
-					'vue',
-					'markdown',
-					'telekasten',
-					'mdx',
-				},
-			},
-			context = {
-				enable = false,
-			},
-			textobjects = {
-				swap = {
-					enable = true,
-					swap_next = {
-						['<leader>fa'] = '@parameter.inner',
-					},
-					swap_previous = {
-						['<leader>fA'] = '@parameter.inner',
-					},
-				},
-				select = {
-					enable = true,
-					lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-					keymaps = {
-						-- You can use the capture groups defined in textobjects.scm
-						['ab'] = '@block.outer',
-						['af'] = '@function.outer',
-						['aC'] = '@conditional.outer',
-						['ac'] = '@comment.outer',
-						['as'] = '@statement.outer',
-						['am'] = '@call.outer',
-						['aP'] = '@parameter.outer',
-
-						['ib'] = '@block.inner',
-						['if'] = '@function.inner',
-						['iC'] = '@conditional.inner',
-						['ic'] = '@comment.inner',
-						['is'] = '@statement.inner',
-						['im'] = '@call.inner',
-						['iP'] = '@parameter.inner',
-					},
-				},
-				move = {
-					enable = true,
-					set_jumps = true, -- whether to set jumps in the jumplist
-					goto_next_start = {
-						[']m'] = '@function.outer',
-						[']]'] = '@class.outer',
-					},
-					goto_next_end = {
-						[']M'] = '@function.outer',
-						[']['] = '@class.outer',
-					},
-					goto_previous_start = {
-						['[m'] = '@function.outer',
-						['[['] = '@class.outer',
-					},
-					goto_previous_end = {
-						['[M'] = '@function.outer',
-						['[]'] = '@class.outer',
-					},
-				},
-			},
-		},
+		opts = {},
 		config = function(_, opts)
 			vim.treesitter.language.register('markdown', 'mdx')
 
-			require('nvim-treesitter.configs').setup(opts)
+			local treesitter = require 'nvim-treesitter'
+			treesitter.setup(opts)
+
+			local ts_config = require 'nvim-treesitter.config'
+			-- Auto-install and start parsers for any buffer
+			vim.api.nvim_create_autocmd({ 'FileType' }, {
+				desc = 'Enable Treesitter',
+				callback = function(event)
+					local bufnr = event.buf
+					local filetype = event.match
+
+					-- Skip if no filetype
+					if filetype == '' then
+						return
+					end
+
+					local parser_name = vim.treesitter.language.get_lang(filetype)
+					if not parser_name then
+						vim.notify(
+							vim.inspect('No treesitter parser found for filetype: ' .. filetype),
+							vim.log.levels.WARN
+						)
+						return
+					end
+
+					-- Try to get existing parser
+					if not vim.tbl_contains(ts_config.get_available(), parser_name) then
+						return
+					end
+
+					local function ts_start(buf, parser)
+						vim.treesitter.start(buf, parser)
+						vim.bo[bufnr].syntax = 'on'
+						vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- Use treesitter for indentation
+					end
+
+					-- Check if parser is already installed
+					local already_installed = ts_config.get_installed 'parsers'
+					if not vim.tbl_contains(already_installed, parser_name) then
+						-- If not installed, install parser asynchronously and start treesitter
+						vim.notify('Installing parser for ' .. parser_name, vim.log.levels.INFO)
+						treesitter.install({ parser_name }):await(function()
+							vim.print('Starting parser: ' .. parser_name)
+							ts_start(bufnr, parser_name)
+						end)
+						return
+					end
+
+					-- Start treesitter for this buffer
+					ts_start(bufnr, parser_name)
+				end,
+			})
 		end,
+	},
+
+	{
+		'nvim-treesitter/nvim-treesitter-textobjects',
+		dependencies = { 'nvim-treesitter/nvim-treesitter' },
+		branch = 'main',
+		lazy = false,
+		opts = {
+			move = {
+				enable = true,
+				set_jumps = true, -- whether to set jumps in the jumplist
+			},
+		},
+		keys = function()
+			local key_groups = {
+				['f'] = 'function',
+				['c'] = 'class',
+				['a'] = 'parameter',
+			}
+
+			local function select(object, category)
+				return function()
+					require('nvim-treesitter-textobjects.select').select_textobject(object, category)
+				end
+			end
+
+			local move_keys = {}
+			local move_key_mode = { 'x', 'n', 'o' }
+
+			for key, group in pairs(key_groups) do
+				local scope = '@' .. group .. '.outer'
+				table.insert(move_keys, {
+					']' .. key,
+					function()
+						require('nvim-treesitter-textobjects.move').goto_next_start(scope, 'textobjects')
+					end,
+					mode = move_key_mode,
+					desc = 'Goto start of next ' .. group,
+				})
+				table.insert(move_keys, {
+					']' .. string.upper(key),
+					function()
+						require('nvim-treesitter-textobjects.move').goto_next_end(scope, 'textobjects')
+					end,
+					mode = move_key_mode,
+					desc = 'Goto end of next ' .. group,
+				})
+				table.insert(move_keys, {
+					'[' .. key,
+					function()
+						require('nvim-treesitter-textobjects.move').goto_previous_start(scope, 'textobjects')
+					end,
+					mode = move_key_mode,
+					desc = 'Goto start of previous ' .. group,
+				})
+				table.insert(move_keys, {
+					'[' .. string.upper(key),
+					function()
+						require('nvim-treesitter-textobjects.move').goto_previous_end(scope, 'textobjects')
+					end,
+					mode = move_key_mode,
+					desc = 'Goto end of previous ' .. group,
+				})
+			end
+
+			return vim.tbl_deep_extend('keep', move_keys, {
+				-- Select
+				{
+					'af',
+					select('@function.outer', 'textobjects'),
+					desc = 'Select outer function',
+					mode = { 'x', 'o' },
+				},
+				{
+					'if',
+					select('@function.inner', 'textobjects'),
+					desc = 'Select inner function',
+					mode = { 'x', 'o' },
+				},
+				{
+					'ac',
+					select('@class.outer', 'textobjects'),
+					desc = 'Select outer class',
+					mode = { 'x', 'o' },
+				},
+				{
+					'ic',
+					select('@class.inner', 'textobjects'),
+					desc = 'Select inner class',
+					mode = { 'x', 'o' },
+				},
+			})
+		end,
+	},
+
+	{
+		'Wansmer/treesj',
+		cmd = { 'TSJToggle', 'TSJSplit', 'TSJJoin' },
+		keys = {
+			{
+				'J',
+				function()
+					require('treesj').toggle()
+				end,
+				desc = 'toggle treesj',
+			},
+		},
+		dependencies = { 'nvim-treesitter/nvim-treesitter' },
+		opts = { use_default_keymaps = false },
+	},
+
+	{
+		'danymat/neogen',
+		dependencies = 'nvim-treesitter/nvim-treesitter',
+		cmd = 'Neogen',
+		opts = { snippet_engine = 'luasnip' },
 	},
 }

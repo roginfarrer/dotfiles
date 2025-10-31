@@ -9,28 +9,22 @@ return {
 			vim.o.foldlevelstart = 99
 			vim.o.foldenable = true
 		end,
-    -- stylua: ignore
-    keys = {
-      {
-        'zR',
-        function()
-          require('ufo').openAllFolds()
-        end,
-        desc = 'Open all folds (UFO)',
-      },
-      {
-        'zM',
-        function()
-          require('ufo').closeAllFolds()
-        end,
-        desc = 'Close all folds (UFO)',
-      },
-    },
+		keys = {
+			{
+				'zR',
+				function()
+					require('ufo').openAllFolds()
+				end,
+				desc = 'Open all folds (UFO)',
+			},
+			{
+				'zM',
+				function()
+					require('ufo').closeAllFolds()
+				end,
+				desc = 'Close all folds (UFO)',
+			},
+		},
 		config = true,
-		-- opts = {
-		--   provider_selector = function()
-		--     return { 'treesitter', 'indent' }
-		--   end,
-		-- },
 	},
 }

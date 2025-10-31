@@ -27,15 +27,8 @@ return {
 			},
 		},
 		init = function()
-			if vim.fn.executable 'prettierd' then
-				vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
-					group = vim.api.nvim_create_augroup('RestartPrettierd', { clear = true }),
-					pattern = '*prettier*',
-					callback = function()
-						vim.fn.system 'prettierd restart'
-					end,
-				})
-			end
+			vim.o.formatoptions = 'jcroqlnt' -- tcqj
+			vim.o.formatexpr = "v:lua.require'conform'.formatexpr({'timeout_ms': 2000})"
 		end,
 		opts = function()
 			local prettier = { 'prettier', stop_after_first = true }

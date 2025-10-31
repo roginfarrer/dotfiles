@@ -14,13 +14,6 @@ return {
 				sh = { 'shellcheck' },
 				php = { 'phpcs' },
 			}
-			-- require('util').autocmd({ 'BufEnter', 'BufWritePost' }, {
-			--   group = 'lint',
-			--   callback = function()
-			--     vim.print 'try lint'
-			--     require('lint').try_lint()
-			--   end,
-			-- })
 		end,
 	},
 }

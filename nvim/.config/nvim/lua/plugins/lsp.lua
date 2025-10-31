@@ -79,17 +79,37 @@ return {
 	},
 
 	{
-		'neovim/nvim-lspconfig',
+		'mason-org/mason-lspconfig.nvim',
 		event = 'BufReadPre',
 		dependencies = {
+			'neovim/nvim-lspconfig',
 			'folke/lazydev.nvim',
 			{ 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 			{ 'Bilal2453/luvit-meta', lazy = true },
-			{ 'williamboman/mason.nvim', cmd = 'Mason' },
+			{ 'mason-org/mason.nvim', cmd = 'Mason', opts = {} },
 			{ 'yioneko/nvim-vtsls', lazy = false },
 		},
 		cmd = 'Mason',
-		config = function()
+		opts = {
+			ensure_installed = {
+				'lua_ls',
+				'vtsls',
+				'eslint',
+				'bashls',
+				'cssls',
+				'marksman',
+				'html',
+				'jsonls',
+				'stylelint_lsp',
+				'intelephense',
+				'somesass_ls',
+				'copilot',
+			},
+			automatic_enable = {
+				exclude = { 'ts_ls', 'tsgo', 'copilot' },
+			},
+		},
+		config = function(_, opts)
 			require('util').autocmd('LspAttach', {
 				group = 'lsp-attach',
 				callback = function(event)
@@ -104,43 +124,13 @@ return {
 				end,
 			})
 
-			require('mason').setup()
-
 			-- require('plugins.lsp.typescript-tools').setup()
+
+			require('mason-lspconfig').setup(opts)
+
 			vim.lsp.config('*', {
 				capabilities = require('blink.cmp').get_lsp_capabilities(),
 			})
-
-			-- Read all files in lsp-configs directory and assign the filename to vim.lsp.config with the table returned by that file.
-			-- The configs defined in lspconfig lua/ overrides the confings defined in my lsp/ directory
-			-- If the configs are defined here with vim.lsp.config, mine will override lspconfig
-			local configs = vim.fn.glob(vim.fn.stdpath 'config' .. '/lua/lsp-configs/*.lua', true, true)
-			for _, file in ipairs(configs) do
-				local module_name = vim.fn.fnamemodify(file, ':t:r')
-				vim.lsp.config(module_name, require('lsp-configs.' .. module_name))
-			end
-
-			-- vim.lsp.log.set_level 'debug'
-			-- require('vim.lsp.log').set_format_func(vim.inspect)
-
-			vim.lsp.enable {
-				-- 'mdx_analyzer',
-				'lua_ls',
-				'vtsls',
-				-- 'tsgo',
-				'eslint',
-				'bashls',
-				'cssls',
-				'astro',
-				'marksman',
-				'html',
-				'jsonls',
-				'stylelint_lsp',
-				'rust_analyzer',
-				'intelephense',
-				'some_sass',
-				-- 'copilot',
-			}
 
 			require('mason-tool-installer').setup {
 				run_on_start = true,

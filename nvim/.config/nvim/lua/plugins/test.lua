@@ -3,9 +3,9 @@ return {
 	{
 		'nvim-neotest/neotest',
 		-- https://github.com/nvim-neotest/neotest/issues/531
-		commit = '52fca6717ef972113ddd6ca223e30ad0abb2800c',
+		-- commit = '52fca6717ef972113ddd6ca223e30ad0abb2800c',
 		enabled = true,
-		cond = not vim.g.disable_treesitter,
+		lazy = true,
 		dependencies = {
 			{ 'nvim-neotest/neotest-jest' },
 			'nvim-neotest/nvim-nio',

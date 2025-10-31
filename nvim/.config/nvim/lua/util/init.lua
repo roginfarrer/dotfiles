@@ -1,10 +1,5 @@
 local M = {}
 
----@param ... any
-M.dump = function(...)
-	print(vim.inspect(...))
-end
-
 ---@class KeymapUtil
 ---@field [1] string lhs
 ---@field [2] string|fun():string? rhs

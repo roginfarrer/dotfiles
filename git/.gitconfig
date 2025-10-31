@@ -37,39 +37,40 @@
 	sort = -committerdate
 [push]
 	autoSetupRemote = true
-  default = current
-
-[merge]
-	conflictStyle = diff3
-	tool = gitconflict
+    default = current
 [diff]
-	colorMoved = default
-  tool = gitconflict
-  keepBackup = false
-[difftool "nvimdiff"]
-  cmd = nvim -d $LOCAL $REMOTE
+    external = difft --color=always
+[difftool "difftastic"]
+    # See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
+    cmd = difft --color=always "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
+[difftool]
+    # Run the difftool immediately, don't ask 'are you sure' each time.
+    prompt = false
 
-[mergetool]
-  cmd = fugitive
-	keepBackup = false
-  trustExitCode = true
-  prompt = false
-[mergetool "fugitive"]
-  cmd = nvim -f -c \"Gvdiffsplit\" \"$MERGED\"
-[mergetool "diffview"]
-  cmd = nvim \"+DiffviewOpen\"
-[mergetool "gitconflict"]
-	cmd = nvim \"$MERGED\"
-[mergetool "diffconflicts"]
-	cmd = nvim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+[alias]
+    conflicts = "diff --check --relative"
+    # Difftastic aliases, so `git dlog` is `git log` with difftastic and so on.
+    dlog = -c diff.external=difft log --ext-diff
+    dshow = -c diff.external=difft show --ext-diff
+    ddiff = -c diff.external=difft diff
+
+
+; [diff]
+;     tool = diffview
+; [difftool "diffview"]
+;     cmd = nvim -f -c "DiffviewOpen"
+; [difftool]
+;     prompt = false
+
+; [mergetool]
+;   cmd = diffview
+;   keepBackup = false
+;   trustExitCode = true
+;   prompt = false
+; [mergetool "diffview"]
+;   cmd = nvim -f +"DiffviewOpen"
 
 [include]
   path = ~/.gitconfig_local
 [safe]
 	directory = *
-[credential "https://github.com"]
-	helper = 
-	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential

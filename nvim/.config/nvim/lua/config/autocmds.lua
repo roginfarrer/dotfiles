@@ -67,7 +67,7 @@ autocmd({ 'BufWritePre' }, {
 		if event.match:match '^%w%w+://' then
 			return
 		end
-		local file = vim.loop.fs_realpath(event.match) or event.match
+		local file = vim.uv.fs_realpath(event.match) or event.match
 		vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
 	end,
 })
@@ -84,51 +84,51 @@ autocmd('BufReadPost', {
 	pattern = '*rc',
 	callback = function()
 		if vim.bo.filetype == '' then
-			vim.bo.filetype = 'json'
+			vim.bo.filetype = 'jsonc'
 		end
 	end,
 })
 
-autocmd('FileType', {
-	group = 'node_gf',
-	pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
-	callback = function()
-		_G.includeexpr = function(fname)
-			local basePath = vim.fn.finddir('node_modules', vim.fn.expand '%:p:h' .. ';' .. vim.fn.getcwd())
-				.. '/'
-				.. fname
-			local indexFileJs = basePath .. '/index.js'
-			local indexFileTs = basePath .. '/index.ts'
-			local packageFile = basePath .. '/package.json'
+-- autocmd('FileType', {
+-- 	group = 'node_gf',
+-- 	pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+-- 	callback = function()
+-- 		_G.includeexpr = function(fname)
+-- 			local basePath = vim.fn.finddir('node_modules', vim.fn.expand '%:p:h' .. ';' .. vim.fn.getcwd())
+-- 				.. '/'
+-- 				.. fname
+-- 			local indexFileJs = basePath .. '/index.js'
+-- 			local indexFileTs = basePath .. '/index.ts'
+-- 			local packageFile = basePath .. '/package.json'
 
-			if vim.fn.filereadable(packageFile) then
-				local package = vim.fn.json_decode(vim.fn.join(vim.fn.readfile(packageFile)))
+-- 			if vim.fn.filereadable(packageFile) then
+-- 				local package = vim.fn.json_decode(vim.fn.join(vim.fn.readfile(packageFile)))
 
-				if vim.fn.has_key(package, 'module') then
-					return basePath .. '/' .. package.module
-				end
+-- 				if vim.fn.has_key(package, 'module') then
+-- 					return basePath .. '/' .. package.module
+-- 				end
 
-				if vim.fn.has_key(package, 'main') then
-					return basePath .. '/' .. package.main
-				end
-			end
+-- 				if vim.fn.has_key(package, 'main') then
+-- 					return basePath .. '/' .. package.main
+-- 				end
+-- 			end
 
-			if vim.fn.filereadable(indexFileTs) then
-				return indexFileTs
-			end
+-- 			if vim.fn.filereadable(indexFileTs) then
+-- 				return indexFileTs
+-- 			end
 
-			if vim.fn.filereadable(indexFileJs) then
-				return indexFileJs
-			end
+-- 			if vim.fn.filereadable(indexFileJs) then
+-- 				return indexFileJs
+-- 			end
 
-			return basePath
-		end
+-- 			return basePath
+-- 		end
 
-		vim.cmd [[setlocal isfname+=@-@]]
-		vim.bo.suffixesadd = vim.bo.suffixesadd .. '.js,.jsx,.ts,.tsx'
-		vim.bo.includeexpr = 'v:lua._G.includeexpr(v:fname)'
-	end,
-})
+-- 		vim.cmd [[setlocal isfname+=@-@]]
+-- 		vim.bo.suffixesadd = vim.bo.suffixesadd .. '.js,.jsx,.ts,.tsx'
+-- 		vim.bo.includeexpr = 'v:lua._G.includeexpr(v:fname)'
+-- 	end,
+-- })
 
 vim.api.nvim_create_user_command('Dupe', function()
 	local filepath = vim.fn.expand '%'

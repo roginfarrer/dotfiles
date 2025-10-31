@@ -1,18 +1,22 @@
 return {
 	{
 		'folke/sidekick.nvim',
+		lazy = false,
 		enabled = true,
 		opts = {
+			nes = {
+				enabled = false,
+			},
 			servers = {
 				copilot = {},
 			},
 			-- add any options here
-			-- cli = {
-			-- 	mux = {
-			-- 		backend = 'tmux',
-			-- 		enabled = true,
-			-- 	},
-			-- },
+			cli = {
+				mux = {
+					backend = 'tmux',
+					enabled = true,
+				},
+			},
 			-- debug = true,
 		},
 		keys = {
@@ -45,54 +49,63 @@ return {
 				mode = { 'n', 'v' },
 			},
 			{
-				'<leader>ac',
+				'<leader>ad',
 				function()
-					require('sidekick.cli').toggle { name = 'claude', focus = true }
+					require('sidekick.cli').close()
 				end,
-				desc = 'Sidekick Claude Toggle',
-				mode = { 'n', 'v' },
+				desc = 'Detach a CLI Session',
+			},
+			{
+				'<leader>at',
+				function()
+					require('sidekick.cli').send { msg = '{this}' }
+				end,
+				mode = { 'x', 'n' },
+				desc = 'Send This',
+			},
+			{
+				'<leader>af',
+				function()
+					require('sidekick.cli').send { msg = '{file}' }
+				end,
+				desc = 'Send File',
+			},
+			{
+				'<leader>av',
+				function()
+					require('sidekick.cli').send { msg = '{selection}' }
+				end,
+				mode = { 'x' },
+				desc = 'Send Visual Selection',
 			},
 			{
 				'<leader>ap',
 				function()
-					require('sidekick.cli').select_prompt()
+					require('sidekick.cli').prompt()
 				end,
-				desc = 'Sidekick Ask Prompt',
-				mode = { 'n', 'v' },
+				mode = { 'n', 'x' },
+				desc = 'Sidekick Select Prompt',
 			},
 			{
-				'<leader>ar',
+				'<leader>aC',
 				function()
-					require('sidekick.nes').update()
+					require('sidekick.cli').toggle { name = 'claude', focus = true }
 				end,
-				desc = 'Sidekick Refresh Suggestions',
+				desc = 'Sidekick Toggle Claude',
 			},
 			{
-				'<leader>ad',
+				'<leader>ac',
 				function()
-					require('sidekick').clear()
+					require('sidekick.cli').toggle { name = 'codex', focus = true }
 				end,
-				desc = 'Sidekick Clear',
-			},
-			{
-				'<leader>aj',
-				function()
-					require('sidekick.nes').jump()
-				end,
-				desc = 'Sidekick Jump To Next',
-			},
-			{
-				'<leader>ay',
-				function()
-					require('sidekick').apply()
-				end,
-				desc = 'Sidekick Apply Edits',
+				desc = 'Sidekick Toggle Codex',
 			},
 		},
 	},
 
 	{
 		'zbirenbaum/copilot.lua',
+		enabled = true,
 		cmd = 'Copilot',
 		event = 'InsertEnter',
 		opts = {
