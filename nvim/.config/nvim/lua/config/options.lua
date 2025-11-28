@@ -65,11 +65,11 @@ vim.diagnostic.config {
 	underline = true,
 	update_in_insert = false,
 	severity_sort = true,
-	virtual_text = {
-		spacing = 2,
-		source = 'if_many',
-		prefix = '●',
-	},
+	-- virtual_text = {
+	-- 	spacing = 2,
+	-- 	source = 'if_many',
+	-- 	prefix = '●',
+	-- },
 	signs = {
 		text = {
 			[vim.diagnostic.severity.ERROR] = icons.lazy.diagnostics.Error,

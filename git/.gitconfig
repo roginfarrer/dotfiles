@@ -53,7 +53,7 @@
     dlog = -c diff.external=difft log --ext-diff
     dshow = -c diff.external=difft show --ext-diff
     ddiff = -c diff.external=difft diff
-
+    rc = !git add -A && git rebase --continue
 
 ; [diff]
 ;     tool = diffview

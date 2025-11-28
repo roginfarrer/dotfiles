@@ -19,6 +19,17 @@ return {
 			},
 			-- debug = true,
 		},
+		specs = {
+			{
+				'which-key.nvim',
+				optional = true,
+				init = function()
+					require('which-key').add {
+						{ '<leader>a', group = 'ai' },
+					}
+				end,
+			},
+		},
 		keys = {
 			{
 				'<tab>',
@@ -109,6 +120,14 @@ return {
 		cmd = 'Copilot',
 		event = 'InsertEnter',
 		opts = {
+			nes = {
+				enabled = true,
+				keymap = {
+					accept_and_goto = '<tab>',
+					accept = false,
+					dismiss = '<esc>',
+				},
+			},
 			suggestion = {
 				enabled = false,
 				auto_trigger = true,

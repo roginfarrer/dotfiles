@@ -76,9 +76,12 @@ return {
 				['<C-y>'] = { 'select_and_accept' },
 				['<Tab>'] = {
 					'snippet_forward',
-					function() -- sidekick next edit suggestion
-						return require('sidekick').nes_jump_or_apply()
-					end,
+					-- function ()
+					--     return require('copilot')
+					-- end
+					-- function() -- sidekick next edit suggestion
+					-- 	return require('sidekick').nes_jump_or_apply()
+					-- end,
 					'fallback',
 				},
 			},

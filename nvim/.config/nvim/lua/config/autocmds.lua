@@ -9,9 +9,7 @@ autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
 -- resize splits if window got resized
 autocmd({ 'VimResized' }, {
 	group = 'resize_splits',
-	callback = function()
-		vim.cmd 'tabdo wincmd ='
-	end,
+	command = 'tabdo wincmd =',
 })
 
 -- go to last loc when opening a buffer
@@ -75,11 +73,11 @@ autocmd({ 'BufWritePre' }, {
 autocmd('TextYankPost', {
 	group = 'highlight_yank',
 	callback = function()
-		vim.highlight.on_yank()
+		vim.highlight.on_yank { visual = true }
 	end,
 })
 
-autocmd('BufReadPost', {
+autocmd('BufRead', {
 	group = 'rc_ft',
 	pattern = '*rc',
 	callback = function()
@@ -161,7 +159,7 @@ vim.api.nvim_create_user_command('CopyPath', function()
 	end)
 end, {})
 
-if require('util').has 'conform' then
+if require('util').has 'conform.nvim' then
 	-- https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#format-command
 	vim.api.nvim_create_user_command('Format', function(args)
 		local range = nil
@@ -191,5 +189,35 @@ autocmd('BufWritePost', {
 		if vim.fn.executable 'aerospace' then
 			vim.system { 'aerospace', 'reload-config' }
 		end
+	end,
+})
+
+-- Open help in a vertical split
+autocmd('FileType', {
+	pattern = 'help',
+	group = 'help_split',
+	command = 'wincmd L',
+})
+
+-- no auto continue comments on new line
+-- autocmd('FileType', {
+-- 	group = 'no_auto_comment',
+-- 	callback = function()
+-- 		vim.opt_local.formatoptions:remove { 'c', 'r', 'o' }
+-- 	end,
+-- })
+
+-- show cursorline only in active window
+autocmd({ 'WinEnter', 'BufEnter' }, {
+	group = 'active_cursorline',
+	callback = function()
+		vim.opt_local.cursorline = true
+	end,
+})
+-- disable when leave
+autocmd({ 'WinEnter', 'BufEnter' }, {
+	group = 'active_cursorline_disable',
+	callback = function()
+		vim.opt_local.cursorline = false
 	end,
 })

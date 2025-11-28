@@ -160,6 +160,17 @@ return {
 		end,
 	},
 
+	{ 'dmmulroy/ts-error-translator.nvim', opts = {} },
+	{
+		'rachartier/tiny-inline-diagnostic.nvim',
+		event = 'VeryLazy',
+		priority = 1000,
+		config = function()
+			require('tiny-inline-diagnostic').setup()
+			vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics
+		end,
+	},
+
 	{
 		'pmizio/typescript-tools.nvim',
 		dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
