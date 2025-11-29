@@ -120,6 +120,9 @@ return {
 			'copilotlsp-nvim/copilot-lsp', -- (optional) for NES functionality
 		},
 		enabled = true,
+		dependencies = {
+			'copilotlsp-nvim/copilot-lsp', -- (optional) for NES functionality
+		},
 		cmd = 'Copilot',
 		event = 'InsertEnter',
 		opts = {
