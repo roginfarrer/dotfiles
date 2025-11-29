@@ -4,16 +4,43 @@ return {
 		branch = 'main',
 		build = ':TSUpdate',
 		lazy = false,
-		version = false, -- last release is way too old and doesn't work on Windows
 		dependencies = {
 			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
 			{ 'windwp/nvim-ts-autotag', opts = {} },
 		},
 		opts = {},
 		config = function(_, opts)
+			local treesitter = require 'nvim-treesitter'
+			treesitter.install { -- equivalent of ensure_installed
+				'bash',
+				'css',
+				'diff',
+				'fish',
+				'git_config',
+				'git_rebase',
+				'gitattributes',
+				'gitcommit',
+				'gitignore',
+				'html',
+				'javascript',
+				'json',
+				'lua',
+				'luadoc',
+				'markdown',
+				'markdown_inline',
+				'regex',
+				'scss',
+				'tmux',
+				'toml',
+				'tsx',
+				'typescript',
+				'vim',
+				'vimdoc',
+				'yaml',
+			}
+
 			vim.treesitter.language.register('markdown', 'mdx')
 
-			local treesitter = require 'nvim-treesitter'
 			treesitter.setup(opts)
 
 			local ts_config = require 'nvim-treesitter.config'
@@ -52,11 +79,13 @@ return {
 					-- Check if parser is already installed
 					local already_installed = ts_config.get_installed 'parsers'
 					if not vim.tbl_contains(already_installed, parser_name) then
-						-- If not installed, install parser asynchronously and start treesitter
-						vim.notify('Installing parser for ' .. parser_name, vim.log.levels.INFO)
-						treesitter.install({ parser_name }):await(function()
-							vim.print('Starting parser: ' .. parser_name)
-							ts_start(bufnr, parser_name)
+						treesitter.arun(function()
+							-- If not installed, install parser asynchronously and start treesitter
+							vim.notify('Installing parser for ' .. parser_name, vim.log.levels.INFO)
+							treesitter.install({ parser_name }):await(function()
+								vim.print('Starting parser: ' .. parser_name)
+								ts_start(bufnr, parser_name)
+							end)
 						end)
 						return
 					end

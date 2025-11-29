@@ -116,6 +116,9 @@ return {
 
 	{
 		'zbirenbaum/copilot.lua',
+		dependencies = {
+			'copilotlsp-nvim/copilot-lsp', -- (optional) for NES functionality
+		},
 		enabled = true,
 		cmd = 'Copilot',
 		event = 'InsertEnter',
