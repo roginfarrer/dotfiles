@@ -31,6 +31,9 @@ require('lazy').setup {
 	install = {
 		colorscheme = { 'rose-pine', 'catppuccin' },
 	},
+	change_detection = {
+		notify = false,
+	},
 	-- checker = { enabled = true },
 	performance = {
 		rtp = {

@@ -113,9 +113,9 @@ return {
 					lualine_z = { { lsp_client_names, separator = { right = '' }, padding = { left = 1 } } },
 				},
 				extensions = { 'fzf', 'lazy', 'oil', 'trouble', 'quickfix', 'nvim-dap-ui', 'mason' },
-				inactive_winbar = {
-					lualine_a = { { 'filename', path = 1 } },
-				},
+				-- inactive_winbar = {
+				-- 	lualine_a = { { 'filename', path = 1 } },
+				-- },
 			}
 		end,
 	},

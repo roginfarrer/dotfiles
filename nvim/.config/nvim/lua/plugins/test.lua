@@ -14,17 +14,17 @@ return {
 			'nvim-treesitter/nvim-treesitter',
 		},
 		config = function()
-			local neotest_ns = vim.api.nvim_create_namespace 'neotest'
-			vim.diagnostic.config({
-				virtual_text = {
-					format = function(diagnostic)
-						-- Replace newline and tab characters with space for more compact diagnostics
-						local message =
-							diagnostic.message:gsub('\n', ' '):gsub('\t', ' '):gsub('%s+', ' '):gsub('^%s+', '')
-						return message
-					end,
-				},
-			}, neotest_ns)
+			-- local neotest_ns = vim.api.nvim_create_namespace 'neotest'
+			-- vim.diagnostic.config({
+			-- 	virtual_text = {
+			-- 		format = function(diagnostic)
+			-- 			-- Replace newline and tab characters with space for more compact diagnostics
+			-- 			local message =
+			-- 				diagnostic.message:gsub('\n', ' '):gsub('\t', ' '):gsub('%s+', ' '):gsub('^%s+', '')
+			-- 			return message
+			-- 		end,
+			-- 	},
+			-- }, neotest_ns)
 			require('neotest').setup {
 				adapters = {
 					require 'neotest-jest' {
@@ -34,17 +34,17 @@ return {
 					},
 				},
 				discovery = { enabled = false },
-				log_level = vim.log.levels.DEBUG,
+				-- log_level = vim.log.levels.DEBUG,
 				icons = require('ui.icons').lazy.test,
-				output = { open_on_run = true },
 				quickfix = {
-					open = function()
-						if require('util').has 'trouble.nvim' then
-							require('trouble').open { mode = 'quickfix', focus = false }
-						else
-							vim.cmd 'copen'
-						end
-					end,
+					open = false,
+					-- open = function()
+					-- 	if require('util').has 'trouble.nvim' then
+					-- 		require('trouble').open { mode = 'quickfix', focus = false }
+					-- 	else
+					-- 		vim.cmd 'copen'
+					-- 	end
+					-- end,
 				},
 			}
 		end,

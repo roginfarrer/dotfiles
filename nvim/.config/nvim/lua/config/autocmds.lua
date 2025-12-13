@@ -174,6 +174,18 @@ if require('util').has 'conform.nvim' then
 	end, { range = true })
 end
 
+vim.api.nvim_create_user_command('HighlightEol', function()
+	vim.w.highlight_eol_enabled = not vim.w.highlight_eol_enabled
+	if vim.w.highlight_eol_enabled then
+		vim.cmd 'highlight ExtraWhitespace ctermbg=1 guibg=red'
+		vim.cmd 'match ExtraWhitespace /\\s\\+$/'
+		vim.notify 'HighlightEol enabled'
+	else
+		vim.cmd 'match none'
+		vim.notify 'HighlightEol disabled'
+	end
+end, {})
+
 autocmd('BufWritePost', {
 	pattern = 'kitty.conf',
 	callback = function()

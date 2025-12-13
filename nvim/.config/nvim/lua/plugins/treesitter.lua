@@ -100,6 +100,7 @@ return {
 	{
 		'nvim-treesitter/nvim-treesitter-textobjects',
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
+		enabled = true,
 		branch = 'main',
 		lazy = false,
 		opts = {
@@ -108,90 +109,91 @@ return {
 				set_jumps = true, -- whether to set jumps in the jumplist
 			},
 		},
-		keys = function()
-			local key_groups = {
-				['f'] = 'function',
-				['c'] = 'class',
-				['a'] = 'parameter',
-			}
+		-- keys = function()
+		-- 	local key_groups = {
+		-- 		['f'] = 'function',
+		-- 		['c'] = 'class',
+		-- 		['a'] = 'parameter',
+		-- 	}
 
-			local function select(object, category)
-				return function()
-					require('nvim-treesitter-textobjects.select').select_textobject(object, category)
-				end
-			end
+		-- 	local function select(object, category)
+		-- 		return function()
+		-- 			require('nvim-treesitter-textobjects.select').select_textobject(object, category)
+		-- 		end
+		-- 	end
 
-			local move_keys = {}
-			local move_key_mode = { 'x', 'n', 'o' }
+		-- 	local move_keys = {}
+		-- 	local move_key_mode = { 'x', 'n', 'o' }
 
-			for key, group in pairs(key_groups) do
-				local scope = '@' .. group .. '.outer'
-				table.insert(move_keys, {
-					']' .. key,
-					function()
-						require('nvim-treesitter-textobjects.move').goto_next_start(scope, 'textobjects')
-					end,
-					mode = move_key_mode,
-					desc = 'Goto start of next ' .. group,
-				})
-				table.insert(move_keys, {
-					']' .. string.upper(key),
-					function()
-						require('nvim-treesitter-textobjects.move').goto_next_end(scope, 'textobjects')
-					end,
-					mode = move_key_mode,
-					desc = 'Goto end of next ' .. group,
-				})
-				table.insert(move_keys, {
-					'[' .. key,
-					function()
-						require('nvim-treesitter-textobjects.move').goto_previous_start(scope, 'textobjects')
-					end,
-					mode = move_key_mode,
-					desc = 'Goto start of previous ' .. group,
-				})
-				table.insert(move_keys, {
-					'[' .. string.upper(key),
-					function()
-						require('nvim-treesitter-textobjects.move').goto_previous_end(scope, 'textobjects')
-					end,
-					mode = move_key_mode,
-					desc = 'Goto end of previous ' .. group,
-				})
-			end
+		-- 	for key, group in pairs(key_groups) do
+		-- 		local scope = '@' .. group .. '.outer'
+		-- 		table.insert(move_keys, {
+		-- 			']' .. key,
+		-- 			function()
+		-- 				require('nvim-treesitter-textobjects.move').goto_next_start(scope, 'textobjects')
+		-- 			end,
+		-- 			mode = move_key_mode,
+		-- 			desc = 'Goto start of next ' .. group,
+		-- 		})
+		-- 		table.insert(move_keys, {
+		-- 			']' .. string.upper(key),
+		-- 			function()
+		-- 				require('nvim-treesitter-textobjects.move').goto_next_end(scope, 'textobjects')
+		-- 			end,
+		-- 			mode = move_key_mode,
+		-- 			desc = 'Goto end of next ' .. group,
+		-- 		})
+		-- 		table.insert(move_keys, {
+		-- 			'[' .. key,
+		-- 			function()
+		-- 				require('nvim-treesitter-textobjects.move').goto_previous_start(scope, 'textobjects')
+		-- 			end,
+		-- 			mode = move_key_mode,
+		-- 			desc = 'Goto start of previous ' .. group,
+		-- 		})
+		-- 		table.insert(move_keys, {
+		-- 			'[' .. string.upper(key),
+		-- 			function()
+		-- 				require('nvim-treesitter-textobjects.move').goto_previous_end(scope, 'textobjects')
+		-- 			end,
+		-- 			mode = move_key_mode,
+		-- 			desc = 'Goto end of previous ' .. group,
+		-- 		})
+		-- 	end
 
-			return vim.tbl_deep_extend('keep', move_keys, {
-				-- Select
-				{
-					'af',
-					select('@function.outer', 'textobjects'),
-					desc = 'Select outer function',
-					mode = { 'x', 'o' },
-				},
-				{
-					'if',
-					select('@function.inner', 'textobjects'),
-					desc = 'Select inner function',
-					mode = { 'x', 'o' },
-				},
-				{
-					'ac',
-					select('@class.outer', 'textobjects'),
-					desc = 'Select outer class',
-					mode = { 'x', 'o' },
-				},
-				{
-					'ic',
-					select('@class.inner', 'textobjects'),
-					desc = 'Select inner class',
-					mode = { 'x', 'o' },
-				},
-			})
-		end,
+		-- 	return vim.tbl_deep_extend('keep', move_keys, {
+		-- 		-- Select
+		-- 		{
+		-- 			'af',
+		-- 			select('@function.outer', 'textobjects'),
+		-- 			desc = 'Select outer function',
+		-- 			mode = { 'x', 'o' },
+		-- 		},
+		-- 		{
+		-- 			'if',
+		-- 			select('@function.inner', 'textobjects'),
+		-- 			desc = 'Select inner function',
+		-- 			mode = { 'x', 'o' },
+		-- 		},
+		-- 		{
+		-- 			'ac',
+		-- 			select('@class.outer', 'textobjects'),
+		-- 			desc = 'Select outer class',
+		-- 			mode = { 'x', 'o' },
+		-- 		},
+		-- 		{
+		-- 			'ic',
+		-- 			select('@class.inner', 'textobjects'),
+		-- 			desc = 'Select inner class',
+		-- 			mode = { 'x', 'o' },
+		-- 		},
+		-- 	})
+		-- end,
 	},
 
 	{
 		'Wansmer/treesj',
+		enabled = false,
 		cmd = { 'TSJToggle', 'TSJSplit', 'TSJJoin' },
 		keys = {
 			{

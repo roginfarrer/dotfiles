@@ -195,4 +195,17 @@ return {
 		-- 	require('vgit').setup()
 		-- end,
 	},
+
+	{
+		'otavioschwanck/github-pr-reviewer.nvim',
+		enabled = false,
+		lazy = false,
+		opts = {
+			-- options here
+		},
+		-- keys = {
+		-- 	{ '<leader>p', '<cmd>PRReviewMenu<cr>', desc = 'PR Review Menu' },
+		-- 	{ '<leader>p', ":<C-u>'<,'>PRSuggestChange<CR>", desc = 'Suggest change', mode = 'v' },
+		-- },
+	},
 }

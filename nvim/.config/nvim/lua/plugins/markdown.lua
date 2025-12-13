@@ -3,7 +3,7 @@ return {
 		'OXY2DEV/markview.nvim',
 		-- ft = { 'markdown', 'mdx' },
 		-- cmd = 'Markview',
-		lazy = false,
+		event = 'VeryLazy',
 		name = 'markview',
 		dependencies = { 'echasnovski/mini.icons' },
 		opts = function()

@@ -1,8 +1,9 @@
 return {
 	{
 		'b0o/incline.nvim',
-		enabled = false,
+		enabled = true,
 		event = 'VeryLazy',
+		version = '*',
 		dependencies = {
 			'echasnovski/mini.icons',
 		},
@@ -10,6 +11,10 @@ return {
 			local helpers = require 'incline.helpers'
 			local MiniIcons = require 'mini.icons'
 			return {
+				hide = {
+					cursorline = 'smart',
+					only_win = true,
+				},
 				window = {
 					padding = 0,
 					margin = { horizontal = 0 },

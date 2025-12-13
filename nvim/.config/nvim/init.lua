@@ -15,9 +15,9 @@ require 'config.gui'
 if not vim.g.vscode then
 	-- require 'ui.winbar'
 	-- vim.cmd.colorscheme 'rose-pine'
-	vim.cmd.colorscheme 'tokyonight'
+	-- vim.cmd.colorscheme 'tokyonight'
 	-- vim.cmd.colorscheme 'github_dark'
-	-- vim.cmd.colorscheme 'catppuccin-mocha'
+	vim.cmd.colorscheme 'catppuccin-mocha'
 	-- vim.cmd.colorscheme 'nordic'
 	-- vim.cmd [[colorscheme catppuccin]]
 	-- vim.cmd.colorscheme 'tokyonight-day'
@@ -27,3 +27,6 @@ end
 if type(lconfig) == 'table' and lconfig.after then
 	lconfig.after()
 end
+
+-- Enable the new experimental command-line features.
+-- require('vim._extui').enable {}

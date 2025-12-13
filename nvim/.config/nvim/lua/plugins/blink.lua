@@ -1,38 +1,62 @@
 return {
 	{
 		'saghen/blink.cmp',
-		enabled = true,
 		events = 'InsertEnter',
 		-- optional: provides snippets for the snippet source
 		dependencies = {
-			-- 'rafamadriz/friendly-snippets',
-			-- 'L3MON4D3/LuaSnip',
 			{
 				'Kaiser-Yang/blink-cmp-git',
 				dependencies = { 'nvim-lua/plenary.nvim' },
 			},
-			-- 'MahanRahmati/blink-nerdfont.nvim',
 			'fang2hou/blink-copilot',
 			'ribru17/blink-cmp-spell',
+			{
+				'nvim-mini/mini.snippets',
+				version = false,
+				dependencies = { 'rafamadriz/friendly-snippets' },
+				config = function()
+					local gen_loader = require('mini.snippets').gen_loader
+					require('mini.snippets').setup {
+						snippets = {
+							-- Load custom file with global snippets first (adjust for Windows)
+							gen_loader.from_file '~/.config/nvim/snippets/global.json',
+
+							-- Load snippets based on current language by reading files from
+							-- "snippets/" subdirectories from 'runtimepath' directories.
+							gen_loader.from_lang {
+								lang_patterns = {
+									markdown_inline = { 'markdown.json' },
+									tsx = {
+										'**/javascript.json',
+										'**/typescript.json',
+										'**/tsdoc.json',
+									},
+									typescript = {
+										'**/javascript.json',
+										'**/typescript.json',
+										'**/tsdoc.json',
+									},
+								},
+							},
+							gen_loader.from_lang(),
+						},
+					}
+				end,
+			},
 		},
 		-- use a release tag to download pre-built binaries
 		version = '1.*',
 		-- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
 		-- build = 'cargo build --release',
 		opts = {
-			appearance = {
-				use_nvim_cmp_as_default = false,
-				nerd_font_variant = 'mono',
-			},
 			sources = {
-				default = { --[[ 'git',  ]]
+				default = {
 					'copilot',
 					'lsp',
 					'path',
 					'snippets',
 					'buffer',
-					-- 'nerdfont',
-					-- 'spell',
+					'spell',
 				},
 				providers = {
 					copilot = {
@@ -41,19 +65,6 @@ return {
 						score_offset = 100,
 						async = true,
 					},
-					-- git = {
-					--   module = 'blink-cmp-git',
-					--   name = 'Git',
-					--   opts = {
-					--     -- options for the blink-cmp-git
-					--   },
-					-- },
-					-- nerdfont = {
-					--   module = 'blink-nerdfont',
-					--   name = 'Nerd Fonts',
-					--   score_offset = 15, -- Tune by preference
-					--   opts = { insert = true }, -- Insert nerdfont icon (default) or complete its name
-					-- },
 					spell = {
 						name = 'Spell',
 						module = 'blink-cmp-spell',
@@ -61,7 +72,6 @@ return {
 				},
 			},
 			completion = {
-				accept = { auto_brackets = { enabled = true } },
 				menu = {
 					draw = {
 						treesitter = { 'lsp' },
@@ -72,8 +82,7 @@ return {
 				},
 			},
 			keymap = {
-				-- preset = 'enter',
-				['<C-y>'] = { 'select_and_accept' },
+				preset = 'default',
 				['<Tab>'] = {
 					function(cmp)
 						if vim.b[vim.api.nvim_get_current_buf()].nes_state then
@@ -90,17 +99,35 @@ return {
 						end
 					end,
 					'snippet_forward',
-					-- function ()
-					--     return require('copilot')
-					-- end
-					-- function() -- sidekick next edit suggestion
-					-- 	return require('sidekick').nes_jump_or_apply()
-					-- end,
 					'fallback',
 				},
+				-- ['<C-y>'] = { 'select_and_accept' },
+				-- ['<Tab>'] = {
+				-- 	-- function(cmp)
+				-- 	-- 	if vim.b[vim.api.nvim_get_current_buf()].nes_state then
+				-- 	-- 		cmp.hide()
+				-- 	-- 		return (
+				-- 	-- 			require('copilot-lsp.nes').apply_pending_nes()
+				-- 	-- 			and require('copilot-lsp.nes').walk_cursor_end_edit()
+				-- 	-- 		)
+				-- 	-- 	end
+				-- 	-- 	if cmp.snippet_active() then
+				-- 	-- 		return cmp.accept()
+				-- 	-- 	else
+				-- 	-- 		return cmp.select_and_accept()
+				-- 	-- 	end
+				-- 	-- end,
+				-- 	function() -- sidekick next edit suggestion
+				-- 		return require('sidekick').nes_jump_or_apply()
+				-- 	end,
+				-- 	'snippet_forward',
+				-- 	-- function ()
+				-- 	--     return require('copilot')
+				-- 	-- end
+				-- 	'fallback',
+				-- },
 			},
-			-- snippets = { preset = 'luasnip' },
-			signature = { enabled = true },
+			snippets = { preset = 'mini_snippets' },
 		},
 	},
 }

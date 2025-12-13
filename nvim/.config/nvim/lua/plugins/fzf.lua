@@ -25,9 +25,9 @@ end
 M.open = function(command, opts)
 	return function()
 		opts = opts or {}
-		if opts.cmd == nil and command == 'git_files' and opts.show_untracked then
-			opts.cmd = 'git ls-files --exclude-standard --cached --others'
-		end
+		-- if opts.cmd == nil and command == 'git_files' and opts.show_untracked then
+		-- 	opts.cmd = 'git ls-files --exclude-standard --cached --others'
+		-- end
 		if opts.cwd == 'root_from_file' then
 			opts.cwd = getDirectoryPath() or opts.cwd
 		end
@@ -71,99 +71,46 @@ return {
 		end
 
 		-- Toggle root dir / cwd
-		config.defaults.actions.files['ctrl-r'] = function(_, ctx)
-			local o = vim.deepcopy(ctx.__call_opts)
-			o.root = o.root == false
-			o.cwd = nil
-			o.buf = ctx.__CTX.bufnr
-			local cmd = ctx.__INFO.cmd or 'files'
-			M.open(cmd, o)
-		end
-		config.defaults.actions.files['alt-c'] = config.defaults.actions.files['ctrl-r']
-		config.set_action_helpstr(config.defaults.actions.files['ctrl-r'], 'toggle-root-dir')
+		-- config.defaults.actions.files['ctrl-r'] = function(_, ctx)
+		-- 	local o = vim.deepcopy(ctx.__call_opts)
+		-- 	o.root = o.root == false
+		-- 	o.cwd = nil
+		-- 	o.buf = ctx.__CTX.bufnr
+		-- 	local cmd = ctx.__INFO.cmd or 'files'
+		-- 	M.open(cmd, o)
+		-- end
+		-- config.defaults.actions.files['alt-c'] = config.defaults.actions.files['ctrl-r']
+		-- config.set_action_helpstr(config.defaults.actions.files['ctrl-r'], 'toggle-root-dir')
 
 		return {
-			{ 'default-title', 'hide' },
-			{
-				fzf_colors = true,
-				grep = {
-					rg_opts = "--hidden --column --line-number --no-heading --trim --color=always --smart-case -g '!{.git,node_modules}/*'",
-				},
-				git = {
-					files = {
-						cmd = 'git ls-files --exclude-standard --others --cached',
-					},
-				},
-				files = {
-					fzf_opts = {
-						['--info'] = 'inline-right',
-					},
-				},
-				keymap = {
-					builtin = {
-						['?'] = 'toggle-preview',
-					},
-				},
-				fzf_opts = {
-					['--no-scrollbar'] = true,
-					['--layout'] = 'reverse',
-					['--info'] = 'inline-right',
-				},
-				hls = {
-					-- normal = 'TelescopeResultsNormal',
-					-- title = 'TelescopePromptTitle',
-					-- help_normal = 'TelescopeNormal',
-					-- preview_title = 'TelescopePreviewTitle',
-					-- -- builtin preview only
-					-- cursor = 'Cursor',
-					-- cursorline = 'TelescopePreviewLine',
-					-- cursorlinenr = 'TelescopePreviewLine',
-					-- search = 'IncSearch',
-				},
-				-- fzf_colors = {
-				-- ['fg'] = { 'fg', 'TelescopeNormal' },
-				-- ['bg'] = { 'bg', 'FzfLuaBorder' },
-				-- ['hl'] = { 'fg', 'TelescopeMatching' },
-				-- ['fg+'] = { 'fg', 'TelescopeSelection' },
-				-- ['bg+'] = { 'bg', 'TelescopeSelection' },
-				-- ['hl+'] = { 'fg', 'TelescopeMatching' },
-				-- ['info'] = { 'fg', 'TelescopeMultiSelection' },
-				-- ['border'] = { 'fg', 'TelescopeBorder' },
-				-- ['gutter'] = { 'bg', 'TelescopeNormal' },
-				-- ['prompt'] = { 'fg', 'TelescopePromptPrefix' },
-				-- ['pointer'] = { 'fg', 'TelescopeSelectionCaret' },
-				-- ['marker'] = { 'fg', 'TelescopeSelectionCaret' },
-				-- ['header'] = { 'fg', 'TelescopeTitle' },
-				-- },
-				winopts = {
-					border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-					preview = {
-						scrollchars = { '┃', '' },
-						hidden = vim.fn.winwidth(0) < 125 and 'hidden' or 'nohidden',
-						vertical = 'up:45%',
-						horizontal = 'right:45%',
-					},
-				},
-				lsp = {
-					code_actions = {
-						previewer = 'codeaction_native',
-						preview_pager = 'delta --side-by-side --width=$FZF_PREVIEW_COLUMNS',
-					},
-				},
-				colorschemes = {
-					colors = vim.list_extend({
-						'rose-pine',
-						'tokyonight',
-						'nordic',
-						'kanagawa',
-						'palenightfall',
-						'nightfox',
-						'onenord',
-						'onedarkpro',
-						'gruvbox',
-					}, vim.fn.getcompletion('', 'color')),
+			{ 'telescope', 'hide' },
+			-- fzf_colors = true,
+			-- grep = {
+			-- 	rg_opts = "--hidden --column --line-number --no-heading --trim --color=always --smart-case -g '!{.git,node_modules}/*'",
+			-- },
+			-- git = {
+			-- 	files = {
+			-- 		cmd = 'git ls-files --exclude-standard --others --cached',
+			-- 	},
+			-- },
+			keymap = {
+				builtin = {
+					['<C-/>'] = 'toggle-help',
+					['<C-a>'] = 'toggle-fullscreen',
+					['<C-i>'] = 'toggle-preview',
 				},
 			},
+			fzf_opts = {
+				-- ['--no-scrollbar'] = true,
+				['--layout'] = 'reverse',
+				['--info'] = 'inline-right',
+			},
+			-- lsp = {
+			-- 	code_actions = {
+			-- 		previewer = 'codeaction_native',
+			-- 		preview_pager = 'delta --side-by-side --width=$FZF_PREVIEW_COLUMNS',
+			-- 	},
+			-- },
 		}
 	end,
 	keys = function()
@@ -172,55 +119,87 @@ return {
 			local config = require 'fzf-lua.config'
 			config.defaults.actions.files['ctrl-t'] = troubleActions.actions.open
 		end
-    -- stylua: ignore
-    return {
-      { '<leader>;',  '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<CR>',  desc = 'Switch Buffer' },
-      { '<leader>/',  M.open 'live_grep',                                          desc = 'Grep' },
-      { '<leader>ff', M.open 'files',                                              desc = 'Find Files (cwd)' },
-      { '<leader>fF', M.open('files', { cwd = 'root_from_file' }),                 desc = 'Find Files (from buffer)' },
-      { '<leader>fG', M.open('live_grep', { cwd = 'root_from_file' }),             desc = 'Grep (cwd)' },
-      { '<leader>fd', M.open('files', { cwd = '~/dotfiles', hidden = true }),                     desc = 'Dotfiles' },
-      { '<leader>fD', M.open('live_grep', { cwd = '~/dotfiles' }),                 desc = 'Grep Dotfiles' },
-      { '<leader>fh', M.open 'oldfiles',                                           desc = 'Recent' },
-      { '<leader>fH', M.open('oldfiles', { cwd = vim.uv.cwd() }),                  desc = 'Recent (cwd)' },
-      { '<leader>fc', M.open 'grep_cword',                                         desc = 'Grep word under cursor' },
-      { '<leader>fC', M.open 'grep_cWORD',                                         desc = 'Grep WORD under cursor' },
-      { '<leader>st', M.open 'builtin',                                            desc = 'fzf builtins' },
-      { '<leader>sC', M.open 'commands',                                           desc = 'commands' },
-      { '<leader>sh', M.open 'help_tags',                                          desc = 'help pages' },
-      { '<leader>sm', M.open 'man_pages',                                          desc = 'man pages' },
-      { '<leader>sk', M.open 'keymaps',                                            desc = 'key maps' },
-      { '<leader>ss', M.open 'highlights',                                         desc = 'search highlight groups' },
-      { '<leader>sf', M.open 'filetypes',                                          desc = 'file types' },
-      { '<leader>so', M.open 'vim_options',                                        desc = 'options' },
-      { '<leader>sa', M.open 'autocommands',                                       desc = 'auto commands' },
-      { '<leader>sc', M.open 'colorschemes',                                       desc = 'colorschemes' },
-      { '<leader>gb', M.open 'git_branches',                                       desc = 'checkout branch' },
-      { '<leader>gC', M.open 'git_bcommits',                                       desc = 'checkout commit (for current file)' },
-      { '<leader>r',  M.open 'resume',                                             desc = 'Fzf resume' },
-      {
-        '<leader>fl',
-        function()
-          require('fzf-lua-lazy').search { prompt = '󰍉 ', winopts = { title = ' Lazy ', title_pos = 'center' } }
-        end,
-        desc = 'lazy plugins',
-      },
-      {
-        '<c-x><c-f>',
-        function()
-          require('fzf-lua').complete_file { cmd = 'fd -t file', winopts = { preview = { hidden = 'nohidden' } } }
-        end,
-        desc = 'Fuzzy complete path',
-        mode = { 'i' },
-      },
-      { 'gd', M.open 'lsp_definitions', desc = 'Definitions' },
-      { 'gD', M.open'lsp_declarations', desc = 'Declarations' },
-      { 'grr', M.open'lsp_references', nowait = true, desc = 'References' },
-      { 'gri', M.open'lsp_implementations', desc = 'Implementations' },
-      { 'grt', M.open'lsp_typedefs', desc = 'Type Definitions' },
-      { 'gO', M.open'lsp_document_symbols', desc = 'LSP Document Symbols' },
-      { 'gra', M.open'lsp_code_actions', desc = 'Code Actions' },
-    }
+		return {
+			{ '<leader>;', '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<CR>', desc = 'Switch Buffer' },
+			{ '<leader>/', M.open 'live_grep', desc = 'Grep' },
+			{ '<leader>ff', M.open 'files', desc = 'Find Files (cwd)' },
+			{
+				'<leader>fF',
+				M.open('files', { cwd = 'root_from_file' }),
+				desc = 'Find Files (from buffer)',
+			},
+			{ '<leader>fG', M.open('live_grep', { cwd = 'root_from_file' }), desc = 'Grep (cwd)' },
+			{
+				'<leader>fd',
+				M.open('files', { cwd = '~/dotfiles', hidden = true }),
+				desc = 'Dotfiles',
+			},
+			{ '<leader>fD', M.open('live_grep', { cwd = '~/dotfiles' }), desc = 'Grep Dotfiles' },
+			{ '<leader>fh', M.open 'oldfiles', desc = 'Recent' },
+			{ '<leader>fH', M.open('oldfiles', { cwd = vim.uv.cwd() }), desc = 'Recent (cwd)' },
+			{
+				'<leader>fc',
+				M.open 'grep_cword',
+				desc = 'Grep word under cursor',
+			},
+			{
+				'<leader>fC',
+				M.open 'grep_cWORD',
+				desc = 'Grep WORD under cursor',
+			},
+			{ '<leader>st', M.open 'builtin', desc = 'fzf builtins' },
+			{ '<leader>sC', M.open 'commands', desc = 'commands' },
+			{ '<leader>sh', M.open 'help_tags', desc = 'help pages' },
+			{ '<leader>sm', M.open 'man_pages', desc = 'man pages' },
+			{ '<leader>sk', M.open 'keymaps', desc = 'key maps' },
+			{
+				'<leader>ss',
+				M.open 'highlights',
+				desc = 'search highlight groups',
+			},
+			{ '<leader>sf', M.open 'filetypes', desc = 'file types' },
+			{ '<leader>so', M.open 'vim_options', desc = 'options' },
+			{ '<leader>sa', M.open 'autocommands', desc = 'auto commands' },
+			{ '<leader>sc', M.open 'colorschemes', desc = 'colorschemes' },
+			{ '<leader>gb', M.open 'git_branches', desc = 'checkout branch' },
+			{
+				'<leader>gC',
+				M.open 'git_bcommits',
+				desc = 'checkout commit (for current file)',
+			},
+			{ '<leader>r', M.open 'resume', desc = 'Fzf resume' },
+			{
+				'<leader>fl',
+				function()
+					require('fzf-lua-lazy').search {
+						prompt = '󰍉 ',
+						winopts = { title = ' Lazy ', title_pos = 'center' },
+					}
+				end,
+				desc = 'lazy plugins',
+			},
+			{
+				'<c-x><c-f>',
+				function()
+					require('fzf-lua').complete_file {
+						cmd = 'fd -t file',
+						winopts = { preview = { hidden = 'nohidden' } },
+					}
+				end,
+				desc = 'Fuzzy complete path',
+				mode = { 'i' },
+			},
+			{ 'gd', M.open 'lsp_definitions', desc = 'Definitions' },
+			{ 'gD', M.open 'lsp_declarations', desc = 'Declarations' },
+			{ 'grr', M.open 'lsp_references', nowait = true, desc = 'References' },
+			{ 'gri', M.open 'lsp_implementations', desc = 'Implementations' },
+			{ 'grt', M.open 'lsp_typedefs', desc = 'Type Definitions' },
+			{ 'gO', M.open 'lsp_document_symbols', desc = 'LSP Document Symbols' },
+			{ 'gra', M.open 'lsp_code_actions', desc = 'Code Actions' },
+			{ 'gao', M.open 'lsp_outgoing_calls', desc = 'C[a]lls Outgoing' },
+			{ 'gai', M.open 'lsp_incoming_calls', desc = 'C[a]lls Incoming' },
+			{ '<leader>su', M.open 'undotree', desc = 'Undotree' },
+		}
 	end,
 	config = function(_, opts)
 		require('fzf-lua').setup(opts)

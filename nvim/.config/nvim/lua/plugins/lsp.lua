@@ -35,6 +35,16 @@ local function on_attach(client, bufnr)
 	if vim.lsp.document_color then
 		vim.lsp.document_color.enable(true, bufnr)
 	end
+	if client:supports_method 'textDocument/documentColor' then
+		map {
+			'grc',
+			function()
+				vim.lsp.document_color.color_presentation()
+			end,
+			desc = 'vim.lsp.document_color.color_presentation()',
+			mode = { 'n', 'x' },
+		}
+	end
 
 	if client:supports_method(methods.textDocument_documentHighlight) then
 		local under_cursor_highlights_group =
@@ -80,13 +90,13 @@ return {
 
 	{
 		'mason-org/mason-lspconfig.nvim',
-		event = 'BufReadPre',
+		lazy = false,
 		dependencies = {
 			'neovim/nvim-lspconfig',
 			'folke/lazydev.nvim',
 			{ 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 			{ 'Bilal2453/luvit-meta', lazy = true },
-			{ 'mason-org/mason.nvim', cmd = 'Mason', opts = {} },
+			{ 'mason-org/mason.nvim', opts = {} },
 			{ 'yioneko/nvim-vtsls', lazy = false },
 		},
 		cmd = 'Mason',
@@ -94,6 +104,7 @@ return {
 			ensure_installed = {
 				'lua_ls',
 				'vtsls',
+				'tsgo',
 				'eslint',
 				'bashls',
 				'cssls',
@@ -106,10 +117,25 @@ return {
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'tsgo' },
+				exclude = { 'ts_ls', 'tsgo', 'copilot' },
 			},
 		},
 		config = function(_, opts)
+			require('mason-lspconfig').setup(opts)
+
+			require('mason-tool-installer').setup {
+				run_on_start = true,
+				ensure_installed = { 'stylua', 'shfmt', 'prettier', 'prettierd' },
+			}
+
+			if require('util').has 'mason-nvim-dap' then
+				require('mason-nvim-dap').setup {
+					automatic_installation = false,
+					handlers = {},
+					ensure_installed = {},
+				}
+			end
+
 			require('util').autocmd('LspAttach', {
 				group = 'lsp-attach',
 				callback = function(event)
@@ -124,26 +150,9 @@ return {
 				end,
 			})
 
-			-- require('plugins.lsp.typescript-tools').setup()
-
-			require('mason-lspconfig').setup(opts)
-
 			vim.lsp.config('*', {
-				capabilities = require('blink.cmp').get_lsp_capabilities(),
+				capabilities = require('blink.cmp').get_lsp_capabilities(nil, true),
 			})
-
-			require('mason-tool-installer').setup {
-				run_on_start = true,
-				ensure_installed = { 'stylua', 'shfmt', 'prettier', 'prettierd' },
-			}
-
-			if require('util').has 'mason-nvim-dap' then
-				require('mason-nvim-dap').setup {
-					automatic_installation = false,
-					handlers = {},
-					ensure_installed = {},
-				}
-			end
 
 			-- Update mappings when registering dynamic capabilities.
 			local register_capability = vim.lsp.handlers[methods.client_registerCapability]
@@ -161,15 +170,15 @@ return {
 	},
 
 	{ 'dmmulroy/ts-error-translator.nvim', opts = {} },
-	{
-		'rachartier/tiny-inline-diagnostic.nvim',
-		event = 'VeryLazy',
-		priority = 1000,
-		config = function()
-			require('tiny-inline-diagnostic').setup()
-			vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics
-		end,
-	},
+	-- {
+	-- 	'rachartier/tiny-inline-diagnostic.nvim',
+	-- 	event = 'VeryLazy',
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		require('tiny-inline-diagnostic').setup()
+	-- 		vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics
+	-- 	end,
+	-- },
 
 	{
 		'pmizio/typescript-tools.nvim',
