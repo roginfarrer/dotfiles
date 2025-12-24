@@ -89,6 +89,44 @@ return {
 	},
 
 	{
+		'wc-toolkit/wc-language-server',
+		lazy = false,
+		dir = vim.fn.expand '$HOME' .. '/development/wc-language-server/packages/neovim',
+		-- ft = {
+		-- 	'html',
+		-- 	'javascript',
+		-- 	'typescript',
+		-- 	'javascriptreact',
+		-- 	'typescriptreact',
+		-- 	'astro',
+		-- 	'svelte',
+		-- 	'vue',
+		-- 	'markdown',
+		-- 	'mdx',
+		-- 	'mustache',
+		-- 	'hbs',
+		-- },
+		-- config = function()
+		-- 	require('wc-language-server').setup {
+		-- 		filetypes = {
+		-- 			'html',
+		-- 			'javascript',
+		-- 			'typescript',
+		-- 			'javascriptreact',
+		-- 			'typescriptreact',
+		-- 			'astro',
+		-- 			'svelte',
+		-- 			'vue',
+		-- 			'markdown',
+		-- 			'mdx',
+		-- 			'mustache',
+		-- 			'hbs',
+		-- 		},
+		-- 	}
+		-- end,
+	},
+
+	{
 		'mason-org/mason-lspconfig.nvim',
 		lazy = false,
 		dependencies = {
@@ -117,7 +155,7 @@ return {
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'tsgo', 'copilot' },
+				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'wc_language_server' },
 			},
 		},
 		config = function(_, opts)
@@ -153,6 +191,9 @@ return {
 			vim.lsp.config('*', {
 				capabilities = require('blink.cmp').get_lsp_capabilities(nil, true),
 			})
+			-- vim.lsp.enable 'wc-language-server'
+
+			-- require('wc_language_server').setup { filetypes = { 'mustache' } }
 
 			-- Update mappings when registering dynamic capabilities.
 			local register_capability = vim.lsp.handlers[methods.client_registerCapability]

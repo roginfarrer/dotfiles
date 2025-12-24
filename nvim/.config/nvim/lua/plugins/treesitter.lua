@@ -40,6 +40,8 @@ return {
 			}
 
 			vim.treesitter.language.register('markdown', 'mdx')
+			vim.treesitter.language.register('glimmer', 'mustache')
+			vim.treesitter.language.register('glimmer', 'hbs')
 
 			treesitter.setup(opts)
 

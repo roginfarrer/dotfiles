@@ -158,6 +158,7 @@ return {
 
 	{
 		'ahkohd/difft.nvim',
+		enabled = false,
 		lazy = false,
 		keys = {
 			{
@@ -180,8 +181,9 @@ return {
 
 	{
 		'esmuellert/vscode-diff.nvim',
+		lazy = false,
+		branch = 'next',
 		dependencies = { 'MunifTanjim/nui.nvim' },
-		cmd = { 'CodeDiff' },
 	},
 
 	{

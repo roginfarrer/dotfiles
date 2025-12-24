@@ -46,6 +46,13 @@
 [difftool]
     # Run the difftool immediately, don't ask 'are you sure' each time.
     prompt = false
+[mergetool "vscode-diff"]
+	cmd = nvim \"$MERGED\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
+[merge]
+    tool = vscode-diff
+    keepBackup = false
+    trustExitCode = true
+    prompt = false
 
 [alias]
     conflicts = "diff --check --relative"

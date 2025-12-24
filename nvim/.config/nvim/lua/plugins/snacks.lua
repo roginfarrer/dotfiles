@@ -87,6 +87,7 @@ return {
 				{ '<leader>ss', function() Snacks.picker.highlights() end, desc = 'search highlight groups' },
 				{ '<leader>sa', function() Snacks.picker.autocmds() end, desc = 'auto commands' },
 				{ '<leader>sc', function() Snacks.picker.colorschemes() end, desc = 'colorschemes' },
+				{ '<leader>sn', function() Snacks.picker.notifications() end, desc = 'notifications' },
 				{ '<leader>r', function() Snacks.picker.resume() end, desc = 'Picker resume' },
 				{ '<leader>gsl', function() Snacks.picker.git_log() end, desc = 'Picker Git Log' },
 				{ '<leader>gss', function() Snacks.picker.git_status() end, desc = 'Picker Git Status' },
