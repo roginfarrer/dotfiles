@@ -46,7 +46,7 @@ return {
 
             -- stylua: ignore
 			return {
-				{ '<leader>;', function() Snacks.picker.smart() end, desc = 'Smart' },
+				{ '<leader>;', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				{ '<leader>b', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				{ '<leader>/', function() Snacks.picker.grep({ hidden = true }) end, desc = 'Grep' },
 				{ '<leader>:', function() Snacks.picker.command_history() end, desc = 'Command History' },

@@ -136,6 +136,7 @@ return {
 			{ 'Bilal2453/luvit-meta', lazy = true },
 			{ 'mason-org/mason.nvim', opts = {} },
 			{ 'yioneko/nvim-vtsls', lazy = false },
+			{ 'dmmulroy/ts-error-translator.nvim', opts = {} },
 		},
 		cmd = 'Mason',
 		opts = {
@@ -155,7 +156,7 @@ return {
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'wc_language_server' },
+				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'wc_language_server', 'cssls' },
 			},
 		},
 		config = function(_, opts)

@@ -1,5 +1,5 @@
 return {
-	-- { 'mustache/vim-mustache-handlebars', ft = 'mustache' },
+	{ 'mustache/vim-mustache-handlebars', ft = 'mustache' },
 	{ 'jxnblk/vim-mdx-js', enabled = false, ft = 'mdx' },
 	{ 'fladson/vim-kitty', ft = 'kitty' },
 	{ 'Amar1729/skhd-vim-syntax', ft = 'skhd' },

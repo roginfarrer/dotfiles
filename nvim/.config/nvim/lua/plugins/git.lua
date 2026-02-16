@@ -1,7 +1,7 @@
 return {
 	{
 		'tpope/vim-fugitive',
-		enabled = false,
+		enabled = true,
 		cmd = {
 			'Git',
 			'GBrowse',
@@ -14,7 +14,10 @@ return {
 			'Gvdiffsplit',
 			'Gedit',
 		},
-		dependencies = { 'tpope/vim-rhubarb' },
+		keys = {
+			{ '<leader>gg', '<cmd>Git<cr>', desc = 'Fugitive' },
+		},
+		-- dependencies = { 'tpope/vim-rhubarb' },
 		-- keys = {
 		--   { '<leader>gc', ':GBrowse!<CR>', desc = 'Copy github url to clipboard' },
 		--   { '<leader>gc', ":'<,'>GBrowse!<CR>", desc = 'Copy github url to clipboard', mode = { 'v' } },
@@ -23,7 +26,17 @@ return {
 		-- },
 	},
 	{
+		'barrettruth/diffs.nvim',
+		lazy = false,
+		init = function()
+			vim.g.diffs = {
+				fugitive = true,
+			}
+		end,
+	},
+	{
 		'sindrets/diffview.nvim',
+		enabled = false,
 		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
 		keys = {
 			{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
@@ -84,6 +97,7 @@ return {
 
 	{
 		'TimUntersberger/neogit',
+		enabled = false,
 		cmd = 'Neogit',
 		opts = {
 			kind = 'split',
@@ -180,10 +194,10 @@ return {
 	},
 
 	{
-		'esmuellert/vscode-diff.nvim',
-		lazy = false,
-		branch = 'next',
+		'esmuellert/codediff.nvim',
+		enabled = false,
 		dependencies = { 'MunifTanjim/nui.nvim' },
+		cmd = 'CodeDiff',
 	},
 
 	{

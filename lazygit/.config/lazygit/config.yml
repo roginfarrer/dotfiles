@@ -3,7 +3,7 @@
 #     "Rogin Farrer": "#ff0000"
 
 git:
-  paging:
-    externalDiffCommand: difft --color=always
-    # colorArg: never
-    # pager: delta --dark --paging=never
+  pagers:
+    - externalDiffCommand: difft --color=always
+      # colorArg: never
+      # pager: delta --dark --paging=never

@@ -53,7 +53,7 @@ return {
 					typescriptreact = prettier,
 					css = prettier,
 					html = prettier,
-					markdown = prettier,
+					-- markdown = { 'djlint' },
 					mdx = prettier,
 					astro = { 'prettier' },
 					scss = prettier,
@@ -67,7 +67,13 @@ return {
 				},
 				default_format_opts = { lsp_format = 'fallback' },
 				log_level = vim.log.levels.DEBUG,
-				format_on_save = { timeout_ms = 2000 },
+				format_on_save = function(bufnr)
+					local disable_filetypes = { mustache = true }
+					return {
+						timeout_ms = 2000,
+						lsp_format = disable_filetypes[vim.bo[bufnr].filetype] and 'never' or 'fallback',
+					}
+				end,
 			}
 		end,
 	},

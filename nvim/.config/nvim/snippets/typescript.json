@@ -337,5 +337,40 @@
     "body": "expect(() => {\n\t$0\n}).toThrowErrorMatchingSnapshot();",
     "desc": "expects that the method will throw an error mathing the snapshpot",
     "prefix": "ttems"
+  },
+  "Lit Static Properties": {
+    "body": "static properties: PropertyDeclarations = {\n\t$0\n};",
+    "desc": "Create ReactiveElement static properties block",
+    "prefix": "litprops"
+  },
+  "Lit willUpdate": {
+    "body": "override willUpdate(changed: PropertyValues) {\n\tsuper.willUpdate(changed);\n\t$0\n}",
+    "desc": "Lit willUpdate reactive lifecycle method",
+    "prefix": "lwu"
+  },
+  "Lit firstUpdated": {
+    "body": "override firstUpdated(changed: PropertyValues) {\n\tsuper.firstUpdated(changed);\n\t$0\n}",
+    "desc": "Lit firstUpdated reactive lifecycle method",
+    "prefix": "lfu"
+  },
+  "Lit update": {
+    "body": "override update(changed: PropertyValues) {\n\tsuper.update(changed);\n\t$0\n}",
+    "desc": "Lit update reactive lifecycle method",
+    "prefix": "lu"
+  },
+  "Lit updated": {
+    "body": "override updated(changed: PropertyValues) {\n\tsuper.updated(changed);\n\t$0\n}",
+    "desc": "Lit updated reactive lifecycle method",
+    "prefix": "lud"
+  },
+  "Custom Element connectedCallback": {
+    "body": "connectedCallback() {\n\tsuper.connectedCallback();\n\t$0\n}",
+    "desc": "Custom Element connectedCallback",
+    "prefix": "connectedcallback"
+  },
+  "Custom Element disconnectedCallback": {
+    "body": "disconnectedCallback() {\n\tsuper.disconnectedCallback();\n\t$0\n}",
+    "desc": "Custom Element disconnectedCallback",
+    "prefix": "disconnectedcallback"
   }
 }
