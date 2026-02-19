@@ -14,6 +14,7 @@ return {
 			quickfile = {},
 			statuscolumn = {},
 			input = {},
+			lazygit = {},
 			rename = {},
 			notifier = {},
 			repo = {},

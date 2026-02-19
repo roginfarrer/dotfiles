@@ -64,6 +64,51 @@ local function on_attach(client, bufnr)
 	end
 end
 
+---@param command string
+local function get_ts_bridge_cmd(command)
+	local function ensure_ts_bridge_daemon()
+		if vim.g.ts_bridge_daemon_started then
+			return
+		end
+		vim.g.ts_bridge_daemon_started = true
+		vim.fn.jobstart({
+			command,
+			'daemon',
+			'--listen',
+			'127.0.0.1:7007', -- choose your port
+			'--idle-ttl',
+			'30m',
+		}, {
+			detach = true,
+			env = { RUST_LOG = 'info' },
+		})
+	end
+
+	local function wait_for_daemon(host, port, timeout_ms)
+		local addr = string.format('%s:%d', host, port)
+		local function is_ready()
+			local ok, chan = pcall(vim.fn.sockconnect, 'tcp', addr, { rpc = false })
+			if not ok then
+				return false
+			end
+			if type(chan) == 'number' and chan > 0 then
+				vim.fn.chanclose(chan)
+				return true
+			end
+			return false
+		end
+		return vim.wait(timeout_ms, is_ready, 50)
+	end
+
+	local function daemon_cmd(dispatchers)
+		ensure_ts_bridge_daemon()
+		-- Built-in LSP has no `on_new_config`, and `before_init` runs after `cmd`, so
+		-- start + wait here to avoid a first-attach connection refusal.
+		wait_for_daemon('127.0.0.1', 7007, 2000)
+		return vim.lsp.rpc.connect('127.0.0.1', 7007)(dispatchers)
+	end
+end
+
 return {
 	{
 		'folke/lazydev.nvim',
@@ -156,7 +201,7 @@ return {
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'wc_language_server', 'cssls' },
+				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'wc_language_server', 'cssls', 'vtsls' },
 			},
 		},
 		config = function(_, opts)
@@ -192,6 +237,18 @@ return {
 			vim.lsp.config('*', {
 				capabilities = require('blink.cmp').get_lsp_capabilities(nil, true),
 			})
+
+			local ts_bridge_executable = vim.fn.expand '$HOME' .. '/development/ts-bridge/target/release/ts-bridge'
+
+			if vim.fn.executable(ts_bridge_executable) == 1 then
+				vim.lsp.config('ts_bridge', {
+					cmd = ts_bridge_executable,
+				})
+				vim.lsp.enable 'ts_bridge'
+			else
+				vim.lsp.enable 'vtsls'
+			end
+
 			-- vim.lsp.enable 'wc-language-server'
 
 			-- require('wc_language_server').setup { filetypes = { 'mustache' } }
