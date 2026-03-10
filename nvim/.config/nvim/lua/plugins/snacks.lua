@@ -4,7 +4,17 @@ return {
 		'folke/snacks.nvim',
 		priority = 1000,
 		lazy = false,
-		dependencies = { 'roginfarrer/fzf-lua-lazy.nvim', dev = true },
+		dependencies = {
+			{
+				'roginfarrer/fzf-lua-lazy.nvim',
+				dev = true,
+			},
+			{
+				'2kabhishek/seeker.nvim',
+				cmd = { 'Seeker' },
+				opts = {}, -- Required unless you call seeker.setup() manually, add your configs here
+			},
+		},
 		---@type snacks.Config
 		opts = {
 			bigfile = {},
@@ -37,21 +47,14 @@ return {
 			},
 		},
 		keys = function()
-			---@param builtin string
-			---@param args snacks.picker.Config|nil
-			local function c(builtin, args)
-				return function()
-					Snacks.picker[builtin](args)
-				end
-			end
-
             -- stylua: ignore
 			return {
+                { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
 				{ '<leader>;', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				{ '<leader>b', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				{ '<leader>/', function() Snacks.picker.grep({ hidden = true }) end, desc = 'Grep' },
 				{ '<leader>:', function() Snacks.picker.command_history() end, desc = 'Command History' },
-				{ '<leader>ff', function() Snacks.picker.git_files{ hidden = true } end, desc = 'Find Files (root dir)' },
+				{ '<leader>ff', function() require('seeker').seek{picker_opts = { hidden = true }} end, desc = 'Find Files (root dir)' },
 				{
 					'<leader>fF',
 					function()

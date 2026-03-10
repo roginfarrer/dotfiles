@@ -29,6 +29,7 @@ return {
 		init = function()
 			vim.o.formatoptions = 'jcroqlnt' -- tcqj
 			vim.o.formatexpr = "v:lua.require'conform'.formatexpr({'timeout_ms': 2000})"
+			vim.g.conform_disable_format_on_save_ft = { mustache = true }
 		end,
 		opts = function()
 			local prettier = { 'prettier', stop_after_first = true }
@@ -68,7 +69,7 @@ return {
 				default_format_opts = { lsp_format = 'fallback' },
 				log_level = vim.log.levels.DEBUG,
 				format_on_save = function(bufnr)
-					local disable_filetypes = { mustache = true }
+					local disable_filetypes = vim.g.conform_disable_format_on_save_ft or { mustache = true }
 					return {
 						timeout_ms = 2000,
 						lsp_format = disable_filetypes[vim.bo[bufnr].filetype] and 'never' or 'fallback',

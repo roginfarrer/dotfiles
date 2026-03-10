@@ -11,14 +11,14 @@ local function on_attach(client, bufnr)
 	map {
 		'K',
 		function()
-			local winid = require('ufo').peekFoldedLinesUnderCursor()
-			if not winid then
-				if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
-					vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-				else
-					vim.lsp.buf.hover()
-				end
+			-- local winid = require('ufo').peekFoldedLinesUnderCursor()
+			-- if not winid then
+			if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
+				vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+			else
+				vim.lsp.buf.hover()
 			end
+			-- end
 		end,
 		desc = 'Hover Docs',
 	}
@@ -46,22 +46,22 @@ local function on_attach(client, bufnr)
 		}
 	end
 
-	if client:supports_method(methods.textDocument_documentHighlight) then
-		local under_cursor_highlights_group =
-			vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
-		vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
-			group = under_cursor_highlights_group,
-			desc = 'Highlight references under the cursor',
-			buffer = bufnr,
-			callback = vim.lsp.buf.document_highlight,
-		})
-		vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
-			group = under_cursor_highlights_group,
-			desc = 'Clear highlight references',
-			buffer = bufnr,
-			callback = vim.lsp.buf.clear_references,
-		})
-	end
+	-- if client:supports_method(methods.textDocument_documentHighlight) then
+	-- 	local under_cursor_highlights_group =
+	-- 		vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
+	-- 	vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
+	-- 		group = under_cursor_highlights_group,
+	-- 		desc = 'Highlight references under the cursor',
+	-- 		buffer = bufnr,
+	-- 		callback = vim.lsp.buf.document_highlight,
+	-- 	})
+	-- 	vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
+	-- 		group = under_cursor_highlights_group,
+	-- 		desc = 'Clear highlight references',
+	-- 		buffer = bufnr,
+	-- 		callback = vim.lsp.buf.clear_references,
+	-- 	})
+	-- end
 end
 
 ---@param command string
@@ -135,8 +135,9 @@ return {
 
 	{
 		'wc-toolkit/wc-language-server',
+		enabled = false,
 		lazy = false,
-		dir = vim.fn.expand '$HOME' .. '/development/wc-language-server/packages/neovim',
+		-- dir = vim.fn.expand '$HOME' .. '/development/wc-language-server/packages/neovim',
 		-- ft = {
 		-- 	'html',
 		-- 	'javascript',
@@ -151,24 +152,26 @@ return {
 		-- 	'mustache',
 		-- 	'hbs',
 		-- },
-		-- config = function()
-		-- 	require('wc-language-server').setup {
-		-- 		filetypes = {
-		-- 			'html',
-		-- 			'javascript',
-		-- 			'typescript',
-		-- 			'javascriptreact',
-		-- 			'typescriptreact',
-		-- 			'astro',
-		-- 			'svelte',
-		-- 			'vue',
-		-- 			'markdown',
-		-- 			'mdx',
-		-- 			'mustache',
-		-- 			'hbs',
-		-- 		},
-		-- 	}
-		-- end,
+		config = function()
+			require('wc-language-server').setup {
+				autostart = true,
+				-- tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
+				filetypes = {
+					'html',
+					'javascript',
+					'typescript',
+					'javascriptreact',
+					'typescriptreact',
+					'astro',
+					'svelte',
+					'vue',
+					'markdown',
+					'mdx',
+					'mustache',
+					'hbs',
+				},
+			}
+		end,
 	},
 
 	{
@@ -201,10 +204,12 @@ return {
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'wc_language_server', 'cssls', 'vtsls' },
+				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'cssls' },
 			},
 		},
 		config = function(_, opts)
+			-- vim.lsp.set_log_level 'trace'
+			-- require('vim.lsp.log').set_format_func(vim.inspect)
 			require('mason-lspconfig').setup(opts)
 
 			require('mason-tool-installer').setup {
@@ -234,22 +239,41 @@ return {
 				end,
 			})
 
+			local capabilities = require('blink.cmp').get_lsp_capabilities(nil, true)
+			-- capabilities = vim.tbl_deep_extend('keep', capabilities, {
+			-- 	textDocument = {
+			-- 		foldingRange = {
+			-- 			dynamicRegistration = false,
+			-- 			lineFoldingOnly = true,
+			-- 		},
+			-- 	},
+			-- })
 			vim.lsp.config('*', {
-				capabilities = require('blink.cmp').get_lsp_capabilities(nil, true),
+				capabilities = capabilities,
+			})
+
+			local foo = vim.fn.expand '$HOME' .. '/.local/share/nvim/mason/packages/tsgo'
+			vim.lsp.config('mdx_analyzer', {
+				init_options = {
+					typescript = {
+						tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
+						-- tsdk = foo .. '/node_modules/@typescript/native-preview/bin',
+					},
+				},
 			})
 
 			local ts_bridge_executable = vim.fn.expand '$HOME' .. '/development/ts-bridge/target/release/ts-bridge'
 
-			if vim.fn.executable(ts_bridge_executable) == 1 then
-				vim.lsp.config('ts_bridge', {
-					cmd = ts_bridge_executable,
-				})
-				vim.lsp.enable 'ts_bridge'
-			else
-				vim.lsp.enable 'vtsls'
-			end
+			-- if vim.fn.executable(ts_bridge_executable) == 1 then
+			-- 	vim.lsp.config('ts_bridge', {
+			-- 		cmd = get_ts_bridge_cmd(ts_bridge_executable),
+			-- 	})
+			-- 	vim.lsp.enable 'ts_bridge'
+			-- else
+			-- 	vim.lsp.enable 'vtsls'
+			-- end
 
-			-- vim.lsp.enable 'wc-language-server'
+			-- vim.lsp.enable 'wc_language_server'
 
 			-- require('wc_language_server').setup { filetypes = { 'mustache' } }
 

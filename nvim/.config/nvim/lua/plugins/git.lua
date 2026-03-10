@@ -1,7 +1,7 @@
 return {
 	{
 		'tpope/vim-fugitive',
-		enabled = true,
+		enabled = false,
 		cmd = {
 			'Git',
 			'GBrowse',
@@ -27,10 +27,11 @@ return {
 	},
 	{
 		'barrettruth/diffs.nvim',
+		enabled = false,
 		lazy = false,
 		init = function()
 			vim.g.diffs = {
-				fugitive = true,
+				neogit = true,
 			}
 		end,
 	},
@@ -107,7 +108,7 @@ return {
 				item = { '', '' },
 				hunk = { '', '' },
 			},
-			integrations = { diffview = true },
+			integrations = { diffview = false, snacks = true, codediff = true },
 		},
 		keys = {
 			{ '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' },
@@ -195,7 +196,7 @@ return {
 
 	{
 		'esmuellert/codediff.nvim',
-		enabled = false,
+		enabled = true,
 		dependencies = { 'MunifTanjim/nui.nvim' },
 		cmd = 'CodeDiff',
 	},
