@@ -204,7 +204,7 @@ return {
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'tsgo', 'copilot', 'wc_ls', 'cssls' },
+				exclude = { 'ts_ls', 'vtsls', 'copilot', 'wc_ls', 'cssls' },
 			},
 		},
 		config = function(_, opts)

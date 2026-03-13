@@ -1,3 +1,7 @@
 return {
-	filetypes = { 'markdown.mdx', 'mdx' },
+	init_options = {
+		typescript = {
+			enabled = true,
+		},
+	},
 }

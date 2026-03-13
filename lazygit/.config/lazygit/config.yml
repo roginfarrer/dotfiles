@@ -5,5 +5,17 @@
 git:
   pagers:
     - externalDiffCommand: difft --color=always
-      # colorArg: never
-      # pager: delta --dark --paging=never
+
+customCommands:
+  - key: "G"
+    command: "gh pr view -w {{.SelectedLocalBranch.Name}}"
+    context: "localBranches"
+    description: "Open Github PR in browser"
+  - key: "G"
+    command: "gh pr view -w"
+    context: "commits"
+    description: "Open Github PR in browser"
+  - key: "<c-r>"
+    command: "git pull --rebase origin main"
+    context: "localBranches"
+    description: "Pull rebase origin/main"

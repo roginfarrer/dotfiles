@@ -1,4 +1,5 @@
 return {
+	filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'mdx' },
 	settings = {
 		vtsls = {
 			enableMoveToFileCodeAction = true,
@@ -32,20 +33,22 @@ return {
 				preferTypeOnlyAutoImports = true,
 			},
 		},
-		-- tsserver = { globalPlugins = {} },
+		tsserver = { globalPlugins = {} },
 	},
-	-- before_init = function(params, config)
-	-- local result = vim.system({ 'npm', 'list', '-g', 'ts-scope-trimmer-plugin' }):wait()
-	-- if result.stdout:find('ts-scope-trimmer-plugin', nil, true) ~= nil then
-	-- 	local location = result.stdout:match '([^\r\n]*)'
-	-- 	table.insert(config.settings.tsserver.globalPlugins, {
-	-- 		name = 'ts-scope-trimmer-plugin',
-	-- 		location = location .. '/node_modules/ts-scope-trimmer-plugin',
-	-- 		languages = { 'javascript', 'typescript' },
-	-- 		configNamespace = 'typescript',
-	-- 		enableForWorkspaceTypeScriptVersions = true,
-	-- 	})
-	-- 	vim.print(config.settings.tsserver.globalPlugins)
-	-- end
-	-- end,
+	before_init = function(params, config)
+		local plugins = { '@mdx-js/typescript-plugin', 'ts-lit-plugin' }
+		for index, plugin in ipairs(plugins) do
+			local result = vim.system({ 'npm', 'list', '-g', plugin }):wait()
+			if result.stdout:find(plugin, nil, true) ~= nil then
+				local location = result.stdout:match '([^\r\n]*)'
+				table.insert(config.settings.tsserver.globalPlugins, {
+					name = plugin,
+					location = location .. '/node_modules/' .. plugin,
+					languages = { 'mdx', 'typescript' },
+					configNamespace = 'typescript',
+					enableForWorkspaceTypeScriptVersions = true,
+				})
+			end
+		end
+	end,
 }
