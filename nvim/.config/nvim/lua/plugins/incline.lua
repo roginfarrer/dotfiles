@@ -1,7 +1,7 @@
 return {
 	{
 		'b0o/incline.nvim',
-		enabled = true,
+		enabled = false,
 		event = 'VeryLazy',
 		version = '*',
 		dependencies = {

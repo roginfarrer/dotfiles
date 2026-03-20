@@ -128,6 +128,7 @@ return {
 				'markdown_inline',
 				'regex',
 				'scss',
+				'styled',
 				'tmux',
 				'toml',
 				'tsx',
@@ -255,21 +256,5 @@ return {
 		dependencies = 'nvim-treesitter/nvim-treesitter',
 		cmd = 'Neogen',
 		opts = { snippet_engine = 'luasnip' },
-	},
-
-	{
-		'jmbuhr/otter.nvim',
-		dependencies = {
-			'nvim-treesitter/nvim-treesitter',
-		},
-		opts = {},
-		init = function()
-			vim.api.nvim_create_autocmd('FileType', {
-				pattern = { 'markdown', 'mdx' },
-				callback = function()
-					require('otter').activate()
-				end,
-			})
-		end,
 	},
 }

@@ -115,7 +115,7 @@ return {
 		ft = 'lua', -- only load on lua files
 		cmd = 'LazyDev',
 		dependencies = {
-			{ 'Bilal2453/luvit-meta', lazy = true },
+			-- { 'Bilal2453/luvit-meta', lazy = true },
 			{
 				'DrKJeff16/wezterm-types',
 				lazy = true,
@@ -124,8 +124,8 @@ return {
 		},
 		opts = {
 			library = {
-				{ path = 'luvit-meta/library', words = { 'vim%.uv' } },
-				{ path = 'lazy.nvim', words = { 'LazyVim' } },
+				{ path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+				{ path = 'LazyVim', words = { 'LazyVim' } },
 				{ path = 'snacks.nvim', words = { 'Snacks' } },
 				-- Needs `justinsgithub/wezterm-types` to be installed
 				{ path = 'wezterm-types', mods = { 'wezterm' } },

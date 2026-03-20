@@ -8,11 +8,11 @@ git:
 
 customCommands:
   - key: "G"
-    command: "gh pr view -w {{.SelectedLocalBranch.Name}}"
+    command: "gh pr view -w {{.SelectedLocalBranch.Name}} || gh pr create -w {{.SelectedLocalBranch.Name}}"
     context: "localBranches"
     description: "Open Github PR in browser"
   - key: "G"
-    command: "gh pr view -w"
+    command: "gh pr view -w {{.SelectedLocalBranch.Name}} || gh pr create -w {{.SelectedLocalBranch.Name}}"
     context: "commits"
     description: "Open Github PR in browser"
   - key: "<c-r>"
