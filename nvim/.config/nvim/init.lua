@@ -12,6 +12,17 @@ require 'config.autocmds'
 require 'config.filetype'
 require 'config.gui'
 
+if vim.fn.has 'nvim-0.12.0' then
+	vim.cmd 'packadd nvim.undotree'
+	require('util').keymap {
+		'<leader>u',
+		function()
+			require('undotree').open()
+		end,
+		desc = 'Undotree',
+	}
+end
+
 if not vim.g.vscode then
 	-- require 'ui.winbar'
 	-- vim.cmd.colorscheme 'rose-pine'

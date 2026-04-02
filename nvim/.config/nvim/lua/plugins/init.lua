@@ -39,6 +39,7 @@ return {
 	-- Extends the a & i text objects, this adds the ability to select
 	-- arguments, function calls, text within quotes and brackets, and to
 	-- repeat those selections to select an outer text object.
+	-- requires nvim-treesitter/nvim-treesitter-textobjects
 	{
 		'nvim-mini/mini.ai',
 		event = 'VeryLazy',
@@ -136,14 +137,4 @@ return {
 			end)
 		end,
 	},
-
-	{
-		'm4xshen/hardtime.nvim',
-		enabled = false,
-		lazy = false,
-		dependencies = { 'MunifTanjim/nui.nvim' },
-		opts = {},
-	},
-
-	-- { 'luukvbaal/statuscol.nvim', opts = {} },
 }

@@ -33,7 +33,7 @@ local function on_attach(client, bufnr)
 	}
 
 	if vim.lsp.document_color then
-		vim.lsp.document_color.enable(true, bufnr)
+		vim.lsp.document_color.enable(true)
 	end
 	if client:supports_method 'textDocument/documentColor' then
 		map {

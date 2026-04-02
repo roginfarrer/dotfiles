@@ -5,41 +5,25 @@ return {
 		build = ':TSUpdate',
 		lazy = false,
 		dependencies = {
-			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
+			-- { 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
+			{ 'faergeek/nvim-ts-context-commentstring', opts = {}, branch = 'nvim-0.12-compatibility' },
+			{
+				'nvim-mini/mini.comment',
+				lazy = false,
+				opts = {
+					options = {
+						custom_commentstring = function()
+							return require('ts_context_commentstring.internal').calculate_commentstring()
+								or vim.bo.commentstring
+						end,
+					},
+				},
+			},
 			{ 'windwp/nvim-ts-autotag', opts = {} },
 		},
 		opts = {},
 		config = function(_, opts)
 			local treesitter = require 'nvim-treesitter'
-			-- treesitter.install { -- equivalent of ensure_installed
-			-- 	'bash',
-			-- 	'css',
-			-- 	'diff',
-			-- 	'fish',
-			-- 	'git_config',
-			-- 	'git_rebase',
-			-- 	'gitattributes',
-			-- 	'gitcommit',
-			-- 	'gitignore',
-			-- 	'html',
-			-- 	'javascript',
-			-- 	'json',
-			-- 	'lua',
-			-- 	'luadoc',
-			-- 	'markdown',
-			-- 	'markdown_inline',
-			-- 	'regex',
-			-- 	'scss',
-			-- 	'tmux',
-			-- 	'toml',
-			-- 	'tsx',
-			-- 	'typescript',
-			-- 	'vim',
-			-- 	'vimdoc',
-			-- 	'yaml',
-			-- 	'jsdoc',
-			-- }
-
 			vim.treesitter.language.register('glimmer', 'mustache')
 			vim.treesitter.language.register('glimmer', 'hbs')
 
@@ -144,7 +128,6 @@ return {
 	{
 		'nvim-treesitter/nvim-treesitter-textobjects',
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		enabled = false,
 		branch = 'main',
 		lazy = false,
 		opts = {
