@@ -11,5 +11,7 @@ return {
 				},
 			},
 		},
+		--  Optional, if you get suggestions from the current document after namespace.$ (you don't need to type the $ for narrowing down suggestions)
+		editor = { wordBasedSuggestions = false },
 	},
 }

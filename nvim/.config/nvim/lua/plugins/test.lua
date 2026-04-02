@@ -2,10 +2,7 @@ return {
 	-- testing integration
 	{
 		'nvim-neotest/neotest',
-		-- https://github.com/nvim-neotest/neotest/issues/531
-		-- commit = '52fca6717ef972113ddd6ca223e30ad0abb2800c',
-		enabled = true,
-		lazy = true,
+		-- lazy = false,
 		dependencies = {
 			{ 'nvim-neotest/neotest-jest' },
 			'nvim-neotest/nvim-nio',
@@ -28,7 +25,7 @@ return {
 			require('neotest').setup {
 				adapters = {
 					require 'neotest-jest' {
-						jest_test_discovery = false,
+						jest_test_discovery = true,
 						env = { CI = true },
 						-- require_jest_dependency = false,
 					},

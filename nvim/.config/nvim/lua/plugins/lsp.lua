@@ -46,22 +46,22 @@ local function on_attach(client, bufnr)
 		}
 	end
 
-	-- if client:supports_method(methods.textDocument_documentHighlight) then
-	-- 	local under_cursor_highlights_group =
-	-- 		vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
-	-- 	vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
-	-- 		group = under_cursor_highlights_group,
-	-- 		desc = 'Highlight references under the cursor',
-	-- 		buffer = bufnr,
-	-- 		callback = vim.lsp.buf.document_highlight,
-	-- 	})
-	-- 	vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
-	-- 		group = under_cursor_highlights_group,
-	-- 		desc = 'Clear highlight references',
-	-- 		buffer = bufnr,
-	-- 		callback = vim.lsp.buf.clear_references,
-	-- 	})
-	-- end
+	if client:supports_method(methods.textDocument_documentHighlight) then
+		local under_cursor_highlights_group =
+			vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
+		vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
+			group = under_cursor_highlights_group,
+			desc = 'Highlight references under the cursor',
+			buffer = bufnr,
+			callback = vim.lsp.buf.document_highlight,
+		})
+		vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
+			group = under_cursor_highlights_group,
+			desc = 'Clear highlight references',
+			buffer = bufnr,
+			callback = vim.lsp.buf.clear_references,
+		})
+	end
 end
 
 ---@param command string
@@ -194,17 +194,14 @@ return {
 				'tsgo',
 				'eslint',
 				'bashls',
-				'cssls',
-				'marksman',
 				'html',
 				'jsonls',
-				'stylelint_lsp',
 				'intelephense',
 				'somesass_ls',
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'vtsls', 'copilot', 'wc_ls', 'cssls' },
+				exclude = { 'ts_ls', 'vtsls', 'copilot', 'wc_ls', 'cssls', 'mdx_analyzer' },
 			},
 		},
 		config = function(_, opts)
