@@ -5,20 +5,7 @@ return {
 		build = ':TSUpdate',
 		lazy = false,
 		dependencies = {
-			-- { 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
-			{ 'faergeek/nvim-ts-context-commentstring', opts = {}, branch = 'nvim-0.12-compatibility' },
-			{
-				'nvim-mini/mini.comment',
-				lazy = false,
-				opts = {
-					options = {
-						custom_commentstring = function()
-							return require('ts_context_commentstring.internal').calculate_commentstring()
-								or vim.bo.commentstring
-						end,
-					},
-				},
-			},
+			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
 			{ 'windwp/nvim-ts-autotag', opts = {} },
 		},
 		opts = {},

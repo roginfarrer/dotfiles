@@ -35,13 +35,11 @@ return {
 				},
 			},
 			gh = {},
-			-- notifier = {},
 			quickfile = {},
 			statuscolumn = {},
 			input = {},
 			lazygit = {},
 			rename = {},
-			notifier = {},
 			repo = {},
 			-- explorer = {},
 			picker = {
