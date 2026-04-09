@@ -7,6 +7,7 @@ return {
 		dependencies = {
 			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
 			{ 'windwp/nvim-ts-autotag', opts = {} },
+			{ 'nvim-treesitter/nvim-treesitter-context', opts = {} },
 		},
 		opts = {},
 		config = function(_, opts)

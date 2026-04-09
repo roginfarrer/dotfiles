@@ -30,6 +30,8 @@ return {
                         { icon = '󰕚 ', key = 'd', desc = 'CodeDiff', action = '<cmd>CodeDiff<CR>' },
 				        { icon = ' ', key = 's', desc = 'Restore Session', section = 'session' },
 				        { icon = '󰒲 ', key = 'L', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil, },
+                        { icon = " ", key = "m", desc = "Mason", action = ":Mason", enabled = package.loaded.lazy ~= nil },
+                        { icon = " ", key = "h", desc = "Health", action = ":checkhealth" },
 				        { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
 				    },
 				},
