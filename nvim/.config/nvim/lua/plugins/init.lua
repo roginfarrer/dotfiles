@@ -7,7 +7,6 @@ return {
 		event = 'VeryLazy',
 		opts = { enable_named_colors = false, enable_tailwind = true, render = 'background', virtual_symbol = '•' },
 	},
-	{ 'zeioth/garbage-day.nvim', enabled = false, event = 'VeryLazy', opts = {} },
 
 	-- Automatically between template literal and strings when needed
 	{
@@ -22,18 +21,6 @@ return {
 		'windwp/nvim-autopairs',
 		event = 'InsertEnter',
 		opts = {},
-	},
-
-	{
-		'echasnovski/mini.bracketed',
-		enabled = false,
-		event = 'BufReadPost',
-		version = '*',
-		opts = {},
-		config = function(_, opts)
-			local bracketed = require 'mini.bracketed'
-			bracketed.setup(opts)
-		end,
 	},
 
 	-- Extends the a & i text objects, this adds the ability to select

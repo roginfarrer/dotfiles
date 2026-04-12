@@ -5,7 +5,10 @@ if type(lconfig) == 'table' and lconfig.before then
 	lconfig.before()
 end
 
-require('vim._core.ui2').enable { enable = true }
+require('vim._core.ui2').enable {
+	enable = true,
+	msg = { target = 'cmd' },
+}
 
 require 'config.options'
 require 'config.keymaps'

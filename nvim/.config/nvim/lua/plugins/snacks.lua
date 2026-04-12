@@ -43,6 +43,7 @@ return {
 			lazygit = {},
 			rename = {},
 			repo = {},
+			notifier = {},
 			-- explorer = {},
 			picker = {
 				enabled = true,

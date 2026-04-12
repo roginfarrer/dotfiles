@@ -8,29 +8,29 @@ local function on_attach(client, bufnr)
 		require('util').keymap(vim.tbl_deep_extend('force', v, { buffer = bufnr }))
 	end
 
-	map {
-		'K',
-		function()
-			-- local winid = require('ufo').peekFoldedLinesUnderCursor()
-			-- if not winid then
-			if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
-				vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-			else
-				vim.lsp.buf.hover()
-			end
-			-- end
-		end,
-		desc = 'Hover Docs',
-	}
-	map {
-		'gK',
-		function()
-			if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
-				vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-			end
-		end,
-		desc = 'Neovim Docs',
-	}
+	-- map {
+	-- 	'K',
+	-- 	function()
+	-- 		-- local winid = require('ufo').peekFoldedLinesUnderCursor()
+	-- 		-- if not winid then
+	-- 		if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
+	-- 			vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+	-- 		else
+	-- 			vim.lsp.buf.hover()
+	-- 		end
+	-- 		-- end
+	-- 	end,
+	-- 	desc = 'Hover Docs',
+	-- }
+	-- map {
+	-- 	'gK',
+	-- 	function()
+	-- 		if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
+	-- 			vim.fn.execute('h ' .. vim.fn.expand '<cword>')
+	-- 		end
+	-- 	end,
+	-- 	desc = 'Neovim Docs',
+	-- }
 
 	if vim.lsp.document_color then
 		vim.lsp.document_color.enable(true)
@@ -289,16 +289,7 @@ return {
 		end,
 	},
 
-	{ 'dmmulroy/ts-error-translator.nvim', opts = {} },
-	-- {
-	-- 	'rachartier/tiny-inline-diagnostic.nvim',
-	-- 	event = 'VeryLazy',
-	-- 	priority = 1000,
-	-- 	config = function()
-	-- 		require('tiny-inline-diagnostic').setup()
-	-- 		vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics
-	-- 	end,
-	-- },
+	{ 'dmmulroy/ts-error-translator.nvim', opts = {}, enabled = false },
 
 	{
 		'pmizio/typescript-tools.nvim',
