@@ -92,15 +92,8 @@ select_directories() {
 if [ -d "$HOME/.config/fish" ]; then
 	mv $HOME/.config/fish $HOME/.config/old-fish
 fi
-mkdir -p $HOME/.config/fish/completions
-mkdir $HOME/.config/fish/conf.d
-mkdir $HOME/.config/fish/functions
-mkdir $HOME/.config/fish/themes
 
-touch $HOME/.config/fish/completions/.keep
-touch $HOME/.config/fish/conf.d/.keep
-touch $HOME/.config/fish/functions/.keep
-touch $HOME/.config/fish/themes/.keep
+mkdir $HOME/.config/fish
 touch $HOME/.config/fish/local-config.fish
 
 if [ -f "$HOME/.gitconfig" ]; then
