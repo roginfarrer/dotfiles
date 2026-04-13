@@ -11,3 +11,5 @@ zsh/.zsh/.antidote
 
 nvim/.config/nvim/lua/local-config.lua
 local.lua
+
+.fisher
