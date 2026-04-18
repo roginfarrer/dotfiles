@@ -51,6 +51,7 @@ o.timeoutlen = 500
 o.undofile = true
 o.updatetime = 250
 o.wildmode = 'longest,full'
+o.winborder = 'rounded'
 vim.cmd [[let &t_Cs = "\e[4:3m"]]
 vim.cmd [[ let &t_Ce = "\e[4:0m" ]]
 vim.cmd [[set path+=**]]
@@ -81,7 +82,6 @@ vim.diagnostic.config {
 	float = {
 		filetype = 'markdown',
 		focusable = true,
-		border = { '🭽', '▔', '🭾', '▕', '🭿', '▁', '🭼', '▏' },
 		format = function(diagnostic)
 			if diagnostic.source == 'eslint' then
 				return string.format(

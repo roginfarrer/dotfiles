@@ -1,6 +1,7 @@
 return {
 	{ 'LazyVim/LazyVim' },
 	{ 'nvim-lua/plenary.nvim', lazy = true },
+	{ 'raddari/last-color.nvim', lazy = false },
 	{ 'MunifTanjim/nui.nvim', lazy = true },
 	{
 		'brenoprata10/nvim-highlight-colors',

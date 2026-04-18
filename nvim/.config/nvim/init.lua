@@ -5,10 +5,12 @@ if type(lconfig) == 'table' and lconfig.before then
 	lconfig.before()
 end
 
-require('vim._core.ui2').enable {
-	enable = true,
-	msg = { target = 'cmd' },
-}
+if vim.fn.has 'nvim-0.12.0' then
+	require('vim._core.ui2').enable {
+		enable = true,
+		msg = { target = 'cmd' },
+	}
+end
 
 require 'config.options'
 require 'config.keymaps'
@@ -30,20 +32,10 @@ if vim.fn.has 'nvim-0.12.0' then
 end
 
 if not vim.g.vscode then
-	-- require 'ui.winbar'
-	-- vim.cmd.colorscheme 'rose-pine'
-	-- vim.cmd.colorscheme 'tokyonight'
-	-- vim.cmd.colorscheme 'github_dark'
-	vim.cmd.colorscheme 'catppuccin-mocha'
-	-- vim.cmd.colorscheme 'nordic'
-	-- vim.cmd [[colorscheme catppuccin]]
-	-- vim.cmd.colorscheme 'tokyonight-day'
-	-- vim.cmd [[colorscheme github_light]]
+	local theme = require('last-color').recall() or 'catppuccin-mocha'
+	vim.cmd.colorscheme(theme)
 end
 
 if type(lconfig) == 'table' and lconfig.after then
 	lconfig.after()
 end
-
--- Enable the new experimental command-line features.
--- require('vim._extui').enable {}
