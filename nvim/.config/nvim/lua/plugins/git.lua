@@ -36,11 +36,16 @@ return {
 		end,
 	},
 	{
-		'sindrets/diffview.nvim',
-		enabled = false,
+		'dlyongemallo/diffview.nvim',
+		version = '*',
+		dependencies = { 'rickhowe/diffchar.vim' },
 		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
 		keys = {
 			{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
+		},
+		opts = {
+			enhanced_diff_hl = true,
+			diffopt = { algorithm = 'histogram' },
 		},
 	},
 
@@ -50,8 +55,8 @@ return {
 			mappings = nil,
 		},
 		keys = {
-			{ '<leader>gc', '<cmd>GitLink<cr>', mode = { 'n', 'v' }, desc = 'Copy github url to clipboard' },
-			{ '<leader>go', '<cmd>GitLink!<cr>', mode = { 'n', 'v' }, desc = 'Open file in browser' },
+			{ '<leader>gc', '<cmd>GitLink<cr>', mode = { 'n', 'v' }, desc = 'Yank git link' },
+			{ '<leader>go', '<cmd>GitLink!<cr>', mode = { 'n', 'v' }, desc = 'Open git link in browser' },
 		},
 	},
 
@@ -196,7 +201,7 @@ return {
 
 	{
 		'esmuellert/codediff.nvim',
-		enabled = true,
+		enabled = false,
 		dependencies = { 'MunifTanjim/nui.nvim' },
 		cmd = 'CodeDiff',
 	},
