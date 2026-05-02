@@ -4,10 +4,5 @@ function ll
         return
     end
 
-    if command -q eza
-        eza -1h $argv
-        return
-    end
-
     ls -1h $argv
 end
