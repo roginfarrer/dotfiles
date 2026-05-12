@@ -10,7 +10,6 @@ o.breakindentopt = 'shift:2'
 o.cmdheight = 0
 o.completeopt = 'menuone,noselect,noinsert'
 o.confirm = true
--- o.cursorline = true
 o.exrc = true
 o.expandtab = true
 o.fixeol = false
@@ -41,12 +40,10 @@ o.smartindent = true
 o.splitbelow = true
 o.splitkeep = 'screen'
 o.splitright = true
--- o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 -- o.suffixesadd = o.suffixesadd .. '.js,.ts,.tsx,.jsx'
 o.swapfile = false
 o.tabstop = 4
 o.termguicolors = true
--- o.guifont = 'MonoLisa:h16'
 o.timeoutlen = 500
 o.undofile = true
 o.updatetime = 250
@@ -111,15 +108,6 @@ end
 if vim.env.TERM_PROGRAM == 'WezTerm' and not vim.env.TMUX then
 	o.termsync = false
 end
-
--- if vim.g.started_by_firenvim then
---   o.guifont = 'Monolisa Nerd Font:h13'
---   o.laststatus = 0
---   map('n', 'K', function() end)
--- end
-
-vim.g.neovide_cursor_animation_length = 0.08
-vim.g.neovide_cursor_trail_size = 0.5
 
 if os.getenv 'SSH_CLIENT' ~= nil or os.getenv 'SSH_TTY' ~= nil then
 	local function paste()

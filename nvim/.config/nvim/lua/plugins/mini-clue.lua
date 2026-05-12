@@ -85,7 +85,7 @@ return {
 					{ mode = 'n', keys = '<leader>gh', desc = '+hunk' },
 					{ mode = 'n', keys = '<leader>x', desc = '+trouble' },
 					{ mode = 'n', keys = '<leader>s', desc = '+search' },
-					{ mode = 'n', keys = '<leader>j', desc = '+join/split' },
+					-- { mode = 'n', keys = '<leader>j', desc = '+join/split' },
 					{ mode = 'n', keys = '<leader>d', desc = '+debug' },
 					{ mode = 'n', keys = '<leader>t', desc = '+test' },
 					{ mode = 'n', keys = '<leader>y', desc = '+clipboard' },
@@ -103,7 +103,7 @@ return {
 					macro_clues(),
 				},
 				window = {
-					delay = 500,
+					delay = 300,
 					scroll_down = '<C-f>',
 					scroll_up = '<C-b>',
 					config = function(bufnr)

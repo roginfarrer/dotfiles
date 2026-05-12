@@ -1,3 +1,34 @@
+local languages = {
+	'bash',
+	'css',
+	'diff',
+	'fish',
+	'git_config',
+	'git_rebase',
+	'gitattributes',
+	'gitcommit',
+	'gitignore',
+	'html',
+	'javascript',
+	'json',
+	'json5',
+	'lua',
+	'luadoc',
+	'markdown',
+	'markdown_inline',
+	'regex',
+	'scss',
+	'styled',
+	'tmux',
+	'toml',
+	'tsx',
+	'typescript',
+	'vim',
+	'vimdoc',
+	'yaml',
+	'jsdoc',
+}
+
 return {
 	{
 		'nvim-treesitter/nvim-treesitter',
@@ -18,6 +49,33 @@ return {
 			vim.treesitter.language.register('glimmer', 'hbs')
 
 			treesitter.setup(opts)
+
+			vim.api.nvim_create_autocmd('FileType', {
+				group = vim.api.nvim_create_augroup('treesitter.setup', {}),
+				callback = function(args)
+					local buf = args.buf
+					local filetype = args.match
+
+					-- Avoid running on buffers that do not
+					-- correspond to a language (like oil.nvim buffers), this implementation
+					-- checks if a parser exists for the current language
+					local language = vim.treesitter.language.get_lang(filetype) or filetype
+					if not vim.treesitter.language.add(language) then
+						return
+					end
+
+					-- Enalbes tree-sitting folding
+					-- vim.wo.foldmethod = 'expr'
+					-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+					-- Enables highlighting
+					vim.treesitter.start(buf, language)
+
+					-- Enables tree-sitter indentation
+					-- Disabled since it's not very good
+					-- vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end,
+			})
 
 			-- local ts_config = require 'nvim-treesitter.config'
 			-- -- Auto-install and start parsers for any buffer
@@ -73,47 +131,47 @@ return {
 		end,
 	},
 
-	{
-		'MeanderingProgrammer/treesitter-modules.nvim',
-		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		event = 'VeryLazy',
-		---@module 'treesitter-modules'
-		---@type ts.mod.UserConfig
-		opts = {
-			auto_install = true,
-			indent = { enable = true },
-			highlight = { enable = true },
-			ensure_installed = {
-				'bash',
-				'css',
-				'diff',
-				'fish',
-				'git_config',
-				'git_rebase',
-				'gitattributes',
-				'gitcommit',
-				'gitignore',
-				'html',
-				'javascript',
-				'json',
-				'lua',
-				'luadoc',
-				'markdown',
-				'markdown_inline',
-				'regex',
-				'scss',
-				'styled',
-				'tmux',
-				'toml',
-				'tsx',
-				'typescript',
-				'vim',
-				'vimdoc',
-				'yaml',
-				'jsdoc',
-			},
-		},
-	},
+	-- {
+	-- 	'MeanderingProgrammer/treesitter-modules.nvim',
+	-- 	dependencies = { 'nvim-treesitter/nvim-treesitter' },
+	-- 	event = 'VeryLazy',
+	-- 	---@module 'treesitter-modules'
+	-- 	---@type ts.mod.UserConfig
+	-- 	opts = {
+	-- 		auto_install = true,
+	-- 		indent = { enable = false },
+	-- 		highlight = { enable = true },
+	-- 		ensure_installed = {
+	-- 			'bash',
+	-- 			'css',
+	-- 			'diff',
+	-- 			'fish',
+	-- 			'git_config',
+	-- 			'git_rebase',
+	-- 			'gitattributes',
+	-- 			'gitcommit',
+	-- 			'gitignore',
+	-- 			'html',
+	-- 			'javascript',
+	-- 			'json',
+	-- 			'lua',
+	-- 			'luadoc',
+	-- 			'markdown',
+	-- 			'markdown_inline',
+	-- 			'regex',
+	-- 			'scss',
+	-- 			'styled',
+	-- 			'tmux',
+	-- 			'toml',
+	-- 			'tsx',
+	-- 			'typescript',
+	-- 			'vim',
+	-- 			'vimdoc',
+	-- 			'yaml',
+	-- 			'jsdoc',
+	-- 		},
+	-- 	},
+	-- },
 
 	{
 		'nvim-treesitter/nvim-treesitter-textobjects',

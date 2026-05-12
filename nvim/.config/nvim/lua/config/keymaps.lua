@@ -34,9 +34,12 @@ map { '<leader><tab>[', '<cmd>tabprevious<cr>', desc = 'Previous Tab' }
 map { '<leader><esc>', [[<C-\><C-n>]], desc = 'Enter normal mode', mode = 't' }
 
 -- Misc QOL
-map { '<space><space>', 'za', desc = 'Toggle fold' }
+map { '<Tab>', 'za', desc = 'Toggle fold' }
 map { '<BS>', '<C-^>', desc = 'Previous buffer' }
 map { 'gw', '*N', desc = 'Search word under cursor', mode = { 'n', 'x' } }
+-- Swap 'q' to 'Q' to prevent accidental macro recording
+map { 'Q', 'q', noremap = true }
+map { 'q', '<Nop>', noremap = true }
 
 map {
 	'<leader>yf',

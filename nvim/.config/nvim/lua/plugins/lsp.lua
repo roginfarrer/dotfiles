@@ -8,30 +8,6 @@ local function on_attach(client, bufnr)
 		require('util').keymap(vim.tbl_deep_extend('force', v, { buffer = bufnr }))
 	end
 
-	-- map {
-	-- 	'K',
-	-- 	function()
-	-- 		-- local winid = require('ufo').peekFoldedLinesUnderCursor()
-	-- 		-- if not winid then
-	-- 		if vim.bo.filetype == 'vim' or vim.bo.filetype == 'help' then
-	-- 			vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-	-- 		else
-	-- 			vim.lsp.buf.hover()
-	-- 		end
-	-- 		-- end
-	-- 	end,
-	-- 	desc = 'Hover Docs',
-	-- }
-	-- map {
-	-- 	'gK',
-	-- 	function()
-	-- 		if vim.bo.filetype == 'lua' or vim.bo.filetype == 'help' or vim.bo.filetype == 'lua' then
-	-- 			vim.fn.execute('h ' .. vim.fn.expand '<cword>')
-	-- 		end
-	-- 	end,
-	-- 	desc = 'Neovim Docs',
-	-- }
-
 	if vim.lsp.document_color then
 		vim.lsp.document_color.enable(true)
 	end
@@ -183,8 +159,23 @@ return {
 			{ 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 			{ 'Bilal2453/luvit-meta', lazy = true },
 			{ 'mason-org/mason.nvim', opts = {} },
-			{ 'yioneko/nvim-vtsls', lazy = false },
-			{ 'dmmulroy/ts-error-translator.nvim', opts = {} },
+			{ 'yioneko/nvim-vtsls', lazy = false, enabled = false },
+			{
+				'dmmulroy/ts-error-translator.nvim',
+				opts = {
+					auto_attach = true,
+					servers = {
+						'astro',
+						'svelte',
+						'ts_ls',
+						'tsserver', -- deprecrated
+						'typescript-tools',
+						'volar',
+						'vtsls',
+						'tsgo',
+					},
+				},
+			},
 		},
 		cmd = 'Mason',
 		opts = {
@@ -287,35 +278,5 @@ return {
 				return register_capability(err, res, ctx)
 			end
 		end,
-	},
-
-	{ 'dmmulroy/ts-error-translator.nvim', opts = {}, enabled = false },
-
-	{
-		'pmizio/typescript-tools.nvim',
-		dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-		enabled = false,
-		opts = {
-			on_attach = function(client, bufnr)
-				on_attach(client, bufnr)
-				client.server_capabilities.documentFormattingProvider = false
-				client.server_capabilities.documentRangeFormattingProvider = false
-			end,
-			settings = {
-				separate_diagnostic_server = true,
-				expose_as_code_action = 'all',
-				tsserver_max_memory = 8192,
-				tsserver_file_preferences = {
-					includeInlayEnumMemberValueHints = true,
-					includeInlayFunctionLikeReturnTypeHints = true,
-					includeInlayFunctionParameterTypeHints = true,
-					includeInlayParameterNameHints = 'all',
-					includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-					includeInlayPropertyDeclarationTypeHints = true,
-					includeInlayVariableTypeHints = true,
-					importModuleSpecifierPreference = 'non-relative',
-				},
-			},
-		},
 	},
 }

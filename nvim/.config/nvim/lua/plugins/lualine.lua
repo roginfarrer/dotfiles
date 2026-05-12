@@ -29,15 +29,6 @@ return {
 				return msg
 			end
 
-			local package_info_section = {
-				function()
-					require('package-info').get_status()
-				end,
-				cond = function()
-					return package.loaded['package-info'] and require('package-info').get_status()
-				end,
-			}
-
 			return {
 				options = {
 					theme = 'auto',
@@ -58,22 +49,13 @@ return {
 						{ 'filename', symbols = { modified = '', readonly = '', unnamed = '', newfile = '' } },
 					},
 					lualine_x = {
-						-- { 'grapple' },
 						{
 							function()
-								return require('noice').api.status.command
-							end,
-							cond = function()
-								return package.loaded['noice'] and require('noice').api.status.command.has()
-							end,
-							-- color = Util.ui.fg("Statement"),
-						},
-						{
-							function()
-								return require('noice').api.status.mode.get()
-							end,
-							cond = function()
-								return package.loaded['noice'] and require('noice').api.status.mode.has()
+								local reg = vim.fn.reg_recording()
+								if reg == '' then
+									return '' -- not recording
+								end
+								return 'recording to ' .. reg
 							end,
 						},
 						{
@@ -89,7 +71,6 @@ return {
 							require('lazy.status').updates,
 							cond = require('lazy.status').has_updates, --[[ color = Util.ui.fg 'Special' ]]
 						},
-						package_info_section,
 					},
 					lualine_y = {
 						{
@@ -110,7 +91,14 @@ return {
 							},
 						},
 					},
-					lualine_z = { { lsp_client_names, separator = { right = '' }, padding = { left = 1 } } },
+					lualine_z = {
+						{
+							-- lsp_client_names,
+							'lsp_status',
+							separator = { right = '' },
+							padding = { left = 1 },
+						},
+					},
 				},
 				extensions = { 'fzf', 'lazy', 'oil', 'trouble', 'quickfix', 'nvim-dap-ui', 'mason' },
 				-- inactive_winbar = {

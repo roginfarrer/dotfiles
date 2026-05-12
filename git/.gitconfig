@@ -61,6 +61,7 @@
     dshow = -c diff.external=difft show --ext-diff
     ddiff = -c diff.external=difft diff
     rc = !git add -A && git rebase --continue
+    branches = !git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)'
 
 ; [diff]
 ;     tool = diffview

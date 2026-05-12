@@ -1,7 +1,4 @@
 return {
-	{ 'mustache/vim-mustache-handlebars', ft = 'mustache' },
+	{ 'mustache/vim-mustache-handlebars', ft = 'mustache', enabled = false },
 	{ 'davidmh/mdx.nvim', dependencies = { 'nvim-treesitter/nvim-treesitter' }, lazy = false },
-	{ 'fladson/vim-kitty', ft = 'kitty' },
-	{ 'Amar1729/skhd-vim-syntax', ft = 'skhd' },
-	{ 'camnw/lf-vim', ft = 'lf' },
 }
