@@ -1,6 +1,6 @@
+node_modules
 .zcompdump
 .DS_Store
-tmux/.tmux/plugins
 *.bak
 lazy-lock.json
 **/karabiner/automatic_backups
@@ -9,7 +9,16 @@ lazy-lock.json
 zsh/.zsh/.zsh_plugins.zsh
 zsh/.zsh/.antidote
 
+# Tmux
+tmux/.tmux/plugins
+
+# Neovim
 nvim/.config/nvim/lua/local-config.lua
 local.lua
 
+# Fish
 .fisher
+
+# Claude
+claude/.claude/*
+!claude/.claude/settings.json

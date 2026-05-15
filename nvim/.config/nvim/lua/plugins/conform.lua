@@ -33,6 +33,7 @@ return {
 		end,
 		opts = function()
 			local prettier = { 'prettier', stop_after_first = true }
+			local util = require 'conform.util'
 			return {
 				formatters = {
 					my_auto_indent = {
@@ -42,6 +43,24 @@ return {
 							-- vim.cmd.normal { 'm`' .. cmd .. '``', bang = true }
 							vim.cmd.normal { 'mqHmwgg=G`wzt`q', bang = true }
 							callback()
+						end,
+					},
+					fracjson = {
+						meta = {
+							url = 'https://github.com/j-brooke/FracturedJson',
+							description = 'Reformats a JSON document to make it highly human-readable.',
+						},
+						command = 'fracjson',
+						args = function(_, ctx)
+							local config = vim.fs.find(
+								{ '.fracturedjson', '.fracturedjson.jsonc', '.fracturedjson.json' },
+								{ upward = true, path = ctx.dirname }
+							)[1]
+							vim.print(config)
+							if config then
+								return { '--config', config }
+							end
+							return {}
 						end,
 					},
 				},

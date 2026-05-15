@@ -1,0 +1,12 @@
+{
+	"$schema": "https://json.schemastore.org/claude-code-settings.json",
+	"permissions": {
+		"allow"      : ["WebFetch", "Bash(git add:*)", "Bash(jq:*)"],
+		"deny"       : ["Read(*.env)", "Bash(rm:*)", "Bash(curl:*)"],
+		"ask"        : ["Bash(gh pr create:*)", "Bash(git commit:*)"],
+		"defaultMode": "acceptEdits"
+	},
+	"model": "opusplan",
+	"editorMode": "vim",
+	"skipAutoPermissionPrompt": true
+}
