@@ -25,11 +25,41 @@ return {
 				desc = 'Format code',
 				mode = { 'n', 'v' },
 			},
+			{
+				'<leader>u',
+				function()
+					local was_disabled = vim.b.disable_autoformat
+					vim.cmd 'FormatDisable'
+					vim.cmd 'write'
+					if not was_disabled then
+						vim.cmd 'FormatEnable'
+					end
+				end,
+				desc = 'Save without formatting',
+			},
 		},
 		init = function()
 			vim.o.formatoptions = 'jcroqlnt' -- tcqj
 			vim.o.formatexpr = "v:lua.require'conform'.formatexpr({'timeout_ms': 2000})"
 			vim.g.conform_disable_format_on_save_ft = { mustache = true }
+
+			vim.api.nvim_create_user_command('FormatDisable', function(args)
+				if args.bang then
+					-- FormatDisable! will disable formatting just for this buffer
+					vim.b.disable_autoformat = true
+				else
+					vim.g.disable_autoformat = true
+				end
+			end, {
+				desc = 'Disable autoformat-on-save',
+				bang = true,
+			})
+			vim.api.nvim_create_user_command('FormatEnable', function()
+				vim.b.disable_autoformat = false
+				vim.g.disable_autoformat = false
+			end, {
+				desc = 'Re-enable autoformat-on-save',
+			})
 		end,
 		opts = function()
 			local prettier = { 'prettier', stop_after_first = true }
@@ -88,10 +118,16 @@ return {
 				default_format_opts = { lsp_format = 'fallback' },
 				log_level = vim.log.levels.DEBUG,
 				format_on_save = function(bufnr)
-					local disable_filetypes = vim.g.conform_disable_format_on_save_ft or { mustache = true }
+					local disable_filetypes = vim.g.conform_disable_format_on_save_ft or {}
+					local format_on_save_disabled = vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat
+
+					if format_on_save_disabled or disable_filetypes[vim.bo[bufnr].filetype] then
+						return
+					end
+
 					return {
 						timeout_ms = 2000,
-						lsp_format = disable_filetypes[vim.bo[bufnr].filetype] and 'never' or 'fallback',
+						lsp_format = 'fallback',
 					}
 				end,
 			}

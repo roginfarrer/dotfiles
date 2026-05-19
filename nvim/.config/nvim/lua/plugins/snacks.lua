@@ -251,6 +251,7 @@ return {
 							},
 						}
 					end,
+                    desc = "Lazy packages"
 				},
 				-- {
 				--   '<C-t>',
