@@ -5,7 +5,8 @@ if ! [[ -d $ANTIDOTE_PATH ]]; then
 fi
 
 source $ANTIDOTE_PATH/antidote.zsh
-antidote load
 
-antidote bundle <$ZDOTDIR/.zsh_plugins.txt >$ZDOTDIR/.zsh_plugins.zsh
+if [[ ! -f $ZDOTDIR/.zsh_plugins.zsh || $ZDOTDIR/.zsh_plugins.txt -nt $ZDOTDIR/.zsh_plugins.zsh ]]; then
+    antidote bundle <$ZDOTDIR/.zsh_plugins.txt >$ZDOTDIR/.zsh_plugins.zsh
+fi
 source $ZDOTDIR/.zsh_plugins.zsh

@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-echo ".zshrc"
-
 export EDITOR="nvim"
 export GIT_EDITOR="nvim"
 export SUDO_EDITOR="nvim"
