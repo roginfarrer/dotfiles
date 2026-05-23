@@ -1,4 +1,4 @@
--- vim.loader.enable()
+vim.loader.enable()
 
 local ok, lconfig = pcall(require, 'local-config')
 if type(lconfig) == 'table' and lconfig.before then
