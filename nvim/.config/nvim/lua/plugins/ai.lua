@@ -31,17 +31,17 @@ return {
 			},
 		},
 		keys = {
-			{
-				'<tab>',
-				function()
-					-- if there is a next edit, jump to it, otherwise apply it if any
-					if not require('sidekick').nes_jump_or_apply() then
-						return '<Tab>' -- fallback to normal tab
-					end
-				end,
-				expr = true,
-				desc = 'Goto/Apply Next Edit Suggestion',
-			},
+			-- {
+			-- 	'<tab>',
+			-- 	function()
+			-- 		-- if there is a next edit, jump to it, otherwise apply it if any
+			-- 		if not require('sidekick').nes_jump_or_apply() then
+			-- 			return '<Tab>' -- fallback to normal tab
+			-- 		end
+			-- 	end,
+			-- 	expr = true,
+			-- 	desc = 'Goto/Apply Next Edit Suggestion',
+			-- },
 			{
 				'<c-.>',
 				function()
@@ -152,38 +152,6 @@ return {
 				markdown = true,
 				help = true,
 			},
-		},
-	},
-
-	-- {
-	--   'saghen/blink.cmp',
-	--   dependencies = { 'fang2hou/blink-copilot' },
-	--   opts = {
-	--     sources = {
-	--       default = { 'copilot' },
-	--       providers = {
-	--         copilot = {
-	--           module = 'blink-copilot',
-	--           name = 'copilot',
-	--           score_offset = 100,
-	--           async = true,
-	--         },
-	--       },
-	--     },
-	--   },
-	-- },
-	{
-		'CopilotC-Nvim/CopilotChat.nvim',
-		enabled = false,
-		dependencies = {
-			{ 'zbirenbaum/copilot.lua' },
-			{ 'nvim-lua/plenary.nvim' }, -- for curl, log and async functions
-		},
-		build = 'make tiktoken', -- Only on MacOS or Linux
-		opts = {},
-		cmd = { 'CopilotChat' },
-		keys = {
-			{ '<leader>a', '<cmd>CopilotChat<CR>', desc = 'Copilot Chat' },
 		},
 	},
 

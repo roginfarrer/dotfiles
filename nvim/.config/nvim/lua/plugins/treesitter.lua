@@ -48,130 +48,89 @@ return {
 			vim.treesitter.language.register('glimmer', 'mustache')
 			vim.treesitter.language.register('glimmer', 'hbs')
 
+			treesitter.install(languages)
 			treesitter.setup(opts)
 
-			vim.api.nvim_create_autocmd('FileType', {
-				group = vim.api.nvim_create_augroup('treesitter.setup', {}),
-				callback = function(args)
-					local buf = args.buf
-					local filetype = args.match
+			---@param buf integer
+			---@param language string
+			local function treesitter_try_attach(buf, language)
+				-- Check if a parser exists and load it
+				if not vim.treesitter.language.add(language) then
+					return
+				end
+				-- Enable syntax highlighting and other treesitter features
+				vim.treesitter.start(buf, language)
 
-					-- Avoid running on buffers that do not
-					-- correspond to a language (like oil.nvim buffers), this implementation
-					-- checks if a parser exists for the current language
-					local language = vim.treesitter.language.get_lang(filetype) or filetype
-					if not vim.treesitter.language.add(language) then
+				-- Enable treesitter based folds
+				-- For more info on folds see `:help folds`
+				-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+				-- vim.wo.foldmethod = 'expr'
+
+				-- Check if treesitter indentation is available for this language, and if so enable it
+				-- in case there is no indent query, the indentexpr will fallback to the vim's built in one
+				local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
+
+				-- Enable treesitter based indentation
+				if has_indent_query then
+					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end
+			end
+
+			local available_parsers = require('nvim-treesitter').get_available()
+			vim.api.nvim_create_autocmd('FileType', {
+				callback = function(args)
+					local buf, filetype = args.buf, args.match
+
+					local language = vim.treesitter.language.get_lang(filetype)
+					if not language then
 						return
 					end
 
-					-- Enalbes tree-sitting folding
-					-- vim.wo.foldmethod = 'expr'
-					-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+					local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
 
-					-- Enables highlighting
-					vim.treesitter.start(buf, language)
-
-					-- Enables tree-sitter indentation
-					-- Disabled since it's not very good
-					-- vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					if vim.tbl_contains(installed_parsers, language) then
+						-- Enable the parser if it is already installed
+						treesitter_try_attach(buf, language)
+					elseif vim.tbl_contains(available_parsers, language) then
+						-- If a parser is available in `nvim-treesitter`, auto-install it and enable it after the installation is done
+						require('nvim-treesitter').install(language):await(function()
+							treesitter_try_attach(buf, language)
+						end)
+					else
+						-- Try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
+						treesitter_try_attach(buf, language)
+					end
 				end,
 			})
 
-			-- local ts_config = require 'nvim-treesitter.config'
-			-- -- Auto-install and start parsers for any buffer
-			-- vim.api.nvim_create_autocmd({ 'FileType' }, {
-			-- 	desc = 'Enable Treesitter',
-			-- 	callback = function(event)
-			-- 		local bufnr = event.buf
-			-- 		local filetype = event.match
+			-- vim.api.nvim_create_autocmd('FileType', {
+			-- 	group = vim.api.nvim_create_augroup('treesitter.setup', {}),
+			-- 	callback = function(args)
+			-- 		local buf = args.buf
+			-- 		local filetype = args.match
 
-			-- 		-- Skip if no filetype
-			-- 		if filetype == '' then
+			-- 		-- Avoid running on buffers that do not
+			-- 		-- correspond to a language (like oil.nvim buffers), this implementation
+			-- 		-- checks if a parser exists for the current language
+			-- 		local language = vim.treesitter.language.get_lang(filetype) or filetype
+			-- 		if not vim.treesitter.language.add(language) then
 			-- 			return
 			-- 		end
 
-			-- 		local parser_name = vim.treesitter.language.get_lang(filetype)
-			-- 		if not parser_name then
-			-- 			vim.notify(
-			-- 				vim.inspect('No treesitter parser found for filetype: ' .. filetype),
-			-- 				vim.log.levels.WARN
-			-- 			)
-			-- 			return
-			-- 		end
+			-- 		-- Enalbes tree-sitting folding
+			-- 		-- vim.wo.foldmethod = 'expr'
+			-- 		-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
-			-- 		-- Try to get existing parser
-			-- 		if not vim.tbl_contains(ts_config.get_available(), parser_name) then
-			-- 			return
-			-- 		end
+			-- 		-- Enables highlighting
+			-- 		vim.treesitter.start(buf, language)
 
-			-- 		local function ts_start(buf, parser)
-			-- 			vim.treesitter.start(buf, parser)
-			-- 			vim.bo[bufnr].syntax = 'on'
-			-- 			vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- Use treesitter for indentation
-			-- 		end
-
-			-- 		-- Check if parser is already installed
-			-- 		local already_installed = ts_config.get_installed 'parsers'
-			-- 		if not vim.tbl_contains(already_installed, parser_name) then
-			-- 			treesitter.arun(function()
-			-- 				-- If not installed, install parser asynchronously and start treesitter
-			-- 				vim.notify('Installing parser for ' .. parser_name, vim.log.levels.INFO)
-			-- 				treesitter.install({ parser_name }):await(function()
-			-- 					vim.print('Starting parser: ' .. parser_name)
-			-- 					ts_start(bufnr, parser_name)
-			-- 				end)
-			-- 			end)
-			-- 			return
-			-- 		end
-
-			-- 		-- Start treesitter for this buffer
-			-- 		ts_start(bufnr, parser_name)
+			-- 		-- Enables tree-sitter indentation
+			-- 		-- Disabled since it's not very good
+			-- 		-- vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 			-- 	end,
 			-- })
 		end,
 	},
-
-	-- {
-	-- 	'MeanderingProgrammer/treesitter-modules.nvim',
-	-- 	dependencies = { 'nvim-treesitter/nvim-treesitter' },
-	-- 	event = 'VeryLazy',
-	-- 	---@module 'treesitter-modules'
-	-- 	---@type ts.mod.UserConfig
-	-- 	opts = {
-	-- 		auto_install = true,
-	-- 		indent = { enable = false },
-	-- 		highlight = { enable = true },
-	-- 		ensure_installed = {
-	-- 			'bash',
-	-- 			'css',
-	-- 			'diff',
-	-- 			'fish',
-	-- 			'git_config',
-	-- 			'git_rebase',
-	-- 			'gitattributes',
-	-- 			'gitcommit',
-	-- 			'gitignore',
-	-- 			'html',
-	-- 			'javascript',
-	-- 			'json',
-	-- 			'lua',
-	-- 			'luadoc',
-	-- 			'markdown',
-	-- 			'markdown_inline',
-	-- 			'regex',
-	-- 			'scss',
-	-- 			'styled',
-	-- 			'tmux',
-	-- 			'toml',
-	-- 			'tsx',
-	-- 			'typescript',
-	-- 			'vim',
-	-- 			'vimdoc',
-	-- 			'yaml',
-	-- 			'jsdoc',
-	-- 		},
-	-- 	},
-	-- },
 
 	{
 		'nvim-treesitter/nvim-treesitter-textobjects',
@@ -184,86 +143,6 @@ return {
 				set_jumps = true, -- whether to set jumps in the jumplist
 			},
 		},
-		-- keys = function()
-		-- 	local key_groups = {
-		-- 		['f'] = 'function',
-		-- 		['c'] = 'class',
-		-- 		['a'] = 'parameter',
-		-- 	}
-
-		-- 	local function select(object, category)
-		-- 		return function()
-		-- 			require('nvim-treesitter-textobjects.select').select_textobject(object, category)
-		-- 		end
-		-- 	end
-
-		-- 	local move_keys = {}
-		-- 	local move_key_mode = { 'x', 'n', 'o' }
-
-		-- 	for key, group in pairs(key_groups) do
-		-- 		local scope = '@' .. group .. '.outer'
-		-- 		table.insert(move_keys, {
-		-- 			']' .. key,
-		-- 			function()
-		-- 				require('nvim-treesitter-textobjects.move').goto_next_start(scope, 'textobjects')
-		-- 			end,
-		-- 			mode = move_key_mode,
-		-- 			desc = 'Goto start of next ' .. group,
-		-- 		})
-		-- 		table.insert(move_keys, {
-		-- 			']' .. string.upper(key),
-		-- 			function()
-		-- 				require('nvim-treesitter-textobjects.move').goto_next_end(scope, 'textobjects')
-		-- 			end,
-		-- 			mode = move_key_mode,
-		-- 			desc = 'Goto end of next ' .. group,
-		-- 		})
-		-- 		table.insert(move_keys, {
-		-- 			'[' .. key,
-		-- 			function()
-		-- 				require('nvim-treesitter-textobjects.move').goto_previous_start(scope, 'textobjects')
-		-- 			end,
-		-- 			mode = move_key_mode,
-		-- 			desc = 'Goto start of previous ' .. group,
-		-- 		})
-		-- 		table.insert(move_keys, {
-		-- 			'[' .. string.upper(key),
-		-- 			function()
-		-- 				require('nvim-treesitter-textobjects.move').goto_previous_end(scope, 'textobjects')
-		-- 			end,
-		-- 			mode = move_key_mode,
-		-- 			desc = 'Goto end of previous ' .. group,
-		-- 		})
-		-- 	end
-
-		-- 	return vim.tbl_deep_extend('keep', move_keys, {
-		-- 		-- Select
-		-- 		{
-		-- 			'af',
-		-- 			select('@function.outer', 'textobjects'),
-		-- 			desc = 'Select outer function',
-		-- 			mode = { 'x', 'o' },
-		-- 		},
-		-- 		{
-		-- 			'if',
-		-- 			select('@function.inner', 'textobjects'),
-		-- 			desc = 'Select inner function',
-		-- 			mode = { 'x', 'o' },
-		-- 		},
-		-- 		{
-		-- 			'ac',
-		-- 			select('@class.outer', 'textobjects'),
-		-- 			desc = 'Select outer class',
-		-- 			mode = { 'x', 'o' },
-		-- 		},
-		-- 		{
-		-- 			'ic',
-		-- 			select('@class.inner', 'textobjects'),
-		-- 			desc = 'Select inner class',
-		-- 			mode = { 'x', 'o' },
-		-- 		},
-		-- 	})
-		-- end,
 	},
 
 	{

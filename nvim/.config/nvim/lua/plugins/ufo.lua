@@ -1,6 +1,7 @@
 return {
 	{
 		'kevinhwang91/nvim-ufo',
+		commit = 'ab3eb124062422d276fae49e0dd63b3ad1062cfc',
 		event = 'BufReadPost',
 		dependencies = { 'kevinhwang91/promise-async' },
 		init = function()

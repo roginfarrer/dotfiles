@@ -3,12 +3,6 @@ return {
 	{ 'nvim-lua/plenary.nvim', lazy = true },
 	{ 'raddari/last-color.nvim', lazy = false },
 	{ 'MunifTanjim/nui.nvim', lazy = true },
-	{
-		'brenoprata10/nvim-highlight-colors',
-		event = 'VeryLazy',
-		opts = { enable_named_colors = false, enable_tailwind = true, render = 'background', virtual_symbol = '•' },
-	},
-
 	-- Automatically between template literal and strings when needed
 	{
 		'axelvc/template-string.nvim',

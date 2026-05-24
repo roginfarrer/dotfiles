@@ -33,7 +33,7 @@ M.termcodes = function(str)
 	return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
----@param event any
+---@param event vim.api.keyset.events|vim.api.keyset.events[] Event(s) that will trigger the handler (`callback` or `command`).
 ---@param opts vim.api.keyset.create_autocmd
 M.autocmd = function(event, opts)
 	if opts.group then

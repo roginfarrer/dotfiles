@@ -3,6 +3,7 @@ return {
 		'folke/which-key.nvim',
 		event = 'VeryLazy',
 		enabled = true,
+		---@type wk.Opts
 		opts = {
 			preset = 'helix',
 			replace = { ['<leader>'] = 'SPC', ['<tab>'] = 'TAB' },

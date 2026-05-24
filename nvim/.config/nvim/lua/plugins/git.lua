@@ -1,5 +1,19 @@
 return {
 	{
+		'dlyongemallo/diffview.nvim',
+		version = '*',
+		dependencies = { 'rickhowe/diffchar.vim' },
+		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+		keys = {
+			{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
+		},
+		opts = {
+			enhanced_diff_hl = true,
+			diffopt = { algorithm = 'histogram' },
+		},
+	},
+
+	{
 		'tpope/vim-fugitive',
 		enabled = false,
 		cmd = {
@@ -17,14 +31,10 @@ return {
 		keys = {
 			{ '<leader>gg', '<cmd>Git<cr>', desc = 'Fugitive' },
 		},
-		-- dependencies = { 'tpope/vim-rhubarb' },
-		-- keys = {
-		--   { '<leader>gc', ':GBrowse!<CR>', desc = 'Copy github url to clipboard' },
-		--   { '<leader>gc', ":'<,'>GBrowse!<CR>", desc = 'Copy github url to clipboard', mode = { 'v' } },
-		--   { '<leader>go', ':GBrowse<CR><CR>', desc = 'Open file in browser' },
-		--   { '<leader>go', ":'<,'>GBrowse<CR><CR>", desc = 'Open file in browser', mode = { 'v' } },
-		-- },
 	},
+
+	-- Treesitter-powered Diff Syntax highlighting for Neovim
+	-- Might conflict with diffview.nvim
 	{
 		'barrettruth/diffs.nvim',
 		enabled = false,
@@ -32,21 +42,10 @@ return {
 		init = function()
 			vim.g.diffs = {
 				neogit = true,
+				gitsigns = true,
+				fugutive = true,
 			}
 		end,
-	},
-	{
-		'dlyongemallo/diffview.nvim',
-		version = '*',
-		dependencies = { 'rickhowe/diffchar.vim' },
-		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
-		keys = {
-			{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
-		},
-		opts = {
-			enhanced_diff_hl = true,
-			diffopt = { algorithm = 'histogram' },
-		},
 	},
 
 	{
@@ -174,48 +173,6 @@ return {
 				end,
 			},
 		},
-	},
-
-	{
-		'ahkohd/difft.nvim',
-		enabled = false,
-		lazy = false,
-		keys = {
-			{
-				'<leader>gD',
-				function()
-					if Difft.is_visible() then
-						Difft.hide()
-					else
-						Difft.diff()
-					end
-				end,
-				desc = 'Toggle Difft',
-			},
-		},
-		opts = {
-			command = 'git diff', -- or "GIT_EXTERNAL_DIFF='difft --color=always' git diff"
-			layout = 'float', -- nil (buffer), "float", or "ivy_taller"
-		},
-	},
-
-	{
-		'esmuellert/codediff.nvim',
-		enabled = false,
-		dependencies = { 'MunifTanjim/nui.nvim' },
-		cmd = 'CodeDiff',
-	},
-
-	{
-		'tanvirtin/vgit.nvim',
-		enabled = false,
-		dependencies = { 'nvim-lua/plenary.nvim' },
-		-- Lazy loading on 'VimEnter' event is necessary.
-		event = 'VimEnter',
-		opts = {},
-		-- config = function()
-		-- 	require('vgit').setup()
-		-- end,
 	},
 
 	{
