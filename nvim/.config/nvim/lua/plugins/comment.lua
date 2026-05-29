@@ -6,15 +6,18 @@ return {
 			{ 'gb', mode = { 'n', 'x' } },
 		},
 		dependencies = {
-			'JoosepAlviste/nvim-ts-context-commentstring',
+			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
+			'nvim-treesitter/nvim-treesitter',
 		},
-		---@module 'Comment.nvim'
-		---@type CommentConfig | {} User configuration
-		opts = {
-			-- ignore empty lines
-			ignore = '^$',
-			pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-		},
+		opts = function()
+			---@module 'Comment.nvim'
+			---@type CommentConfig | {} User configuration
+			return {
+				-- ignore empty lines
+				ignore = '^$',
+				pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+			}
+		end,
 		config = function(_, opts)
 			-- using "config" instead of "opts" because requiring ts_context_commentstring throws error
 			require('Comment').setup(opts)

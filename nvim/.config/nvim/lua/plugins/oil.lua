@@ -11,6 +11,7 @@ local oil_select = function(direction)
 end
 
 return {
+	{ 'malewicz1337/oil-git.nvim', dependencies = { 'stevearc/oil.nvim' } },
 	{
 		'stevearc/oil.nvim',
 		opts = {

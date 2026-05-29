@@ -174,6 +174,13 @@ local plugins = {
 			}
 		end,
 	},
+
+	{
+		'uhs-robert/oasis.nvim',
+		config = function()
+			require('oasis').setup() -- (see Configuration below for all customization options)
+		end,
+	},
 }
 
 for _, plugin in ipairs(plugins) do
