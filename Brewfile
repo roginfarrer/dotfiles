@@ -38,7 +38,6 @@ brew "luajit", args: ["HEAD"]
 brew "luarocks"
 brew "mas"
 brew "mise"
-brew "neovim", args: ["HEAD"]
 brew "pnpm"
 brew "pyenv"
 brew "ripgrep"
