@@ -1,4 +1,6 @@
+# Ripgrep config
+# See https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
+
 --smart-case
 --hidden
---glob
-!.git
+--glob=!.git/*

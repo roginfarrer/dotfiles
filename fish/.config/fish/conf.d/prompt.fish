@@ -15,4 +15,4 @@ set fish_cursor_replace_one underscore
 # visual mode, but due to fish_cursor_default, is redundant here
 set fish_cursor_visual block
 
-fish_config theme choose catppuccin-mocha
+fish_config theme choose catppuccin-mocha --color-theme=dark
