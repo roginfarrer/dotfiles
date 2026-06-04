@@ -1,0 +1,33 @@
+tap "1password/tap"
+tap "shaunsingh/sfmono-nerd-font-ligaturized"
+
+brew "mas"
+
+cask "1password"
+cask "1password-cli"
+cask "bartender"
+cask "discord"
+cask "fantastical"
+cask "firefox@developer-edition"
+cask "karabiner-elements"
+cask "kitty"
+cask "mimestream"
+cask "obsidian"
+cask "raycast"
+cask "slack"
+cask "spotify"
+cask "visual-studio-code"
+cask "wezterm"
+
+cask "font-fira-code"
+cask "font-hack-nerd-font"
+cask "font-iosevka"
+cask "font-sf-mono-nerd-font-ligaturized"
+cask "font-symbols-only-nerd-font"
+cask "font-zed-mono-nerd-font"
+cask "sf-symbols"
+
+mas "Todoist", id: 585829637
+mas "ToothFairy", id: 1191449274
+mas "Xcode", id: 497799835
+mas "Hand Mirror", id: 1502839586

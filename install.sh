@@ -61,13 +61,19 @@ fi
 
 brew analytics off
 
-if [ -f "$HOME/dotfiles/Brewfile_vm" ]; then
-    echo "Updating homebrew bundle..."
-    brew bundle --file="$HOME/dotfiles/Brewfile_vm"
+if [ -f "$HOME/dotfiles/Brewfile" ]; then
+    echo "Installing homebrew bundle..."
+    brew bundle --file="$HOME/dotfiles/Brewfile"
+
+    if [ -f "$HOME/dotfiles/Brewfile_mac" && $HOMEBREW_ON_MACOS ]; then
+        echo "Installing MacOS homebrew bundle..."
+        brew bundle --file="$HOME/dotfiles/Brewfile_mac"
+    fi
 else
     echo "ERROR! Brewfile not found. Exiting..."
     exit 1
 fi
+
 brew cleanup
 
 ###
