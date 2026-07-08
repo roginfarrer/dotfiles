@@ -1,5 +1,6 @@
 local plugins = {
 	{ 'dgox16/oldworld.nvim' },
+	{ 'serhez/teide.nvim', opts = {} },
 	{
 		'projekt0n/github-nvim-theme',
 		config = function()

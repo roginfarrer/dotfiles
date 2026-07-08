@@ -1,7 +1,7 @@
 .reviewboardrc
 .vscode/
 .devcontainer/
-.nvim/**
+.nvim
 *.lazy.lua
 .nvim.lua
 

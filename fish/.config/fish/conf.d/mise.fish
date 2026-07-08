@@ -1,1 +1,1 @@
-command -q mise && mise activate fish | source
+# command -q mise && mise activate fish | source

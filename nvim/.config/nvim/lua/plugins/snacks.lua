@@ -49,6 +49,9 @@ return {
 			picker = {
 				enabled = true,
 				ui_select = true,
+				previewers = {
+					git = { builtin = false },
+				},
 				win = {
 					input = {
 						keys = {
@@ -69,6 +72,9 @@ return {
                 -- { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
 				{ '<leader>;', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				{ '<leader>b', function() Snacks.picker.buffers() end, desc = 'Buffers' },
+                { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
+				-- { '<leader>;', function() Snacks.picker.buffers() end, desc = 'Buffers' },
+				-- { '<leader>b', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				{ '<leader>/', function() Snacks.picker.grep({ hidden = true }) end, desc = 'Grep' },
 				{ '<leader>:', function() Snacks.picker.command_history() end, desc = 'Command History' },
 				{ '<leader>ff', function() require('seeker').seek{picker_opts = { hidden = true }} end, desc = 'Find Files (root dir)' },

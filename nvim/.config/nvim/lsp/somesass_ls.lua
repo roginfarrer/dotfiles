@@ -8,7 +8,7 @@ return {
 			suggestAllFromOpenDocument = true,
 			scss = {
 				completion = {
-					suggestFromUseOnly = true,
+					-- suggestFromUseOnly = true,
 					-- mixinStyle = 'bracket',
 				},
 			},
