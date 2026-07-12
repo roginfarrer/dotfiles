@@ -1,15 +1,33 @@
 return {
+	-- {
+	-- 	'dlyongemallo/diffview.nvim',
+	-- 	version = '*',
+	-- 	dependencies = { 'rickhowe/diffchar.vim' },
+	-- 	cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+	-- 	keys = {
+	-- 		{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
+	-- 	},
+	-- 	opts = {
+	-- 		enhanced_diff_hl = true,
+	-- 		diffopt = { algorithm = 'histogram' },
+	-- 	},
+	-- },
+
 	{
-		'dlyongemallo/diffview.nvim',
-		version = '*',
-		dependencies = { 'rickhowe/diffchar.vim' },
-		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+		'undont/differ.nvim',
+		build = 'make go-build',
+		config = function()
+			require('differ').setup()
+		end,
 		keys = {
-			{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
-		},
-		opts = {
-			enhanced_diff_hl = true,
-			diffopt = { algorithm = 'histogram' },
+			{
+				'<leader>gd',
+				function()
+					return vim.bo.filetype:find '^differ' and '<cmd>Differ close<cr>' or '<cmd>Differ<cr>'
+				end,
+				expr = true,
+				desc = 'Differ',
+			},
 		},
 	},
 
@@ -37,7 +55,7 @@ return {
 	-- Might conflict with diffview.nvim
 	{
 		'barrettruth/diffs.nvim',
-		enabled = false,
+		enabled = true,
 		lazy = false,
 		init = function()
 			vim.g.diffs = {
@@ -102,7 +120,7 @@ return {
 
 	{
 		'TimUntersberger/neogit',
-		enabled = false,
+		enabled = true,
 		cmd = 'Neogit',
 		opts = {
 			kind = 'split',
