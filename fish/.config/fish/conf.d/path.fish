@@ -5,4 +5,5 @@ fish_add_path (path filter \
         /opt/homebrew/bin \
         $HOME/.tmux/plugins/t-smart-tmux-session-manager/bin \
         $HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin \
+        $HOME/.nub/bin \
 )

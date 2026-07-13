@@ -29,6 +29,77 @@ local languages = {
 	'jsdoc',
 }
 
+local function jsdoc_word_wrap(text, max_width)
+	if max_width <= 0 then
+		max_width = 1
+	end
+	local result = {}
+	local current = ''
+	for word in text:gmatch '%S+' do
+		local candidate = current == '' and word or (current .. ' ' .. word)
+		if #candidate > max_width and current ~= '' then
+			result[#result + 1] = current
+			current = word
+		else
+			current = candidate
+		end
+	end
+	if current ~= '' then
+		result[#result + 1] = current
+	end
+	return result
+end
+
+local function jsdoc_fallback(tsnode)
+	local text = vim.treesitter.get_node_text(tsnode, 0)
+	local start_row, start_col, end_row, end_col = tsnode:range()
+	local buf = vim.api.nvim_get_current_buf()
+	local indent = string.rep(' ', start_col)
+	local new_lines
+
+	if not text:match '\n' then
+		local content = text:match '^/%*%*%s*(.-)%s*%*/$'
+		if not content or content == '' then
+			return
+		end
+		local wrapped = jsdoc_word_wrap(content, 80 - start_col - 3)
+		new_lines = { '/**' }
+		for _, line in ipairs(wrapped) do
+			new_lines[#new_lines + 1] = indent .. ' * ' .. line
+		end
+		new_lines[#new_lines + 1] = indent .. ' */'
+	else
+		local parts = {}
+		for i, line in ipairs(vim.split(text, '\n')) do
+			if i == 1 then
+				local c = line:match '^/%*%*%s+(.-)%s*$'
+				if c and c ~= '' then
+					parts[#parts + 1] = c
+				end
+			elseif line:match '%*/' then
+				-- closing */ line, skip
+			else
+				local c = line:match '^%s*%*%s*(.-)%s*$'
+				if c and c ~= '' then
+					parts[#parts + 1] = c
+				end
+			end
+		end
+		new_lines = { '/** ' .. table.concat(parts, ' ') .. ' */' }
+	end
+
+	vim.api.nvim_buf_set_text(buf, start_row, start_col, end_row, end_col, new_lines)
+end
+
+local jsdoc_comment_preset = {
+	both = {
+		enable = function(tsnode)
+			return vim.treesitter.get_node_text(tsnode, 0):match '^/%*%*' ~= nil
+		end,
+		fallback = jsdoc_fallback,
+	},
+}
+
 return {
 	{
 		'nvim-treesitter/nvim-treesitter',
@@ -158,7 +229,17 @@ return {
 			},
 		},
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		opts = { use_default_keymaps = false, max_join_length = 1000 },
+		opts = {
+			use_default_keymaps = false,
+			max_join_length = 1000,
+			langs = {
+				-- javascript = { comment = jsdoc_comment_preset },
+				-- typescript = { comment = jsdoc_comment_preset },
+				-- tsx = { comment = jsdoc_comment_preset },
+				-- jsx = { comment = jsdoc_comment_preset },
+				jsdoc = { comment = jsdoc_comment_preset },
+			},
+		},
 	},
 
 	{
