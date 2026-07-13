@@ -13,7 +13,7 @@
 	excludesfile = ~/.gitignore_global
 	editor = nvim
 	symlinks = true
-	pager = delta
+	pager = "hunk pager"
 [delta]
 	navigate = true # use n and N to move between diff sections
 [log]
@@ -38,18 +38,13 @@
 [push]
 	autoSetupRemote = true
     default = current
-[diff]
-    external = difft --color=always
 [difftool "difftastic"]
     # See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
     cmd = difft --color=always "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
 [difftool]
     # Run the difftool immediately, don't ask 'are you sure' each time.
     prompt = false
-[mergetool "vscode-diff"]
-	cmd = nvim \"$MERGED\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
 [merge]
-    tool = vscode-diff
     keepBackup = false
     trustExitCode = true
     prompt = false
@@ -63,20 +58,20 @@
     rc = !git add -A && git rebase --continue
     branches = !git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)'
 
-; [diff]
-;     tool = diffview
-; [difftool "diffview"]
-;     cmd = nvim -f -c "DiffviewOpen"
-; [difftool]
-;     prompt = false
+# [diff]
+#     tool = diffview
+# [difftool "diffview"]
+#     cmd = nvim -f -c "DiffviewOpen"
+# [difftool]
+#     prompt = false
 
-; [mergetool]
-;   cmd = diffview
-;   keepBackup = false
-;   trustExitCode = true
-;   prompt = false
-; [mergetool "diffview"]
-;   cmd = nvim -f +"DiffviewOpen"
+# [mergetool]
+#   cmd = diffview
+#   keepBackup = false
+#   trustExitCode = true
+#   prompt = false
+# [mergetool "diffview"]
+#   cmd = nvim -f +"DiffviewOpen"
 
 [include]
   path = ~/.gitconfig_local
