@@ -70,9 +70,6 @@ return {
             -- stylua: ignore
 			return {
                 -- { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
-				{ '<leader>;', function() Snacks.picker.buffers() end, desc = 'Buffers' },
-				{ '<leader>b', function() Snacks.picker.buffers() end, desc = 'Buffers' },
-                { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
 				-- { '<leader>;', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				-- { '<leader>b', function() Snacks.picker.buffers() end, desc = 'Buffers' },
 				{ '<leader>/', function() Snacks.picker.grep({ hidden = true }) end, desc = 'Grep' },

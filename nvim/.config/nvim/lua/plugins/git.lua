@@ -15,6 +15,7 @@ return {
 
 	{
 		'undont/differ.nvim',
+		lazy = false,
 		build = 'make go-build',
 		config = function()
 			require('differ').setup()
