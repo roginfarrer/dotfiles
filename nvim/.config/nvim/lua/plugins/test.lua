@@ -2,6 +2,7 @@ return {
 	-- testing integration
 	{
 		'nvim-neotest/neotest',
+		commit = '96130391cb215238758cc555c182a6799a28f0b0',
 		-- lazy = false,
 		dependencies = {
 			{ 'nvim-neotest/neotest-jest' },

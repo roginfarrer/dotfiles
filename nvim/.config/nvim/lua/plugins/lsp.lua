@@ -181,7 +181,6 @@ return {
 		opts = {
 			ensure_installed = {
 				'lua_ls',
-				'vtsls',
 				'tsgo',
 				'eslint',
 				'bashls',
@@ -202,7 +201,7 @@ return {
 
 			require('mason-tool-installer').setup {
 				run_on_start = true,
-				ensure_installed = { 'stylua', 'shfmt', 'prettier', 'prettierd' },
+				ensure_installed = { 'stylua', 'shfmt', 'prettier' },
 			}
 
 			if require('util').has 'mason-nvim-dap' then

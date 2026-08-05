@@ -14,6 +14,13 @@ return {
 	-- },
 
 	{
+		'CoreyKaylor/diffbandit.nvim',
+		config = function()
+			require('diffbandit').setup()
+		end,
+	},
+
+	{
 		'undont/differ.nvim',
 		lazy = false,
 		build = 'make go-build',

@@ -19,7 +19,6 @@ local languages = {
 	'regex',
 	'scss',
 	'styled',
-	'tmux',
 	'toml',
 	'tsx',
 	'typescript',
@@ -103,9 +102,7 @@ local jsdoc_comment_preset = {
 return {
 	{
 		'nvim-treesitter/nvim-treesitter',
-		-- The repo was archived :\
-		commit = '4916d6592ede8c07973490d9322f187e07dfefac',
-		-- branch = 'main',
+		branch = 'main',
 		build = ':TSUpdate',
 		lazy = false,
 		dependencies = {
