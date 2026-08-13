@@ -3,7 +3,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 local hyperlink_rules = wezterm.default_hyperlink_rules()
 
-local tmux = true
+local mode = "herdr" -- "tmux", "herdr", or "none"
 
 local default_hyperlink_regex = {
 	-- match github looking patterns, like neovim/neovim
@@ -101,18 +101,13 @@ config.tab_max_width = 32
 config.animation_fps = 240
 config.max_fps = 240
 
-if tmux then
-	require("tmux").setup(config)
-	config.keys = config.keys or {}
-	local function addKey(tbl)
-		table.insert(config.keys, tbl)
-	end
-	addKey({
+local function addQuickSelectKey(config_)
+	config_.keys = config_.keys or {}
+	table.insert(config_.keys, {
 		key = "E",
 		mods = "CTRL",
 		action = wezterm.action.QuickSelectArgs({
 			label = "open url",
-			-- taken from wezterm.default_hyperlink_rules()
 			patterns = default_hyperlink_regex,
 			action = wezterm.action_callback(function(window, pane)
 				local url = window:get_selection_text_for_pane(pane)
@@ -132,6 +127,14 @@ if tmux then
 			end),
 		}),
 	})
+end
+
+if mode == "tmux" then
+	require("tmux").setup(config)
+	addQuickSelectKey(config)
+elseif mode == "herdr" then
+	require("herdr").setup(config)
+	addQuickSelectKey(config)
 else
 	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
