@@ -13,6 +13,22 @@ return {
 	-- 	},
 	-- },
 
+	{ 'justinmk/guh.nvim', cmd = { 'Guh' } },
+	{
+		'emrearmagan/atlas.nvim',
+		cmd = { 'Atlas' },
+		lazy = false,
+		opts = {
+			pulls = {
+				-- See Pulls Configuration below.
+				providers = {
+					---@type AtlasGitHubConfig
+					github = {},
+				},
+			},
+		},
+	},
+
 	{
 		'CoreyKaylor/diffbandit.nvim',
 		config = function()
