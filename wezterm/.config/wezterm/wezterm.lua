@@ -3,7 +3,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 local hyperlink_rules = wezterm.default_hyperlink_rules()
 
-local tmux = true
+local mode = "tmux" -- "tmux", "herdr", or "none"
 
 local default_hyperlink_regex = {
 	-- match github looking patterns, like neovim/neovim
