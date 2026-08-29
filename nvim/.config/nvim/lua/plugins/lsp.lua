@@ -181,7 +181,7 @@ return {
 		opts = {
 			ensure_installed = {
 				'lua_ls',
-				'tsgo',
+				'tsc',
 				'eslint',
 				'bashls',
 				'html',
@@ -191,7 +191,7 @@ return {
 				'copilot',
 			},
 			automatic_enable = {
-				exclude = { 'ts_ls', 'vtsls', 'copilot', 'wc_ls', 'cssls', 'mdx_analyzer' },
+				exclude = { 'copilot', 'wc_ls', 'cssls', 'mdx_analyzer' },
 			},
 		},
 		config = function(_, opts)
@@ -239,15 +239,15 @@ return {
 				capabilities = capabilities,
 			})
 
-			local foo = vim.fn.expand '$HOME' .. '/.local/share/nvim/mason/packages/tsgo'
-			vim.lsp.config('mdx_analyzer', {
-				init_options = {
-					typescript = {
-						tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
-						-- tsdk = foo .. '/node_modules/@typescript/native-preview/bin',
-					},
-				},
-			})
+			-- local foo = vim.fn.expand '$HOME' .. '/.local/share/nvim/mason/packages/tsgo'
+			-- vim.lsp.config('mdx_analyzer', {
+			-- 	init_options = {
+			-- 		typescript = {
+			-- 			tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
+			-- 			-- tsdk = foo .. '/node_modules/@typescript/native-preview/bin',
+			-- 		},
+			-- 	},
+			-- })
 
 			local ts_bridge_executable = vim.fn.expand '$HOME' .. '/development/ts-bridge/target/release/ts-bridge'
 

@@ -1,5 +1,21 @@
 return {
 	{
+		'carlos-algms/agentic.nvim',
+		opts = {
+			provider = 'codex-acp',
+		},
+		keys = {
+			{
+				'<C-\\>',
+				function()
+					require('agentic').toggle()
+				end,
+				mode = { 'n', 'v', 'i' },
+				desc = 'Toggle Agentic Chat',
+			},
+		},
+	},
+	{
 		'folke/sidekick.nvim',
 		-- lazy = false,
 		enabled = true,

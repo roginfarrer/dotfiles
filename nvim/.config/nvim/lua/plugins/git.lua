@@ -1,43 +1,43 @@
 return {
-	-- {
-	-- 	'dlyongemallo/diffview.nvim',
-	-- 	version = '*',
-	-- 	dependencies = { 'rickhowe/diffchar.vim' },
-	-- 	cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
-	-- 	keys = {
-	-- 		{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
-	-- 	},
-	-- 	opts = {
-	-- 		enhanced_diff_hl = true,
-	-- 		diffopt = { algorithm = 'histogram' },
-	-- 	},
-	-- },
-
 	{
-		'CoreyKaylor/diffbandit.nvim',
-		config = function()
-			require('diffbandit').setup()
-		end,
-	},
-
-	{
-		'undont/differ.nvim',
-		lazy = false,
-		build = 'make go-build',
-		config = function()
-			require('differ').setup()
-		end,
+		'dlyongemallo/diffview-plus.nvim',
+		version = '*',
+		dependencies = { 'rickhowe/diffchar.vim' },
+		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
 		keys = {
-			{
-				'<leader>gd',
-				function()
-					return vim.bo.filetype:find '^differ' and '<cmd>Differ close<cr>' or '<cmd>Differ<cr>'
-				end,
-				expr = true,
-				desc = 'Differ',
-			},
+			{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
+		},
+		opts = {
+			enhanced_diff_hl = true,
+			diffopt = { algorithm = 'histogram' },
 		},
 	},
+
+	-- {
+	-- 	'CoreyKaylor/diffbandit.nvim',
+	-- 	config = function()
+	-- 		require('diffbandit').setup()
+	-- 	end,
+	-- },
+
+	-- {
+	-- 	'undont/differ.nvim',
+	-- 	lazy = false,
+	-- 	build = 'make go-build',
+	-- 	config = function()
+	-- 		require('differ').setup()
+	-- 	end,
+	-- 	keys = {
+	-- 		{
+	-- 			'<leader>gd',
+	-- 			function()
+	-- 				return vim.bo.filetype:find '^differ' and '<cmd>Differ close<cr>' or '<cmd>Differ<cr>'
+	-- 			end,
+	-- 			expr = true,
+	-- 			desc = 'Differ',
+	-- 		},
+	-- 	},
+	-- },
 
 	{
 		'tpope/vim-fugitive',
@@ -138,7 +138,7 @@ return {
 				item = { '', '' },
 				hunk = { '', '' },
 			},
-			integrations = { diffview = false, snacks = true, codediff = true },
+			integrations = { diffview = true, snacks = true, codediff = true },
 		},
 		keys = {
 			{ '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' },

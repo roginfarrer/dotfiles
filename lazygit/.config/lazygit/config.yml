@@ -3,9 +3,9 @@
 #     "Rogin Farrer": "#ff0000"
 
 git:
-  pagers:
-    - externalDiffCommand: difft --color=always
-
+  diffRenderers:
+    - command: difft --color=always
+      type: extDiff
 customCommands:
   - key: "G"
     command: "gh pr view -w {{.SelectedLocalBranch.Name}} || gh pr create -w --head {{.SelectedLocalBranch.Name}}"
