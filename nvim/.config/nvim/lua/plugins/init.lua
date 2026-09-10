@@ -6,7 +6,7 @@ return {
 	-- Automatically between template literal and strings when needed
 	{
 		'axelvc/template-string.nvim',
-		opts = { remove_template_string = true },
+		opts = { remove_template_string = false },
 		event = 'InsertEnter',
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
 	},

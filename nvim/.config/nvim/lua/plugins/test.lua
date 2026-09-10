@@ -2,7 +2,9 @@ return {
 	-- testing integration
 	{
 		'nvim-neotest/neotest',
-		commit = '96130391cb215238758cc555c182a6799a28f0b0',
+		version = '5.19.0',
+
+		-- commit = '96130391cb215238758cc555c182a6799a28f0b0',
 		-- lazy = false,
 		dependencies = {
 			{ 'nvim-neotest/neotest-jest' },
@@ -24,6 +26,9 @@ return {
 			-- 	},
 			-- }, neotest_ns)
 			require('neotest').setup {
+				consumers = {
+					overseer = require 'neotest.consumers.overseer',
+				},
 				adapters = {
 					require 'neotest-jest' {
 						jest_test_discovery = true,

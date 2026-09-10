@@ -13,6 +13,11 @@ return {
 		},
 	},
 
+	{
+		'vuki656/review.nvim',
+		opts = {},
+	},
+
 	-- {
 	-- 	'CoreyKaylor/diffbandit.nvim',
 	-- 	config = function()

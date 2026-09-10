@@ -1,6 +1,17 @@
 return {
 	{
+		'celeste3z/celeste_comment.nvim',
+		lazy = false,
+		opts = {},
+		init = function()
+			vim.o.commentstring = ''
+			vim.o.comments = ''
+		end,
+	},
+
+	{
 		'numToStr/Comment.nvim',
+		enabled = false,
 		keys = {
 			{ 'gc', mode = { 'n', 'x' } },
 			{ 'gb', mode = { 'n', 'x' } },

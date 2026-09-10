@@ -70,10 +70,10 @@ autocmd({ 'BufWritePre' }, {
 	end,
 })
 
-autocmd('TextYankPost', {
+autocmd({ 'TextYankPost', 'TextPutPost' }, {
 	group = 'highlight_yank',
 	callback = function()
-		vim.highlight.on_yank { visual = true }
+		vim.hl.hl_op { higroup = 'Visual', timeout = 200 }
 	end,
 })
 

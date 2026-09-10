@@ -17,8 +17,8 @@ map { 'c', '"_c', mode = { 'n', 'v' } }
 map { 'C', '"_C', mode = { 'n', 'v' } }
 
 -- Buffers
-map { '<S-h>', '<cmd>bprevious<cr>', desc = 'Prev buffer' }
-map { '<S-l>', '<cmd>bnext<cr>', desc = 'Next buffer' }
+-- map { '<S-h>', '<cmd>bprevious<cr>', desc = 'Prev buffer' }
+-- map { '<S-l>', '<cmd>bnext<cr>', desc = 'Next buffer' }
 map { '[b', '<cmd>bprevious<cr>', desc = 'Prev buffer' }
 map { ']b', '<cmd>bnext<cr>', desc = 'Next buffer' }
 
@@ -38,8 +38,8 @@ map { '<leader><leader>', 'za', desc = 'Toggle fold' }
 map { '<BS>', '<C-^>', desc = 'Previous buffer' }
 map { 'gw', '*N', desc = 'Search word under cursor', mode = { 'n', 'x' } }
 -- Swap 'q' to 'Q' to prevent accidental macro recording
-map { 'Q', 'q', noremap = true }
-map { 'q', '<Nop>', noremap = true }
+-- map { 'Q', 'q', noremap = true }
+-- map { 'q', '<Nop>', noremap = true }
 
 map {
 	'<leader>yf',

@@ -170,47 +170,4 @@ return {
 			},
 		},
 	},
-
-	{
-		'olimorris/codecompanion.nvim',
-		enabled = false,
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-		},
-		event = 'VeryLazy',
-		opts = {
-			-- adapters = {
-			-- 	http = {
-			-- 		anthropic = function()
-			-- 			return require('codecompanion.adapters').extend('anthropic', {
-			-- 				env = {
-			-- 					api_key = 'ANTHROPIC_API_KEY',
-			-- 				},
-			-- 			})
-			-- 		end,
-			-- 	},
-			-- },
-			strategies = {
-				chat = {
-					adapter = 'anthropic',
-				},
-				inline = {
-					adapter = 'anthropic',
-				},
-				cmd = {
-					adapter = 'anthropic',
-				},
-			},
-			opts = {
-				log_level = 'DEBUG',
-			},
-		},
-	},
-
-	{
-		'Cannon07/code-preview.nvim',
-		config = function()
-			require('code-preview').setup()
-		end,
-	},
 }
