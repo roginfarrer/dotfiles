@@ -120,7 +120,7 @@ disabled = false
 [shell]
 disabled = false
 fish_indicator = ''
-zsh_indicator = 'zsh'
+zsh_indicator = ''
 
 [gcloud]
 disabled = true
