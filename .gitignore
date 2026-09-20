@@ -20,6 +20,11 @@ local.lua
 # Fish
 .fisher
 
+# zsh
+.antidote
+.zsh_plugins.zsh
+.zsh_history
+
 # Claude
 claude/.claude/*
 !claude/.claude/settings.json

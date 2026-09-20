@@ -1,0 +1,16 @@
+# vim: set ft=sh:
+
+jeffreytse/zsh-vi-mode kind:defer
+mattmc3/ez-compinit kind:defer
+Aloxaf/fzf-tab kind:defer
+scaryrawr/fzf.zsh kind:defer
+
+olets/zsh-abbr kind:defer
+# To add/edit: nvim $ABBR_USER_ABBREVIATIONS_FILE
+
+
+zsh-users/zsh-autosuggestions kind:defer
+# zdharma-continuum/fast-syntax-highlighting kind:defer
+
+# requires `brew install zsh-patina`
+michel-kraemer/zsh-patina kind:defer

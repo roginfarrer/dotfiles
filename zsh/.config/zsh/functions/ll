@@ -1,0 +1,7 @@
+#!/bin/zsh
+if (( $+commands[lsd] )); then
+    lsd -1h "$@"
+else
+    ls -1h "$@"
+fi
+

@@ -1,0 +1,6 @@
+#!/bin/zsh
+if (( $+commands[lsd] )); then
+    lsd --group-dirs first "$@"
+else
+    ls "$@"
+fi

@@ -1,0 +1,7 @@
+#!/bin/zsh
+if (( $+commands[lsd] )); then
+    lsd --tree --group-dirs first --depth=2 "$@" 2>/dev/null
+else
+    command tree "$@"
+fi
+

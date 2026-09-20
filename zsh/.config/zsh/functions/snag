@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+# Choose the source branch
+local branch
+branch=$(git for-each-ref --format='%(refname:short)' refs/heads |
+fzf --height 20% --layout=reverse --border)
+
+[[ -z "$branch" ]] && return
+
+# Choose differing files
+local -a files
+files=("${(@f)$(git diff --name-only "$branch" |
+        fzf --height 20% --layout=reverse --border --multi)}")
+
+[[ ${#files[@]} -eq 0 ]] && return
+
+git checkout "$branch" -- "${files[@]}"

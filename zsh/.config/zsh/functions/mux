@@ -1,0 +1,13 @@
+#!/bin/zsh
+echo "mux"
+
+if ! tmux list-sessions &>/dev/null; then
+    tmux new -s dotfiles -c "$HOME/dotfiles" "$@"
+else
+    if (( $# )); then
+        tmux "$@"
+    else
+        tmux attach
+    fi
+fi
+

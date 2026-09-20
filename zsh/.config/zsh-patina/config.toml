@@ -1,0 +1,4 @@
+[highlighting]
+# Either the name of a built-in theme (e.g. `"simple"`, `"patina"`) or a string
+# in the form `"file:/path/mytheme.toml"` pointing to a custom theme toml file.
+theme = "catppuccin-mocha"

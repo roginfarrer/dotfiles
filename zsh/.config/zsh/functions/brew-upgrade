@@ -1,0 +1,8 @@
+#!/bin/zsh
+# Fetch updates first so progress messages don’t disrupt fzf
+brew outdated >/dev/null
+
+brew outdated |
+    fzf -m --header='Tab to select, Enter to upgrade' |
+    xargs brew upgrade
+
