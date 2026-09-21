@@ -28,3 +28,4 @@ abbr p pnpm
 abbr b bun
 abbr mycommits 'git log --author="Rogin Farrer <rogin@roginfarrer.com>" --oneline'
 abbr rpull 'git pull --rebase origin main'
+abbr cc 'claude'

@@ -1,15 +1,45 @@
 return {
+	{ 'justinmk/guh.nvim' },
+	{
+		'emrearmagan/atlas.nvim',
+		---@type AtlasConfig
+		opts = {
+			providers = {
+				github = {},
+			},
+			pulls = {
+				---@type AtlasGitHubPullsConfig
+				github = {
+					---@type AtlasGitHubViewConfig[]
+					views = {
+						{
+							name = 'My PRs',
+							key = '1',
+							layout = 'plain', -- "compact", "grouped", or "plain"
+							search = 'author:@me sort:updated-desc',
+						},
+					},
+
+					bookmarks = {
+						key = 'S', -- default
+						label = 'Search', -- default
+						items = {
+							['Drafts'] = 'is:pr is:draft author:@me',
+							['Recently merged'] = 'is:pr is:merged author:@me sort:updated-desc',
+							['Review requested'] = 'is:pr is:open review-requested:@me',
+						},
+					},
+				},
+			},
+		},
+	},
+
 	{
 		'dlyongemallo/diffview-plus.nvim',
 		version = '*',
-		dependencies = { 'rickhowe/diffchar.vim' },
 		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
 		keys = {
 			{ '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' },
-		},
-		opts = {
-			enhanced_diff_hl = true,
-			diffopt = { algorithm = 'histogram' },
 		},
 	},
 
@@ -68,7 +98,7 @@ return {
 	-- Might conflict with diffview.nvim
 	{
 		'barrettruth/diffs.nvim',
-		enabled = true,
+		enabled = false,
 		lazy = false,
 		init = function()
 			vim.g.diffs = {

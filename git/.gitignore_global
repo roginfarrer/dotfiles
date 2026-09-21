@@ -4,6 +4,7 @@
 .nvim
 *.lazy.lua
 .nvim.lua
+.lavish
 
 # Compiled source #
 ###################
