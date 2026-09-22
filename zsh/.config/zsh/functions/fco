@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Use `fzf` to choose which branch to check out
+local branch="${1:-}"
+local selected
+selected=$(git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)' | fzf --height 10% --layout=reverse --border --query="$branch" --select-1)
+[[ -n "$selected" ]] && git checkout "$selected"

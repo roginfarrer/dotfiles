@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 export EDITOR="nvim"
 export GIT_EDITOR="nvim"
 export SUDO_EDITOR="nvim"
@@ -45,3 +47,8 @@ for _rc in ${ZDOTDIR:-$HOME}/.zshrc.d/*.zsh; do
     fi
 done
 unset _rc
+
+if [ -f "$HOME/.zshrc_local" ]; then
+    source $HOME/.zshrc_local
+fi
+# zprof

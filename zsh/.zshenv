@@ -9,12 +9,13 @@ typeset -gU path fpath
 
 # Set the list of directories that zsh searches for commands.
 path=(
-  $HOME/{,s}bin(N)
-  $HOME/.local/{,s}bin(N)
-  $HOME/.nub/bin(N)
-  $HOME/.local/share/bob/nvim-bin(N)
-  $HOME/.cargo(N)
-  /opt/{homebrew,local}/{,s}bin(N)
-  /usr/local/{,s}bin(N)
-  $path
+    $HOME/{,s}bin(N)
+    $HOME/.local/{,s}bin(N)
+    $HOME/.nub/bin(N)
+    $HOME/.local/share/bob/nvim-bin(N)
+    $HOME/.cargo(N)
+    /opt/{homebrew,local}/{,s}bin(N)
+    /home/linuxbrew/.linuxbrew/{,s}bin(N)
+    /usr/local/{,s}bin(N)
+    $path
 )
