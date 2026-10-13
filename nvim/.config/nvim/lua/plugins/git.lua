@@ -97,7 +97,7 @@ return {
 	-- Treesitter-powered Diff Syntax highlighting for Neovim
 	-- Might conflict with diffview.nvim
 	{
-		'barrettruth/diffs.nvim',
+		'https://forge.barrettruth.com/barrettruth/diffs.nvim',
 		enabled = false,
 		lazy = false,
 		init = function()

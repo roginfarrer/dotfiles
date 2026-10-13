@@ -2,7 +2,7 @@ return {
 	{
 		'mrjones2014/smart-splits.nvim',
 		lazy = false,
-		opts = { desired_amount = 5 },
+		opts = { resize = { amount = 5 } },
 		keys = {
 			{
 				'<C-h>',
