@@ -29,3 +29,8 @@ local.lua
 claude/.claude/*
 !claude/.claude/settings.json
 .claude/settings.local.json
+
+# Herdr
+herdr/.config/herdr/*
+!herdr/.config/herdr/config.toml
+!herdr/.config/herdr/.plugins.lock
