@@ -1,0 +1,164 @@
+[
+  {
+    "plugin_id": "herdr-lazy",
+    "name": "herdr-lazy",
+    "version": "0.44.0",
+    "min_herdr_version": "0.9.0",
+    "description": "Be lazy: a curated, batteries-included plugin distro & manager for herdr",
+    "manifest_path": "/Users/rfarrer/dotfiles/herdr/.config/herdr/plugins/github/herdr-lazy-7e53bfc3c6d3/herdr-plugin.toml",
+    "plugin_root": "/Users/rfarrer/dotfiles/herdr/.config/herdr/plugins/github/herdr-lazy-7e53bfc3c6d3",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "/bin/sh",
+          "scripts/fetch-or-build.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/fetch-or-build.ps1"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "./target/release/herdr-lazy",
+          "startup"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "init",
+        "title": "Lazy: install curated defaults",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-lazy",
+          "init"
+        ]
+      },
+      {
+        "id": "manage",
+        "title": "Lazy: open manage pane",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-lazy",
+          "open-pane",
+          "manage"
+        ]
+      },
+      {
+        "id": "probe",
+        "title": "Lazy: probe CLI bridge",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-lazy",
+          "probe"
+        ]
+      },
+      {
+        "id": "starter",
+        "title": "Lazy: start workspace",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-lazy",
+          "open-pane",
+          "starter"
+        ]
+      },
+      {
+        "id": "sync",
+        "title": "Lazy: sync plugins to bundle",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-lazy",
+          "sync"
+        ]
+      },
+      {
+        "id": "update",
+        "title": "Lazy: update unpinned plugins",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-lazy",
+          "update"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "worktree.created",
+        "command": [
+          "./target/release/herdr-lazy",
+          "event"
+        ]
+      },
+      {
+        "on": "worktree.opened",
+        "command": [
+          "./target/release/herdr-lazy",
+          "event"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "manage",
+        "title": "herdr-lazy",
+        "placement": "overlay",
+        "command": [
+          "./target/release/herdr-lazy",
+          "ui"
+        ]
+      },
+      {
+        "id": "starter",
+        "title": "herdr-lazy workspace starter",
+        "placement": "overlay",
+        "command": [
+          "./target/release/herdr-lazy",
+          "starter"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "natori-hrj",
+      "repo": "herdr-lazy",
+      "resolved_commit": "8caad442f3710be6aff6872b03069068a931b38f",
+      "managed_path": "/Users/rfarrer/.config/herdr/plugins/github/herdr-lazy-7e53bfc3c6d3",
+      "installed_unix_ms": 1791876144723
+    }
+  }
+]

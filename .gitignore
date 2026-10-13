@@ -34,3 +34,4 @@ claude/.claude/*
 herdr/.config/herdr/*
 !herdr/.config/herdr/config.toml
 !herdr/.config/herdr/.plugins.lock
+!herdr/.config/herdr/plugins.json
