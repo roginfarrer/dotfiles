@@ -41,7 +41,6 @@ return {
 		init = function()
 			vim.o.formatoptions = 'jcroqlnt' -- tcqj
 			vim.o.formatexpr = "v:lua.require'conform'.formatexpr({'timeout_ms': 2000})"
-			vim.g.conform_disable_format_on_save_ft = { mustache = true }
 
 			vim.api.nvim_create_user_command('FormatDisable', function(args)
 				if args.bang then
@@ -62,8 +61,7 @@ return {
 			})
 		end,
 		opts = function()
-			local prettier = { 'prettier', stop_after_first = true }
-			local util = require 'conform.util'
+			local prettier = { 'oxfmt', 'prettier', stop_after_first = true }
 			return {
 				formatters = {
 					my_auto_indent = {
@@ -103,7 +101,7 @@ return {
 					typescriptreact = prettier,
 					css = prettier,
 					html = prettier,
-					-- markdown = { 'djlint' },
+					markdown = prettier,
 					mdx = prettier,
 					astro = { 'prettier' },
 					scss = prettier,
@@ -114,6 +112,8 @@ return {
 					sh = { 'beautysh' },
 					zsh = { 'beautysh' },
 					fish = { 'fish_indent' },
+					mustache = { 'oxfmt' },
+					handlebars = { 'oxfmt' },
 				},
 				default_format_opts = { lsp_format = 'fallback' },
 				log_level = vim.log.levels.DEBUG,

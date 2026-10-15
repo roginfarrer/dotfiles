@@ -71,6 +71,9 @@ return {
 					},
 				},
 			},
+			signature = {
+				enabled = true,
+			},
 			completion = {
 				menu = {
 					draw = {

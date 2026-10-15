@@ -13,7 +13,6 @@
 	excludesfile = ~/.gitignore_global
 	editor = nvim
 	symlinks = true
-	pager = "hunk pager"
 [delta]
 	navigate = true # use n and N to move between diff sections
 [log]
