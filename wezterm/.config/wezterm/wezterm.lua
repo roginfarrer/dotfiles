@@ -4,7 +4,6 @@ local act = wezterm.action
 local hyperlink_rules = wezterm.default_hyperlink_rules()
 
 local mode = "herdr" -- "tmux", "herdr", or "none"
-local tmux = true
 
 local default_hyperlink_regex = {
 	-- match github looking patterns, like neovim/neovim
@@ -102,7 +101,7 @@ config.tab_max_width = 32
 config.animation_fps = 240
 config.max_fps = 240
 
-if tmux then
+if mode == "tmux" then
 	require("tmux").setup(config)
 	config.keys = config.keys or {}
 	local function addKey(tbl)
@@ -126,6 +125,57 @@ if tmux then
 
 				local github_pattern = "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"
 				if string.match(url, github_pattern) and not string.match(url, "^go/") then
+					url = "https://www.github.com/" .. url
+				end
+				wezterm.log_info("opening: " .. url)
+				wezterm.open_with(url)
+			end),
+		}),
+	})
+elseif mode == "herdr" then
+	config.hide_tab_bar_if_only_one_tab = true
+	config.keys = config.keys or {}
+	local function addKey(tbl)
+		table.insert(config.keys, tbl)
+	end
+	local function herdrKey(mods, key, herdr_key)
+		addKey({
+			key = key,
+			mods = mods,
+			action = act.SendString("\x01" .. herdr_key),
+		})
+	end
+
+	-- Mirror the Command-key shortcuts from tmux.lua using Herdr's Ctrl-A bindings.
+	for i = 1, 9 do
+		herdrKey("CMD", tostring(i), tostring(i))
+	end
+	herdrKey("CMD", "k", "w") -- workspace picker
+	herdrKey("CMD", "[", "p") -- previous tab
+	herdrKey("CMD", "]", "n") -- next tab
+	herdrKey("CMD|SHIFT", "n", "-") -- split below
+	herdrKey("CMD", "n", "v") -- split right
+	herdrKey("CMD", "t", "c") -- new tab
+	herdrKey("CMD", "w", "x") -- close pane
+	herdrKey("CMD", "z", "z") -- toggle pane zoom
+
+	addKey({
+		key = "E",
+		mods = "CTRL",
+		action = wezterm.action.QuickSelectArgs({
+			label = "open url",
+			patterns = default_hyperlink_regex,
+			action = wezterm.action_callback(function(window, pane)
+				local url = window:get_selection_text_for_pane(pane)
+
+				if string.match(url, "^go/") then
+					wezterm.log_info("opening: " .. url)
+					wezterm.open_with(url, "chrome")
+					return
+				end
+
+				local github_pattern = "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"
+				if string.match(url, github_pattern) then
 					url = "https://www.github.com/" .. url
 				end
 				wezterm.log_info("opening: " .. url)

@@ -6,26 +6,50 @@ prefix = "ctrl+a"
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
-command = "smart-splits.nvim.left"
+command = "herdr-splits.nav-left"
 description = "navigate left (vim/herdr)"
 
 [[keys.command]]
 key = "ctrl+j"
 type = "plugin_action"
-command = "smart-splits.nvim.down"
+command = "herdr-splits.nav-down"
 description = "navigate down (vim/herdr)"
 
 [[keys.command]]
 key = "ctrl+k"
 type = "plugin_action"
-command = "smart-splits.nvim.up"
+command = "herdr-splits.nav-up"
 description = "navigate up (vim/herdr)"
 
 [[keys.command]]
 key = "ctrl+l"
 type = "plugin_action"
-command = "smart-splits.nvim.right"
+command = "herdr-splits.nav-right"
 description = "navigate right (vim/herdr)"
+
+[[keys.command]]
+key = "shift+left"
+type = "plugin_action"
+command = "herdr-splits.resize-left"
+description = "resize left (vim/herdr)"
+
+[[keys.command]]
+key = "shift+down"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+description = "resize down (vim/herdr)"
+
+[[keys.command]]
+key = "shift+up"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+description = "resize up (vim/herdr)"
+
+[[keys.command]]
+key = "shift+right"
+type = "plugin_action"
+command = "herdr-splits.resize-right"
+description = "resize right (vim/herdr)"
 
 [[keys.command]]
 key = "prefix+t"
