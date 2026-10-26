@@ -1,7 +1,6 @@
 onboarding = false
 [keys]
 prefix = "ctrl+a"
-# new_tab = 'cmd+t'
 
 [[keys.command]]
 key = "ctrl+h"
@@ -56,6 +55,12 @@ key = "prefix+t"
 type = "plugin_action"
 command = "fullerzz.sesh.open-picker"
 description = "sesh"
+
+[[keys.command]]
+key = "prefix+p"
+type = "plugin_action"
+command = "ray.plugin-manager.open"
+description = "open plugin manager"
 
 [ui.toast]
 delivery = "herdr"

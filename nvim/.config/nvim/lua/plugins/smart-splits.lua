@@ -1,9 +1,19 @@
 return {
 	{
-		'mrjones2014/smart-splits.nvim',
+		'smart-splits-nvim/smart-splits.nvim',
+		version = '^3.0.0',
 		cond = vim.env.HERDR_ENV ~= '1',
 		lazy = false,
-		opts = { resize = { amount = 5 } },
+		opts = {
+			resize = { amount = 5 },
+			move = { at_edge = 'wrap' },
+			mux = {
+				backend = 'smart-splits-backend-tmux',
+			},
+		},
+		dependencies = {
+			{ 'smart-splits-nvim/backend-tmux', main = 'smart-splits-backend-tmux' },
+		},
 		keys = {
 			{
 				'<C-h>',
