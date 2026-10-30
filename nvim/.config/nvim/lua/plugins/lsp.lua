@@ -239,6 +239,19 @@ return {
 				capabilities = capabilities,
 			})
 
+			vim.lsp.config('sourcekit', {
+				capabilities = capabilities,
+				on_attach = on_attach,
+				root_dir = function(_, callback)
+					callback(
+						require('lspconfig.util').root_pattern 'Package.swift'(vim.fn.getcwd())
+							or require('lspconfig.util').find_git_ancestor(vim.fn.getcwd())
+					)
+				end,
+				cmd = { vim.trim(vim.fn.system 'xcrun -f sourcekit-lsp') },
+			})
+			vim.lsp.enable 'sourcekit'
+
 			-- local foo = vim.fn.expand '$HOME' .. '/.local/share/nvim/mason/packages/tsgo'
 			-- vim.lsp.config('mdx_analyzer', {
 			-- 	init_options = {
@@ -276,6 +289,19 @@ return {
 
 				return register_capability(err, res, ctx)
 			end
+		end,
+	},
+
+	{
+		'wojciech-kulik/xcodebuild.nvim',
+		ft = { 'swift' },
+		dependencies = {
+			'MunifTanjim/nui.nvim',
+		},
+		config = function()
+			require('xcodebuild').setup {
+				-- put some options here or leave it empty to use default settings
+			}
 		end,
 	},
 }

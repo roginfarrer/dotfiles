@@ -51,10 +51,10 @@ return {
 		opts = {
 			sources = {
 				default = {
+					'snippets',
 					'copilot',
 					'lsp',
 					'path',
-					'snippets',
 					'buffer',
 					'spell',
 				},
