@@ -1,3 +1,3 @@
 return {
-	filetypes = { 'html', 'templ' },
+	-- filetypes = { 'html', 'templ' },
 }

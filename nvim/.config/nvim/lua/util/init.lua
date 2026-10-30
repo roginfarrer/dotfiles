@@ -26,8 +26,6 @@ M.keymap = function(v)
 	})
 end
 
-M.is_apple_silicon = require('jit').arch == 'arm64'
-
 ---@param str string
 M.termcodes = function(str)
 	return vim.api.nvim_replace_termcodes(str, true, true, true)

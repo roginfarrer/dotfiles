@@ -41,17 +41,17 @@ if vim.fn.has 'nvim-0.12.0' then
 	}
 end
 
+require 'u'
 require 'config.options'
 require 'config.keymaps'
-require 'config.lazy'
+require 'pack_plugins.init'
 require 'config.autocmds'
 require 'config.commands'
 require 'config.filetype'
-require 'config.gui'
 
 if vim.fn.has 'nvim-0.12.0' then
 	vim.cmd 'packadd nvim.undotree'
-	require('util').keymap {
+	Util.keymap {
 		'<leader>xu',
 		function()
 			require('undotree').open()

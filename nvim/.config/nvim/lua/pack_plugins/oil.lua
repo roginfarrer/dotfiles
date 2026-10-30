@@ -1,0 +1,70 @@
+vim.pack.add {
+	'https://github.com/stevearc/oil.nvim',
+	'https://github.com/malewicz1337/oil-git.nvim',
+}
+
+local oil_select = function(direction)
+	local oil = require 'oil'
+	if direction == 'vertical' then
+		oil.select { vertical = true }
+	else
+		oil.select()
+	end
+	vim.cmd.wincmd { args = { 'p' } }
+	oil.close()
+	vim.cmd.wincmd { args = { 'p' } }
+end
+
+require('oil').setup {
+	skip_confirm_for_simple_edits = true,
+	view_options = {
+		show_hidden = true,
+	},
+	keymaps = {
+		['q'] = 'actions.close',
+		-- ['<C-v>'] = {
+		--   desc = 'open in a vertical split',
+		--   callback = function()
+		--     oil_select 'vertical'
+		--   end,
+		-- },
+		['<C-s>'] = {
+			desc = 'open in a vertical split',
+			callback = function()
+				oil_select 'vertical'
+			end,
+		},
+		['<C-l>'] = false,
+		['<C-h>'] = false,
+	},
+	-- EXPERIMENTAL support for performing file operations with git
+	git = {
+		-- Return true to automatically git add/mv/rm files
+		add = function(path)
+			return true
+		end,
+		mv = function(src_path, dest_path)
+			return true
+		end,
+		rm = function(path)
+			return true
+		end,
+	},
+}
+
+Util.autocmd('User', {
+	pattern = 'OilActionsPost',
+	callback = function(event)
+		if Snacks and event.data.actions.type == 'move' then
+			Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
+		end
+	end,
+})
+
+Util.keymap {
+	'-',
+	function()
+		require('oil').open()
+	end,
+	desc = 'Open Oil',
+}

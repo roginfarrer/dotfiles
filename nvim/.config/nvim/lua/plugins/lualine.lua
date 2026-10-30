@@ -8,7 +8,7 @@ return {
 			lualine_require.require = require
 
 			-- local Util = require 'lazyvim.util'
-			local icons = require('ui.icons').lazy
+			local icons = require('util.icons').lazy
 
 			local function lsp_client_names()
 				local msg = 'no active lsp'

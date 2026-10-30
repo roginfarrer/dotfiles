@@ -38,7 +38,7 @@ return {
 				},
 				discovery = { enabled = false },
 				-- log_level = vim.log.levels.DEBUG,
-				icons = require('ui.icons').lazy.test,
+				icons = require('util.icons').lazy.test,
 				quickfix = {
 					open = false,
 					-- open = function()

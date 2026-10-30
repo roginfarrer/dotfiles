@@ -1,4 +1,4 @@
-local map = require('util').keymap
+local map = Util.keymap
 
 -- If you like long lines with line wrapping enabled, this solves the problem
 -- that pressing down jumpes your cursor “over” the current line to the next
