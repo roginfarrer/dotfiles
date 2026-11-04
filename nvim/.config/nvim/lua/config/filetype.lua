@@ -15,3 +15,5 @@ Util.autocmd('FileType', {
 		vim.pack.add { 'https://github.com/mustache/vim-mustache-handlebars' }
 	end,
 })
+
+vim.pack.add { 'https://github.com/davidmh/mdx.nvim' }

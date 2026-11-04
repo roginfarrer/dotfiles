@@ -45,6 +45,10 @@
       "rev": "82607bbb8528222a9a28bfcab0aceb3a7fed7e85",
       "src": "https://github.com/zbirenbaum/copilot.lua"
     },
+    "dashboard-nvim": {
+      "rev": "f787e3462c2ee2b6117b17c1aa4ddf66cb6f57fe",
+      "src": "https://github.com/nvimdev/dashboard-nvim"
+    },
     "dial.nvim": {
       "rev": "f2634758455cfa52a8acea6f142dcd6271a1bf57",
       "src": "https://github.com/monaqa/dial.nvim"
@@ -60,10 +64,6 @@
     "friendly-snippets": {
       "rev": "b2ea5c41a150ba72fb656eedb4ed0a86d138d945",
       "src": "https://github.com/rafamadriz/friendly-snippets"
-    },
-    "fzf-lua-lazy.nvim": {
-      "rev": "e813f5df261ff5b781204c108af8f071bf0e1b00",
-      "src": "https://github.com/roginfarrer/fzf-lua-lazy.nvim"
     },
     "gitlinker.nvim": {
       "rev": "b710fe0e0c997236104f43db49905ab67f8d1f64",
@@ -116,6 +116,10 @@
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
       "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mdx.nvim": {
+      "rev": "6c3dc7c4a4b58b5d86404c21a9b4655282ca08c5",
+      "src": "https://github.com/davidmh/mdx.nvim"
     },
     "mini.ai": {
       "rev": "a4f5648dedf435e6306205135d1babb563b55d28",
@@ -195,6 +199,10 @@
       "rev": "a93d9f6d6defdac4bcd6d2c8ba988650e42e0a0e",
       "src": "https://github.com/stevearc/overseer.nvim"
     },
+    "persisted.nvim": {
+      "rev": "b865adb40cf43ace229f09cd4051d8d03b3f6fa8",
+      "src": "https://github.com/olimorris/persisted.nvim"
+    },
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
@@ -235,9 +243,9 @@
       "rev": "dcbfe065297d31823561ba787f51056c147aa682",
       "src": "https://github.com/tpope/vim-abolish"
     },
-    "vim-mustache-handlebars": {
-      "rev": "0153fe03a919add2d6cf2d41b2d5b6e1188bc0e0",
-      "src": "https://github.com/mustache/vim-mustache-handlebars"
+    "vim-startuptime": {
+      "rev": "b2de50f190c8139d70d36d82157dd9c1a8212579",
+      "src": "https://github.com/dstein64/vim-startuptime"
     },
     "wezterm-types": {
       "rev": "c4ca18ef6c8bff12dc7469db6ec69eafff18de35",

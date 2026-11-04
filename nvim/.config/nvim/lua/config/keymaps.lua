@@ -43,7 +43,11 @@ map { 'gw', '*N', desc = 'Search word under cursor', mode = { 'n', 'x' } }
 
 map {
 	'<leader>yf',
-	':let @*=expand("%")<cr>:echo "Copied file to clipboard"<cr>',
+	function()
+		local filepath = vim.fn.expand '%'
+		vim.fn.setreg('+', filepath)
+		vim.api.nvim_echo({ { 'Copiled file to clipboard\n' }, { filepath } }, false)
+	end,
 	desc = 'Copy file path to clipboard',
 }
 
