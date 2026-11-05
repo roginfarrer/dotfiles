@@ -15,9 +15,9 @@
       "Bash(gh pr create:*)",
       "Bash(git commit:*)"
     ],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "auto"
   },
-  "model": "opusplan",
+  "model": "opus",
   "enabledPlugins": {
     "github@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
@@ -26,5 +26,6 @@
     "claude-code-setup@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true
   },
-  "editorMode": "vim"
+  "editorMode": "vim",
+  "tui": "fullscreen"
 }
