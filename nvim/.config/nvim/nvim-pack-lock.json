@@ -57,10 +57,6 @@
       "rev": "cb6ba17cb79ba26b1e4b1b8866583824f88aafb2",
       "src": "https://github.com/CoreyKaylor/diffbandit.nvim"
     },
-    "diffview-plus.nvim": {
-      "rev": "3aba39f4d1704cc7aa26af487ab5579b5c614437",
-      "src": "https://github.com/dlyongemallo/diffview-plus.nvim"
-    },
     "flash.nvim": {
       "rev": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
       "src": "https://github.com/folke/flash.nvim"
@@ -136,10 +132,6 @@
     "mini.snippets": {
       "rev": "810c9aeb976791e3c329e0f073c82dab70fed8a7",
       "src": "https://github.com/nvim-mini/mini.snippets"
-    },
-    "mini.starter": {
-      "rev": "aa5c1eacdac80b09786d5be4e58e2b28c5ebb646",
-      "src": "https://github.com/nvim-mini/mini.starter"
     },
     "mini.surround": {
       "rev": "5357f00aca51a3b43e7775901b1ad9699f8c2678",
