@@ -44,32 +44,6 @@ shell-integration-features = cursor,sudo,no-title
 # keybind = cmd+shift+s=write_screen_file:open
 # keybind = cmd+shift+w=close_surface
 
-# \x01 = ctrl+a
-keybind = cmd+digit_1=text:\x01\x31
-keybind = cmd+digit_2=text:\x01\x32
-keybind = cmd+digit_3=text:\x01\x33
-keybind = cmd+digit_4=text:\x01\x34
-keybind = cmd+digit_5=text:\x01\x35
-keybind = cmd+digit_6=text:\x01\x36
-keybind = cmd+digit_7=text:\x01\x37
-keybind = cmd+digit_8=text:\x01\x38
-keybind = cmd+digit_9=text:\x01\x38
-
-# Select a new tmux session for the attached client interactively
-keybind = cmd+k=text:\x01\x73
-# Previous tab
-keybind = cmd+shift+left_bracket=text:\x01\x70
-# Next tab
-keybind = cmd+shift+right_bracket=text:\x01\x6e
-# Split the current pane into two, left and right
-keybind = cmd+shift+n=text:\x01\x22
-# Split the current pane into two, top and bottom.
-keybind = cmd+n=text:\x01\x25
-# Create a new tmux window
-keybind = cmd+t=text:\x01\x63
-# Break the current tmux pane out of the tmux window
-# keybind = cmd+t=text:\x01\x21
-# Kill the current tmux pane (and window if last pane)
-keybind = cmd+w=text:\x01\x78
-# Toggle the zoom state of the current tmux pane
-keybind = cmd+z=text:\x01\x7a
+# Multiplexer key forwarding: load mux-tmux or mux-herdr
+# (comment out the config-file line for plain ghostty)
+config-file = mux-herdr

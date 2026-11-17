@@ -1,0 +1,28 @@
+# Command-key shortcuts forwarded to Herdr (prefix Ctrl-A), mirroring mux-tmux
+# \x01 = ctrl+a
+keybind = cmd+digit_1=text:\x011
+keybind = cmd+digit_2=text:\x012
+keybind = cmd+digit_3=text:\x013
+keybind = cmd+digit_4=text:\x014
+keybind = cmd+digit_5=text:\x015
+keybind = cmd+digit_6=text:\x016
+keybind = cmd+digit_7=text:\x017
+keybind = cmd+digit_8=text:\x018
+keybind = cmd+digit_9=text:\x019
+
+# Workspace picker
+keybind = cmd+k=text:\x01w
+# Previous tab
+keybind = cmd+left_bracket=text:\x01p
+# Next tab
+keybind = cmd+right_bracket=text:\x01n
+# Split below
+keybind = cmd+shift+n=text:\x01-
+# Split right
+keybind = cmd+n=text:\x01v
+# New tab
+keybind = cmd+t=text:\x01c
+# Close pane
+keybind = cmd+w=text:\x01x
+# Toggle pane zoom
+keybind = cmd+z=text:\x01z
