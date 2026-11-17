@@ -2,24 +2,24 @@ vim.schedule(function()
 	vim.pack.add {
 		-- 'https://github.com/justinmk/guh.nvim',
 		Util.gh 'emrearmagan/atlas.nvim',
-		-- Util.gh 'dlyongemallo/diffview-plus.nvim',
+		Util.gh 'dlyongemallo/diffview-plus.nvim',
 		Util.gh 'linrongbin16/gitlinker.nvim',
 		Util.gh 'lewis6991/gitsigns.nvim',
 		Util.gh 'TimUntersberger/neogit',
-		Util.gh 'CoreyKaylor/diffbandit.nvim',
+		-- Util.gh 'CoreyKaylor/diffbandit.nvim',
 	}
 
-	require('diffbandit').setup()
+	-- require('diffbandit').setup()
 
-	-- Util.keymap { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' }
-	Util.keymap {
-		'<leader>gd',
-		function()
-			local bandit = require 'diffbandit'
-			bandit.git_panel {}
-		end,
-		desc = 'Diff git',
-	}
+	Util.keymap { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Diffview' }
+	-- Util.keymap {
+	-- 	'<leader>gd',
+	-- 	function()
+	-- 		local bandit = require 'diffbandit'
+	-- 		bandit.git_panel {}
+	-- 	end,
+	-- 	desc = 'Diff git',
+	-- }
 	Util.keymap { '<leader>gc', '<cmd>GitLink<cr>', mode = { 'n', 'v' }, desc = 'Yank git link' }
 	Util.keymap { '<leader>go', '<cmd>GitLink!<cr>', mode = { 'n', 'v' }, desc = 'Open git link in browser' }
 	Util.keymap { '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit' }

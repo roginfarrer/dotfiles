@@ -26,7 +26,32 @@ local languages = {
 	'vimdoc',
 	'yaml',
 	'jsdoc',
+	'mustache',
 }
+
+-- Local Mustache/Handlebars grammar (~/development/tree-sitter-mustache).
+-- Must be registered before nvim-treesitter is required so install() sees it.
+vim.api.nvim_create_autocmd('User', {
+	pattern = 'TSUpdate',
+	callback = function()
+		require('nvim-treesitter.parsers').mustache = {
+			install_info = {
+				path = '~/development/tree-sitter-mustache',
+				queries = 'queries/mustache',
+			},
+		}
+	end,
+})
+local function register_mustache()
+	vim.treesitter.language.register('mustache', { 'mustache', 'html.mustache', 'handlebars', 'html.handlebars' })
+end
+register_mustache()
+-- nvim-treesitter's plugin/filetypes.lua maps handlebars → glimmer when plugins
+-- load (after init.lua), so take the mapping back once it has run.
+vim.api.nvim_create_autocmd('SourcePost', {
+	pattern = '*/nvim-treesitter/plugin/filetypes.lua',
+	callback = register_mustache,
+})
 
 Util.on_plugin_update('nvim-treesitter', function()
 	vim.cmd 'TSUpdate'
@@ -41,8 +66,6 @@ vim.pack.add {
 }
 
 local treesitter = require 'nvim-treesitter'
-vim.treesitter.language.register('glimmer', 'mustache')
-vim.treesitter.language.register('glimmer', 'hbs')
 
 treesitter.install(languages)
 treesitter.setup()

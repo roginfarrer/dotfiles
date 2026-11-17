@@ -4,10 +4,6 @@
       "rev": "1900f89dc17c603eec29960f57c00bd9ae696495",
       "src": "https://github.com/antoinemadec/FixCursorHold.nvim"
     },
-    "agentic.nvim": {
-      "rev": "f0bef086b3ed6121d9a18a5a820d071c69f2f0f5",
-      "src": "https://github.com/carlos-algms/agentic.nvim"
-    },
     "atlas.nvim": {
       "rev": "dd8bf80e71c2a146633ce52d737fe97afca8cf6e",
       "src": "https://github.com/emrearmagan/atlas.nvim"
@@ -41,6 +37,10 @@
       "rev": "6baee90546feead9301ab088c83a98891415293f",
       "src": "https://github.com/celeste3z/celeste_comment.nvim"
     },
+    "claudecode.nvim": {
+      "rev": "d721d726276c2fa0bf5b689de247c368c1e40265",
+      "src": "https://github.com/coder/claudecode.nvim"
+    },
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
@@ -57,9 +57,9 @@
       "rev": "f2634758455cfa52a8acea6f142dcd6271a1bf57",
       "src": "https://github.com/monaqa/dial.nvim"
     },
-    "diffbandit.nvim": {
-      "rev": "cb6ba17cb79ba26b1e4b1b8866583824f88aafb2",
-      "src": "https://github.com/CoreyKaylor/diffbandit.nvim"
+    "diffview-plus.nvim": {
+      "rev": "fae72d6c981075dce2e0f946f002382ce0cb44e1",
+      "src": "https://github.com/dlyongemallo/diffview-plus.nvim"
     },
     "flash.nvim": {
       "rev": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
@@ -215,6 +215,10 @@
       "rev": "9a70d2ab8513e910bacf037c6dcba4ebbf89cf71",
       "src": "https://github.com/tjgao/quickbuf.nvim"
     },
+    "rose-pine": {
+      "rev": "ff483051a47e27d84bdef47703538df1ed9f4a47",
+      "src": "https://github.com/rose-pine/neovim"
+    },
     "seeker.nvim": {
       "rev": "5aa8e1174b11418a1270631b02c4f42ff9620425",
       "src": "https://github.com/2kabhishek/seeker.nvim"
@@ -251,6 +255,10 @@
     "vim-abolish": {
       "rev": "dcbfe065297d31823561ba787f51056c147aa682",
       "src": "https://github.com/tpope/vim-abolish"
+    },
+    "vim-mustache-handlebars": {
+      "rev": "0153fe03a919add2d6cf2d41b2d5b6e1188bc0e0",
+      "src": "https://github.com/mustache/vim-mustache-handlebars"
     },
     "vim-startuptime": {
       "rev": "b2de50f190c8139d70d36d82157dd9c1a8212579",
