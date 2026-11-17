@@ -17,7 +17,20 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "opus[1m]",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh -c 'rex __internal session-start --agent claude 2>/dev/null || true'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "github@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
@@ -26,6 +39,6 @@
     "claude-code-setup@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true
   },
-  "editorMode": "vim",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "editorMode": "vim"
 }
