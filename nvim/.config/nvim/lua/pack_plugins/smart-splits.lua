@@ -4,15 +4,21 @@ end
 
 vim.schedule(function()
 	vim.pack.add {
-		'https://github.com/smart-splits-nvim/backend-tmux',
+		Util.gh 'smart-splits-nvim/backend-tmux',
+		Util.gh 'rawnly/smart-splits-backend-rex',
 		{ src = 'https://github.com/smart-splits-nvim/smart-splits.nvim', version = vim.version.range '^3.0.0' },
 	}
 
+	require('smart-splits-backend-rex').setup {}
+
 	require('smart-splits').setup {
-		resize = { amount = 5 },
-		move = { at_edge = 'wrap' },
+		resize = {
+			amount = 5,
+			ignored_events = { 'BufEnter', 'WinEnter' },
+		},
 		mux = {
-			backend = 'smart-splits-backend-tmux',
+			backend = { 'smart-splits-backend-rex', 'smart-splits-backend-tmux' },
+			warn_if_unusable = true,
 		},
 	}
 

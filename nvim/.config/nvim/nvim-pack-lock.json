@@ -12,6 +12,10 @@
       "rev": "dd8bf80e71c2a146633ce52d737fe97afca8cf6e",
       "src": "https://github.com/emrearmagan/atlas.nvim"
     },
+    "backend-tmux": {
+      "rev": "9e9e6aa9b3eb7a8d3896a993611622ac97abff52",
+      "src": "https://github.com/smart-splits-nvim/backend-tmux"
+    },
     "blink-cmp-git": {
       "rev": "52fae6028287b5c2663f26e60a9db00ff647c4d3",
       "src": "https://github.com/Kaiser-Yang/blink-cmp-git"
@@ -218,6 +222,15 @@
     "sidekick.nvim": {
       "rev": "3d80a47e6375f6d647c9695d3afea6fa1b3275df",
       "src": "https://github.com/folke/sidekick.nvim"
+    },
+    "smart-splits-backend-rex": {
+      "rev": "68f54325975ad47b03a968a3f201081bfadc0ff5",
+      "src": "https://github.com/rawnly/smart-splits-backend-rex"
+    },
+    "smart-splits.nvim": {
+      "rev": "5fd4fe53c2df2009e689f61511e3c474a9eccbaf",
+      "src": "https://github.com/smart-splits-nvim/smart-splits.nvim",
+      "version": "3.0.0 - 4.0.0"
     },
     "snacks.nvim": {
       "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
