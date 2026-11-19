@@ -1,6 +1,9 @@
 {
   "format": 1,
   "plugins": {
+    "evgeny-golubev/rex-extensions": {
+      "commit": "a2ab68eda7c1dec838480d137d125f20cdfc00a8"
+    },
     "rawnly/smart-splits-backend-rex": {
       "commit": "68f54325975ad47b03a968a3f201081bfadc0ff5"
     }

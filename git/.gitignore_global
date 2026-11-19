@@ -49,3 +49,5 @@ Thumbs.db
 # Mise
 mise.local.toml
 .local
+
+**/.claude/settings.local.json
