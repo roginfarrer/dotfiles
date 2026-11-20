@@ -34,11 +34,17 @@ local languages = {
 vim.api.nvim_create_autocmd('User', {
 	pattern = 'TSUpdate',
 	callback = function()
+		local install_info = {
+			queries = 'queries/mustache',
+		}
+		if vim.fn.isdirectory '~/development/tree-sitter-mustache' == 1 then
+			install_info.path = '~/development/tree-sitter-mustache'
+		else
+			install_info.url = 'https://github.com/roginfarrer/tree-sitter-mustache'
+		end
 		require('nvim-treesitter.parsers').mustache = {
-			install_info = {
-				path = '~/development/tree-sitter-mustache',
-				queries = 'queries/mustache',
-			},
+			tier = 1,
+			install_info = install_info,
 		}
 	end,
 })

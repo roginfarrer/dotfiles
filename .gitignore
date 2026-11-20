@@ -35,3 +35,6 @@ herdr/.config/herdr/*
 !herdr/.config/herdr/config.toml
 !herdr/.config/herdr/.plugins.lock
 !herdr/.config/herdr/plugins.json
+
+# Rex
+rex/.config/rex/plugins
