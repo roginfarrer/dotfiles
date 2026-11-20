@@ -1,6 +1,9 @@
 {
   "format": 1,
   "plugins": {
+    "devert/rex-fzf-url": {
+      "commit": "4f47c197ef6aaa63e4a9f5c73aa7a8474604ce0a"
+    },
     "evgeny-golubev/rex-extensions": {
       "commit": "a2ab68eda7c1dec838480d137d125f20cdfc00a8"
     },
