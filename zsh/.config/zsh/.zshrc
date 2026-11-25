@@ -1,5 +1,8 @@
 # zmodload zsh/zprof
 
+# Optional machine-local overrides that must run before anything else loads.
+[[ -f $HOME/.zshrc_local_early ]] && source $HOME/.zshrc_local_early
+
 export EDITOR="nvim"
 export GIT_EDITOR="nvim"
 export SUDO_EDITOR="nvim"
