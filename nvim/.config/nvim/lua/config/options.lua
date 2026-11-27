@@ -57,7 +57,7 @@ if vim.fn.executable 'rg' then
 	o.grepformat = '%f:%l:%c:%m'
 end
 
-local icons = require 'util.icons'
+local icons = Util.icons
 vim.diagnostic.config {
 	focusable = true,
 	underline = true,

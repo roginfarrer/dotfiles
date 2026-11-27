@@ -1,307 +1,113 @@
-local methods = vim.lsp.protocol.Methods
+Util.on_event('BufEnter', function()
+	local methods = vim.lsp.protocol.Methods
 
----@param client vim.lsp.Client
----@param bufnr integer
-local function on_attach(client, bufnr)
-	---@param v KeymapUtil
-	local function map(v)
-		require('util').keymap(vim.tbl_deep_extend('force', v, { buffer = bufnr }))
+	vim.pack.add {
+		'https://github.com/folke/lazydev.nvim',
+		'https://github.com/DrKJeff16/wezterm-types',
+		'https://github.com/mason-org/mason-lspconfig.nvim',
+		'https://github.com/neovim/nvim-lspconfig',
+		'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
+		'https://github.com/Bilal2453/luvit-meta',
+		'https://github.com/mason-org/mason.nvim',
+	}
+
+	require('lazydev').setup {
+		library = {
+			{ path = 'u', words = { 'Util' } },
+			{ path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+			{ path = 'LazyVim', words = { 'LazyVim' } },
+			{ path = 'snacks.nvim', words = { 'Snacks' } },
+			-- Needs `justinsgithub/wezterm-types` to be installed
+			{ path = 'wezterm-types', mods = { 'wezterm' } },
+		},
+	}
+
+	---@param client vim.lsp.Client
+	---@param bufnr integer
+	local function on_attach(client, bufnr)
+		---@param v KeymapUtil
+		local function map(v)
+			Util.keymap(vim.tbl_deep_extend('force', v, { buffer = bufnr }))
+		end
+
+		if vim.lsp.document_color then
+			vim.lsp.document_color.enable(true)
+		end
+		if client:supports_method 'textDocument/documentColor' then
+			map {
+				'grc',
+				function()
+					vim.lsp.document_color.color_presentation()
+				end,
+				desc = 'vim.lsp.document_color.color_presentation()',
+				mode = { 'n', 'x' },
+			}
+		end
+
+		if client:supports_method(methods.textDocument_documentHighlight) then
+			local under_cursor_highlights_group =
+				vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
+			vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
+				group = under_cursor_highlights_group,
+				desc = 'Highlight references under the cursor',
+				buffer = bufnr,
+				callback = vim.lsp.buf.document_highlight,
+			})
+			vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
+				group = under_cursor_highlights_group,
+				desc = 'Clear highlight references',
+				buffer = bufnr,
+				callback = vim.lsp.buf.clear_references,
+			})
+		end
 	end
 
-	if vim.lsp.document_color then
-		vim.lsp.document_color.enable(true)
-	end
-	if client:supports_method 'textDocument/documentColor' then
-		map {
-			'grc',
-			function()
-				vim.lsp.document_color.color_presentation()
-			end,
-			desc = 'vim.lsp.document_color.color_presentation()',
-			mode = { 'n', 'x' },
-		}
-	end
+	require('mason').setup()
+	require('mason-lspconfig').setup {
+		ensure_installed = {
+			'lua_ls',
+			'tsc',
+			'eslint',
+			'bashls',
+			'html',
+			'jsonls',
+			'intelephense',
+			'somesass_ls',
+			'copilot',
+		},
+		automatic_enable = {
+			exclude = { 'copilot', 'wc_ls', 'cssls', 'mdx_analyzer' },
+		},
+	}
 
-	if client:supports_method(methods.textDocument_documentHighlight) then
-		local under_cursor_highlights_group =
-			vim.api.nvim_create_augroup('rfarrer/cursor_highlights', { clear = false })
-		vim.api.nvim_create_autocmd({ 'CursorHold', 'InsertLeave' }, {
-			group = under_cursor_highlights_group,
-			desc = 'Highlight references under the cursor',
-			buffer = bufnr,
-			callback = vim.lsp.buf.document_highlight,
-		})
-		vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
-			group = under_cursor_highlights_group,
-			desc = 'Clear highlight references',
-			buffer = bufnr,
-			callback = vim.lsp.buf.clear_references,
-		})
-	end
-end
+	require('mason-tool-installer').setup {
+		run_on_start = true,
+		ensure_installed = { 'stylua', 'oxfmt' },
+	}
 
----@param command string
-local function get_ts_bridge_cmd(command)
-	local function ensure_ts_bridge_daemon()
-		if vim.g.ts_bridge_daemon_started then
+	Util.autocmd('LspAttach', {
+		group = 'lsp-attach',
+		callback = function(event)
+			local client = vim.lsp.get_client_by_id(event.data.client_id)
+			local bufnr = event.buf
+
+			if not client then
+				return
+			end
+
+			on_attach(client, bufnr)
+		end,
+	})
+
+	local register_capability = vim.lsp.handlers[methods.client_registerCapability]
+	vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
+		local client = vim.lsp.get_client_by_id(ctx.client_id)
+		if not client then
 			return
 		end
-		vim.g.ts_bridge_daemon_started = true
-		vim.fn.jobstart({
-			command,
-			'daemon',
-			'--listen',
-			'127.0.0.1:7007', -- choose your port
-			'--idle-ttl',
-			'30m',
-		}, {
-			detach = true,
-			env = { RUST_LOG = 'info' },
-		})
+
+		on_attach(client, vim.api.nvim_get_current_buf())
+
+		return register_capability(err, res, ctx)
 	end
-
-	local function wait_for_daemon(host, port, timeout_ms)
-		local addr = string.format('%s:%d', host, port)
-		local function is_ready()
-			local ok, chan = pcall(vim.fn.sockconnect, 'tcp', addr, { rpc = false })
-			if not ok then
-				return false
-			end
-			if type(chan) == 'number' and chan > 0 then
-				vim.fn.chanclose(chan)
-				return true
-			end
-			return false
-		end
-		return vim.wait(timeout_ms, is_ready, 50)
-	end
-
-	local function daemon_cmd(dispatchers)
-		ensure_ts_bridge_daemon()
-		-- Built-in LSP has no `on_new_config`, and `before_init` runs after `cmd`, so
-		-- start + wait here to avoid a first-attach connection refusal.
-		wait_for_daemon('127.0.0.1', 7007, 2000)
-		return vim.lsp.rpc.connect('127.0.0.1', 7007)(dispatchers)
-	end
-end
-
-return {
-	{
-		'folke/lazydev.nvim',
-		ft = 'lua', -- only load on lua files
-		cmd = 'LazyDev',
-		dependencies = {
-			-- { 'Bilal2453/luvit-meta', lazy = true },
-			{
-				'DrKJeff16/wezterm-types',
-				lazy = true,
-				version = false, -- Get the latest version
-			},
-		},
-		opts = {
-			library = {
-				{ path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-				{ path = 'LazyVim', words = { 'LazyVim' } },
-				{ path = 'snacks.nvim', words = { 'Snacks' } },
-				-- Needs `justinsgithub/wezterm-types` to be installed
-				{ path = 'wezterm-types', mods = { 'wezterm' } },
-			},
-		},
-	},
-
-	{
-		'wc-toolkit/wc-language-server',
-		enabled = false,
-		lazy = false,
-		-- dir = vim.fn.expand '$HOME' .. '/development/wc-language-server/packages/neovim',
-		-- ft = {
-		-- 	'html',
-		-- 	'javascript',
-		-- 	'typescript',
-		-- 	'javascriptreact',
-		-- 	'typescriptreact',
-		-- 	'astro',
-		-- 	'svelte',
-		-- 	'vue',
-		-- 	'markdown',
-		-- 	'mdx',
-		-- 	'mustache',
-		-- 	'hbs',
-		-- },
-		config = function()
-			require('wc-language-server').setup {
-				autostart = true,
-				-- tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
-				filetypes = {
-					'html',
-					'javascript',
-					'typescript',
-					'javascriptreact',
-					'typescriptreact',
-					'astro',
-					'svelte',
-					'vue',
-					'markdown',
-					'mdx',
-					'mustache',
-					'hbs',
-				},
-			}
-		end,
-	},
-
-	{
-		'mason-org/mason-lspconfig.nvim',
-		lazy = false,
-		dependencies = {
-			'neovim/nvim-lspconfig',
-			'folke/lazydev.nvim',
-			{ 'WhoIsSethDaniel/mason-tool-installer.nvim' },
-			{ 'Bilal2453/luvit-meta', lazy = true },
-			{ 'mason-org/mason.nvim', opts = {} },
-			{ 'yioneko/nvim-vtsls', lazy = false, enabled = false },
-			{
-				'dmmulroy/ts-error-translator.nvim',
-				opts = {
-					auto_attach = true,
-					servers = {
-						'astro',
-						'svelte',
-						'ts_ls',
-						'tsserver', -- deprecrated
-						'typescript-tools',
-						'volar',
-						'vtsls',
-						'tsgo',
-					},
-				},
-			},
-		},
-		cmd = 'Mason',
-		opts = {
-			ensure_installed = {
-				'lua_ls',
-				'tsc',
-				'eslint',
-				'bashls',
-				'html',
-				'jsonls',
-				'intelephense',
-				'somesass_ls',
-				'copilot',
-			},
-			automatic_enable = {
-				exclude = { 'copilot', 'wc_ls', 'cssls', 'mdx_analyzer' },
-			},
-		},
-		config = function(_, opts)
-			-- vim.lsp.set_log_level 'trace'
-			-- require('vim.lsp.log').set_format_func(vim.inspect)
-			require('mason-lspconfig').setup(opts)
-
-			require('mason-tool-installer').setup {
-				run_on_start = true,
-				ensure_installed = { 'stylua', 'shfmt', 'prettier' },
-			}
-
-			if require('util').has 'mason-nvim-dap' then
-				require('mason-nvim-dap').setup {
-					automatic_installation = false,
-					handlers = {},
-					ensure_installed = {},
-				}
-			end
-
-			require('util').autocmd('LspAttach', {
-				group = 'lsp-attach',
-				callback = function(event)
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					local bufnr = event.buf
-
-					if not client then
-						return
-					end
-
-					on_attach(client, bufnr)
-				end,
-			})
-
-			local capabilities = require('blink.cmp').get_lsp_capabilities(nil, true)
-			-- capabilities = vim.tbl_deep_extend('keep', capabilities, {
-			-- 	textDocument = {
-			-- 		foldingRange = {
-			-- 			dynamicRegistration = false,
-			-- 			lineFoldingOnly = true,
-			-- 		},
-			-- 	},
-			-- })
-			vim.lsp.config('*', {
-				capabilities = capabilities,
-			})
-
-			vim.lsp.config('sourcekit', {
-				capabilities = capabilities,
-				on_attach = on_attach,
-				root_dir = function(_, callback)
-					callback(
-						require('lspconfig.util').root_pattern 'Package.swift'(vim.fn.getcwd())
-							or require('lspconfig.util').find_git_ancestor(vim.fn.getcwd())
-					)
-				end,
-				cmd = { vim.trim(vim.fn.system 'xcrun -f sourcekit-lsp') },
-			})
-			vim.lsp.enable 'sourcekit'
-
-			-- local foo = vim.fn.expand '$HOME' .. '/.local/share/nvim/mason/packages/tsgo'
-			-- vim.lsp.config('mdx_analyzer', {
-			-- 	init_options = {
-			-- 		typescript = {
-			-- 			tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
-			-- 			-- tsdk = foo .. '/node_modules/@typescript/native-preview/bin',
-			-- 		},
-			-- 	},
-			-- })
-
-			local ts_bridge_executable = vim.fn.expand '$HOME' .. '/development/ts-bridge/target/release/ts-bridge'
-
-			-- if vim.fn.executable(ts_bridge_executable) == 1 then
-			-- 	vim.lsp.config('ts_bridge', {
-			-- 		cmd = get_ts_bridge_cmd(ts_bridge_executable),
-			-- 	})
-			-- 	vim.lsp.enable 'ts_bridge'
-			-- else
-			-- 	vim.lsp.enable 'vtsls'
-			-- end
-
-			-- vim.lsp.enable 'wc_language_server'
-
-			-- require('wc_language_server').setup { filetypes = { 'mustache' } }
-
-			-- Update mappings when registering dynamic capabilities.
-			local register_capability = vim.lsp.handlers[methods.client_registerCapability]
-			vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
-				local client = vim.lsp.get_client_by_id(ctx.client_id)
-				if not client then
-					return
-				end
-
-				on_attach(client, vim.api.nvim_get_current_buf())
-
-				return register_capability(err, res, ctx)
-			end
-		end,
-	},
-
-	{
-		'wojciech-kulik/xcodebuild.nvim',
-		ft = { 'swift' },
-		dependencies = {
-			'MunifTanjim/nui.nvim',
-		},
-		config = function()
-			require('xcodebuild').setup {
-				-- put some options here or leave it empty to use default settings
-			}
-		end,
-	},
-}
+end)

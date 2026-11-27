@@ -1,150 +1,87 @@
-return {
-	{
-		'smart-splits-nvim/smart-splits.nvim',
-		version = '^3.0.0',
-		cond = vim.env.HERDR_ENV ~= '1',
-		lazy = false,
-		opts = {
-			resize = { amount = 5 },
-			move = { at_edge = 'wrap' },
-			mux = {
-				backend = 'smart-splits-backend-tmux',
-			},
+if vim.env.HERDR_ENV == '1' then
+	return
+end
+
+vim.schedule(function()
+	vim.pack.add {
+		Util.gh 'smart-splits-nvim/backend-tmux',
+		Util.gh 'rawnly/smart-splits-backend-rex',
+		{ src = 'https://github.com/smart-splits-nvim/smart-splits.nvim', version = vim.version.range '^3.0.0' },
+	}
+
+	require('smart-splits-backend-rex').setup {}
+
+	require('smart-splits').setup {
+		resize = {
+			amount = 5,
+			ignored_events = { 'BufEnter', 'WinEnter' },
 		},
-		dependencies = {
-			{ 'smart-splits-nvim/backend-tmux', main = 'smart-splits-backend-tmux' },
+		mux = {
+			backend = { 'smart-splits-backend-rex', 'smart-splits-backend-tmux' },
+			warn_if_unusable = true,
 		},
-		keys = {
-			{
-				'<C-h>',
-				function()
-					require('smart-splits').move_cursor_left()
-				end,
-				desc = 'move left',
-			},
-			{
-				'<C-j>',
-				function()
-					require('smart-splits').move_cursor_down()
-				end,
-				desc = 'move down',
-			},
-			{
-				'<C-k>',
-				function()
-					require('smart-splits').move_cursor_up()
-				end,
-				desc = 'move up',
-			},
-			{
-				'<C-l>',
-				function()
-					require('smart-splits').move_cursor_right()
-				end,
-				desc = 'move right',
-			},
-			{
-				'<S-Left>',
-				function()
-					require('smart-splits').resize_left()
-				end,
-				desc = 'resize left',
-			},
-			{
-				'<S-Right>',
-				function()
-					require('smart-splits').resize_right()
-				end,
-				desc = 'resize right',
-			},
-			{
-				'<S-Down>',
-				function()
-					require('smart-splits').resize_down()
-				end,
-				desc = 'resize down',
-			},
-			{
-				'<S-Up>',
-				function()
-					require('smart-splits').resize_up()
-				end,
-				desc = 'resize up',
-			},
+	}
+
+	local keys = {
+		{
+			'<C-h>',
+			function()
+				require('smart-splits').move_cursor_left()
+			end,
+			desc = 'move left',
 		},
-	},
-	{
-		'lmilojevicc/herdr-splits.nvim',
-		cond = vim.env.HERDR_ENV == '1',
-		event = 'VeryLazy',
-		build = ':lua require("herdr-splits").sync_herdr()',
-		opts = {
-			neovim_amount = 5,
-			auto_sync_herdr = true,
-			resize_keys = {
-				left = '<S-Left>',
-				down = '<S-Down>',
-				up = '<S-Up>',
-				right = '<S-Right>',
-			},
+		{
+			'<C-j>',
+			function()
+				require('smart-splits').move_cursor_down()
+			end,
+			desc = 'move down',
 		},
-		keys = {
-			{
-				'<C-h>',
-				function()
-					require('herdr-splits').move_cursor_left()
-				end,
-				desc = 'move left',
-			},
-			{
-				'<C-j>',
-				function()
-					require('herdr-splits').move_cursor_down()
-				end,
-				desc = 'move down',
-			},
-			{
-				'<C-k>',
-				function()
-					require('herdr-splits').move_cursor_up()
-				end,
-				desc = 'move up',
-			},
-			{
-				'<C-l>',
-				function()
-					require('herdr-splits').move_cursor_right()
-				end,
-				desc = 'move right',
-			},
-			{
-				'<S-Left>',
-				function()
-					require('herdr-splits').resize_left()
-				end,
-				desc = 'resize left',
-			},
-			{
-				'<S-Right>',
-				function()
-					require('herdr-splits').resize_right()
-				end,
-				desc = 'resize right',
-			},
-			{
-				'<S-Down>',
-				function()
-					require('herdr-splits').resize_down()
-				end,
-				desc = 'resize down',
-			},
-			{
-				'<S-Up>',
-				function()
-					require('herdr-splits').resize_up()
-				end,
-				desc = 'resize up',
-			},
+		{
+			'<C-k>',
+			function()
+				require('smart-splits').move_cursor_up()
+			end,
+			desc = 'move up',
 		},
-	},
-}
+		{
+			'<C-l>',
+			function()
+				require('smart-splits').move_cursor_right()
+			end,
+			desc = 'move right',
+		},
+		{
+			'<S-Left>',
+			function()
+				require('smart-splits').resize_left()
+			end,
+			desc = 'resize left',
+		},
+		{
+			'<S-Right>',
+			function()
+				require('smart-splits').resize_right()
+			end,
+			desc = 'resize right',
+		},
+		{
+			'<S-Down>',
+			function()
+				require('smart-splits').resize_down()
+			end,
+			desc = 'resize down',
+		},
+		{
+			'<S-Up>',
+			function()
+				require('smart-splits').resize_up()
+			end,
+			desc = 'resize up',
+		},
+	}
+
+	for _, map in ipairs(keys) do
+		Util.keymap(map)
+	end
+end)

@@ -26,216 +26,150 @@ local languages = {
 	'vimdoc',
 	'yaml',
 	'jsdoc',
+	'mustache',
 }
 
-local function jsdoc_word_wrap(text, max_width)
-	if max_width <= 0 then
-		max_width = 1
-	end
-	local result = {}
-	local current = ''
-	for word in text:gmatch '%S+' do
-		local candidate = current == '' and word or (current .. ' ' .. word)
-		if #candidate > max_width and current ~= '' then
-			result[#result + 1] = current
-			current = word
+-- Local Mustache/Handlebars grammar (~/development/tree-sitter-mustache).
+-- Must be registered before nvim-treesitter is required so install() sees it.
+vim.api.nvim_create_autocmd('User', {
+	pattern = 'TSUpdate',
+	callback = function()
+		local install_info = {
+			queries = 'queries/mustache',
+		}
+		if vim.fn.isdirectory '~/development/tree-sitter-mustache' == 1 then
+			install_info.path = '~/development/tree-sitter-mustache'
 		else
-			current = candidate
+			install_info.url = 'https://github.com/roginfarrer/tree-sitter-mustache'
 		end
+		require('nvim-treesitter.parsers').mustache = {
+			tier = 1,
+			install_info = install_info,
+		}
+	end,
+})
+local function register_mustache()
+	vim.treesitter.language.register('mustache', { 'mustache', 'html.mustache', 'handlebars', 'html.handlebars' })
+end
+register_mustache()
+-- nvim-treesitter's plugin/filetypes.lua maps handlebars → glimmer when plugins
+-- load (after init.lua), so take the mapping back once it has run.
+vim.api.nvim_create_autocmd('SourcePost', {
+	pattern = '*/nvim-treesitter/plugin/filetypes.lua',
+	callback = register_mustache,
+})
+
+Util.on_plugin_update('nvim-treesitter', function()
+	vim.cmd 'TSUpdate'
+end)
+
+vim.pack.add {
+	Util.gh 'nvim-treesitter/nvim-treesitter',
+	Util.gh 'nvim-treesitter/nvim-treesitter-textobjects',
+	Util.gh 'nvim-mini/mini.ai',
+	Util.gh 'Wansmer/treesj',
+	Util.gh 'axelvc/template-string.nvim',
+}
+
+local treesitter = require 'nvim-treesitter'
+
+treesitter.install(languages)
+treesitter.setup()
+
+---@param buf integer
+---@param language string
+local function treesitter_try_attach(buf, language)
+	-- Check if a parser exists and load it
+	if not vim.treesitter.language.add(language) then
+		return
 	end
-	if current ~= '' then
-		result[#result + 1] = current
+	-- Enable syntax highlighting and other treesitter features
+	vim.treesitter.start(buf, language)
+
+	-- Enable treesitter based folds
+	-- For more info on folds see `:help folds`
+	-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+	-- vim.wo.foldmethod = 'expr'
+
+	-- Check if treesitter indentation is available for this language, and if so enable it
+	-- in case there is no indent query, the indentexpr will fallback to the vim's built in one
+	local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
+
+	-- Enable treesitter based indentation
+	if has_indent_query then
+		vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 	end
-	return result
 end
 
-local function jsdoc_fallback(tsnode)
-	local text = vim.treesitter.get_node_text(tsnode, 0)
-	local start_row, start_col, end_row, end_col = tsnode:range()
-	local buf = vim.api.nvim_get_current_buf()
-	local indent = string.rep(' ', start_col)
-	local new_lines
+local available_parsers = require('nvim-treesitter').get_available()
+vim.api.nvim_create_autocmd('FileType', {
+	callback = function(args)
+		local buf, filetype = args.buf, args.match
 
-	if not text:match '\n' then
-		local content = text:match '^/%*%*%s*(.-)%s*%*/$'
-		if not content or content == '' then
+		local language = vim.treesitter.language.get_lang(filetype)
+		if not language then
 			return
 		end
-		local wrapped = jsdoc_word_wrap(content, 80 - start_col - 3)
-		new_lines = { '/**' }
-		for _, line in ipairs(wrapped) do
-			new_lines[#new_lines + 1] = indent .. ' * ' .. line
-		end
-		new_lines[#new_lines + 1] = indent .. ' */'
-	else
-		local parts = {}
-		for i, line in ipairs(vim.split(text, '\n')) do
-			if i == 1 then
-				local c = line:match '^/%*%*%s+(.-)%s*$'
-				if c and c ~= '' then
-					parts[#parts + 1] = c
-				end
-			elseif line:match '%*/' then
-				-- closing */ line, skip
-			else
-				local c = line:match '^%s*%*%s*(.-)%s*$'
-				if c and c ~= '' then
-					parts[#parts + 1] = c
-				end
-			end
-		end
-		new_lines = { '/** ' .. table.concat(parts, ' ') .. ' */' }
-	end
 
-	vim.api.nvim_buf_set_text(buf, start_row, start_col, end_row, end_col, new_lines)
-end
+		local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
 
-local jsdoc_comment_preset = {
-	both = {
-		enable = function(tsnode)
-			return vim.treesitter.get_node_text(tsnode, 0):match '^/%*%*' ~= nil
-		end,
-		fallback = jsdoc_fallback,
+		if vim.tbl_contains(installed_parsers, language) then
+			-- Enable the parser if it is already installed
+			treesitter_try_attach(buf, language)
+		elseif vim.tbl_contains(available_parsers, language) then
+			-- If a parser is available in `nvim-treesitter`, auto-install it and enable it after the installation is done
+			require('nvim-treesitter').install(language):await(function()
+				treesitter_try_attach(buf, language)
+			end)
+		else
+			-- Try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
+			treesitter_try_attach(buf, language)
+		end
+	end,
+})
+
+require('nvim-treesitter-textobjects').setup {
+	move = {
+		enable = true,
+		set_jumps = true, -- whether to set jumps in the jumplist
 	},
 }
 
-return {
-	{
-		'nvim-treesitter/nvim-treesitter',
-		branch = 'main',
-		build = ':TSUpdate',
-		lazy = false,
-		dependencies = {
-			{ 'JoosepAlviste/nvim-ts-context-commentstring', opts = {} },
-			{ 'windwp/nvim-ts-autotag', opts = {} },
-			{ 'nvim-treesitter/nvim-treesitter-context', opts = {} },
+local ai = require 'mini.ai'
+require('mini.ai').setup {
+	search_method = 'cover',
+	custom_textobjects = {
+		o = ai.gen_spec.treesitter { -- code block
+			a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+			i = { '@block.inner', '@conditional.inner', '@loop.inner' },
 		},
-		opts = {},
-		config = function(_, opts)
-			local treesitter = require 'nvim-treesitter'
-			vim.treesitter.language.register('glimmer', 'mustache')
-			vim.treesitter.language.register('glimmer', 'hbs')
-
-			treesitter.install(languages)
-			treesitter.setup(opts)
-
-			---@param buf integer
-			---@param language string
-			local function treesitter_try_attach(buf, language)
-				-- Check if a parser exists and load it
-				if not vim.treesitter.language.add(language) then
-					return
-				end
-				-- Enable syntax highlighting and other treesitter features
-				vim.treesitter.start(buf, language)
-
-				-- Enable treesitter based folds
-				-- For more info on folds see `:help folds`
-				-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-				-- vim.wo.foldmethod = 'expr'
-
-				-- Check if treesitter indentation is available for this language, and if so enable it
-				-- in case there is no indent query, the indentexpr will fallback to the vim's built in one
-				local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
-
-				-- Enable treesitter based indentation
-				if has_indent_query then
-					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-				end
-			end
-
-			local available_parsers = require('nvim-treesitter').get_available()
-			vim.api.nvim_create_autocmd('FileType', {
-				callback = function(args)
-					local buf, filetype = args.buf, args.match
-
-					local language = vim.treesitter.language.get_lang(filetype)
-					if not language then
-						return
-					end
-
-					local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
-
-					if vim.tbl_contains(installed_parsers, language) then
-						-- Enable the parser if it is already installed
-						treesitter_try_attach(buf, language)
-					elseif vim.tbl_contains(available_parsers, language) then
-						-- If a parser is available in `nvim-treesitter`, auto-install it and enable it after the installation is done
-						require('nvim-treesitter').install(language):await(function()
-							treesitter_try_attach(buf, language)
-						end)
-					else
-						-- Try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
-						treesitter_try_attach(buf, language)
-					end
-				end,
-			})
-
-			-- vim.api.nvim_create_autocmd('FileType', {
-			-- 	group = vim.api.nvim_create_augroup('treesitter.setup', {}),
-			-- 	callback = function(args)
-			-- 		local buf = args.buf
-			-- 		local filetype = args.match
-
-			-- 		-- Avoid running on buffers that do not
-			-- 		-- correspond to a language (like oil.nvim buffers), this implementation
-			-- 		-- checks if a parser exists for the current language
-			-- 		local language = vim.treesitter.language.get_lang(filetype) or filetype
-			-- 		if not vim.treesitter.language.add(language) then
-			-- 			return
-			-- 		end
-
-			-- 		-- Enalbes tree-sitting folding
-			-- 		-- vim.wo.foldmethod = 'expr'
-			-- 		-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-
-			-- 		-- Enables highlighting
-			-- 		vim.treesitter.start(buf, language)
-
-			-- 		-- Enables tree-sitter indentation
-			-- 		-- Disabled since it's not very good
-			-- 		-- vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-			-- 	end,
-			-- })
-		end,
-	},
-
-	{
-		'nvim-treesitter/nvim-treesitter-textobjects',
-		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		branch = 'main',
-		lazy = false,
-		opts = {
-			move = {
-				enable = true,
-				set_jumps = true, -- whether to set jumps in the jumplist
-			},
-		},
-	},
-
-	{
-		'Wansmer/treesj',
-		cmd = { 'TSJToggle', 'TSJSplit', 'TSJJoin' },
-		keys = {
+		f = ai.gen_spec.treesitter { a = '@function.outer', i = '@function.inner' }, -- function
+		c = ai.gen_spec.treesitter { a = '@class.outer', i = '@class.inner' }, -- class
+		t = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' }, -- tags
+		d = { '%f[%d]%d+' }, -- digits
+		e = { -- Word with case
 			{
-				'J',
-				function()
-					require('treesj').toggle()
-				end,
-				desc = 'toggle treesj',
+				'%u[%l%d]+%f[^%l%d]',
+				'%f[%S][%l%d]+%f[^%l%d]',
+				'%f[%P][%l%d]+%f[^%l%d]',
+				'^[%l%d]+%f[^%l%d]',
 			},
+			'^().*()$',
 		},
-		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		opts = {
-			use_default_keymaps = false,
-			max_join_length = 1000,
-			langs = {
-				-- javascript = { comment = jsdoc_comment_preset },
-				-- typescript = { comment = jsdoc_comment_preset },
-				-- tsx = { comment = jsdoc_comment_preset },
-				-- jsx = { comment = jsdoc_comment_preset },
-				jsdoc = { comment = jsdoc_comment_preset },
-			},
-		},
+		-- g = LazyVim.mini.ai_buffer, -- buffer
+		u = ai.gen_spec.function_call(), -- u for "Usage"
+		U = ai.gen_spec.function_call { name_pattern = '[%w_]' }, -- without dot in function name
 	},
+}
+
+require('treesj').setup {
+	use_default_keymaps = false,
+	max_join_length = 1000,
+}
+Util.keymap {
+	'J',
+	function()
+		require('treesj').toggle()
+	end,
+	desc = 'toggle treesj',
 }

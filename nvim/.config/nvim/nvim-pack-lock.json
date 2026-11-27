@@ -240,7 +240,7 @@
       "src": "https://github.com/folke/sidekick.nvim"
     },
     "smart-splits-backend-rex": {
-      "rev": "68f54325975ad47b03a968a3f201081bfadc0ff5",
+      "rev": "13950be0566162a54d8e5225dadf6de2399e2ea4",
       "src": "https://github.com/rawnly/smart-splits-backend-rex"
     },
     "smart-splits.nvim": {

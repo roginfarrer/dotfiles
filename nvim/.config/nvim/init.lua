@@ -41,10 +41,10 @@ if vim.fn.has 'nvim-0.12.0' then
 	}
 end
 
-require 'u'
+require 'util'
+require 'plugins'
 require 'config.options'
 require 'config.keymaps'
-require 'pack_plugins.init'
 require 'config.autocmds'
 require 'config.commands'
 require 'config.filetype'
